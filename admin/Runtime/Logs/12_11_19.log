@@ -1,0 +1,151 @@
+[ 2012-11-19T00:12:22+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T00:12:22+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001390s ]
+[ 2012-11-19T00:12:22+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001755s ]
+[ 2012-11-19T00:14:24+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T00:14:24+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001936s ]
+[ 2012-11-19T00:14:24+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.002349s ]
+[ 2012-11-19T19:32:22+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T19:32:22+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001571s ]
+[ 2012-11-19T19:32:22+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001922s ]
+[ 2012-11-19T19:44:37+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T19:44:37+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001405s ]
+[ 2012-11-19T19:44:37+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001767s ]
+[ 2012-11-19T19:44:37+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002843s ]
+[ 2012-11-19T19:44:37+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000313s ]
+[ 2012-11-19T19:52:31+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T19:52:31+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001439s ]
+[ 2012-11-19T19:52:31+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001794s ]
+[ 2012-11-19T19:52:31+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `think_test` [ RunTime:0.000217s ]
+[ 2012-11-19T19:52:31+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `think_test`  [ RunTime:0.000200s ]
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ route_check ] --START--
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | INFO: Run CheckRoute Behavior [ RunTime:0.044679s ]
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ route_check ] --END-- [ RunTime:0.045154s ]
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001502s ]
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001945s ]
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | SQL: SHOW COLUMNS FROM `think_test` [ RunTime:0.000154s ]
+[ 2012-11-19T20:00:01+08:00 ] /reachvc/admin.php/Index/index | SQL: SELECT * FROM `think_test`  [ RunTime:0.000222s ]
+[ 2012-11-19T20:00:04+08:00 ] /reachvc/admin.php/index/index | ERR: (ThinkException) 鏃犳硶鍔犺浇妯″潡index
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | INFO: Tag[ route_check ] --START--
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | INFO: Run CheckRoute Behavior [ RunTime:0.001466s ]
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | INFO: Tag[ route_check ] --END-- [ RunTime:0.001833s ]
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001279s ]
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001624s ]
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.003055s ]
+[ 2012-11-19T20:10:27+08:00 ] /reachvc/admin.php/index/index | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000342s ]
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ route_check ] --START--
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | INFO: Run CheckRoute Behavior [ RunTime:0.001957s ]
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ route_check ] --END-- [ RunTime:0.002543s ]
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002089s ]
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | INFO: Tag[ app_begin ] --END-- [ RunTime:0.002600s ]
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.003513s ]
+[ 2012-11-19T20:10:53+08:00 ] /reachvc/admin.php/Index/index | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000385s ]
+[ 2012-11-19T21:13:01+08:00 ] /reachvc/admin.php/Index/index | ERR: (ThinkException) 由于目标计算机积极拒绝，无法连接。
+
+[ 2012-11-19T21:19:19+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:19:19+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001214s ]
+[ 2012-11-19T21:19:19+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001542s ]
+[ 2012-11-19T21:19:19+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.034598s ]
+[ 2012-11-19T21:19:19+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000359s ]
+[ 2012-11-19T21:32:43+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:32:43+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001573s ]
+[ 2012-11-19T21:32:43+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.002053s ]
+[ 2012-11-19T21:32:43+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002878s ]
+[ 2012-11-19T21:32:43+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000408s ]
+[ 2012-11-19T21:33:51+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:33:51+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001089s ]
+[ 2012-11-19T21:33:51+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.024717s ]
+[ 2012-11-19T21:33:51+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.026384s ]
+[ 2012-11-19T21:33:51+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002846s ]
+[ 2012-11-19T21:33:51+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000321s ]
+[ 2012-11-19T21:33:52+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:33:52+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001079s ]
+[ 2012-11-19T21:33:52+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.001978s ]
+[ 2012-11-19T21:33:52+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003580s ]
+[ 2012-11-19T21:33:52+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002538s ]
+[ 2012-11-19T21:33:52+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000336s ]
+[ 2012-11-19T21:34:14+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:34:14+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001712s ]
+[ 2012-11-19T21:34:14+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002511s ]
+[ 2012-11-19T21:34:14+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005049s ]
+[ 2012-11-19T21:34:14+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002644s ]
+[ 2012-11-19T21:34:14+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000382s ]
+[ 2012-11-19T21:34:15+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:34:15+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001035s ]
+[ 2012-11-19T21:34:15+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.001959s ]
+[ 2012-11-19T21:34:15+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003482s ]
+[ 2012-11-19T21:34:15+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002408s ]
+[ 2012-11-19T21:34:15+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000280s ]
+[ 2012-11-19T21:34:59+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:34:59+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001541s ]
+[ 2012-11-19T21:34:59+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002478s ]
+[ 2012-11-19T21:34:59+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004570s ]
+[ 2012-11-19T21:34:59+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002593s ]
+[ 2012-11-19T21:34:59+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000342s ]
+[ 2012-11-19T21:36:33+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:36:33+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001242s ]
+[ 2012-11-19T21:36:33+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002170s ]
+[ 2012-11-19T21:36:33+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003925s ]
+[ 2012-11-19T21:36:33+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002887s ]
+[ 2012-11-19T21:36:33+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000309s ]
+[ 2012-11-19T21:36:50+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:36:50+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001303s ]
+[ 2012-11-19T21:36:50+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001648s ]
+[ 2012-11-19T21:36:50+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002327s ]
+[ 2012-11-19T21:36:50+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000339s ]
+[ 2012-11-19T21:39:46+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:39:46+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001298s ]
+[ 2012-11-19T21:39:46+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002500s ]
+[ 2012-11-19T21:39:46+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004384s ]
+[ 2012-11-19T21:39:46+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002883s ]
+[ 2012-11-19T21:39:46+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000346s ]
+[ 2012-11-19T21:39:47+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:39:47+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.000985s ]
+[ 2012-11-19T21:39:47+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.001925s ]
+[ 2012-11-19T21:39:47+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003380s ]
+[ 2012-11-19T21:39:47+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.003209s ]
+[ 2012-11-19T21:39:47+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000374s ]
+[ 2012-11-19T21:40:40+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:40:40+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001011s ]
+[ 2012-11-19T21:40:40+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002078s ]
+[ 2012-11-19T21:40:40+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003587s ]
+[ 2012-11-19T21:40:40+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002621s ]
+[ 2012-11-19T21:40:40+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000352s ]
+[ 2012-11-19T21:41:00+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:41:00+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001407s ]
+[ 2012-11-19T21:41:00+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.001126s ]
+[ 2012-11-19T21:41:00+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003274s ]
+[ 2012-11-19T21:41:00+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `think_test` [ RunTime:0.000225s ]
+[ 2012-11-19T21:41:00+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `think_test`  [ RunTime:0.000211s ]
+[ 2012-11-19T21:41:33+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:41:33+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001137s ]
+[ 2012-11-19T21:41:33+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002243s ]
+[ 2012-11-19T21:41:33+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004042s ]
+[ 2012-11-19T21:41:33+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002681s ]
+[ 2012-11-19T21:41:33+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000424s ]
+[ 2012-11-19T21:42:47+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:42:47+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002265s ]
+[ 2012-11-19T21:42:47+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.003441s ]
+[ 2012-11-19T21:42:47+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.006401s ]
+[ 2012-11-19T21:42:47+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002528s ]
+[ 2012-11-19T21:42:47+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000259s ]
+[ 2012-11-19T21:43:27+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:43:27+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001114s ]
+[ 2012-11-19T21:43:27+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002178s ]
+[ 2012-11-19T21:43:27+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003830s ]
+[ 2012-11-19T21:43:27+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002501s ]
+[ 2012-11-19T21:43:27+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000314s ]
+[ 2012-11-19T21:49:03+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:49:03+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001198s ]
+[ 2012-11-19T21:49:03+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002399s ]
+[ 2012-11-19T21:49:03+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004111s ]
+[ 2012-11-19T21:49:03+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002704s ]
+[ 2012-11-19T21:49:03+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000372s ]
+[ 2012-11-19T21:49:19+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-19T21:49:19+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001116s ]
+[ 2012-11-19T21:49:19+08:00 ] /reachvc/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002642s ]
+[ 2012-11-19T21:49:19+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005140s ]
+[ 2012-11-19T21:49:19+08:00 ] /reachvc/admin.php | SQL: SHOW COLUMNS FROM `rea_test` [ RunTime:0.002587s ]
+[ 2012-11-19T21:49:19+08:00 ] /reachvc/admin.php | SQL: SELECT * FROM `rea_test`  [ RunTime:0.000397s ]

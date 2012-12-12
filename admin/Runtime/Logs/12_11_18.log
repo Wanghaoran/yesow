@@ -1,0 +1,10 @@
+[ 2012-11-18T23:40:36+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-18T23:40:36+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001516s ]
+[ 2012-11-18T23:40:36+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001924s ]
+[ 2012-11-18T23:45:59+08:00 ] /reachvc/admin.php | ERR: (ThinkException) 无法加载模块Index
+[ 2012-11-18T23:56:43+08:00 ] /reachvc/admin.php | ERR: (ThinkException) 无法加载模块Index
+[ 2012-11-18T23:56:44+08:00 ] /reachvc/admin.php | ERR: (ThinkException) 无法加载模块Index
+[ 2012-11-18T23:57:14+08:00 ] /reachvc/admin.php | ERR: (ThinkException) 非法操作index
+[ 2012-11-18T23:58:09+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-11-18T23:58:09+08:00 ] /reachvc/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001227s ]
+[ 2012-11-18T23:58:09+08:00 ] /reachvc/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001594s ]

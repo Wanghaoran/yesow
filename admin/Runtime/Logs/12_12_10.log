@@ -1,0 +1,1138 @@
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.072115s ]
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.042456s ]
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.126287s ]
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.019209s ]
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.019563s ]
+[ 2012-12-10T18:30:58+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.207405s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.207718s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.020998s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.033177s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.009956s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.003314s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.068537s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.036854s ]
+[ 2012-12-10T18:30:59+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.037166s ]
+[ 2012-12-10T18:32:24+08:00 ] /yesow/admin.php/Public/main?PHPSESSID=89qplcscdcvlp7alvaf8ba6n40&_=1355135543969 | ERR: (ThinkException) 非法操作main
+[ 2012-12-10T18:32:26+08:00 ] /yesow/admin.php/Public/password/?PHPSESSID=89qplcscdcvlp7alvaf8ba6n40&_=1355135546403 | ERR: (ThinkException) 非法操作password
+[ 2012-12-10T18:32:28+08:00 ] /yesow/admin.php/Public/profile/?PHPSESSID=89qplcscdcvlp7alvaf8ba6n40&_=1355135548476 | ERR: (ThinkException) 非法操作profile
+[ 2012-12-10T18:32:31+08:00 ] /yesow/admin.php/Public/logout/?PHPSESSID=89qplcscdcvlp7alvaf8ba6n40 | ERR: (ThinkException) 非法操作logout
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.000990s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002047s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003508s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.000649s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.000951s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.036976s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.037401s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.000919s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001195s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000559s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001225s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005847s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.000847s ]
+[ 2012-12-10T18:32:34+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.001187s ]
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Run CheckRoute Behavior [ RunTime:0.001294s ]
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001734s ]
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001387s ]
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Run CheckLang Behavior [ RunTime:0.004976s ]
+[ 2012-12-10T18:34:36+08:00 ] /yesow/admin.php/Public/main?_=1355135676254 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007028s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run CheckRoute Behavior [ RunTime:0.002074s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ route_check ] --END-- [ RunTime:0.002508s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001260s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run CheckLang Behavior [ RunTime:0.002489s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004264s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run LocationTemplate Behavior [ RunTime:0.001051s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001431s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run ParseTemplate Behavior [ RunTime:0.077801s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.078127s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run ContentReplace Behavior [ RunTime:0.001356s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run TokenBuild Behavior [ RunTime:0.001352s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.001767s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run ShowRuntime Behavior [ RunTime:0.001441s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.007186s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Run ShowPageTrace Behavior [ RunTime:0.001228s ]
+[ 2012-12-10T18:38:58+08:00 ] /yesow/admin.php/Public/main?_=1355135938739 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001648s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run CheckRoute Behavior [ RunTime:0.001424s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001784s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001420s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run CheckLang Behavior [ RunTime:0.002566s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004596s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run LocationTemplate Behavior [ RunTime:0.001182s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001572s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run ParseTemplate Behavior [ RunTime:0.020080s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.020565s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run ContentReplace Behavior [ RunTime:0.001456s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run TokenBuild Behavior [ RunTime:0.001188s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000546s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run ShowRuntime Behavior [ RunTime:0.001292s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005485s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | NOTIC: [2] Cannot modify header information - headers already sent by (output started at D:\wamp\www\yesow\app\Common\functions.php:95) View.class.php 第 120 行.
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | NOTIC: [2] Cannot modify header information - headers already sent by (output started at D:\wamp\www\yesow\app\Common\functions.php:95) View.class.php 第 121 行.
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | NOTIC: [2] Cannot modify header information - headers already sent by (output started at D:\wamp\www\yesow\app\Common\functions.php:95) View.class.php 第 122 行.
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Run ShowPageTrace Behavior [ RunTime:0.000783s ]
+[ 2012-12-10T18:40:02+08:00 ] /yesow/admin.php/Public/main?_=1355136002154 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001084s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run CheckRoute Behavior [ RunTime:0.001147s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001503s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001232s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run CheckLang Behavior [ RunTime:0.003847s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005895s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run LocationTemplate Behavior [ RunTime:0.001191s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001659s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run ParseTemplate Behavior [ RunTime:0.016694s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.017034s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run ContentReplace Behavior [ RunTime:0.000783s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run TokenBuild Behavior [ RunTime:0.000960s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000453s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run ShowRuntime Behavior [ RunTime:0.001446s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004583s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | NOTIC: [2] Cannot modify header information - headers already sent by (output started at D:\wamp\www\yesow\app\Common\functions.php:95) View.class.php 第 120 行.
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | NOTIC: [2] Cannot modify header information - headers already sent by (output started at D:\wamp\www\yesow\app\Common\functions.php:95) View.class.php 第 121 行.
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | NOTIC: [2] Cannot modify header information - headers already sent by (output started at D:\wamp\www\yesow\app\Common\functions.php:95) View.class.php 第 122 行.
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Run ShowPageTrace Behavior [ RunTime:0.000795s ]
+[ 2012-12-10T18:41:42+08:00 ] /yesow/admin.php/Public/main?_=1355136102790 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001108s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run CheckRoute Behavior [ RunTime:0.001231s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001580s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001912s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run CheckLang Behavior [ RunTime:0.002231s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004739s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run LocationTemplate Behavior [ RunTime:0.000757s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001081s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run ParseTemplate Behavior [ RunTime:0.016966s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.017453s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run ContentReplace Behavior [ RunTime:0.001396s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run TokenBuild Behavior [ RunTime:0.001363s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000523s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run ShowRuntime Behavior [ RunTime:0.001216s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005619s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Run ShowPageTrace Behavior [ RunTime:0.000792s ]
+[ 2012-12-10T18:42:02+08:00 ] /yesow/admin.php/Public/main?_=1355136122286 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001101s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run CheckRoute Behavior [ RunTime:0.002037s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ route_check ] --END-- [ RunTime:0.002486s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001944s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run CheckLang Behavior [ RunTime:0.004386s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007080s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run LocationTemplate Behavior [ RunTime:0.001534s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001896s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run ParseTemplate Behavior [ RunTime:0.019806s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.020235s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run ContentReplace Behavior [ RunTime:0.001198s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run TokenBuild Behavior [ RunTime:0.001396s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.001078s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run ShowRuntime Behavior [ RunTime:0.002462s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.007267s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Run ShowPageTrace Behavior [ RunTime:0.001535s ]
+[ 2012-12-10T18:42:30+08:00 ] /yesow/admin.php/Public/main?_=1355136150806 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001861s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run CheckRoute Behavior [ RunTime:0.001805s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ route_check ] --END-- [ RunTime:0.002221s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001922s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run CheckLang Behavior [ RunTime:0.003102s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005588s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run LocationTemplate Behavior [ RunTime:0.001598s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001956s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run ParseTemplate Behavior [ RunTime:0.024846s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.025295s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run ContentReplace Behavior [ RunTime:0.002031s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run TokenBuild Behavior [ RunTime:0.002425s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.001438s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run ShowRuntime Behavior [ RunTime:0.001950s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.009166s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Run ShowPageTrace Behavior [ RunTime:0.001326s ]
+[ 2012-12-10T18:42:41+08:00 ] /yesow/admin.php/Public/main?_=1355136161773 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001637s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001966s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.002389s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001573s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002969s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005040s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.002340s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.002855s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.034875s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.035313s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001314s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001625s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000859s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001777s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006385s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.001253s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001541s ]
+[ 2012-12-10T18:43:49+08:00 ] /yesow/admin.php/public/verify/ | ERR: (ThinkException) 非法操作verify
+[ 2012-12-10T18:43:54+08:00 ] /yesow/admin.php/public/verify/1355136234877 | ERR: (ThinkException) 非法操作verify
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001244s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001566s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001228s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002683s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004439s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.000938s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001250s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.014067s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.014398s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000952s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001356s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000642s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001348s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005184s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000791s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001071s ]
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/verify/ | ERR: (ThinkException) 非法操作verify
+[ 2012-12-10T18:46:11+08:00 ] /yesow/admin.php/public/verify/ | ERR: (ThinkException) 非法操作verify
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001412s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001757s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001341s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002878s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004777s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001071s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001391s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.012973s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.013300s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001210s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001659s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000831s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001453s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006081s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000953s ]
+[ 2012-12-10T18:54:19+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001231s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001130s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001468s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001031s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002481s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004013s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001123s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001471s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.011776s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.012101s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000909s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001361s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000621s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001440s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005262s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000980s ]
+[ 2012-12-10T18:55:30+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001625s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001124s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001455s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001199s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002393s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004082s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001066s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001404s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.012200s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.012588s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001261s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001453s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000511s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001352s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005471s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000774s ]
+[ 2012-12-10T18:55:52+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001060s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001888s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.002452s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001581s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.003265s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005598s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.000769s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001099s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.012672s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.013135s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000962s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001229s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000755s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001668s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005910s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.001274s ]
+[ 2012-12-10T18:55:57+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001856s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001325s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001862s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001649s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002747s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005016s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.000681s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.000995s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.012322s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.012707s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000778s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001302s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000473s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001305s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004811s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000744s ]
+[ 2012-12-10T18:57:13+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001046s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Run CheckRoute Behavior [ RunTime:0.001452s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ route_check ] --END-- [ RunTime:0.001813s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001334s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Run CheckLang Behavior [ RunTime:0.002538s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004359s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Run CheckRoute Behavior [ RunTime:0.001323s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ route_check ] --END-- [ RunTime:0.001681s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001327s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Run CheckLang Behavior [ RunTime:0.002704s ]
+[ 2012-12-10T19:02:18+08:00 ] /yesow/admin.php/public/verify | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004578s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.002369s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.002932s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002139s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.004393s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007244s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001105s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001421s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.017215s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.017820s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001040s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001425s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.001041s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001691s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006333s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000933s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001283s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001343s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001688s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001845s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.004164s ]
+[ 2012-12-10T19:02:22+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.006704s ]
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Run CheckRoute Behavior [ RunTime:0.001183s ]
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001489s ]
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001242s ]
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Run CheckLang Behavior [ RunTime:0.002567s ]
+[ 2012-12-10T19:02:24+08:00 ] /yesow/admin.php/public/verify/1355137344949 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004310s ]
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Run CheckRoute Behavior [ RunTime:0.001191s ]
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001519s ]
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001421s ]
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Run CheckLang Behavior [ RunTime:0.002475s ]
+[ 2012-12-10T19:02:51+08:00 ] /yesow/admin.php/public/verify/1355137371867 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004412s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.014862s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.015217s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.015218s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.003515s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.019288s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001254s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001614s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.015060s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.015456s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001067s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001524s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000603s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001497s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005621s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.001208s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001513s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001427s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001770s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001351s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002624s ]
+[ 2012-12-10T19:03:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004488s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001116s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001440s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001085s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002618s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004172s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.000893s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001210s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.011325s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.011644s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001086s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001265s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000645s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001436s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005368s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000832s ]
+[ 2012-12-10T19:03:25+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001126s ]
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001217s ]
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001562s ]
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001259s ]
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002430s ]
+[ 2012-12-10T19:03:26+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004225s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001168s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001514s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001485s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.003266s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005451s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001018s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001389s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.011330s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.011655s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000776s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001476s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000674s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001412s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005335s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000740s ]
+[ 2012-12-10T19:03:27+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001103s ]
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001564s ]
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001966s ]
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001408s ]
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.003310s ]
+[ 2012-12-10T19:03:28+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005653s ]
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001181s ]
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001544s ]
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001289s ]
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002261s ]
+[ 2012-12-10T19:03:33+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004111s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.003409s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.003858s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001210s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002230s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.003976s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.000773s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001083s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.011396s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.011738s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000849s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001308s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000631s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001220s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004854s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000656s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.000957s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001219s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001562s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001290s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002672s ]
+[ 2012-12-10T19:03:35+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004568s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001164s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001508s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001107s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.003443s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005167s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001706s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.002189s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.013679s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.014027s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000866s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001350s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000832s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.002158s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006211s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.001378s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001818s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001869s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.002487s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001279s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002337s ]
+[ 2012-12-10T19:03:42+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004201s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001611s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.003510s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005862s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001221s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001549s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.024532s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.024869s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.001664s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001794s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000684s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001573s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006808s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.001473s ]
+[ 2012-12-10T19:29:49+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.002020s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run CheckRoute Behavior [ RunTime:0.001841s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ route_check ] --END-- [ RunTime:0.002507s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002180s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run CheckLang Behavior [ RunTime:0.004240s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007194s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run LocationTemplate Behavior [ RunTime:0.001874s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_template ] --END-- [ RunTime:0.002441s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run ParseTemplate Behavior [ RunTime:0.024669s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.025162s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run ContentReplace Behavior [ RunTime:0.001693s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run TokenBuild Behavior [ RunTime:0.002440s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000941s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run ShowRuntime Behavior [ RunTime:0.002559s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.009492s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Run ShowPageTrace Behavior [ RunTime:0.001425s ]
+[ 2012-12-10T19:31:11+08:00 ] /yesow/admin.php/Public/main?_=1355139071785 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001863s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run CheckRoute Behavior [ RunTime:0.001268s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ route_check ] --END-- [ RunTime:0.001625s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001490s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run CheckLang Behavior [ RunTime:0.003016s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005099s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run LocationTemplate Behavior [ RunTime:0.001297s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_template ] --END-- [ RunTime:0.001661s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run ParseTemplate Behavior [ RunTime:0.018462s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_parse ] --END-- [ RunTime:0.018835s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run ContentReplace Behavior [ RunTime:0.000910s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run TokenBuild Behavior [ RunTime:0.001277s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000731s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run ShowRuntime Behavior [ RunTime:0.001632s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005884s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Run ShowPageTrace Behavior [ RunTime:0.000937s ]
+[ 2012-12-10T19:33:42+08:00 ] /yesow/admin.php/Public/main?_=1355139222580 | INFO: Tag[ view_end ] --END-- [ RunTime:0.001253s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001509s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002824s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004851s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001258s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001607s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.025623s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.025920s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.001036s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001113s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000627s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001913s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005552s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.001323s ]
+[ 2012-12-10T19:35:08+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.001818s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001291s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002834s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004804s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001086s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001400s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.024173s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.024492s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.000977s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001245s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000649s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001552s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005376s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.001175s ]
+[ 2012-12-10T19:47:57+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.001514s ]
+[ 2012-12-10T19:47:58+08:00 ] /yesow/admin.php/system/menu | ERR: (ThinkException) 模板不存在[./admin/Tpl/System/menu.html]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001800s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.002248s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002028s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.004159s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.006957s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001232s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001565s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 10 行.
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 24 行.
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.026768s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.027158s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001195s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001801s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000967s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001569s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006615s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.001073s ]
+[ 2012-12-10T19:48:21+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001387s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001167s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.004041s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005876s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001082s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001425s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.025012s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.025437s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.001020s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001306s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000582s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001465s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005213s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.000940s ]
+[ 2012-12-10T19:48:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.001264s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001275s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001670s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001784s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002719s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005122s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001497s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001880s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 10 行.
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 24 行.
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.023357s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.023680s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.000869s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001054s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000486s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001326s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004559s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000803s ]
+[ 2012-12-10T19:48:23+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001158s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001425s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001753s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001437s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002860s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004824s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.025216s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.025605s ]
+[ 2012-12-10T19:53:38+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 23 行.
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.076393s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.076736s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001518s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.042502s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.010225s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001974s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.057265s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.016071s ]
+[ 2012-12-10T19:53:39+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.016388s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001183s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002674s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004347s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001016s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001328s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.024577s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.024882s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.001080s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001155s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000563s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001455s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005097s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.000983s ]
+[ 2012-12-10T19:55:54+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.001324s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001263s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001619s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001328s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.003761s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005618s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001666s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.002108s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 24 行.
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.020885s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.021221s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001002s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001252s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000748s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001803s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005793s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.001132s ]
+[ 2012-12-10T19:55:56+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001511s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001019s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001475s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001575s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002436s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004503s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.000950s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001256s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 24 行.
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.018141s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.018474s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001009s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001169s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000613s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001353s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005141s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000788s ]
+[ 2012-12-10T19:55:59+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001093s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001119s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.002425s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004059s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001030s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001379s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.024937s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.025263s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.001093s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001322s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000555s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001401s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005228s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.000962s ]
+[ 2012-12-10T19:56:01+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.001297s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001122s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001470s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001168s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002368s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004093s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001248s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001612s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 24 行.
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.022721s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.023167s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.000884s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001001s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000538s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001319s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004634s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000812s ]
+[ 2012-12-10T19:56:02+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001088s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001220s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001566s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001815s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.003234s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005587s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.000984s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001292s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 23 行.
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.024201s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.024513s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.000956s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001083s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000588s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001405s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004964s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000752s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001071s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001222s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001535s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001235s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002467s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004208s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.000989s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001307s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 23 行.
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.021740s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.022133s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001320s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001439s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000831s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001402s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006092s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000753s ]
+[ 2012-12-10T19:57:17+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001051s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001272s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001651s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001222s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002426s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004137s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001102s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001434s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 23 行.
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.018520s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.018844s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.000950s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001009s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000534s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001346s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.004700s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000773s ]
+[ 2012-12-10T19:57:18+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001070s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002030s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run CheckLang Behavior [ RunTime:0.003073s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ app_begin ] --END-- [ RunTime:0.005819s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run LocationTemplate Behavior [ RunTime:0.001211s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_template ] --END-- [ RunTime:0.001555s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run ParseTemplate Behavior [ RunTime:0.024759s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_parse ] --END-- [ RunTime:0.025079s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run ContentReplace Behavior [ RunTime:0.047195s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run TokenBuild Behavior [ RunTime:0.001328s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000704s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run ShowRuntime Behavior [ RunTime:0.001566s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_filter ] --END-- [ RunTime:0.051738s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Run ShowPageTrace Behavior [ RunTime:0.012859s ]
+[ 2012-12-10T20:36:22+08:00 ] /yesow/admin.php | INFO: Tag[ view_end ] --END-- [ RunTime:0.013363s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001397s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001744s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002289s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.003212s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.006290s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001977s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.002337s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 23 行.
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.027852s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.028185s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001229s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001178s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000579s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.002117s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.006262s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000901s ]
+[ 2012-12-10T20:36:24+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001211s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckRoute Behavior [ RunTime:0.001170s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ route_check ] --END-- [ RunTime:0.001496s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001154s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run CheckLang Behavior [ RunTime:0.002361s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004010s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run LocationTemplate Behavior [ RunTime:0.001337s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_template ] --END-- [ RunTime:0.001679s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | NOTIC: [8] Undefined variable: menu d74112c8af0566c370b1ae73351fc7b1.php 第 23 行.
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run ParseTemplate Behavior [ RunTime:0.023652s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_parse ] --END-- [ RunTime:0.024097s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run ContentReplace Behavior [ RunTime:0.001201s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run TokenBuild Behavior [ RunTime:0.001094s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000520s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowRuntime Behavior [ RunTime:0.001296s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005035s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Run ShowPageTrace Behavior [ RunTime:0.000807s ]
+[ 2012-12-10T20:36:25+08:00 ] /yesow/admin.php/system/menu | INFO: Tag[ view_end ] --END-- [ RunTime:0.001176s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001248s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001600s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001293s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.002514s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004361s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001127s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001454s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.011864s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.012206s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000889s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001318s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000722s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001342s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005126s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000938s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001359s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001603s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.002030s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001363s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002696s ]
+[ 2012-12-10T21:31:39+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004703s ]
+[ 2012-12-10T21:31:54+08:00 ] /yesow/admin.php/public/ | ERR: (ThinkException) 非法操作index
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run CheckRoute Behavior [ RunTime:0.001173s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001516s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002047s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run CheckLang Behavior [ RunTime:0.004300s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007259s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run LocationTemplate Behavior [ RunTime:0.001223s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_template ] --END-- [ RunTime:0.001603s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 125 行.
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | NOTIC: [8] Undefined variable: menu 4c18d5952d0dbf1eedb8a1ec796fa788.php 第 139 行.
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run ParseTemplate Behavior [ RunTime:0.026845s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_parse ] --END-- [ RunTime:0.027180s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run ContentReplace Behavior [ RunTime:0.001520s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run TokenBuild Behavior [ RunTime:0.001922s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000918s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run ShowRuntime Behavior [ RunTime:0.002343s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_filter ] --END-- [ RunTime:0.008217s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Run ShowPageTrace Behavior [ RunTime:0.001319s ]
+[ 2012-12-10T21:31:56+08:00 ] /yesow/admin.php/ | INFO: Tag[ view_end ] --END-- [ RunTime:0.001788s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001467s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001892s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002127s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.004081s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007018s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001052s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001370s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.015552s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.015989s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.001031s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.002255s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.001083s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.002753s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.008559s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.001385s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001845s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.001737s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.002193s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001349s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.002659s ]
+[ 2012-12-10T21:35:17+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004519s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckRoute Behavior [ RunTime:0.001242s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ route_check ] --END-- [ RunTime:0.001581s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001995s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run CheckLang Behavior [ RunTime:0.004344s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ app_begin ] --END-- [ RunTime:0.007096s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run LocationTemplate Behavior [ RunTime:0.001078s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_template ] --END-- [ RunTime:0.001410s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run ParseTemplate Behavior [ RunTime:0.013193s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_parse ] --END-- [ RunTime:0.013650s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run ContentReplace Behavior [ RunTime:0.000999s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run TokenBuild Behavior [ RunTime:0.001406s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run WriteHtmlCache Behavior [ RunTime:0.000576s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowRuntime Behavior [ RunTime:0.001373s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_filter ] --END-- [ RunTime:0.005249s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Run ShowPageTrace Behavior [ RunTime:0.000874s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/login | INFO: Tag[ view_end ] --END-- [ RunTime:0.001169s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckRoute Behavior [ RunTime:0.002083s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.002665s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001896s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Run CheckLang Behavior [ RunTime:0.003604s ]
+[ 2012-12-10T21:38:36+08:00 ] /yesow/admin.php/public/verify/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.006184s ]
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run CheckRoute Behavior [ RunTime:0.001208s ]
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001538s ]
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001181s ]
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run CheckLang Behavior [ RunTime:0.002420s ]
+[ 2012-12-10T21:38:41+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004107s ]
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run CheckRoute Behavior [ RunTime:0.001142s ]
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.001467s ]
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001398s ]
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run CheckLang Behavior [ RunTime:0.002367s ]
+[ 2012-12-10T22:13:25+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004317s ]
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ route_check ] --START--
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run CheckRoute Behavior [ RunTime:0.001104s ]
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ route_check ] --END-- [ RunTime:0.002104s ]
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ app_begin ] --START--
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001315s ]
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Run CheckLang Behavior [ RunTime:0.002220s ]
+[ 2012-12-10T22:15:17+08:00 ] /yesow/admin.php/public/checklogin/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.004049s ]

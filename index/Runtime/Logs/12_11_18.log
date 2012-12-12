@@ -1,0 +1,6 @@
+[ 2012-11-18T23:40:33+08:00 ] /reachvc/ | INFO: Tag[ app_begin ] --START--
+[ 2012-11-18T23:40:33+08:00 ] /reachvc/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001728s ]
+[ 2012-11-18T23:40:33+08:00 ] /reachvc/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.002081s ]
+[ 2012-11-18T23:40:34+08:00 ] /reachvc/ | INFO: Tag[ app_begin ] --START--
+[ 2012-11-18T23:40:34+08:00 ] /reachvc/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.001320s ]
+[ 2012-11-18T23:40:34+08:00 ] /reachvc/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.001627s ]

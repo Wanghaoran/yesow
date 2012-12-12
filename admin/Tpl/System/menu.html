@@ -1,0 +1,37 @@
+	
+<div class="accordion" fillSpace="sideBar">
+	<div class="accordionHeader">
+		<h2><span>Folder</span>管理员管理</h2>
+	</div>
+	<div class="accordionContent">
+	
+	  <ul class="tree treeFolder">
+	    <li><a>节点管理</a></li>
+	    <li><a>用户管理</a></li>
+	    <li><a>用户组管理</a></li>
+	  </ul>
+
+
+		    </div>
+		    <div class="accordionHeader">
+		<h2><span>Folder</span>应用2</h2>
+	</div>
+	<div class="accordionContent">
+	
+	  <ul class="tree treeFolder">
+	    <li><a href="http://www.baidu.com" target="navTab">asasasas</a></li>
+			<volist id="item" name="menu" ><li>
+			<neq name="item['name']|strtolower" value="public" >
+				<neq name="item['name']|strtolower" value="index" >
+				<eq name="item['access']" value="1">
+				<li><a href="__APP__/{$item['name']}/index/" target="navTab" rel="{$item['name']}">{$item['title']}</a></li>
+				</eq>
+				</neq>
+			</neq>
+			</volist>
+
+		      </ul>
+
+
+	</div>
+</div>
