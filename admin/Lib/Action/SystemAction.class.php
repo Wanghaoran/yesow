@@ -9,7 +9,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //地区管理
+  //辖区管理
   public function area(){
     $Area = M('Area');
     $where = array();
@@ -39,10 +39,10 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //编辑地区信息
+  //编辑辖区信息
   public function editarea(){
     $area = D('Area');
-    //处理编辑地区
+    //处理编辑辖区
     if(isset($_POST['name'])){
       if(!$area -> create()){
 	$this -> error($area -> getError());
@@ -58,7 +58,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //添加地区信息
+  //添加辖区信息
   public function addarea(){
     //验证添加信息
     if(isset($_POST['name'])){
@@ -75,7 +75,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除地区信息
+  //删除辖区信息
   public function deletearea(){
     $area = M('Area');
     if($area -> delete($this -> _get('id', 'intval'))){
@@ -270,7 +270,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //辖区管理
+  //地区管理
   public function childsitearea(){
     $childsitearea = M('ChildSiteArea');
     //查询所有分站
@@ -303,7 +303,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    //查询辖区数据
+    //查询地区数据
     $result = $childsitearea -> table('yesow_child_site_area as csa') -> field('csa.id,csa.name,cs.name as csname,csa.code,csa.create_time') -> where($where) -> join('yesow_child_site as cs ON cs.id = csa.csid') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
@@ -314,7 +314,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //新增辖区
+  //新增地区
   public function addchildsitearea(){
     //处理新增数据
     if(isset($_POST['name'])){
@@ -335,7 +335,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除辖区
+  //删除地区
   public function delchildsitearea(){
     $childsitearea = M('ChildSiteArea');
     if($childsitearea -> delete($this -> _get('id', 'intval'))){
@@ -345,7 +345,7 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑辖区
+  //编辑地区
   public function editchildsitearea(){
     $childsitearea = D('ChildSiteArea');
     //处理编辑
@@ -363,7 +363,7 @@ class SystemAction extends CommonAction {
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查询对应辖区数据
+    //查询对应地区数据
     $result = $childsitearea -> field('id,csid,name,code') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
