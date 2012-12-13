@@ -14,12 +14,16 @@
 
 		    </div>
 		    <div class="accordionHeader">
-		<h2><span>Folder</span>应用2</h2>
+		<h2><span>Folder</span>分站管理</h2>
 	</div>
 	<div class="accordionContent">
 	
 	  <ul class="tree treeFolder">
-	    <li><a href="http://www.baidu.com" target="navTab">asasasas</a></li>
+	    <li><a href="__URL__/area" target="navTab" rel="area">地区管理</a></li>
+	    <li><a href="__URL__/childsite" target="navTab" rel="childsite">分站管理</a></li>
+	    <li><a href="__URL__/childsitearea" target="navTab" rel="childsitearea">辖区管理</a></li>
+	    <li><a href="__URL__/childsitetemplate" target="navTab" rel="childsitetemplate">分站模板管理</a></li>
+
 			<volist id="item" name="menu" ><li>
 			<neq name="item['name']|strtolower" value="public" >
 				<neq name="item['name']|strtolower" value="index" >

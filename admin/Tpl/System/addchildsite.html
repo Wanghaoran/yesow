@@ -1,0 +1,62 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/childsite" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>分站名称：</label>
+		<input type="text" class="required" name="name" /><label>(50个字符以内)</label>
+	 </div>
+	 <div class="unit">
+		<label>分站所属地区：</label>
+		<select class="combox" name="aid">
+		  <volist name="result_area" id="ra">
+		    <option value="<!--{$ra.id}--!>"><!--{$ra.name}--!></option>
+		  </volist>
+		</select>
+	 </div>
+	  <div class="unit">
+		<label>分站模板：</label>
+		<select class="combox" name="tid">
+		  <volist name="result_template" id="rt">
+		    <option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+		  </volist>
+		</select>
+	</div>
+	<div class="unit">
+		<label>所属分站：</label>
+		<select class="combox" name="pid">
+		  <option value="0">省级分站</option>
+		  <volist name="result_site" id="rs">
+		    <option value="<!--{$rs.id}--!>"><!--{$rs.name}--!></option>
+		  </volist>
+		</select>
+	 </div>
+	 <div class="unit">
+		<label>分站二级域：</label>
+		<input type="text" class="required" name="domain" /><label>(50个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>分站区号：</label>
+		<input type="text" class="required" name="code" /><label>(30个字符以内)</label>
+	 </div>
+	 <div class="unit">
+		<label>是否显示：</label>
+		<select class="combox" name="isshow">
+		  <option value="1">是</option>
+		  <option value="0">否</option>
+		</select>
+	 </div>
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

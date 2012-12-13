@@ -1,0 +1,84 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/childsite" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>分站名称：</label>
+		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(50个字符以内)</label>
+	 </div>
+	 <div class="unit">
+		<label>分站所属地区：</label>
+		<select class="combox" name="aid">
+		  <volist name="result_area" id="ra">
+		    <eq name="ra.id" value="$result.aid">
+		    <option value="<!--{$ra.id}--!>" selected="selected"><!--{$ra.name}--!></option>
+		    <else/>
+		    <option value="<!--{$ra.id}--!>"><!--{$ra.name}--!></option>
+		    </eq>
+		  </volist>
+		</select>
+	 </div>
+	  <div class="unit">
+		<label>分站模板：</label>
+		<select class="combox" name="tid">
+		  <volist name="result_template" id="rt">
+		  <eq name="rt.id" value="$result.tid">
+		  <option value="<!--{$rt.id}--!>" selected="selected"><!--{$rt.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	</div>
+	<div class="unit">
+		<label>所属分站：</label>
+		<select class="combox" name="pid">
+		  <eq name="result.pid" value="0">
+		  <option value="0" selected="selected">省级分站</option>
+		  <else/>
+		  <option value="0">省级分站</option>
+		  </eq>
+		  <volist name="result_site" id="rs">
+		  <eq name="rs.id" value="$result.pid">
+		  <option value="<!--{$rs.id}--!>" selected="selected"><!--{$rs.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rs.id}--!>"><!--{$rs.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	 </div>
+	 <div class="unit">
+		<label>分站二级域：</label>
+		<input type="text" class="required" name="domain" value="<!--{$result.domain}--!>"/><label>(50个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>分站区号：</label>
+		<input type="text" class="required" name="code" value="<!--{$result.code}--!>" /><label>(30个字符以内)</label>
+	 </div>
+	 <div class="unit">
+		<label>是否显示：</label>
+		<select class="combox" name="isshow">
+		  <eq name="result.isshow" value="1">
+		  <option value="1" selected="selected">是</option>
+		  <option value="0">否</option>
+		  <else/>
+		  <option value="1">是</option>
+		  <option value="0" selected="selected">否</option>
+		  </eq>
+		</select>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

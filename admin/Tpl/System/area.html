@@ -1,0 +1,60 @@
+<include file="Public:pagerForm" />
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>地区名称：</label>
+				<input type="text" name="name" />
+			</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="__URL__/addarea" target="dialog" mask="true"><span>新增</span></a></li>
+			<li><a class="delete" href="__URL__/deletearea/id/{sid_role}/navTabId/area" target="ajaxTodo" title="你确定要删除吗？" warn="请选择地区"><span>删除</span></a></li>
+			<li><a class="edit" href="__URL__/editarea/id/{sid_role}" target="dialog" mask="true" warn="请选择地区"><span>编辑</span></a></li>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		<tr>
+			<th width="60">编号</th>
+			<th width="60">组名</th>
+			<th width="120">备注</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.name}--!></td>
+			  <td><!--{$r.remark}--!></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

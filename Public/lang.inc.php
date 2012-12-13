@@ -25,6 +25,12 @@ return array(
   'CHANGE_PWD_SUCCESS' => '更改密码成功',
   'CHANGE_PWD_ERROR' => '更改密码失败',
   'EMAIL_ERROR' => '电子邮件格式不符',
+  'NAME_EMPTY_ERROR' => '名称不能为空',
+  'NAME_UNIQUE_ERROR' => '名称不能重复',
   'DATA_UPDATE_SUCCESS' => '数据更新成功',
   'DATA_UPDATE_ERROR' => '数据更新失败',
+  'DATA_ADD_SUCCESS' => '数据添加成功',
+  'DATA_ADD_ERROR' => '数据添加失败',
+  'DATA_DELETE_SUCCESS' => '数据删除成功',
+  'DATA_DELETE_ERROR' => '数据删除失败',
 );
