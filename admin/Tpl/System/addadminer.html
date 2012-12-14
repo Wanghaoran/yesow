@@ -1,0 +1,54 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/adminer" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>管理员名称：</label>
+		<input type="text" class="required" name="name" /><label>(20个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>所属分站：</label>
+		<select class="combox" name="csid">
+				  <volist name="result_childsite" id="rc">
+				  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+				  </volist>
+		</select>
+	      </div>
+	<div class="unit">
+		<label>登录密码：</label>
+		<input type="password" maxlength="20" minlength="6" class="required alphanumeric textInput valid" name="password" id="w_validation_pwd"><label>(6到20个字符)</label>
+	</div>
+	<div class="unit">
+		<label>重复登录密码：</label>
+		<input type="password" equalto="#w_validation_pwd" class="required textInput valid"><label>(6到20个字符)</label>
+	 </div>
+	<div class="unit">
+		<label>电子邮件：</label>
+		<input type="text" class="required email" name="email" />
+	</div>
+	<div class="unit">
+		<label>状态：</label>
+		<select class="combox" name="status">
+		  <option value="1">启用</option>
+		  <option value="0">禁用</option>
+		</select>
+	</div>
+	
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ></textarea><label>(255个字符以内)</label>
+	</div>
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<if condition="empty($_GET['appid'])">
+	<form method="post" action="__ACTION__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+	  <input type="hidden" name="role_id" VALUE="<!--{$Think.get.rid}--!>" />
+		<div class="pageFormContent" layoutH="100" layoutType="dialog">
+			<div class="unit">
+				<label>请选择应用:</label>
+				<select name="appid" onchange="selectApp_module('<!--{$Think.get.rid}--!>', this.value)">
+					<option value="">选择应用</option>
+					<volist id="ra" name="result_access">
+					<option value="<!--{$ra.id}--!>"><!--{$ra.title}--!></option>
+					</volist>
+				</select>
+			</div>
+			
+			<div id="moduleSelectBox">
+			<volist id="rm" name="result_module">
+			<div class="unit">
+			  <input <?php echo in_array($rm['id'], $result_access2) ? "checked" : "" ?> type="checkbox" name="moduleid[]" value="<!--{$rm.id}--!>"/><!--{$rm.title}--!>
+			</div>
+			</volist>
+			</div>
+		</div>
+		<div class="formBar">
+			<label style="float:left"><input type="checkbox" class="checkboxCtrl" group="moduleid[]" />全选</label>
+			<ul>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="checkboxCtrl" group="moduleid[]" selectType="invert">反选</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" onclick="$.pdialog.closeCurrent()">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+<else />
+
+	<volist id="rm" name="result_module">
+			<div class="unit">
+			 <input <?php echo in_array($rm['id'], $result_access2) ? "checked" : "" ?> type="checkbox" name="moduleid[]" value="<!--{$rm.id}--!>"/><!--{$rm.title}--!>
+			</div>
+			</volist>
+</if>

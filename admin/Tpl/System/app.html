@@ -1,0 +1,76 @@
+<script type="text/javascript">
+<!--
+function selectApp_module(groupId, appId){
+  var url = "__URL__/module/rid/"+ groupId +"/appid/" + appId;
+  if(appId != ''){
+    $("#moduleSelectBox", $.pdialog.getCurrent()).loadUrl(url);
+  }
+      
+}
+
+function selectApp_action(form$){
+  var $form = $(form$, $.pdialog.getCurrent());
+  var groupId = $form.find(":input[name=rid]").val();
+  var appId = $form.find(":input[name=appid]").val();
+  var url = "__URL__/action/rid/"+ groupId +"/appid/" + appId;
+  $("#moduleSelectBox", $.pdialog.getCurrent()).loadUrl(url);
+}
+function selectModule_action(form$){
+	var $form = $(form$, $.pdialog.getCurrent())
+	var groupId = $form.find(":input[name=rid]").val();
+	var appId = $form.find(":input[name=appid]").val();
+	var moduleId = $form.find(":input[name=moduleid]").val();
+	var url = "__URL__/action/rid/"+ groupId +"/appid/" + appId + "/moduleid/" + moduleId;
+	$("#actionSelectBox", $.pdialog.getCurrent()).loadUrl(url);
+}
+//-->
+</script>
+
+<div class="tabs">
+	<div class="tabsHeader">
+		<div class="tabsHeaderContent">
+			<ul>
+				<li class="selected"><a href="#"><span>应用授权</span></a></li>
+				<li><a href="__URL__/module/rid/<!--{$Think.get.rid}--!>" class="j-ajax"><span>模块授权</span></a></li>
+				<li><a href="__URL__/action/rid/<!--{$Think.get.rid}--!>" class="j-ajax"><span>操作授权</span></a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="tabsContent" >
+		<div>
+			<form method="post" action="__ACTION__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			  <input type="hidden" name="role_id" VALUE="<!--{$Think.get.rid}--!>" />
+			  <input type="hidden" name="node_pid" VALUE=0 />
+			  <input type="hidden" name="level" VALUE=1 />
+				<div class="pageFormContent" layoutH="100">
+					<volist id="ra" name="result_app">
+						<div class="unit">			
+						  <input <?php echo in_array($ra['id'], $result_access) ? "checked" : "" ?> type="checkbox" name="node_id[]" value="<!--{$ra.id}--!>"/><!--{$ra.title}--!>
+						</div>
+					</volist>
+				</div>
+				<div class="formBar">
+					<label style="float:left"><input type="checkbox" class="checkboxCtrl" group="node_id[]" />全选</label>
+					<ul>
+						<li><div class="button"><div class="buttonContent"><button type="button" class="checkboxCtrl" group="node_id[]" selectType="invert">反选</button></div></div></li>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+						<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+					</ul>
+				</div>
+			</form>				
+		</div>
+		
+		<div>
+			<!-- <include file="module" /> -->
+		</div>
+		<div>
+			<!-- <include file="action" /> -->
+		</div>
+	</div>
+	<div class="tabsFooter">
+		<div class="tabsFooterContent"></div>
+	</div>
+</div>
+
+

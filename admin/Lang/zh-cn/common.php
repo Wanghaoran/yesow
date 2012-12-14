@@ -9,6 +9,8 @@ $app_lang = array(
   'SITECODE_EMPTY' => '区号不能为空',
   'SITECODE_UNIQUE_ERROR' => '区号已存在',
   'ISSHOW_ERROR' => '是否显示设置错误',
+  'NODE_NAME_EMPTY' => '节点名称不能为空',
+  'NODE_TITLE_EMPTY' => '节点显示名称不能为空',
 );
 
 return array_merge($common_lang, $app_lang);

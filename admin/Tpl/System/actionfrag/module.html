@@ -1,0 +1,17 @@
+<div class="unit">
+	<label>请选择模块:</label>
+	<select name="moduleid" onchange="selectModule_action('#setActionAction')">
+		<option value="">选择模块</option>
+		<volist id="rm" name="result_module">
+		<option value="<!--{$rm.id}--!>"><!--{$rm.title}--!></option>
+		</volist>
+	</select>
+</div>
+
+<div id="actionSelectBox">
+	<volist id="ra" name="result_action">
+	<div class="unit">
+	  <input <?php echo in_array($ra['id'], $result_access) ? "checked" : "" ?> type="checkbox" name="action_id[]" value="<!--{$ra.id}--!>"/><!--{$ra.title}--!>
+	</div>
+	</volist>
+</div>

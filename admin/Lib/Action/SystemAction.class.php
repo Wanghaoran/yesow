@@ -9,6 +9,510 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
+  //节点管理
+  public function node(){
+    $node = M('Node');
+    //构建查询条件
+    $where = array();
+    $where['pid'] = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    if(!empty($_REQUEST['name'])){
+      $where['name'] = array('LIKE', '%' .  $_REQUEST['name'] . '%');
+    }
+    //记录总数
+    $count = $node -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    
+    $result = $node -> field('id,name,title,remark,sort') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) ->  order('sort') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //增加节点
+  public function addnode(){
+    $node = D('Node');
+    //处理新增
+    if(!empty($_POST['name'])){
+      if(!$node -> create()){
+	$this -> error($node -> getError());
+      }
+      if($node -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }    
+    //查询并计算父级名称 和 本次更新的level、pid
+    $pid = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    if(!empty($_REQUEST['id'])){
+      $result = $node -> field('title,level') -> find($this -> _get('id', 'intval'));
+    }
+    $title = isset($result['title']) ? $result['title'] : '无';
+    $level = isset($result['level']) ? $result['level'] + 1 : 1;
+    $this -> assign('title', $title);
+    $this -> assign('level', $level);
+    $this -> assign('pid', $pid);
+    $this -> display();
+  }
+
+  //删除节点
+  public function delnode(){
+    $node = M('Node');
+    //待删除的id数组
+    $id = array();
+    //查出所有要删除的id
+    $id[] = $this -> _get('id', 'intval');
+    $where = array();
+    $where['pid'] = $this -> _get('id', 'intval');
+    $result = $node ->field('id') -> where($where) -> select();
+    $temp_arr = array();
+    if(!empty($result)){
+      foreach($result as $value){
+	//待删除的二级id
+	$temp_arr[] = intval($value['id']);
+      }
+      //查3级
+      $where['pid'] = array('in', $temp_arr);
+      $result3 = $node -> field('id') -> where($where) -> select();
+      if(!empty($result3)){
+	foreach($result3 as $value){
+	  $temp_arr[] = intval($value['id']);
+	}
+      }
+    }
+    $id = array_merge($temp_arr, $id);
+    //构建删除条件
+    $del_where = array();
+    $del_where['id'] = array('in', $id);
+    if($node -> where($del_where) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑节点
+  public function editnode(){
+    $node = D('Node');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(!$node -> create()){
+	$this -> error($node -> getError());
+      }
+      if($node -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $node -> field('id,name,title,remark,sort') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //管理员管理
+  public function adminer(){
+    $admin = M('Admin');
+    //处理查询条件
+    $where = array();
+    $where_page = array();
+    if(!empty($_POST['name'])){
+      $where['a.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+      $where_page['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $admin -> where($where_page) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //查询结果
+    $result = $admin -> table('yesow_admin as a') -> field('a.id,a.name,cs.name as csname,cs.domain as domain,a.email,a.status,a.last_login_ip,a.last_login_time,a.login_count,a.remark') -> join('yesow_child_site as cs ON cs.id = a.csid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //添加管理员
+  public function addadminer(){
+    $admin = D('Admin');
+    //处理新增
+    if(!empty($_POST['name'])){
+      if(!$admin -> create()){
+	$this -> error($admin -> getError());
+      }
+      if($admin -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除管理员
+  public function deladminer(){
+    $admin = M('Admin');
+    if($admin -> delete($this -> _get('id', 'intval'))){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑管理员
+  public function editadminer(){
+    $admin = D('Admin');
+    //处理更新数据
+    if(!empty($_POST['name'])){
+      if(empty($_POST['password'])){
+	unset($_POST['password']);
+      }
+      if(!$admin -> create()){
+	$this -> error($admin -> getError());
+      }
+      if($admin -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $admin -> field('id,csid,name,email,status,remark') -> find($this -> _get('id'));
+    $this -> assign('result', $result);
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //管理组管理
+  public function admingroup(){
+    $role = M('Role');
+    //构造条件
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $role -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //管理组信息
+    $result = $role -> table('yesow_role as r') -> field('id,name,remark,create_time,update_time,c') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('(SELECT role_id,COUNT(admin_id) as c FROM yesow_role_admin GROUP BY role_id) as tmp ON tmp.role_id = r.id') -> select();
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //增加管理组
+  public function addadmingroup(){
+    $role = D('Role');
+    if(!empty($_POST['name'])){
+      if(!$role -> create()){
+	$this -> error($role -> getError());
+      }
+      if($role -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除管理组
+  public function deladmingroup(){
+    $role = M('Role');
+    if($role -> delete($this -> _get('id', 'intval'))){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑管理组
+  public function editadmingroup(){
+    $role = D('Role');
+    if(!empty($_POST['name'])){
+      if(!$role -> create()){
+	$this -> error($role -> getError());
+      }
+      if($role -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $role -> field('id,name,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //成员管理
+  public function groupuser(){
+    $role_admin = M('RoleAdmin');
+    $num = 0;
+    if(!empty($_POST['role_id'])){
+      //先删除
+      $where_del = array();
+      $where_del['role_id'] = $this -> _post('role_id', 'intval');
+      $num = $role_admin -> where($where_del) -> delete();
+      //再添加
+      if(!empty($_POST['admin_id'])){
+	$num = 0;
+	foreach($_POST['admin_id'] as $value){
+	  $num += $role_admin -> add(array('role_id' => $_POST['role_id'], 'admin_id' => $value));
+	}
+      }
+      if($num > 0){
+	$role = M('Role');
+	//更新时间
+	$up_id = $this -> _post('role_id', 'intval');
+	$up_time = time();
+	$role -> save(array('id' => $up_id, 'update_time' => $up_time));
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //查现有组中的成员
+    
+    $where_role_admin = array();
+    $role_id = $this -> _get('id', 'intval');
+    $where_role_admin['role_id'] = $role_id;
+    $result_role_admin = $role_admin -> field('admin_id') -> where($where_role_admin) -> select();
+    $result_ra = array();
+    foreach($result_role_admin as $value){
+      $result_ra[] = $value['admin_id'];
+    }
+    $this -> assign('result_ra', $result_ra);
+    //查管理员，此管理员不属于任何一个管理组，或者是本组成员
+    $admin = M('Admin');
+    $result_admin = $admin -> query("SELECT id,name FROM yesow_admin WHERE id NOT IN (select admin_id FROM yesow_role_admin) UNION SELECT id,name FROM yesow_admin WHERE id IN(SELECT admin_id FROM yesow_role_admin WHERE role_id = {$role_id})");
+    $this -> assign('result_admin', $result_admin);
+    $this -> display();
+  }
+
+  //授权管理 - 应用授权
+  public function app(){
+    $node = M('Node');
+    $access = M('Access');
+    //处理更新
+    if(!empty($_POST['role_id'])){
+      $num = 0;
+      //先删除
+      $where_del = array();
+      $where_del['role_id'] = $this -> _post('role_id', 'intval');
+      $where_del['node_pid'] = 0;
+      $where_del['level'] = 1;
+      $num +=$access -> where($where_del) -> delete();
+      //再添加
+      if(!empty($_POST['node_id'])){
+	$num = 0;
+	$data = array();
+	$data['role_id'] = $this -> _post('role_id', 'intval');
+	$data['level'] = $this -> _post('level', 'intval');
+	$data['node_pid'] = $this -> _post('node_pid', 'intval');
+	foreach($_POST['node_id'] as $value){
+	  $data['node_id'] = $value;
+	  $num += $access -> add($data);
+	}
+      }
+      if($num > 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    //查询已授权 应用
+    $where_acc = array();
+    $where_acc['role_id'] = $this -> _get('rid', 'intval');
+    $where_acc['level'] = 1;
+    $result_acc = $access -> field('node_id') -> where($where_acc) -> select();
+    $result_access = array();
+    foreach($result_acc as $value){
+      $result_access[] = $value['node_id'];
+    }
+    $this -> assign('result_access', $result_access);
+    //查询应用
+    $result_app = $node -> field('id,title') -> where('level = 1') -> order('sort') -> select();
+    $this -> assign('result_app', $result_app);
+    $this -> display();
+  }
+
+  //授权管理 - 模块授权
+  public function module(){
+    $access = M('Access');
+    $node = M('Node');
+    //处理更新
+    if(!empty($_POST['role_id'])){
+      //先删除
+      $num = 0;
+      $where_del = array();
+      $where_del['role_id'] = $this -> _post('role_id', 'intval');
+      $where_del['node_pid'] = $this -> _post('appid', 'intval');
+      $where_del['level'] = 2;
+      $num += $access -> where($where_del) -> delete();
+      //再添加
+      if(!empty($_POST['moduleid'])){
+	$num = 0;
+	$data= array();
+	$data['role_id'] = $this -> _post('role_id', 'intval');
+	$data['node_pid'] = $this -> _post('appid', 'intval');
+	$data['level'] = 2;
+	foreach($_POST['moduleid'] as $value){
+	  $data['node_id'] = $value;
+	  $num += $access -> add($data);
+	}
+      }
+      if($num > 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //查此 应用下的 模块
+    if(!empty($_GET['appid'])){
+      $where_module = array();
+      $where_module['pid'] = $this -> _get('appid', 'intval');
+      $where_module['level'] = 2;
+      $result_module = $node -> where($where_module) -> field('id,title') -> select();
+      $this -> assign('result_module', $result_module);
+      //查已授权的 模块
+      $where_acc = array();
+      $where_acc['role_id'] = $this -> _get('rid', 'intval');
+      $where_acc['node_pid'] = $this -> _get('appid', 'intval');
+      $where_acc['level'] = 2;
+      $result_acc = $access -> field('node_id') -> where($where_acc) -> select();
+      $result_access2 = array();
+      foreach($result_acc as $value){
+	$result_access2[] = $value['node_id'];
+      }
+      $this -> assign('result_access2', $result_access2);
+    }
+    //先查已授权的应用
+    $where_acc = array();
+    $where_acc['a.role_id'] = $this -> _get('rid', 'intval');
+    $where_acc['a.level'] = 1;
+    $result_access = $access -> table('yesow_access as a') -> where($where_acc) -> field('n.id,n.title') -> join('yesow_node as n ON n.id = a.node_id') -> select();
+    $this -> assign('result_access', $result_access);
+    $this -> display();
+  }
+
+  //授权管理 - 操作授权
+  public function action(){
+    $access = M('Access');
+    $node = M('Node');
+    //处理更新
+    if(!empty($_POST['rid'])){
+      //先删除
+      $num = 0;
+      $where_del = array();
+      $where_del['role_id'] = $this -> _post('rid', 'intval');
+      $where_del['node_pid'] = $this -> _post('moduleid', 'intval');
+      $where_del['level'] = 3;
+      $num += $access -> where($where_del) -> delete();
+      //再添加
+      if(!empty($_POST['action_id'])){
+	$num = 0;
+	$data= array();
+	$data['role_id'] = $this -> _post('rid', 'intval');
+	$data['node_pid'] = $this -> _post('moduleid', 'intval');
+	$data['level'] = 3;
+	foreach($_POST['action_id'] as $value){
+	  $data['node_id'] = $value;
+	  $num += $access -> add($data);
+	}
+      }
+      if($num > 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //查出此 应用 下已授权模块
+    if(!empty($_GET['appid'])){
+      $where_module = array();
+      $where_module['a.node_pid'] = $this -> _get('appid', 'intval');
+      $where_module['a.role_id'] = $this -> _get('rid', 'intval');
+      $where_module['a.level'] = 2;
+      $result_module = $access -> table('yesow_access as a') -> field('n.id,n.title') -> where($where_module) -> join('yesow_node as n ON n.id = a.node_id') -> select();
+      $this -> assign('result_module', $result_module);
+    }
+
+    //查出此 模块下的 操作
+    if(!empty($_GET['appid']) && !empty($_GET['moduleid'])){
+      //先查所有操作
+      $where_no = array();
+      $where_no['pid'] = $this -> _get('moduleid', 'intval');
+      $where_no['level'] = 3;
+      $result_action = $node -> where($where_no) -> field('id,title') -> select();
+      $this -> assign('result_action' ,$result_action);
+      //再查已授权的操作
+      $where_ac = array();
+      $where_ac['role_id'] = $this -> _get('rid', 'intval');
+      $where_ac['node_pid'] = $this -> _get('moduleid', 'intval');
+      $where_ac['level'] = 3;
+      $result_ac = $access -> where($where_ac) -> field('node_id') -> select();
+      $result_access = array();
+      foreach($result_ac as $value){
+	$result_access[] = $value['node_id']; 
+      }
+      $this -> assign('result_access', $result_access);
+    }
+    
+    //先查已授权的应用
+    $where_app = array();
+    $where_app['a.role_id'] = $this -> _get('rid', 'intval');
+    $where_app['a.level'] = 1;
+    $result_app = $access -> table('yesow_access as a') -> where($where_app) -> field('n.id,n.title') -> join('yesow_node as n ON n.id = a.node_id') -> select();
+    $this -> assign('result_app', $result_app);
+    $this -> display();
+  }
+
+
   //辖区管理
   public function area(){
     $Area = M('Area');

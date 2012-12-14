@@ -1,0 +1,31 @@
+<if condition="!empty($_GET['appid']) and !empty($_GET['moduleid'])" >
+<include file="./admin/Tpl/System/actionfrag/action.html" />
+<elseif condition="!empty($_GET['appid'])" />
+<include file="./admin/Tpl/System/actionfrag/module.html" />
+<else />
+	<form id="setActionAction" method="post" action="__ACTION__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+	  <input type="hidden" name="rid" VALUE="<!--{$Think.get.rid}--!>" />
+		<div class="pageFormContent" layoutH="100" layoutType="dialog">
+			<div class="unit">
+				<label>请选择应用:</label>
+				<select name="appid" onchange="selectApp_action('#setActionAction')">
+					<option value="">选择应用</option>
+					<volist id="ra" name="result_app">
+					<option value="<!--{$ra.id}--!>"><!--{$ra.title}--!></option>
+					</volist>
+				</select>
+			</div>
+			<div id="moduleSelectBox">
+				<include file="./admin/Tpl/System/actionfrag/module.html" />
+			</div>
+		</div>
+		<div class="formBar">
+			<label style="float:left"><input type="checkbox" class="checkboxCtrl" group="action_id[]" />全选</label>
+			<ul>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="checkboxCtrl" group="action_id[]" selectType="invert">反选</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" onclick="$.pdialog.closeCurrent()">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</if>

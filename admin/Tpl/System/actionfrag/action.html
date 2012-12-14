@@ -1,0 +1,5 @@
+<volist id="ra" name="result_action">
+<div class="unit">
+  <input <?php echo in_array($ra['id'], $result_access) ? "checked" : "" ?> type="checkbox" name="action_id[]" value="<!--{$ra.id}--!>"/><!--{$ra.title}--!>
+</div>
+</volist>

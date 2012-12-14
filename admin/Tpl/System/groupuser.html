@@ -1,0 +1,22 @@
+<div class="pageContent">
+	
+	<form action="__ACTION__/callbackType/closeCurrent/navTabId/admingroup" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	  <input type="hidden" name="role_id" VALUE="<!--{$Think.get.id}--!>" />
+		<div class="pageFormContent" layoutH="58">
+			<volist id="ra" name="result_admin">
+			<div class="unit">
+			  <input type="checkbox" name="admin_id[]" value="<!--{$ra.id}--!>" <?php echo in_array($ra['id'], $result_ra) ? "checked" : "" ?>/><!--{$ra.name}--!>
+			</div>
+			</volist>
+		</div>
+		<div class="formBar">
+			<label style="float:left"><input type="checkbox" class="checkboxCtrl" group="admin_id[]" />全选</label>
+			<ul>
+			<li><div class="button"><div class="buttonContent"><button type="button" class="checkboxCtrl" group="admin_id[]" selectType="invert">反选</button></div></div></li>
+			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+			<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+</div>
