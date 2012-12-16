@@ -150,12 +150,15 @@ $(function(){
 	 <p><!--{$Think.now}--!></p> 
         </div> 
 	<p><span>尊敬的 <!--{$Think.session.name}--!> 欢迎回来！</span></p> 
-	<p>您已登录本系统 <span><!--{$Think.session.loginCount}--!></span> 次  &nbsp;&nbsp;&nbsp;&nbsp;本次登录IP为：<span style="color:red"><!--{:get_client_ip()}--!></span>  &nbsp;&nbsp;&nbsp;&nbsp;上次登录时间为： <span style="color:red"><!--{$Think.session.lastLoginTime|date="y-m-d H:i:s",###}--!></span> </p> 
+	<p>您已登录本系统 <span><!--{$Think.session.loginCount}--!></span> 次  &nbsp;&nbsp;&nbsp;&nbsp;本次登录IP为：<span style="color:red"><!--{:get_client_ip()}--!></span> &nbsp;&nbsp;&nbsp;&nbsp;上次登录IP为：<span style="color:red"><!--{$Think.session.last_login_ip}--!></span>  &nbsp;&nbsp;&nbsp;&nbsp;上次登录时间为： <span style="color:red"><!--{$Think.session.lastLoginTime|date="y-m-d H:i:s",###}--!></span> </p> 
        </div> 
        <div class="pageFormContent" layouth="80"> 
 	<br>
         <h1>易搜管理员后台使用须知：</h1> 
-        <pre style="margin: 6px; line-height: 2.4em;">
+	<pre style="margin: 6px; line-height: 2.4em;">
+	<php>
+	dump($_SESSION);
+	</php>
 	  一、凡登陆此后台的管理用户均属于我们中心正式授权的后台管理帐号，如果你是非法获取的帐号不小心登陆进来，我们已经记录下您的IP，请您的遵守
 《中国互联网络安全法》的相关规定立即退出，如果您有任何恶意的破坏行为，我们将采用法律手段维护自己的合法权益；
           二、凡是合法授权的管理人员，请严格遵守我中心的相关规定进行规范操作，有任何疑问请直接联系技术或客户服务人员咨询后做相关操作；

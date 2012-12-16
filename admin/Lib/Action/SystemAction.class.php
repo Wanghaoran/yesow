@@ -872,4 +872,225 @@ class SystemAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  //消费产品分类管理
+  public function accountclass(){
+    $account_class = M('AccountClass');
+    $where = array();
+    //构建查询条件
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $account_class -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    
+    $result = $account_class -> field('id,name,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //新增消费产品分类
+  public function addaccountclass(){
+    $account_class = D('AccountClass');
+    //处理新增
+    if(!empty($_POST['name'])){
+      if(!$account_class -> create()){
+	$this -> error($account_class -> getError());
+      }
+      if($account_class -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除消费产品分类
+  public function delaccountclass(){
+    $account_class = M('AccountClass');
+    if($account_class -> delete($this -> _get('id', 'intval'))){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑消费产品分类
+  public function editaccountclass(){
+    $account_class = D('AccountClass');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(!$account_class -> create()){
+	$this -> error($account_class -> getError());
+      }
+      if($account_class -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $account_class -> field('id,name,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //账目系统管理
+  public function account(){
+    $account = M('Account');
+    $childsite = M('ChildSite');
+    $where = array();
+    //处理查询条件
+    if(!empty($_POST['csid'])){
+      $where['a.csid'] = $this -> _post('csid', 'intval');
+    }
+
+    //权限验证开始
+    //如果是总管理员,可以查看所有账目,否则只能查看自己所属分站的账目
+    if(!C('ADMIN_AUTH_KEY')){
+      $where['a.csid'] = session('csid');
+    }
+    //权限验证结束
+    
+    //记录总数
+    $count = $account -> table('yesow_account as a') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
+    if(!C('ADMIN_AUTH_KEY')){
+      $result_childsite = $childsite -> field('id,name') -> find(session('csid'));
+    }else{
+      $result_childsite = $childsite -> field('id,name') -> select();
+    }
+    $this -> assign('result_childsite', $result_childsite);
+    //查询数据
+    $result = $account -> table('yesow_account as a') -> field('a.id,cs.name as csname,ac.name as acname,a.create_time,a.type,a.company,a.money,a.remark') -> where($where) -> join('yesow_child_site as cs ON a.csid = cs.id') -> join('yesow_account_class as ac ON a.acid = ac.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+
+    //查询总入款
+    $where['a.type'] = 2;
+    $inmoney = $account -> table('yesow_account as a') -> field('SUM(money) as sum') -> where($where) -> select();
+    $this -> assign('inmoney', $inmoney);
+
+    //查询总扣款
+    $where['a.type'] = 1;
+    $outmoney = $account -> table('yesow_account as a') -> field('SUM(money) as sum') -> where($where) -> select();
+    $this -> assign('outmoney', $outmoney);
+
+    //余额
+    $this -> assign('balance', $inmoney[0]['sum'] - $outmoney[0]['sum']);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //管理员位
+    $this -> assign('admin', session(C('ADMIN_AUTH_KEY')) ? 'true' : 'false');
+    $this -> display();
+  }
+
+  //添加账目
+  public function addaccount(){
+    $childsite = M('ChildSite');
+    $accountclass = M('AccountClass');
+    $account = D('Account');
+    //处理添加
+    if(!empty($_POST['create_time'])){
+      if(!$account -> create()){
+	$this -> error($account -> getError());
+      }
+      if($account -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+
+    //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
+    if(!C('ADMIN_AUTH_KEY')){
+      $result_childsite = $childsite -> field('id,name') -> find(session('csid'));
+    }else{
+      $result_childsite = $childsite -> field('id,name') -> select();
+    }
+    $this -> assign('result_childsite', $result_childsite);
+
+    //查出所有产品分类
+    $result_accountclass = $accountclass -> field('id,name') -> select();
+    $this -> assign('result_accountclass', $result_accountclass);
+
+    $this -> display();
+  }
+
+  //删除账目
+  public function delaccount(){
+    $account = M('Account');
+    if($account -> delete($this -> _get('id', 'intval'))){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑账目
+  public function editaccount(){
+    $account = D('Account');
+    $accountclass = M('AccountClass');
+    $childsite = M('ChildSite');
+
+    //处理更新
+    if(!empty($_POST['create_time'])){
+      if(!$account -> create()){
+	$this -> error($account -> getError());
+      }
+      if($account -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+
+    }
+
+    //查出所有产品分类
+    $result_accountclass = $accountclass -> field('id,name') -> select();
+    $this -> assign('result_accountclass', $result_accountclass);
+
+    //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
+    if(!C('ADMIN_AUTH_KEY')){
+      $result_childsite = $childsite -> field('id,name') -> find(session('csid'));
+    }else{
+      $result_childsite = $childsite -> field('id,name') -> select();
+    }
+    $this -> assign('result_childsite', $result_childsite);
+
+    //查编辑数据
+    $result = $account -> field('id,acid,csid,create_time,type,company,money,remark') -> find($this -> _get('id', intval));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
 }

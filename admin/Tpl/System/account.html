@@ -1,0 +1,89 @@
+<include file="Public:pagerForm" />
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>分站名称：</label>
+				<select class="combox" name="csid">
+				  <eq name="admin" value="true">
+				  <option value="">所有分站</option>
+				  </eq>
+				  <volist name="result_childsite" id="rc">
+				  <eq name="Think.post.csid" value="$rc.id">	  
+				  <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+				  <else/>
+				  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+				  </eq>
+				  </volist>
+				</select>
+				</li>
+				<li style="width:400px;">
+				<label style="width:100px">总入款： <b style="color:red;"><!--{$inmoney[0].sum|default=0}--!></b></label>
+				<label style="width:100px">总扣款： <b style="color:red;"><!--{$outmoney[0].sum|default=0}--!></b></label>
+			        <label style="width:100px">余额： <b style="color:red;"><!--{$balance}--!></b></label>
+				</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="__URL__/addaccount" target="dialog" mask="true"><span>新增</span></a></li>
+			<li><a class="delete" href="__URL__/delaccount/id/{sid_role}/navTabId/account" target="ajaxTodo" title="你确定要删除吗？" warn="请选择账目"><span>删除</span></a></li>
+			<li><a class="edit" href="__URL__/editaccount/id/{sid_role}" target="dialog" mask="true" warn="请选择账目"><span>编辑</span></a></li>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		<tr>
+			<th width="60">编号</th>
+			<th width="60">发生日期</th>
+			<th width="60">类型</th>
+			<th width="60">所购产品</th>
+			<th width="120">消费单位</th>
+			<th width="60">金额</th>
+			<th width="120">产品说明</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.create_time|date="Y-m-d", ###}--!></td>
+			  <eq name="r.type" value="2">
+			  <td style="color:green;">入款</td>
+			  <else/>
+			  <td style="color:red;">扣款</td>
+			  </eq>
+			  <td><!--{$r.acname}--!></td>
+			  <td><!--{$r.company}--!></td>
+			  <td><!--{$r.money}--!></td>
+			  
+			  <td><!--{$r.remark}--!></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

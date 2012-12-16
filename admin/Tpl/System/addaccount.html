@@ -1,0 +1,56 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/account" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>发生日期：</label>
+		<input type="text" class="required date textInput readonly valid" readonly="true" name="create_time" />
+	 </div>
+	 <div class="unit">
+		<label>账目类型：</label>
+		<label><input type="radio" name="type" value="1" checked="checked"/>扣款</label>
+		<label><input type="radio" name="type" value="2" />入款</label>
+	</div>
+	<div class="unit">
+		<label>所购产品：</label>
+		<select class="combox" name="acid">
+		  <volist name="result_accountclass" id="rac">
+		  <option value="<!--{$rac.id}--!>"><!--{$rac.name}--!></option>
+		  </volist>
+		</select>
+	</div>
+	 <div class="unit">
+		<label>消费单位：</label>
+		<input type="text" class="required" name="company" /><label>(30个字符以内)</label>
+	 </div>
+	<div class="unit">
+		<label>所在站点：</label>
+		<select class="combox" name="csid">
+		  <volist name="result_childsite" id="rc">
+		  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+		  </volist>
+		</select>
+	 </div>
+	 <div class="unit">
+		<label>本次金额：</label>
+		<input type="text" class="required digits" name="money" />
+	 </div>
+	
+	<div class="unit">
+		<label>产品说明：</label>
+		<textarea name="remark"  rows="5" cols="57" ></textarea><label>(255个字符以内)</label>
+	</div>
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

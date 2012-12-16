@@ -1,0 +1,70 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/account" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>发生日期：</label>
+		<input type="text" class="required date textInput readonly valid" readonly="true" name="create_time" value="<!--{$result.create_time|date='Y-m-d', ###}--!>" />
+	 </div>
+	 <div class="unit">
+	   <label>账目类型：</label>
+	   <eq name="result.type" value="1">
+	   <label><input type="radio" name="type" value="1" checked="checked"/>扣款</label>
+	   <label><input type="radio" name="type" value="2" />入款</label>
+	   <else/>
+	   <label><input type="radio" name="type" value="1"/>扣款</label>
+	   <label><input type="radio" name="type" value="2" checked="checked" />入款</label>
+	   </eq>
+	</div>
+	<div class="unit">
+		<label>所购产品：</label>
+		<select class="combox" name="acid">
+		  <volist name="result_accountclass" id="rac">
+		  <eq name="result.acid" value="$rac.id">
+		  <option value="<!--{$rac.id}--!>" selected="selected"><!--{$rac.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rac.id}--!>"><!--{$rac.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	</div>
+	 <div class="unit">
+		<label>消费单位：</label>
+		<input type="text" class="required" name="company" value="<!--{$result.company}--!>" /><label>(30个字符以内)</label>
+	 </div>
+	<div class="unit">
+		<label>所在站点：</label>
+		<select class="combox" name="csid">
+		  <volist name="result_childsite" id="rc">
+		  <eq name="result.csid" value="$rc.id">
+		  <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	 </div>
+	 <div class="unit">
+		<label>本次金额：</label>
+		<input type="text" class="required digits" name="money" value="<!--{$result.money}--!>" />
+	 </div>
+	
+	<div class="unit">
+		<label>产品说明：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

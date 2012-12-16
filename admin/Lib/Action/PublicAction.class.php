@@ -48,6 +48,8 @@ class PublicAction extends Action {
     session('name', $authInfo['name']);
     session('lastLoginTime', $authInfo['last_login_time']);
     session('loginCount', $authInfo['login_count']);
+    session('last_login_ip', $authInfo['last_login_ip']);
+    session('csid', $authInfo['csid']);
     if($authInfo['name'] == 'admin'){
       session(C('ADMIN_AUTH_KEY'), true);
     }

@@ -11,6 +11,8 @@ $app_lang = array(
   'ISSHOW_ERROR' => '是否显示设置错误',
   'NODE_NAME_EMPTY' => '节点名称不能为空',
   'NODE_TITLE_EMPTY' => '节点显示名称不能为空',
+  'CREATE_TIME_EMPTY' => '发生时间不能为空',
+  'COMPANY_EMPTY' => '消费单位不能为空',
 );
 
 return array_merge($common_lang, $app_lang);

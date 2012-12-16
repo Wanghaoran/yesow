@@ -34,4 +34,5 @@ return array(
   'DATA_DELETE_SUCCESS' => '数据删除成功',
   'DATA_DELETE_ERROR' => '数据删除失败',
   'STATUS_ERROR' => '状态码错误',
+  'MONEY_ERROR' => '金额格式错误',
 );
