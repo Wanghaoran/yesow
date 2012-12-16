@@ -1093,4 +1093,16 @@ class SystemAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  //批量删除账目
+  public function manydelaccount(){
+    $account = M('Account');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($account -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
 }

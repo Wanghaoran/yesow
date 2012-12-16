@@ -39,15 +39,18 @@
 		<ul class="toolBar">
 			<li><a class="add" href="__URL__/addaccount" target="dialog" mask="true"><span>新增</span></a></li>
 			<li><a class="delete" href="__URL__/delaccount/id/{sid_role}/navTabId/account" target="ajaxTodo" title="你确定要删除吗？" warn="请选择账目"><span>删除</span></a></li>
+			<li class=""><a class="delete" href="__URL__/manydelaccount/navTabId/account" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择账目"><span>批量删除</span></a></li>
 			<li><a class="edit" href="__URL__/editaccount/id/{sid_role}" target="dialog" mask="true" warn="请选择账目"><span>编辑</span></a></li>
 		</ul>
 	</div>
 
 	<table class="table" width="100%" layoutH="138">
 		<thead>
-		<tr>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="60">编号</th>
 			<th width="60">发生日期</th>
+			<th width="60">所属站点</th>
 			<th width="60">类型</th>
 			<th width="60">所购产品</th>
 			<th width="120">消费单位</th>
@@ -59,8 +62,10 @@
 		<tbody>
 		<volist name="result" id="r">
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.create_time|date="Y-m-d", ###}--!></td>
+			  <td><!--{$r.csname}--!></td>
 			  <eq name="r.type" value="2">
 			  <td style="color:green;">入款</td>
 			  <else/>

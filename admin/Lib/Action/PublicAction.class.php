@@ -31,7 +31,7 @@ class PublicAction extends Action {
     if($this -> _session('verify') != md5($this -> _post('verify'))){
       $this -> error(L('VERIFY_ERROR'));
     }
-    import('ORG.Util.RBAC');
+    import('ORG.Util.RBACI');
     //生成认证条件
     $cond = array();
     $cond['name'] = $this -> _post('account');
