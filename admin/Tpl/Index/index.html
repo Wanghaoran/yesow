@@ -98,7 +98,11 @@ $(function(){
     <div id="navMenu"> 
      <ul>
      <volist name="Think.session.menu_arr" id="ma">
+     <eq name="key" value="index">
+      <li class="selected"><a href="__APP__/<!--{$key}--!>/menu"><span><!--{$ma._name_}--!></span></a></li>
+      <else/>
       <li class=""><a href="__APP__/<!--{$key}--!>/menu"><span><!--{$ma._name_}--!></span></a></li>
+      </eq>
      </volist>
      </ul> 
     </div> 

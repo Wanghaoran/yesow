@@ -1,59 +1,19 @@
 	
 <div class="accordion" fillSpace="sideBar">
+  <volist name="menu_arr" id="ma">
+  <div class="accordionHeader">
+    <h2><span>Folder</span><!--{$ma._name_}--!></h2>
+  </div>
 
-	<div class="accordionHeader">
-		<h2><span>Folder</span>管理员管理</h2>
-	</div>
-	<div class="accordionContent">
-	
-	  <ul class="tree treeFolder">
-	    <li><a href="__URL__/node" target="navTab" rel="node">节点管理</a></li>
-	    <li><a href="__URL__/adminer" target="navTab" rel="adminer">管理员管理</a></li>
-	    <li><a href="__URL__/admingroup" target="navTab" rel="admingroup">管理组管理</a></li>
-	  </ul>
+  <div class="accordionContent">
+      <ul class="tree treeFolder">
+	<volist name="ma" id="ma2">
+	<neq name="key" value="_name_">
+	<li><a href="__URL__/<!--{$key}--!>" target="navTab" rel="node"><!--{$ma2}--!></a></li>
+	</neq>
+	</volist>
+      </ul>
+    </div>
+  </volist>
 
-
-	</div>
-	<div class="accordionHeader">
-		<h2><span>Folder</span>账目管理</h2>
-	</div>
-	<div class="accordionContent">
-	
-	  <ul class="tree treeFolder">
-	    <li><a href="__URL__/accountclass" target="navTab" rel="accountclass">消费产品管理</a></li>
-	    <li><a href="__URL__/account" target="navTab" rel="account">账目系统管理</a></li>
-
-	  </ul>
-
-
-	</div>
-
-
-
-
-		    <div class="accordionHeader">
-		<h2><span>Folder</span>分站管理</h2>
-	</div>
-	<div class="accordionContent">
-	
-	  <ul class="tree treeFolder">
-	    <li><a href="__URL__/area" target="navTab" rel="area">中国辖区管理</a></li>
-	    <li><a href="__URL__/childsite" target="navTab" rel="childsite">各地分站管理</a></li>
-	    <li><a href="__URL__/childsitearea" target="navTab" rel="childsitearea">各省地区管理</a></li>
-	    <li><a href="__URL__/childsitetemplate" target="navTab" rel="childsitetemplate">分站模板管理</a></li>
-
-			<volist id="item" name="menu" ><li>
-			<neq name="item['name']|strtolower" value="public" >
-				<neq name="item['name']|strtolower" value="index" >
-				<eq name="item['access']" value="1">
-				<li><a href="__APP__/{$item['name']}/index/" target="navTab" rel="{$item['name']}">{$item['title']}</a></li>
-				</eq>
-				</neq>
-			</neq>
-			</volist>
-
-		      </ul>
-
-
-	</div>
 </div>

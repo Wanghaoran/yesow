@@ -6,6 +6,16 @@ class SystemAction extends CommonAction {
   
   //系统设置左边栏
   public function menu(){
+    $menu_arr = $_SESSION['menu_arr'][strtolower(MODULE_NAME)];
+    unset($menu_arr['_name_']);
+    foreach($menu_arr as $key => $value){
+      foreach($value as $key2 => $value2){
+	if(preg_match('/add|edit|del/i', $key2) || $key2 == 'groupuser' || $key2 == 'app' || $key2 == 'module' || $key2 == 'action'){
+	  unset($menu_arr[$key][$key2]);
+	}
+      }
+    }
+    $this -> assign('menu_arr', $menu_arr);
     $this -> display();
   }
 

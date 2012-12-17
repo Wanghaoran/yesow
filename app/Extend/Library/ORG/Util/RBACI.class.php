@@ -29,9 +29,9 @@ class RBAC {
       $result_three = $access -> table('yesow_access as a') -> field('n.id,n.pid,n.name,n.title') -> order('sort') -> where($where_three) -> join('yesow_node as n ON a.node_id = n.id') -> select();
     }else{
       $node = M('Node');
-      $result_one = $node -> field('id,name,title') -> order('sort') -> where('level=1') -> select();
-      $result_two = $node -> field('id,name,title') -> order('sort') -> where('level=2') -> select();
-      $result_three = $node -> field('id,name,title') -> order('sort') -> where('level=3') -> select();
+      $result_one = $node -> field('id,pid,name,title') -> order('sort') -> where('level=1') -> select();
+      $result_two = $node -> field('id,pid,name,title') -> order('sort') -> where('level=2') -> select();
+      $result_three = $node -> field('id,pid,name,title') -> order('sort') -> where('level=3') -> select();
     }
 
     //非总管理员需要
