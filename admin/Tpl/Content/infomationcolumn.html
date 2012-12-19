@@ -5,7 +5,7 @@
 	<div class="searchBar">
 		<ul class="searchContent">
 			<li>
-				<label>管理员名称：</label>
+				<label>资讯栏目名称：</label>
 				<input type="text" name="name" />
 			</li>
 		</ul>
@@ -21,9 +21,9 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="__URL__/addadminer" target="dialog" mask="true"><span>新增</span></a></li>
-			<li><a class="delete" href="__URL__/deladminer/id/{sid_role}/navTabId/adminer" target="ajaxTodo" title="你确定要删除此管理员吗？" warn="请选择管理员"><span>删除</span></a></li>
-			<li><a class="edit" href="__URL__/editadminer/id/{sid_role}" target="dialog" mask="true" warn="请选择管理员"><span>编辑</span></a></li>
+			<li><a class="add" href="__URL__/addinfomationcolumn" target="dialog" mask="true"><span>新增</span></a></li>
+			<li><a class="delete" href="__URL__/delinfomationcolumn/id/{sid_role}/navTabId/infomationcolumn" target="ajaxTodo" title="你确定要删除吗？" warn="请选择栏目名"><span>删除</span></a></li>
+			<li><a class="edit" href="__URL__/editinfomationcolumn/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
 		</ul>
 	</div>
 
@@ -31,13 +31,7 @@
 		<thead>
 		<tr>
 			<th width="60">编号</th>
-			<th width="60">管理员名称</th>
-			<th width="60">所属站点</th>
-			<th width="60">所属管理组</th>
-			<th width="60">上次登录IP</th>
-			<th width="60">上次登录时间</th>
-			<th width="60">登录次数</th>
-			<th width="60">帐号状态</th>
+			<th width="60">辖区名称</th>
 			<th width="120">备注</th>
 
 		</tr>
@@ -47,16 +41,6 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.csname}--!>(<!--{$r.domain}--!>)</td>
-			  <td><!--{$r.rolename|default="无"}--!></td>
-			  <td><!--{$r.last_login_ip}--!></td>
-			  <td><!--{$r.last_login_time|date="Y-m-d H:i:s", ###}--!></td>
-			  <td><!--{$r.login_count}--!></td>
-			  <eq name="r.status" value="1">
-			  <td style="color:green;">启用</td>
-			  <else/>
-			  <td style="color:red;">禁用</td>
-			  </eq>
 			  <td><!--{$r.remark}--!></td>
 			</tr>
 		</volist>

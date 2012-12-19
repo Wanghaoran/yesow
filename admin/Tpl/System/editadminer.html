@@ -25,10 +25,6 @@
 		<input type="password" maxlength="20" minlength="6" name="password" id="w_validation_pwd"><label>(留空为不更改)</label>
 	</div>
 	<div class="unit">
-		<label>电子邮件：</label>
-		<input type="text" class="required email" name="email" value="<!--{$result.email}--!>" />
-	</div>
-	<div class="unit">
 		<label>状态：</label>
 		<select class="combox" name="status">
 		  <eq name="result.status" value="1">
@@ -39,13 +35,26 @@
 		  <option value="0" selected="selected">禁用</option>
 		  </eq>
 		</select>
-	</div>
+	      </div>
+	      <div class="unit">
+		<label>所属管理组：</label>
+		<select class="combox" name="roleid">
+		  <volist name="result_role" id="rr">
+		  <eq name="rr.id" value="$result_myrole">
+		  <option value="<!--{$rr.id}--!>" selected="selected"><!--{$rr.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rr.id}--!>"><!--{$rr.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	      </div>
 	
 	<div class="unit">
 		<label>备注：</label>
 		<textarea name="remark"  rows="5" cols="57" ><!--{$result.reamrk}--!></textarea><label>(255个字符以内)</label>
 	      </div>
 	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+	      <input type="hidden" name="oldroleid" value="<!--{$result_myrole}--!>">
 
 </div>
 		<div class="formBar">

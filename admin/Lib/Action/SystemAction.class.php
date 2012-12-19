@@ -3,21 +3,6 @@
  * 系统设置
  */
 class SystemAction extends CommonAction {
-  
-  //系统设置左边栏
-  public function menu(){
-    $menu_arr = $_SESSION['menu_arr'][strtolower(MODULE_NAME)];
-    unset($menu_arr['_name_']);
-    foreach($menu_arr as $key => $value){
-      foreach($value as $key2 => $value2){
-	if(preg_match('/add|edit|del/i', $key2) || $key2 == 'groupuser' || $key2 == 'app' || $key2 == 'module' || $key2 == 'action'){
-	  unset($menu_arr[$key][$key2]);
-	}
-      }
-    }
-    $this -> assign('menu_arr', $menu_arr);
-    $this -> display();
-  }
 
   //节点管理
   public function node(){
@@ -157,7 +142,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //查询结果
-    $result = $admin -> table('yesow_admin as a') -> field('a.id,a.name,cs.name as csname,cs.domain as domain,a.email,a.status,a.last_login_ip,a.last_login_time,a.login_count,a.remark') -> join('yesow_child_site as cs ON cs.id = a.csid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $admin -> table('yesow_admin as a') -> field('a.id,a.name,cs.name as csname,cs.domain as domain,a.status,a.last_login_ip,a.last_login_time,a.login_count,a.remark,r.name as rolename') -> join('yesow_child_site as cs ON cs.id = a.csid') -> join('yesow_role_admin as ra ON a.id = ra.admin_id') -> join('yesow_role as r ON ra.role_id = r.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
@@ -175,7 +160,14 @@ class SystemAction extends CommonAction {
       if(!$admin -> create()){
 	$this -> error($admin -> getError());
       }
-      if($admin -> add()){
+      $uid = $admin -> add();
+      //添加管理组信息
+      if(!empty($_POST['roleid'])){
+	$role_admin = M('RoleAdmin');
+	$data['role_id'] = $this -> _post('roleid', 'intval');
+	$data['admin_id'] = $uid;
+      }
+      if(!empty($uid) && $role_admin -> add($data)){
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -185,6 +177,12 @@ class SystemAction extends CommonAction {
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
+
+    //查所有管理组
+    $role = M('Role');
+    $result_role = $role -> field('id,name') -> select();
+    $this -> assign('result_role', $result_role);
+
     $this -> display();
   }
 
@@ -209,18 +207,35 @@ class SystemAction extends CommonAction {
       if(!$admin -> create()){
 	$this -> error($admin -> getError());
       }
-      if($admin -> save()){
+
+      //更新管理组信息
+      if($_POST['oldroleid'] != $_POST['roleid']){
+	$data = array();
+	$where = array();
+	$data['role_id'] = $this -> _post('roleid', 'intval');
+	$where['admin_id'] = $this -> _post('id', 'intval');
+	$res = M('RoleAdmin') -> where($where) -> save($data);
+      }
+
+      if($admin -> save() || $res){
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $admin -> field('id,csid,name,email,status,remark') -> find($this -> _get('id'));
+    $result = $admin -> field('id,csid,name,status,remark') -> find($this -> _get('id'));
     $this -> assign('result', $result);
     //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
+    //查所有管理组
+    $role = M('Role');
+    $result_role = $role -> field('id,name') -> select();
+    $this -> assign('result_role', $result_role);
+    //查本管理员的所属组
+    $result_myrole = M('RoleAdmin') -> getFieldByadmin_id($this -> _get('id', 'intval'), 'role_id');
+    $this -> assign('result_myrole', $result_myrole);
     $this -> display();
   }
 
@@ -973,8 +988,8 @@ class SystemAction extends CommonAction {
 
     //权限验证开始
     //如果是总管理员,可以查看所有账目,否则只能查看自己所属分站的账目
-    if(!C('ADMIN_AUTH_KEY')){
-      $where['a.csid'] = session('csid');
+    if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
+      $where['a.csid'] = $_SESSION['csid'];
     }
     //权限验证结束
     
@@ -992,12 +1007,13 @@ class SystemAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
-    if(!C('ADMIN_AUTH_KEY')){
-      $result_childsite = $childsite -> field('id,name') -> find(session('csid'));
+    if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
+      $result_childsite = $childsite -> field('id,name') -> select(session('csid'));
     }else{
       $result_childsite = $childsite -> field('id,name') -> select();
     }
     $this -> assign('result_childsite', $result_childsite);
+
     //查询数据
     $result = $account -> table('yesow_account as a') -> field('a.id,cs.name as csname,ac.name as acname,a.create_time,a.type,a.company,a.money,a.remark') -> where($where) -> join('yesow_child_site as cs ON a.csid = cs.id') -> join('yesow_account_class as ac ON a.acid = ac.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
@@ -1021,7 +1037,7 @@ class SystemAction extends CommonAction {
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     //管理员位
-    $this -> assign('admin', session(C('ADMIN_AUTH_KEY')) ? 'true' : 'false');
+    $this -> assign('admin', $_SESSION[C('ADMIN_AUTH_KEY')] === true ? 'true' : 'false');
     $this -> display();
   }
 
@@ -1057,10 +1073,12 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除账目
+  //批量删除账目
   public function delaccount(){
     $account = M('Account');
-    if($account -> delete($this -> _get('id', 'intval'))){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($account -> where($where_del) -> delete()){
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -1104,15 +1122,4 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //批量删除账目
-  public function manydelaccount(){
-    $account = M('Account');
-    $where_del = array();
-    $where_del['id'] = array('in', $_POST['ids']);
-    if($account -> where($where_del) -> delete()){
-      $this -> success(L('DATA_DELETE_SUCCESS'));
-    }else{
-      $this -> error(L('DATA_DELETE_ERROR'));
-    }
-  }
 }

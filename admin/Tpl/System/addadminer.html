@@ -25,9 +25,13 @@
 		<input type="password" equalto="#w_validation_pwd" class="required textInput valid"><label>(6到20个字符)</label>
 	 </div>
 	<div class="unit">
-		<label>电子邮件：</label>
-		<input type="text" class="required email" name="email" />
-	</div>
+		<label>所属管理组：</label>
+		<select class="combox" name="roleid">
+				  <volist name="result_role" id="rr">
+				  <option value="<!--{$rr.id}--!>"><!--{$rr.name}--!></option>
+				  </volist>
+		</select>
+	      </div>
 	<div class="unit">
 		<label>状态：</label>
 		<select class="combox" name="status">
