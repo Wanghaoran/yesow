@@ -30,10 +30,23 @@
 
 <div class="pageContent">
 	<div class="panelBar">
-		<ul class="toolBar">
-			<li><a class="add" href="__URL__/addchildsite" target="dialog" mask="true"><span>新增</span></a></li>
-			<li><a class="delete" href="__URL__/delchildsite/id/{sid_role}/navTabId/childsite" target="ajaxTodo" title="你确定要删除吗？" warn="请选择地区"><span>删除</span></a></li>
-			<li><a class="edit" href="__URL__/editchildsite/id/{sid_role}" target="dialog" mask="true" warn="请选择地区"><span>编辑</span></a></li>
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addchildsite" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li><a class="delete" href="__URL__/delchildsite/id/{sid_role}/navTabId/childsite" target="ajaxTodo" title="你确定要删除吗？" warn="请选择地区"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editchildsite/id/{sid_role}" target="dialog" mask="true" warn="请选择地区"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['system']['addchildsite'])">
+	    <li><a class="add" href="__URL__/addchildsite" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['system']['delchildsite'])">
+	    <li><a class="delete" href="__URL__/delchildsite/id/{sid_role}/navTabId/childsite" target="ajaxTodo" title="你确定要删除吗？" warn="请选择地区"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['system']['editchildsite'])">
+	    <li><a class="edit" href="__URL__/editchildsite/id/{sid_role}" target="dialog" mask="true" warn="请选择地区"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+	    
 		</ul>
 	</div>
 

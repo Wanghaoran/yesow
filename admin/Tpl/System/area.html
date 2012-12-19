@@ -20,10 +20,24 @@
 
 <div class="pageContent">
 	<div class="panelBar">
-		<ul class="toolBar">
-			<li><a class="add" href="__URL__/addarea" target="dialog" mask="true"><span>新增</span></a></li>
-			<li><a class="delete" href="__URL__/deletearea/id/{sid_role}/navTabId/area" target="ajaxTodo" title="你确定要删除吗？" warn="请选择辖区"><span>删除</span></a></li>
-			<li><a class="edit" href="__URL__/editarea/id/{sid_role}" target="dialog" mask="true" warn="请选择辖区"><span>编辑</span></a></li>
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addarea" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li><a class="delete" href="__URL__/deletearea/id/{sid_role}/navTabId/area" target="ajaxTodo" title="你确定要删除吗？" warn="请选择辖区"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editarea/id/{sid_role}" target="dialog" mask="true" warn="请选择辖区"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['system']['addarea'])">
+	    <li><a class="add" href="__URL__/addarea" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    </neq>
+	    <if condition="isset($_SESSION['acc_arr']['system']['deletearea'])">
+	    <li><a class="delete" href="__URL__/deletearea/id/{sid_role}/navTabId/area" target="ajaxTodo" title="你确定要删除吗？" warn="请选择辖区"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['system']['editarea'])">
+	    <li><a class="edit" href="__URL__/editarea/id/{sid_role}" target="dialog" mask="true" warn="请选择辖区"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+	    
 		</ul>
 	</div>
 

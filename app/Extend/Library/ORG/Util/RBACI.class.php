@@ -43,7 +43,7 @@ class RBAC {
       foreach($result_two as $value_two){
 	foreach($result_three as $value_three){
 	  if($value_three['pid'] == $value_two['id'] && $value_two['pid'] == $value['id']){
-	    $result[$value['name']][] = $value_three['name'];
+	    $result[$value['name']][$value_three['name']] = $value_three['name'];
 	  }
 	}
       }

@@ -158,7 +158,7 @@ class PublicAction extends Action {
   public function profile(){
     $this -> checkuser();
     $admin = M('Admin');
-    $result = $admin -> field('email,remark') -> find(session(C('USER_AUTH_KEY')));
+    $result = $admin -> field('remark') -> find(session(C('USER_AUTH_KEY')));
     $this -> assign('result', $result);
     $this -> display();
   }

@@ -36,10 +36,22 @@
 
 <div class="pageContent">
 	<div class="panelBar">
-		<ul class="toolBar">
-			<li><a class="add" href="__URL__/addaccount" target="dialog" mask="true"><span>新增</span></a></li>
-			<li class=""><a class="delete" href="__URL__/delaccount/navTabId/account" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择账目"><span>删除</span></a></li>
-			<li><a class="edit" href="__URL__/editaccount/id/{sid_role}" target="dialog" mask="true" warn="请选择账目"><span>编辑</span></a></li>
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addaccount" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delaccount/navTabId/account" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择账目"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editaccount/id/{sid_role}" target="dialog" mask="true" warn="请选择账目"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['system']['addaccount'])">
+	    <li><a class="add" href="__URL__/addaccount" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['system']['delaccount'])">
+	    <li class=""><a class="delete" href="__URL__/delaccount/navTabId/account" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择账目"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['system']['editaccount'])">
+	    <li><a class="edit" href="__URL__/editaccount/id/{sid_role}" target="dialog" mask="true" warn="请选择账目"><span>编辑</span></a></li>
+	    </if>
+	    </if>
 		</ul>
 	</div>
 
