@@ -23,17 +23,28 @@
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li><a class="add" href="__URL__/addinfomationonecolumn" target="dialog" mask="true"><span>新增</span></a></li>
-	    <li><a class="delete" href="__URL__/delinfomationonecolumn/id/{sid_role}/navTabId/infomationonecolumn" target="ajaxTodo" title="你确定要删除吗？" warn="请选择栏目名"><span>删除</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delinfomationonecolumn/navTabId/infomationonecolumn" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/editinfomationonecolumn/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
+	     <li class="line">line</li>
+	     <li><a class="icon" href="__URL__/infomationtwocolumn/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="infomationtwocolumn"><span>子分类</span></a></li>
+	     <li><a class="icon" href="__URL__/titleattribute/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="titleattribute"><span>标题属性</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addinfomationonecolumn'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['addinfomationonecolumn'])">
 	    <li><a class="add" href="__URL__/addinfomationonecolumn" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delinfomationonecolumn'])">
-	    <li><a class="delete" href="__URL__/delinfomationonecolumn/id/{sid_role}/navTabId/infomationonecolumn" target="ajaxTodo" title="你确定要删除吗？" warn="请选择栏目名"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['delinfomationonecolumn'])">
+	    <li class=""><a class="delete" href="__URL__/delinfomationonecolumn/navTabId/infomationonecolumn" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['editinfomationonecolumn'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['editinfomationonecolumn'])">
 	    <li><a class="edit" href="__URL__/editinfomationonecolumn/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['infomationtwocolumn'])">
+	    <li class="line">line</li>
+	    <li><a class="icon" href="__URL__/infomationtwocolumn/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="infomationtwocolumn"><span>子分类</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['titleattribute'])">
+	    <li class="line">line</li>
+	    <li><a class="icon" href="__URL__/titleattribute/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="titleattribute"><span>子分类</span></a></li>
 	    </if>
 	    </if>
 		</ul>
@@ -41,7 +52,8 @@
 
 	<table class="table" width="100%" layoutH="138">
 		<thead>
-		<tr>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="60">编号</th>
 			<th width="60">一级栏目名称</th>
 			<th width="80">是否在资讯首页显示</th>
@@ -58,6 +70,7 @@
 		<tbody>
 		<volist name="result" id="r">
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
 			  <eq name="r.isshow" value="1">

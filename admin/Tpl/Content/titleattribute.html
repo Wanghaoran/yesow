@@ -5,10 +5,10 @@
 	<div class="searchBar">
 		<ul class="searchContent">
 			<li>
-				<label>二级栏目名称：</label>
+				<label>标题属性名称：</label>
 				<input type="text" name="name" />
-			</li>
-			<li>
+				</li>
+				<li>
 				<label>一级栏目：</label>
 				<select class="combox" name="oneid">
 				  <option value="">所有栏目</option>
@@ -35,18 +35,18 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addinfomationtwocolumn" target="dialog" mask="true"><span>新增</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delinfomationtwocolumn/navTabId/infomationtwocolumn" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editinfomationtwocolumn/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
+	    <li><a class="add" href="__URL__/addtitleattribute" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/deltitleattribute/navTabId/titleattribute" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/edittitleattribute/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['content']['addinfomationtwocolumn'])">
-	    <li><a class="add" href="__URL__/addinfomationtwocolumn" target="dialog" mask="true"><span>新增</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['addtitleattribute'])">
+	    <li><a class="add" href="__URL__/addtitleattribute" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['content']['delinfomationtwocolumn'])">
-	    <li class=""><a class="delete" href="__URL__/delinfomationtwocolumn/navTabId/infomationtwocolumn" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['deltitleattribute'])">
+	    <li class=""><a class="delete" href="__URL__/deltitleattribute/navTabId/titleattribute" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['content']['editinfomationtwocolumn'])">
-	    <li><a class="edit" href="__URL__/editinfomationtwocolumn/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['edittitleattribute'])">
+	    <li><a class="edit" href="__URL__/edittitleattribute/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
 	    </if>
 	    </if>
 		</ul>
@@ -57,12 +57,9 @@
 		  <tr>
 		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="60">编号</th>
-			<th width="60">二级栏目名称</th>
-			<th width="60">所属一级栏目</th>
-			<th width="80">一级分类下是否显示</th>
+			<th width="60">标题属性名称</th>
+			<th width="80">所属一级栏目</th>
 			<th width="60">排序</th>
-			<th width="60">热门看点数量</th>
-			<th width="60">列表文章数量</th>
 			<th width="120">备注</th>
 
 		</tr>
@@ -72,16 +69,9 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.oname}--!></td>
-			  <eq name="r.isoneshow" value="1">
-			  <td style="color:green">显示</td>
-			  <else/>
-			  <td style="color:red">不显示</td>
-			  </eq>
+			  <td><!--{$r.name}--!></td>			 
+			  <td><!--{$r.oname}--!></td>			 
 			  <td><!--{$r.sort}--!></td>
-			  <td><!--{$r.hotpointnum}--!></td>
-			  <td><!--{$r.pagernum}--!></td>
 			  <td><!--{$r.remark}--!></td>
 			</tr>
 		</volist>

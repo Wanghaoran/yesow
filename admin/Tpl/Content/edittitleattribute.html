@@ -1,0 +1,45 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/titleattribute" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>标题属性名称：</label>
+		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(20个字符以内)</label>
+	</div>
+
+	<div class="unit">
+	  <label>所属一级栏目：</label>
+	  <select class="combox" name="oneid">
+	    <volist name="result_one" id="ro">
+	    <eq name="result.oneid" value="$ro.id">
+	    <option value="<!--{$ro.id}--!>" selected="selected"><!--{$ro.name}--!></option>
+	    <else/>
+	    <option value="<!--{$ro.id}--!>"><!--{$ro.name}--!></option>
+	    </eq>
+	    </volist>
+	  </select>
+	</div>
+	 <div class="unit">
+		<label>排序：</label>
+		<input type="text" class="digits" name="sort" value="<!--{$result.sort}--!>" />
+	</div>
+	
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

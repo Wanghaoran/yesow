@@ -1,0 +1,66 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/infomationtwocolumn" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>栏目名称：</label>
+		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(30个字符以内)</label>
+	</div>
+
+	<div class="unit">
+	  <label>所属一级栏目：</label>
+	  <select class="combox" name="oneid">
+	    <volist name="result_one" id="ro">
+	    <eq name="result.oneid" value="$ro.id">
+	    <option value="<!--{$ro.id}--!>" selected="selected"><!--{$ro.name}--!></option>
+	    <else/>
+	    <option value="<!--{$ro.id}--!>"><!--{$ro.name}--!></option>
+	    </eq>
+	    </volist>
+	  </select>
+	</div>
+
+	<div class="unit">
+	  <label>一级分类是否显示：</label>
+	  <select class="combox" name="isoneshow">
+	    <eq name="result.isoneshow" value="1">
+	    <option value="1" selected="selected">显示</option>
+	    <option value="0">不显示</option>
+	    <else/>
+	    <option value="1">显示</option>
+	    <option value="0" selected="selected">不显示</option>
+	    </eq>
+	  </select>
+	</div>
+	 <div class="unit">
+		<label>排序：</label>
+		<input type="text" class="digits" name="sort" value="<!--{$result.sort}--!>" />
+	</div>
+	      <div class="unit">
+		<label>热门看点数量：</label>
+		<input type="text" class="digits" name="hotpointnum" value="<!--{$result.hotpointnum}--!>" /><label>(默认为10条)</label>
+	      </div>
+	      <div class="unit">
+		<label>列表文章数量：</label>
+		<input type="text" class="digits" name="pagernum" value="<!--{$result.pagernum}--!>" /><label>(默认为10条)</label>
+	</div>
+	
+	<div class="unit">
+		<label>栏目简介：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>
