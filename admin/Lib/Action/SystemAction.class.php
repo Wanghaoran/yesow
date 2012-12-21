@@ -1059,8 +1059,8 @@ class SystemAction extends CommonAction {
     }
 
     //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
-    if(!C('ADMIN_AUTH_KEY')){
-      $result_childsite = $childsite -> field('id,name') -> find(session('csid'));
+    if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
+      $result_childsite = $childsite -> field('id,name') -> select(session('csid'));
     }else{
       $result_childsite = $childsite -> field('id,name') -> select();
     }
@@ -1109,8 +1109,8 @@ class SystemAction extends CommonAction {
     $this -> assign('result_accountclass', $result_accountclass);
 
     //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
-    if(!C('ADMIN_AUTH_KEY')){
-      $result_childsite = $childsite -> field('id,name') -> find(session('csid'));
+    if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
+      $result_childsite = $childsite -> field('id,name') -> select(session('csid'));
     }else{
       $result_childsite = $childsite -> field('id,name') -> select();
     }

@@ -236,7 +236,6 @@ class ContentAction extends CommonAction {
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
-
     }
     //查一级分类
     $infoonecolumn = M('InfoOneColumn');
@@ -281,4 +280,162 @@ class ContentAction extends CommonAction {
     $this -> display();
   }
   /* ------------  标题属性管理   -------------- */
+
+  /* ------------  内容属性管理   -------------- */
+
+  //内容属性管理
+  public function contentattribute(){
+    $contentattribute = M('InfoContentAttribute');
+    $where = array();
+    $where['ica.pid'] = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    if(!empty($_REQUEST['name'])){
+      $where['ica.name'] = array('LIKE', '%' .  $_REQUEST['name'] . '%');
+    }
+    if(!empty($_REQUEST['oneid'])){
+      $where['ica.oneid'] = $this -> _request('oneid', 'intval');
+    }
+
+    //查询上级栏目
+    if(!empty($_REQUEST['id'])){
+      $result = $contentattribute -> field('name') -> find($this -> _request('id', 'intval'));
+    }
+    $pidname = isset($result['name']) ? $result['name'] : '无';
+    $this -> assign('pidname', $pidname);
+
+    //记录总数
+    $count = $contentattribute -> table('yesow_info_content_attribute as ica') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $contentattribute -> table('yesow_info_content_attribute AS ica') -> field('ica.id,ica.name,ioc.name as oname,ica.sort,ica.remark') -> where($where) -> join('yesow_info_one_column AS ioc ON ica.oneid = ioc.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+
+    //查一级分类
+    $infoonecolumn = M('InfoOneColumn');
+    $result_one = $infoonecolumn -> field('id,name') -> order('sort') -> select();
+    $this -> assign('result_one', $result_one);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //添加内容属性
+  public function addcontentattribute(){
+    $contentattribute = D('InfoContentAttribute');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(!$contentattribute -> create()){
+	$this -> error($contentattribute -> getError());
+      }
+      if($contentattribute -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+
+    //查询并计算父级名称 和 本次更新的level、pid
+    $pid = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    if(!empty($_REQUEST['id'])){
+      $result = $contentattribute -> field('name') -> find($this -> _request('id', 'intval'));
+    }
+    $pidname = isset($result['name']) ? $result['name'] : '无';
+    $this -> assign('pid', $pid);
+    $this -> assign('pidname', $pidname);
+
+    //查一级分类
+    $infoonecolumn = M('InfoOneColumn');
+    $where_one = array();
+    //如果存在id参数，则证明是二级分类，则只查出此一级分类的所属栏目即可
+    if(!empty($_REQUEST['id'])){
+      $oneid = $contentattribute -> getFieldByid($this -> _request('id', 'intval'), 'oneid');
+      $where_one['id'] = $oneid;
+    }
+    $result_one = $infoonecolumn -> field('id,name') -> where($where_one) -> order('sort') -> select();
+    $this -> assign('result_one', $result_one);
+    $this -> display();
+  }
+
+  //删除内容属性
+  public function delcontentattribute(){
+    $contentattribute = M('InfoContentAttribute');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($contentattribute -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑内容属性
+  public function editcontentattribute(){
+    $contentattribute = D('InfoContentAttribute');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(!$contentattribute -> create()){
+	$this -> error($contentattribute -> getError());
+      }
+      if($contentattribute -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $contentattribute -> field('id,oneid,pid,name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+
+    //查上级属性
+    if($result['pid'] != 0){
+      $pname = $contentattribute -> getFieldByid($result['pid'], 'name');
+      $this -> assign('pname', $pname);
+    }
+    //查一级分类
+    $infoonecolumn = M('InfoOneColumn');
+    $result_one = $infoonecolumn -> field('id,name') -> order('sort') -> select();
+    $this -> assign('result_one', $result_one);
+
+    $this -> display();
+  }
+
+  /* ------------  内容属性管理   -------------- */
+
+  /* ------------  文章管理   -------------- */
+
+  //文章管理
+  public function article(){
+
+    //查一级分类
+    $infoonecolumn = M('InfoOneColumn');
+    $result_one = $infoonecolumn -> field('id,name') -> order('sort') -> select();
+    $this -> assign('result_one', $result_one);
+
+    $this -> display();
+  }
+
+  //删除文章
+  public function delarticle(){
+  
+  }
+
+  //编辑文章
+  public function editarticle(){
+  
+  }
+  
+  /* ------------  文章管理   -------------- */
 }

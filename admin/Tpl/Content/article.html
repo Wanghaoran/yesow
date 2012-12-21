@@ -1,0 +1,100 @@
+<include file="Public:pagerForm" />
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent" style="height:35px;">
+		  <li>
+		  <label>标题：</label>
+		  <input type="text" name="name" />
+		  </li>
+		  <li>
+		  <label>栏目：</label>
+		  <select class="combox" name="oneid">
+		    <option value="">所有栏目</option>
+		    <volist name="result_one" id="ro">
+		    <option value="<!--{$ro.id}--!>"><!--{$ro.name}--!></option>
+		    </volist>
+		  </select>
+		  </li>
+		  <li>
+		  <label>作者：</label>
+		  <input type="text" name="author" />
+		  </li>
+		</ul>
+		<ul class="searchContent">
+		  <li style="width:500px;">
+		  <label>发布时间：</label>
+		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		    -  
+		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  </li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li class=""><a class="delete" href="__URL__/delarticle/navTabId/article" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择文章"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editarticle/id/{sid_role}" target="dialog" mask="true" warn="请选择文章"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['content']['delarticle'])">
+	    <li class=""><a class="delete" href="__URL__/delarticle/navTabId/article" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择文章"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['editarticle'])">
+	    <li><a class="edit" href="__URL__/editarticle/id/{sid_role}" target="dialog" mask="true" warn="请选择文章"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+		    <th width="60">编号</th>
+		    <th width="60">所属栏目</th>
+		    <th width="60">标题属性</th>
+		    <th width="80">标题</th>
+		    <th width="60">内容属性</th>
+		    <th width="60">审核人</th>
+		    <th width="60">发布者</th>
+		    <th width="50">点击量</th>
+		    <th width="50">评论数</th>
+		    <th width="60">发布时间</th>
+		    <th width="60">审核时间</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.name}--!></td>			 
+			  <td><!--{$r.oname}--!></td>			 
+			  <td><!--{$r.sort}--!></td>
+			  <td><!--{$r.remark}--!></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

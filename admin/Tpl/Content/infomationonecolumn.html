@@ -28,6 +28,7 @@
 	     <li class="line">line</li>
 	     <li><a class="icon" href="__URL__/infomationtwocolumn/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="infomationtwocolumn"><span>子分类</span></a></li>
 	     <li><a class="icon" href="__URL__/titleattribute/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="titleattribute"><span>标题属性</span></a></li>
+	     <li><a class="icon" href="__URL__/contentattribute/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="contentattribute"><span>内容属性</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['content']['addinfomationonecolumn'])">
 	    <li><a class="add" href="__URL__/addinfomationonecolumn" target="dialog" mask="true"><span>新增</span></a></li>
@@ -45,6 +46,9 @@
 	    <if condition="isset($_SESSION['acc_arr']['content']['titleattribute'])">
 	    <li class="line">line</li>
 	    <li><a class="icon" href="__URL__/titleattribute/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="titleattribute"><span>子分类</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['contentattribute'])">
+	    <li><a class="icon" href="__URL__/contentattribute/oneid/{sid_role}" target="navTab" mask="true" warn="请选择栏目名" rel="contentattribute"><span>内容属性</span></a></li>
 	    </if>
 	    </if>
 		</ul>

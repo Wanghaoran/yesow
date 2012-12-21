@@ -1,0 +1,94 @@
+<include file="Public:pagerForm" />
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>属性名称：</label>
+				<input type="text" name="name" />
+				</li>
+				<li>
+				<label>一级栏目：</label>
+				<select class="combox" name="oneid">
+				  <option value="">所有栏目</option>
+				  <volist name="result_one" id="ro">
+				  <eq name="Think.request.oneid" value="$ro.id">
+				  <option value="<!--{$ro.id}--!>" selected="selected"><!--{$ro.name}--!></option>
+				  <else/>
+				  <option value="<!--{$ro.id}--!>"><!--{$ro.name}--!></option>
+				  </eq>
+				  </volist>
+				</select>
+				</li>
+				<li>
+				<label style="width:140px;">上级属性： <b><!--{$pidname}--!></b></label>
+				</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addcontentattribute/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delcontentattribute/navTabId/contentattribute" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editcontentattribute/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['content']['addcontentattribute'])">
+	    <li><a class="add" href="__URL__/addcontentattribute/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['delcontentattribute'])">
+	    <li class=""><a class="delete" href="__URL__/delcontentattribute/navTabId/contentattribute" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择栏目名"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['editcontentattribute'])">
+	    <li><a class="edit" href="__URL__/editcontentattribute/id/{sid_role}" target="dialog" mask="true" warn="请选择栏目名"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+			<th width="60">编号</th>
+			<th width="60">标题属性名称</th>
+			<th width="80">所属一级栏目</th>
+			<th width="60">排序</th>
+			<th width="120">备注</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+			  <td><!--{$r.id}--!></td>
+			  <td><a href="__ACTION__/id/<!--{$r.id}--!>" target="navTab" rel="contentattribute"><!--{$r.name}--!></a></td>
+			  <td><!--{$r.oname}--!></td>			 
+			  <td><!--{$r.sort}--!></td>
+			  <td><!--{$r.remark}--!></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+
