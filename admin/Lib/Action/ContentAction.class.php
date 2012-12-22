@@ -113,7 +113,7 @@ class ContentAction extends CommonAction {
     $result_one = $infoonecolumn -> field('id,name') -> order('sort') -> select();
     $this -> assign('result_one', $result_one);
     //查二级栏目
-    $result = $infotwocolumn -> table('yesow_info_two_column as itc') -> field('itc.id,itc.name,ioc.name as oname,itc.sort,itc.remark,itc.isoneshow,itc.hotpointnum,itc.pagernum') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> join('yesow_info_one_column as ioc ON itc.oneid = ioc.id') -> select();
+    $result = $infotwocolumn -> table('yesow_info_two_column as itc') -> field('itc.id,itc.name,ioc.name as oname,itc.sort,itc.remark,itc.isoneshow,itc.leftpicnum,itc.hotpointnum,itc.pagernum') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> join('yesow_info_one_column as ioc ON itc.oneid = ioc.id') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -174,7 +174,7 @@ class ContentAction extends CommonAction {
     $result_one = $infoonecolumn -> field('id,name') -> order('sort') -> select();
     $this -> assign('result_one', $result_one);
     //查二级栏目
-    $result = $infotwocolumn -> field('id,oneid,name,sort,remark,isoneshow,hotpointnum,pagernum') -> find($this -> _get('id', 'intval'));
+    $result = $infotwocolumn -> field('id,oneid,name,sort,remark,isoneshow,leftpicnum,hotpointnum,pagernum') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
@@ -418,24 +418,105 @@ class ContentAction extends CommonAction {
 
   //文章管理
   public function article(){
+    $infoarticle = M('InfoArticle');
+    $where = array();
+    //处理查询条件
+    if(!empty($_POST['title'])){
+      $where['ia.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    if(!empty($_POST['column'])){
+      $infotwocolumn = M('InfoTwoColumn');
+      $where_col = array();
+      $where_col['name'] = array('LIKE', '%' . $this -> _post('column') . '%');
+      $colid = $infotwocolumn -> where($where_col) -> field('id') -> select();
+      $colid_arr = array();;
+      foreach($colid as $value){
+	$colid_arr[] = intval($value['id']);
+      }
+      $where['ia.colid'] = array('IN', $colid_arr);
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where['ia.authorid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['ia.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['ia.addtime'][] = array('lt', $endtime);
+    }
 
-    //查一级分类
-    $infoonecolumn = M('InfoOneColumn');
-    $result_one = $infoonecolumn -> field('id,name') -> order('sort') -> select();
-    $this -> assign('result_one', $result_one);
+
+    //记录总数
+    $count = $infoarticle -> table('yesow_info_article as ia') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,itc.name as colname,ita.name as titlename,ica.name as contentname,ia.title,a.name as aname,m.name as mname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> join('yesow_admin as a ON ia.auditid = a.id') -> join('yesow_member as m ON ia.authorid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
 
     $this -> display();
   }
 
   //删除文章
   public function delarticle(){
-  
+    $infoarticle = M('InfoArticle');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($infoarticle -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //编辑文章
   public function editarticle(){
-  
+    $this -> display();
   }
-  
+
+  //通过审核文章
+  public function passauditarticle(){
+    $infoarticle = M('InfoArticle');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));
+    $data_audit = array('status' => 1);
+    if($infoarticle -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //未通过审核文章
+  public function nopassauditarticle(){
+    $infoarticle = M('InfoArticle');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));
+    $data_audit = array('status' => 2);
+    if($infoarticle -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
   /* ------------  文章管理   -------------- */
 }

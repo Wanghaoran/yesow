@@ -1058,12 +1058,8 @@ class SystemAction extends CommonAction {
       }
     }
 
-    //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
-    if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
-      $result_childsite = $childsite -> field('id,name') -> select(session('csid'));
-    }else{
-      $result_childsite = $childsite -> field('id,name') -> select();
-    }
+    //查出所有站点
+    $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
     //查出所有产品分类
@@ -1108,12 +1104,8 @@ class SystemAction extends CommonAction {
     $result_accountclass = $accountclass -> field('id,name') -> select();
     $this -> assign('result_accountclass', $result_accountclass);
 
-    //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
-    if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
-      $result_childsite = $childsite -> field('id,name') -> select(session('csid'));
-    }else{
-      $result_childsite = $childsite -> field('id,name') -> select();
-    }
+    //查出所有站点
+    $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
     //查编辑数据
