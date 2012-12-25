@@ -1,7 +1,98 @@
+<script>
+  var getdata = function(val){
+    $.ajax({
+      url:'__APP__/public/ajaxinfotwocolumn/code/' + val,
+      success: function(res){
+	var _cstr = '<option value="" >请选择</option>';
+	var _tstr = '<option value="" >请选择</option>';
+	var _wstr = '<option value="" >请选择</option>';
+	if(res.titleattribute){
+	$.each(res.titleattribute, function(i,json){
+	  _tstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      	};
+	if(res.twocolumn){
+	$.each(res.twocolumn, function(i,json){
+	  _wstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      };
+      if(res.contentattribute){
+	$.each(res.contentattribute, function(i,json){
+	  _cstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      };
+	$('#contentattribute').html(_cstr);
+	$('#titleattribute').html(_tstr);
+	$('#twocolumn').html(_wstr);
+      },
+      dataType:'json'
+    });
+  
+  }
+</script>
+
+
 <div class="panel collapse" defH="400">
   <h1>文章编辑</h1>
   <div class="pageFormContent" layoutH="56">
-    
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/article" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+      <p style="width:780px;"><label>文章标题：</label><input type="text" class="textInput" name="title" size="100" value="<!--{$result.title}--!>"></p>
+      <p>
+      <label>所属分类：</label>
+      <select name="classid" onchange="getdata($(this).val());">
+	<volist name="result_one_col" id="roc">
+	<eq name="result.classid" value="$roc.id">
+	<option value="<!--{$roc.id}--!>" selected="selected"><!--{$roc.name}--!></option>
+	<else/>
+	<option value="<!--{$roc.id}--!>"><!--{$roc.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      </p>
+      <p>
+      <label>所属栏目：</label>
+      <select name="colid" id="twocolumn">
+	<volist name="result_two_col" id="rtc">
+	<eq name="result.colid" value="$rtc.id">
+	<option value="<!--{$rtc.id}--!>" selected="selected"><!--{$rtc.name}--!></option>
+	<else/>
+	<option value="<!--{$rtc.id}--!>"><!--{$rtc.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      </p>
+      <p>
+      <label>标题属性：</label>
+      <select name="tid" id="titleattribute">
+	<volist name="result_title" id="rt">
+	<eq name="result.tid" value="$rt.id">
+	<option value="<!--{$rt.id}--!>" selected="selected"><!--{$rt.name}--!></option>
+	<else/>
+	<option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      </p>
+      <p>
+      <label>内容属性：</label>
+      <select name="conid" id="contentattribute">
+	<volist name="result_content" id="rc">
+	<eq name="result.conid" value="$rc.id">
+	<option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+	<else/>
+	<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      </p>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
   </div>
 </div>
 <div class="panel collapse">

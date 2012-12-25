@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/kindeditor/lang/zh_CN.js"></script>
+<script>
+        var editor;
+        KindEditor.ready(function(K) {
+                editor = K.create('#editor_id');
+        });
+</script>
+
+<script>
+  var getdata = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxinfotwocolumn/code/' + val,
+      success: function(res){
+	var _cstr = '<option value="" >请选择</option>';
+	var _tstr = '<option value="" >请选择</option>';
+	var _wstr = '<option value="" >请选择</option>';
+	if(res.titleattribute){
+	$.each(res.titleattribute, function(i,json){
+	  _tstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      	};
+	if(res.twocolumn){
+	$.each(res.twocolumn, function(i,json){
+	  _wstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      };
+      if(res.contentattribute){
+	$.each(res.contentattribute, function(i,json){
+	  _cstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      };
+	$('#contentattribute').html(_cstr);
+	$('#titleattribute').html(_tstr);
+	$('#twocolumn').html(_wstr);
+      },
+      dataType:'json'
+    });
+  
+  }
+</script>
+</head>
+<body id="body_user">
+	<div id="user_t">
+    	<div class="warp_850">
+        	<div id="top">
+            	<div id="logo">
+                	<a href="#" >易搜首页</a>
+                </div>
+                <div id="tools">
+		  <p>欢迎会员 <!--{$Think.session.username}--!> <a href="__APP__/Public/logout">退出</a> 您的会员级别是:普通会员，目前为E币模式</p>
+                    <p>您还有155524E币，你还有RMB余额755.35元</p>
+                    <p class="tel_num">咨询电话:0571-56761176 56761178</p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="nav">
+            	<ul>
+                	<li><a href="#">我的易搜</a></li>
+                	<li><a href="#">资金管理</a></li>
+                	<li><a href="#">网上购物</a></li>
+                	<li class="hover"><a href="#">商家服务</a></li>
+                	<li><a href="#">个人服务</a></li>
+                	<li><a href="#">易搜联盟</a></li>
+                	<li><a href="#">使用帮助</a></li>
+                </ul>
+            </div>
+            <div id="kong"></div>
+        </div>
+    </div>
+	<div id="user_m">
+    	<div class="warp_850">
+        	<div id="main">
+            	<div id="main_l">
+                	<div id="main_l_tit"><h3>商家服务</h3></div>
+                    <ul>
+                    	<li><a href="#">产品报价管理</a></li>
+                    	<li><a href="#">特惠商家管理</a></li>
+                    	<li><a href="#">人才交流管理</a></li>
+                    	<li><a href="#">求职信息管理</a></li>
+                    	<li><a href="#">二手市场管理</a></li>
+                    	<li><a href="#">旺铺转租管理</a></li>
+                    	<li><a href="#">申请连接管理</a></li>
+                    	<li class="hover"><a href="#">咨询文章管理</a></li>
+                    </ul>
+                </div>
+				<div id="main_r">
+					<table class="table_list">
+						<tbody>
+							<tr class="top_tools">
+								<th colspan="2"><h3>发布咨询文章</h3></th>
+							      </tr>
+							      <form action="__ACTION__" method="post" id="article">
+							<tr>
+								<td colspan="2">
+									所属栏目：
+									<select class="" name="classid" onchange="getdata($(this).val());" >
+										<option value="" >请选择</option>
+										<volist name="result_one_col" id="roc">
+										<option value="<!--{$roc.id}--!>"><!--{$roc.name}--!></option>
+
+										</volist>
+									</select>
+									<select class="" name="colid" id="twocolumn" >
+										<option value="" >请选择</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									文章标题：
+									<select class="" name="tid" id="titleattribute" >
+										<option value="" >请选择</option>
+									</select>
+									<input name="title" class="" style="width:250px" />
+									<strong>*</strong>
+								</td>
+								<td>
+									文章来源：
+									<input class="" name="source" />
+									<strong>*</strong>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									关&nbsp;键&nbsp;字：
+									<input name="keyword" class="" style="width:352px" />
+									<strong>*</strong>
+								</td>
+								<td>
+									内容属性：
+									<select class="" name="conid" id="contentattribute" >
+										<option value="" >请选择</option>
+									</select>									
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+								<div class="art_content">
+								  <textarea name="content" id="editor_id" style="width:800px;height:400px;visibility:hidden;"></textarea>
+								</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="fz" colspan="2">
+								  <p>所属站点：</p>
+								  <volist name="result_site" id="rs">
+								  <input type="checkbox" name="childsite[]" value="<!--{$rs.id}--!>" id="rs<!--{$rs.id}--!>" /><label for="rs<!--{$rs.id}--!>"><!--{$rs.name}--!></label>
+								  </volist>
+								</td>
+							</tr>
+							<tr>
+							  <td>发布作者：<input type="text" name="" id="" readonly="readonly" value="<!--{$Think.session.username}--!>"/></td>
+								<td>联系电话：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.tel}--!>" /></td>
+							</tr>
+							<tr>
+								<td>联系Q&nbspQ：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.qqcode}--!>" /></td>
+								<td>E-mail&nbsp;&nbsp;：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.e-mail}--!>"/></td>
+							</tr>
+							<tr>
+								<td>联系地址：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.address}--!>"/></td>
+								<td>所属单位：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.unit}--!>" /></td>
+							</tr>
+							<tr>
+								<td colspan="2" style="text-align:center">
+									<button class="add_article_btn" name="" id="" onclick="document.getElementById('article').onsubmit();" >发布文章</button>
+									<button class="add_article_btn" name="" id="" >取消发布</button>
+									<button class="add_article_btn" name="" id="" >清空内容</button>
+								</td>
+							      </tr>
+							      </form>
+						</tbody>
+					</table>
+				</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+	<div id="user_d">
+		<div class="warp_850">
+			<p>
+				<a href="">关于易搜</a> |
+				<a href="">发展历程</a> |
+				<a href="">服务声明</a> |
+				<a href="">业务介绍</a> |
+				<a href="">优势介绍</a> |
+				<a href="">站点地图</a> |
+				<a href="">联系方式</a> |
+				<a href="">付款方式</a> |
+				<a href="">广告服务</a>
+			</p>
+			<p>
+				Copyright &copy; www.yesow.com All rights reserved<br>
+				浙B2-20080069
+			</p>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>

@@ -142,7 +142,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //查询结果
-    $result = $admin -> table('yesow_admin as a') -> field('a.id,a.name,cs.name as csname,cs.domain as domain,a.status,a.last_login_ip,a.last_login_time,a.login_count,a.remark,r.name as rolename') -> join('yesow_child_site as cs ON cs.id = a.csid') -> join('yesow_role_admin as ra ON a.id = ra.admin_id') -> join('yesow_role as r ON ra.role_id = r.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $admin -> table('yesow_admin as a') -> field('a.id,a.name,cs.name as csname,cs.domain as domain,a.status,a.last_login_ip,a.last_login_time,a.login_count,a.remark,r.name as rolename') -> join('yesow_child_site as cs ON cs.id = a.csid') -> join('yesow_role_admin as ra ON a.id = ra.admin_id') -> join('yesow_role as r ON ra.role_id = r.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
@@ -157,6 +157,7 @@ class SystemAction extends CommonAction {
     $admin = D('Admin');
     //处理新增
     if(!empty($_POST['name'])){
+      $_POST['password'] = sha1($_POST['password']);
       if(!$admin -> create()){
 	$this -> error($admin -> getError());
       }
@@ -203,6 +204,8 @@ class SystemAction extends CommonAction {
     if(!empty($_POST['name'])){
       if(empty($_POST['password'])){
 	unset($_POST['password']);
+      }else{
+	$_POST['password'] = sha1($_POST['password']);
       }
       if(!$admin -> create()){
 	$this -> error($admin -> getError());
@@ -260,7 +263,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //管理组信息
-    $result = $role -> table('yesow_role as r') -> field('id,name,remark,create_time,update_time,c') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('(SELECT role_id,COUNT(admin_id) as c FROM yesow_role_admin GROUP BY role_id) as tmp ON tmp.role_id = r.id') -> select();
+    $result = $role -> table('yesow_role as r') -> field('id,name,remark,create_time,update_time,c') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('(SELECT role_id,COUNT(admin_id) as c FROM yesow_role_admin GROUP BY role_id) as tmp ON tmp.role_id = r.id') -> order('id DESC') -> select();
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
@@ -558,7 +561,7 @@ class SystemAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $Area -> field('id,name,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $Area -> field('id,name,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
@@ -634,7 +637,7 @@ class SystemAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $childsitetemplate -> field('id,name,address') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $childsitetemplate -> field('id,name,address') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
@@ -721,7 +724,7 @@ class SystemAction extends CommonAction {
     $result_area = $area -> field('id,name') -> select();
     $this -> assign('result_area', $result_area);
     //查询分站数据
-    $result = $childsite -> table('yesow_child_site as cs') -> field('cs.id as id,cs.name as name,a.name as aname,cst.name as cstname,css.name as pname,cs.domain,cs.code,cs.create_time,cs.isshow') -> join('yesow_area as a ON a.id = cs.aid ') -> join('yesow_child_site_template as cst ON cst.id = cs.tid') -> join('yesow_child_site as css ON css.id = cs.pid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $childsite -> table('yesow_child_site as cs') -> field('cs.id as id,cs.name as name,a.name as aname,cst.name as cstname,css.name as pname,cs.domain,cs.code,cs.create_time,cs.isshow') -> join('yesow_area as a ON a.id = cs.aid ') -> join('yesow_child_site_template as cst ON cst.id = cs.tid') -> join('yesow_child_site as css ON css.id = cs.pid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -833,7 +836,7 @@ class SystemAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     //查询地区数据
-    $result = $childsitearea -> table('yesow_child_site_area as csa') -> field('csa.id,csa.name,cs.name as csname,csa.code,csa.create_time') -> where($where) -> join('yesow_child_site as cs ON cs.id = csa.csid') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $childsitearea -> table('yesow_child_site_area as csa') -> field('csa.id,csa.name,cs.name as csname,csa.code,csa.create_time') -> where($where) -> join('yesow_child_site as cs ON cs.id = csa.csid') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -920,7 +923,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     
-    $result = $account_class -> field('id,name,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $account_class -> field('id,name,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -1015,7 +1018,7 @@ class SystemAction extends CommonAction {
     $this -> assign('result_childsite', $result_childsite);
 
     //查询数据
-    $result = $account -> table('yesow_account as a') -> field('a.id,cs.name as csname,ac.name as acname,a.create_time,a.type,a.company,a.money,a.remark') -> where($where) -> join('yesow_child_site as cs ON a.csid = cs.id') -> join('yesow_account_class as ac ON a.acid = ac.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $account -> table('yesow_account as a') -> field('a.id,cs.name as csname,ac.name as acname,a.create_time,a.type,a.company,a.money,a.remark') -> where($where) -> join('yesow_child_site as cs ON a.csid = cs.id') -> join('yesow_account_class as ac ON a.acid = ac.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     $this -> assign('result', $result);
 
     //查询总入款

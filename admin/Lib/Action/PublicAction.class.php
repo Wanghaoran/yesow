@@ -182,6 +182,18 @@ class PublicAction extends Action {
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
-  
+  }
+
+  //ajax获取资讯二级分类、内容属性、标题属性
+  public function ajaxinfotwocolumn(){
+    if(!empty($_GET['code'])){
+      $where = array();
+      $where['oneid'] = $this -> _get('code', 'intval');
+      $result = array();
+      $result['twocolumn'] = M('InfoTwoColumn') -> field('id,name') -> where($where) -> select();
+      $result['titleattribute'] = M('InfoTitleAttribute') -> field('id,name') -> where($where) -> select();
+      $result['contentattribute'] = M('InfoContentAttribute') -> field('id,name') -> where(array('oneid' => $this -> _get('code', 'intval'), 'pid' => 0)) -> select();      
+      echo json_encode($result);
+    }
   }
 }

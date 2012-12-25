@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+</head>
+<body id="body_user">
+	<div id="user_t">
+    	<div class="warp_850">
+        	<div id="top">
+            	<div id="logo">
+                	<a href="#" >易搜首页</a>
+                </div>
+                <div id="tools">
+		  <p>欢迎会员 <!--{$Think.session.username}--!> <a href="__APP__/Public/logout">退出</a> 您的会员级别是:普通会员，目前为E币模式</p>
+                    <p>您还有155524E币，你还有RMB余额755.35元</p>
+		    <p class="tel_num">咨询电话:0571-56761176 56761178</p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="nav">
+            	<ul>
+                	<li><a href="#">我的易搜</a></li>
+                	<li><a href="#">资金管理</a></li>
+                	<li><a href="#">网上购物</a></li>
+                	<li class="hover"><a href="#">商家服务</a></li>
+                	<li><a href="#">个人服务</a></li>
+                	<li><a href="#">易搜联盟</a></li>
+                	<li><a href="#">使用帮助</a></li>
+                </ul>
+            </div>
+            <div id="kong"></div>
+        </div>
+    </div>
+	<div id="user_m">
+    	<div class="warp_850">
+        	<div id="main">
+            	<div id="main_l">
+                	<div id="main_l_tit"><h3>商家服务</h3></div>
+                    <ul>
+                    	<li><a href="#">产品报价管理</a></li>
+                    	<li><a href="#">特惠商家管理</a></li>
+                    	<li><a href="#">人才交流管理</a></li>
+                    	<li><a href="#">求职信息管理</a></li>
+                    	<li><a href="#">二手市场管理</a></li>
+                    	<li><a href="#">旺铺转租管理</a></li>
+                    	<li><a href="#">申请连接管理</a></li>
+                    	<li class="hover"><a href="#">咨询文章管理</a></li>
+                    </ul>
+                </div>
+				<div id="main_r">
+					<table class="user_search">
+						<tbody>
+						<tr>
+							<td>关键词：<input class="keywords w100" name="keywords" type="text" /></td>
+							<td>所在地：
+								<select class="address" name="address">
+									<option value="">选择省份</option>
+									<option value="1">北京</option>
+									<option value="2">河北</option>
+								</select>
+							</td>
+							<td>发布人：<input class="username w80" name="username" type="text" /></td>
+							<td>栏目：<input class="category w80" name="category" type="text" /></td>
+							<td><button class="user_search_btn">搜索</button></td>
+						</tr>
+						</tbody>
+					</table>
+					<table class="table_list">
+						<tbody>
+							<tr class="top_tools">
+								<th colspan="7"><h3>咨询文章管理</h3><button class="add_art" onclick="location='__URL__/addarticle';">发文章</button></th>
+								<th colspan="3" style="text-align:right">
+									<button class="del_art">删除</button>
+									<button class="all_art">全选</button>
+								</th>
+							</tr>
+							<tr class="title">
+								<td>类型</td>
+								<td>标题</td>
+								<td>所属类型</td>
+								<td>人气</td>
+								<td>评论</td>
+								<td>发布时间</td>
+								<td>审核时间</td>
+								<td>操作状态</td>
+								<td>编辑</td>
+								<td>选中</td>
+							</tr>
+							<tr>
+								<td>原创</td>
+								<td><p class="art_title">这个是标题文字，字数需要控制这个是标题文字，字数需要控制</p></td>
+								<td>自拍偷拍</td>
+								<td>3000</td>
+								<td>3000</td>
+								<td>12-12-12</td>
+								<td>12-12-14</td>
+								<td>审核已通过</td>
+								<td><a href="" >编辑</a></td>
+								<td><input type="checkbox" ></td>
+							</tr>
+							<tr>
+								<td>原创</td>
+								<td><p class="art_title">这个是标题文字，字数需要控制这个是标题文字，字数需要控制</p></td>
+								<td>自拍偷拍</td>
+								<td>3000</td>
+								<td>3000</td>
+								<td>12-12-12</td>
+								<td>12-12-14</td>
+								<td>审核未通过</td>
+								<td><a href="" >编辑</a></td>
+								<td><input type="checkbox" ></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="page">
+						<span>共72条数据</span>
+						<a href="#">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+						<a href="#">4</a>
+						<a href="#">5</a>
+						<a href="#">下一页</a>
+					</div>
+					
+				</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+	<div id="user_d">
+		<div class="warp_850">
+			<p>
+				<a href="">关于易搜</a> |
+				<a href="">发展历程</a> |
+				<a href="">服务声明</a> |
+				<a href="">业务介绍</a> |
+				<a href="">优势介绍</a> |
+				<a href="">站点地图</a> |
+				<a href="">联系方式</a> |
+				<a href="">付款方式</a> |
+				<a href="">广告服务</a>
+			</p>
+			<p>
+				Copyright &copy; www.yesow.com All rights reserved<br>
+				浙B2-20080069
+			</p>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>

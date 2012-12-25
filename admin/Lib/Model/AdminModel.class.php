@@ -8,7 +8,6 @@ class AdminModel extends CommonModel {
   );
 
   protected $_auto = array(
-    array('password', 'sha1', 3, 'function'),
     array('last_login_ip', 'get_client_ip', 1, 'function'),
     array('last_login_time', 'time', 1, 'function'),
     array('login_count', 0),

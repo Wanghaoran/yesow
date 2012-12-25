@@ -1,0 +1,13 @@
+html,body,div, p, span, em, i, b, strong, table, thead, tbody, tfoot, tr, th, td, dl, dt, dd, ul, ol, li,pre, code, img, form, input, textarea, button, blockquote{ margin:0; padding:0; background: transparent;}
+img, iframe{border:0;}
+h1, h2, h3, h4, h5, h6{font-weight:bold; font-size:14px; margin:0; padding:0;}
+q:before, q:after{content:''}
+:focus{outline:0;}
+ol, ul, li{ list-style:none;}
+input,button,textarea,select,optgroup,option{ font-family:inherit; font-size:inherit; font-style:inherit; font-weight:inherit}
+body{font:400 12px/20px Verdana,"BitStream vera Sans",Tahoma,Helvetica,Sans-serif;}
+span, a{ cursor:default;}
+
+.clear{clear:both;}
+.db{ display:block;}
+.none{ display:none;}
