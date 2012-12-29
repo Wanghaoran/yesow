@@ -196,4 +196,18 @@ class PublicAction extends Action {
       echo json_encode($result);
     }
   }
+
+  //ajax获取二级内容属性
+  public function ajaxinfocontentattribute(){
+    if(!empty($_GET['code'])){
+      $where = array();
+      $where['pid'] = $this -> _get('code', 'intval');
+      $result = M('InfoContentAttribute') -> field('id,name') -> where($where) -> select();
+      if($result){
+	echo json_encode($result);
+      }else{
+      	echo '';
+      }
+    }
+  }
 }

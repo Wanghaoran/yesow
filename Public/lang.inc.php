@@ -35,4 +35,13 @@ return array(
   'DATA_DELETE_ERROR' => '数据删除失败',
   'STATUS_ERROR' => '状态码错误',
   'MONEY_ERROR' => '金额格式错误',
+  'ARTICLE_CLASSID_EMPTY' => '所属分类不能为空',
+  'ARTICLE_COLID_EMPTY' => '所属栏目不能为空',
+  'ARTICLE_TID_EMPTY' => '标题属性不能为空',
+  'ARTICLE_CONID_EMPTY' => '内容属性不能为空',
+  'ARTICLE_TITLE_EMPTY' => '标题不能为空',
+  'ARTICLE_CONTENT_EMPTY' => '内容不能为空',
+  'ARTICLE_SOURCE_EMPTY' => '文章来源不能为空',
+  'ARTICLE_KEYWORD_EMPTY' => '关键词不能为空',
+
 );

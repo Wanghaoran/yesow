@@ -25,4 +25,6 @@ return array(
   'DB_PREFIX' => 'yesow_',  //数据库表前缀
 
   'URL_CASE_INSENSITIVE' => true,  // 默认false 表示URL区分大小写 true则表示不区分大小写
+  'UPLOAD_PATH' => './Upload', //文件上传地址
+  'SAVE_PATH' => __ROOT__ . '/Upload', //文件保存地址
 );

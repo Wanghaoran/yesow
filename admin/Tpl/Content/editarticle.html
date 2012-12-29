@@ -27,16 +27,33 @@
       },
       dataType:'json'
     });
-  
+  }
+
+  var getconatt = function(val){
+    $.ajax({
+      url:'__APP__/public/ajaxinfocontentattribute/code/' + val,
+      success: function(ress){
+	 var _nstr = '<option value="">请选择</option>';
+	if(ress != null){  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res.id+'">'+res.name+'</option>';
+	  });
+	  $('#contenttwoattribute').html(_nstr).show();
+	  }else{
+	  $('#contenttwoattribute').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
   }
 </script>
 
 
-<div class="panel collapse" defH="400">
+<div class="panel collapse">
   <h1>文章编辑</h1>
   <div class="pageFormContent" layoutH="56">
-    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/article" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
-      <p style="width:780px;"><label>文章标题：</label><input type="text" class="textInput" name="title" size="100" value="<!--{$result.title}--!>"></p>
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/article" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+      <p style="width:780px;"><label>文章标题：</label><input type="text" class="textInput required" name="title" size="100" value="<!--{$result.title}--!>"></p>
       <p>
       <label>所属分类：</label>
       <select name="classid" onchange="getdata($(this).val());">
@@ -75,7 +92,7 @@
       </p>
       <p>
       <label>内容属性：</label>
-      <select name="conid" id="contentattribute">
+      <select name="conid" id="contentattribute" onchange="getconatt($(this).val());">
 	<volist name="result_content" id="rc">
 	<eq name="result.conid" value="$rc.id">
 	<option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
@@ -84,21 +101,70 @@
 	</eq>
 	</volist>
       </select>
+      <present name="result_contwoatt">
+      <select name="conid2" id="contenttwoattribute" style="margin-left:20px;">
+	<volist name="result_contwoatt" id="rcta">
+	<eq name="result.conid" value="$rcta.id">
+	<option value="<!--{$rcta.id}--!>" selected="selected"><!--{$rcta.name}--!></option>
+	<else/>
+	<option value="<!--{$rcta.id}--!>"><!--{$rcta.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      <else/>
+      <select name="conid2" id="contenttwoattribute" style="margin-left:20px;display:none;">
+	<option value="">请选择</option>
+      </select>
+      </present>
       </p>
+      <p>
+      <label>文章来源：</label>
+      <input type="text" class="textInput required" name="source" value="<!--{$result.source}--!>">
+      </p>
+      <p style="width:500px;">
+      <label>关键词：</label>
+      <input type="text" class="textInput required" name="keyword" size="50" value="<!--{$result.keyword}--!>">
+      </p>
+      <div class="divider"></div>
+      <p style="width:100%;height:300px;">
+      <textarea class="editor" name="content" style="width:99%;" rows="15"><!--{$result.content|stripslashes}--!></textarea>
+
+	</p>
+	<div class="divider"></div>
+	<p style="width:100%;">所属分站：</p>
+	<volist name="result_childsite" id="rc">
+	<label><input type="checkbox" <?php echo in_array($rc['id'], $result_childsite_infoarticle) ? "checked" : "" ?> value="<!--{$rc.id}--!>" name="childsite[]"><!--{$rc.name}--!></label>
+	</volist>
+	<div class="divider"></div>
+	<p>
+	<label>联系电话：</label>
+	<input type="text" class="textInput" name="tel" value="<!--{$result.tel}--!>">
+	</p>
+	<p>
+	<label>联系Q Q：</label>
+	<input type="text" class="textInput" name="qqcode" value="<!--{$result.qqcode}--!>">
+	</p>
+	<p>
+	<label>E-mail：</label>
+	<input type="text" class="textInput" name="email" value="<!--{$result.email}--!>">
+	</p>
+	<p>
+	<label>联系地址：</label>
+	<input type="text" class="textInput" name="address" value="<!--{$result.address}--!>">
+	</p>
+	<p>
+	<label>所属单位：</label>
+	<input type="text" class="textInput" name="unit" value="<!--{$result.unit}--!>">
+	</p>
+
       <div class="formBar">
 	<ul>
 	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
 	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
 	</ul>
       </div>
+      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
     </form>
 
   </div>
 </div>
-<div class="panel collapse">
-  <h1>图片管理</h1>
-  <div>
-    内容
-  </div>
-</div>
-

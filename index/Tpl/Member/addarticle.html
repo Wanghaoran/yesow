@@ -12,7 +12,10 @@
 <script>
         var editor;
         KindEditor.ready(function(K) {
-                editor = K.create('#editor_id');
+	  editor = K.create('#editor_id', {
+	    uploadJson : '__APP__/public/uploadfile',
+	    fileManagerJson : '__PUBLIC__/kindeditor/php/file_manager_json.php',
+	  });
         });
 </script>
 
@@ -45,7 +48,25 @@
       },
       dataType:'json'
     });
-  
+  }
+
+  var getconatt = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxinfocontentattribute/code/' + val,
+      success: function(ress){
+	 var _nstr = '<option value="">请选择</option>';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res.id+'">'+res.name+'</option>';
+	  });
+	  $('#contenttwoattribute').html(_nstr).show();
+	  }else{
+	  $('#contenttwoattribute').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
   }
 </script>
 </head>
@@ -94,12 +115,12 @@
                     </ul>
                 </div>
 				<div id="main_r">
+					<form action="__ACTION__" method="post" id="article">
 					<table class="table_list">
 						<tbody>
 							<tr class="top_tools">
 								<th colspan="2"><h3>发布咨询文章</h3></th>
-							      </tr>
-							      <form action="__ACTION__" method="post" id="article">
+							</tr>
 							<tr>
 								<td colspan="2">
 									所属栏目：
@@ -138,15 +159,18 @@
 								</td>
 								<td>
 									内容属性：
-									<select class="" name="conid" id="contentattribute" >
+									<select class="" onchange="getconatt($(this).val());" name="conid" id="contentattribute" >
 										<option value="" >请选择</option>
-									</select>									
+									      </select>
+	    <select name="conid2" id="contenttwoattribute" style="margin-left:5px;display:none;">
+	<option value="">请选择</option>
+      </select>								      
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
 								<div class="art_content">
-								  <textarea name="content" id="editor_id" style="width:800px;height:400px;visibility:hidden;"></textarea>
+								  <textarea name="content" id="editor_id" style="width:100%;height:400px;visibility:hidden;"></textarea>
 								</div>
 								</td>
 							</tr>
@@ -160,15 +184,15 @@
 							</tr>
 							<tr>
 							  <td>发布作者：<input type="text" name="" id="" readonly="readonly" value="<!--{$Think.session.username}--!>"/></td>
-								<td>联系电话：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.tel}--!>" /></td>
+								<td>联系电话：<input type="text" name="tel" id="" value="<!--{$result_member.tel}--!>" /></td>
 							</tr>
 							<tr>
-								<td>联系Q&nbspQ：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.qqcode}--!>" /></td>
-								<td>E-mail&nbsp;&nbsp;：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.e-mail}--!>"/></td>
+								<td>联系Q&nbspQ：<input type="text" name="qqcode" id="" value="<!--{$result_member.qqcode}--!>" /></td>
+								<td>E-mail&nbsp;&nbsp;：<input type="text" name="email" id="" value="<!--{$result_member.e-mail}--!>"/></td>
 							</tr>
 							<tr>
-								<td>联系地址：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.address}--!>"/></td>
-								<td>所属单位：<input type="text" name="" id="" readonly="readonly" value="<!--{$result_member.unit}--!>" /></td>
+								<td>联系地址：<input type="text" name="address" id="" value="<!--{$result_member.address}--!>"/></td>
+								<td>所属单位：<input type="text" name="unit" id="" value="<!--{$result_member.unit}--!>" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" style="text-align:center">
@@ -176,10 +200,10 @@
 									<button class="add_article_btn" name="" id="" >取消发布</button>
 									<button class="add_article_btn" name="" id="" >清空内容</button>
 								</td>
-							      </tr>
-							      </form>
+							      </tr> 
 						</tbody>
 					</table>
+					</form>
 				</div>
                 <div class="clear"></div>
             </div>

@@ -15,25 +15,38 @@ class MemberAction extends CommonAction {
   //添加文章
   public function addarticle(){
     if(!empty($_POST['title'])){
-      $info_article = D('InfoArticle');//验证没做
+      $info_article = D('admin://InfoArticle');
       $_POST['authorid'] = $this -> _session(C('USER_AUTH_KEY'));
       $_POST['addtime'] = time();
-      $_POST['auditid'] = 1;//有问题
-      //写分站表还没做
-       if(!$info_article -> create()){
-	$this -> error($info_article -> getError());
+      if(!empty($_POST['conid2'])){
+	$_POST['conid'] = $_POST['conid2'];
+	unset($_POST['conid2']);
       }
-      if($info_article -> add()){
+      //图片没处理
+       if(!$info_article -> create()){
+	 $this -> error($info_article -> getError());
+      }
+      if($iaid = $info_article -> add()){
+	//使用文章id写文章分站表
+	if(!empty($_POST['childsite'])){
+	  $childsite_infoatricle = M('ChildsiteInfoarticle');
+	  $data = array();
+	  $data['iaid'] = $iaid;
+	  foreach($_POST['childsite'] as $value){
+	    $data['csid'] = $value;
+	    $childsite_infoatricle -> add($data);
+	  }
+	}
 	$this -> success(L('DATA_ADD_SUCCESS'), U('member/article'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
-      }  
+      }
     }
     //查所有一级分类
     $result_one_col = M('InfoOneColumn') -> field('id,name') -> order('sort') -> select();
     $this -> assign('result_one_col', $result_one_col);
     //查所有分站
-    $result_site = M('ChildSite') -> field('id,name') -> select();
+    $result_site = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
     $this -> assign('result_site', $result_site);
     //查此会员的资料
     $result_member = M('Member') -> field('tel,qqcode,e-mail,address,unit') -> find($this -> _session(C('USER_AUTH_KEY')));
