@@ -56,6 +56,16 @@ class MemberAction extends CommonAction {
 
   //资讯文章首页
   public function article(){
+    $infoarticle = M('InfoArticle');
+    $where = array();
+    $where['authorid'] = $this -> _session('user_id', 'intval');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $infoarticle -> where($where) -> count('id');
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
     $this -> display();
   }
 }

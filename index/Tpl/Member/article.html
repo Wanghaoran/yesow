@@ -90,41 +90,33 @@
 								<td>操作状态</td>
 								<td>编辑</td>
 								<td>选中</td>
-							</tr>
+							      </tr>
+							      <volist name="result" id="r">
 							<tr>
-								<td>原创</td>
-								<td><p class="art_title">这个是标题文字，字数需要控制这个是标题文字，字数需要控制</p></td>
-								<td>自拍偷拍</td>
-								<td>3000</td>
-								<td>3000</td>
-								<td>12-12-12</td>
-								<td>12-12-14</td>
-								<td>审核已通过</td>
+							  <td><!--{$r.tname}--!></td>
+							  <td><p class="art_title"><!--{$r.title}--!></p></td>
+							  <td><!--{$r.cname}--!></td>
+							  <td><!--{$r.hits}--!></td>
+								<td>0</td>
+								<td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
+								<td><!--{$r.checktime|date="Y-m-d", ###}--!></td>
+								<eq name="r.status" value="0">
+								<td style="color:blue;">未审核</td>
+								</eq>
+								<eq name="r.status" value="1">
+								<td style="color:green;">审核通过</td>
+								</eq>
+								<eq name="r.status" value="2">
+								<td style="color:red;">审核未通过</td>
+								</eq>
 								<td><a href="" >编辑</a></td>
 								<td><input type="checkbox" ></td>
-							</tr>
-							<tr>
-								<td>原创</td>
-								<td><p class="art_title">这个是标题文字，字数需要控制这个是标题文字，字数需要控制</p></td>
-								<td>自拍偷拍</td>
-								<td>3000</td>
-								<td>3000</td>
-								<td>12-12-12</td>
-								<td>12-12-14</td>
-								<td>审核未通过</td>
-								<td><a href="" >编辑</a></td>
-								<td><input type="checkbox" ></td>
-							</tr>
+							      </tr>
+							      </volist>
 						</tbody>
 					</table>
 					<div class="page">
-						<span>共72条数据</span>
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-						<a href="#">4</a>
-						<a href="#">5</a>
-						<a href="#">下一页</a>
+					  <!--{$show}--!>
 					</div>
 					
 				</div>
