@@ -513,11 +513,9 @@ class ContentAction extends CommonAction {
       if(!$infoarticle -> create()){
 	$this -> error($infoarticle -> getError());
       }
-      if($infoarticle -> save()){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
-      }
+      $infoarticle -> save();
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+
     }
     $result = $infoarticle -> field('id,classid,title,colid,tid,conid,content,source,keyword,tel,qqcode,email,address,unit') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
@@ -582,6 +580,12 @@ class ContentAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
+
+  //文章图片管理
+  public function infoimage(){
+  }
+
+
 
   /* ------------  文章管理   -------------- */
 }

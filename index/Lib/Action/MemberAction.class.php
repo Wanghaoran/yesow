@@ -63,9 +63,73 @@ class MemberAction extends CommonAction {
     $count = $infoarticle -> where($where) -> count('id');
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC')  -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //编辑资讯文章
+  public function editarticle(){
+    $infoarticle = D('InfoArticle');
+    //处理更新
+    if(!empty($_POST['title'])){
+      //先处理分站文章表
+      $childsite_infoarticle = M('ChildsiteInfoarticle');
+      //先删除
+      $childsite_infoarticle -> where(array('iaid' => $this -> _post('id', 'intval'))) -> delete();
+      //再添加
+      if(!empty($_POST['childsite'])){
+	$data = array();
+	$data['iaid'] = $this -> _post('id', 'intval');
+	foreach($_POST['childsite'] as $value){
+	  $data['csid'] = $value;
+	  $childsite_infoarticle -> add($data);
+	}
+      }
+      if(!empty($_POST['conid2'])){
+	$_POST['conid'] = $_POST['conid2'];
+	unset($_POST['conid2']);
+      }
+      //更新其他数据
+      if(!$infoarticle -> create()){
+	$this -> error($infoarticle -> getError());
+      }
+      $infoarticle -> save();
+      $this -> success(L('DATA_UPDATE_SUCCESS'), U('member/article'));
+    }
+
+    //文章数据
+    $result = $infoarticle -> field('id,classid,title,colid,tid,conid,content,source,keyword,tel,qqcode,email,address,unit') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //如果此内容属性id是二级，则读出所有此一级下的所有二级id
+    $conattpid = M('InfoContentAttribute') -> getFieldByid($result['conid'], 'pid');
+    if($conattpid != 0){
+      $result_contwoatt = M('InfoContentAttribute') -> field('id,name') -> where(array('pid' => $conattpid)) -> select();
+      $this -> assign('result_contwoatt', $result_contwoatt);
+    }
+    //查所有一级分类
+    $result_one_col = M('InfoOneColumn') -> field('id,name') -> order('sort') -> select();
+    $this -> assign('result_one_col', $result_one_col);
+    //查此文章一级分类下的二级分类
+    $result_two_col = M('InfoTwoColumn') -> field('id,name') -> where(array('oneid' => $result['classid'])) -> order('sort') -> select();
+    $this -> assign('result_two_col', $result_two_col);
+    //查此文章一级分类下的标题属性
+    $result_title = M('InfoTitleAttribute') -> field('id,name') -> where(array('oneid' => $result['classid'])) -> order('sort') -> select();
+    $this -> assign('result_title', $result_title);
+    //查此文章一级分类下的内容属性
+    $result_content = M('InfoContentAttribute') -> field('id,name') -> where(array('oneid' => $result['classid'], 'pid' => 0)) -> order('sort') -> select();
+    $this -> assign('result_content', $result_content);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询文章所属分站
+    $result_childsite_infoarticle_temp = M('ChildsiteInfoarticle') -> field('csid') -> where(array('iaid' => $this -> _get('id', 'intval'))) -> select();
+    $result_childsite_infoarticle = array();
+    foreach($result_childsite_infoarticle_temp as $value){
+      $result_childsite_infoarticle[] = $value['csid'];
+    }
+    $this -> assign('result_childsite_infoarticle', $result_childsite_infoarticle);
     $this -> display();
   }
 }

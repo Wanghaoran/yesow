@@ -53,9 +53,8 @@
   <h1>文章编辑</h1>
   <div class="pageFormContent" layoutH="56">
     <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/article" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
-      <p style="width:780px;"><label>文章标题：</label><input type="text" class="textInput required" name="title" size="100" value="<!--{$result.title}--!>"></p>
-      <p>
-      <label>所属分类：</label>
+      <p style="width:500px;">
+      <label>所属栏目：</label>
       <select name="classid" onchange="getdata($(this).val());">
 	<volist name="result_one_col" id="roc">
 	<eq name="result.classid" value="$roc.id">
@@ -65,10 +64,7 @@
 	</eq>
 	</volist>
       </select>
-      </p>
-      <p>
-      <label>所属栏目：</label>
-      <select name="colid" id="twocolumn">
+      <select name="colid" id="twocolumn" style="margin-left:10px;">
 	<volist name="result_two_col" id="rtc">
 	<eq name="result.colid" value="$rtc.id">
 	<option value="<!--{$rtc.id}--!>" selected="selected"><!--{$rtc.name}--!></option>
@@ -78,8 +74,8 @@
 	</volist>
       </select>
       </p>
-      <p>
-      <label>标题属性：</label>
+
+      <p style="width:600px;"><label>文章标题：</label>
       <select name="tid" id="titleattribute">
 	<volist name="result_title" id="rt">
 	<eq name="result.tid" value="$rt.id">
@@ -89,7 +85,18 @@
 	</eq>
 	</volist>
       </select>
+      <input style="margin-left:10px;" type="text" class="textInput required" name="title" size="50" value="<!--{$result.title}--!>">
       </p>
+      <p>
+      <label>文章来源：</label>
+      <input type="text" class="textInput required" name="source" value="<!--{$result.source}--!>">
+      </p>
+
+      <p style="width:600px;">
+      <label>关键词：</label>
+      <input type="text" class="textInput required" name="keyword" size="60" value="<!--{$result.keyword}--!>">
+      </p>
+      
       <p>
       <label>内容属性：</label>
       <select name="conid" id="contentattribute" onchange="getconatt($(this).val());">
@@ -117,14 +124,8 @@
       </select>
       </present>
       </p>
-      <p>
-      <label>文章来源：</label>
-      <input type="text" class="textInput required" name="source" value="<!--{$result.source}--!>">
-      </p>
-      <p style="width:500px;">
-      <label>关键词：</label>
-      <input type="text" class="textInput required" name="keyword" size="50" value="<!--{$result.keyword}--!>">
-      </p>
+      
+      
       <div class="divider"></div>
       <p style="width:100%;height:300px;">
       <textarea class="editor" name="content" style="width:96%;" rows="15"><!--{$result.content|stripslashes}--!></textarea>
@@ -133,7 +134,7 @@
 	<div class="divider"></div>
 	<p style="width:100%;">所属分站：</p>
 	<volist name="result_childsite" id="rc">
-	<label><input type="checkbox" <?php echo in_array($rc['id'], $result_childsite_infoarticle) ? "checked" : "" ?> value="<!--{$rc.id}--!>" name="childsite[]"><!--{$rc.name}--!></label>
+	<label style="width:60px;"><input type="checkbox" <?php echo in_array($rc['id'], $result_childsite_infoarticle) ? "checked" : "" ?> value="<!--{$rc.id}--!>" name="childsite[]"><!--{$rc.name}--!></label>
 	</volist>
 	<div class="divider"></div>
 	<p>
@@ -156,7 +157,6 @@
 	<label>所属单位：</label>
 	<input type="text" class="textInput" name="unit" value="<!--{$result.unit}--!>">
 	</p>
-
       <div class="formBar">
 	<ul>
 	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
