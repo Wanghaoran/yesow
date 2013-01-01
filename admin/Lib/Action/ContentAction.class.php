@@ -477,6 +477,17 @@ class ContentAction extends CommonAction {
 
   //删除文章
   public function delarticle(){
+    //先删除文章的图片
+    $infoarticlepic = M('InfoArticlePic');
+    $where_pic['aid'] = array('in', $_POST['ids']);
+    $result_pic = $infoarticlepic -> where($where_pic) -> field('address') -> select();
+    //删除图片
+    foreach($result_pic as $value){
+      @unlink($value['address']);
+    }
+    //删除数据
+    $infoarticlepic -> where($where_pic) -> delete();
+    //删除文章
     $infoarticle = M('InfoArticle');
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -509,6 +520,22 @@ class ContentAction extends CommonAction {
 	$_POST['conid'] = $_POST['conid2'];
 	unset($_POST['conid2']);
       }
+      //再处理文章图片表
+      //先删除
+      $infoarticlepic = M('InfoArticlePic');
+      $infoarticlepic -> where(array('aid' => $this -> _post('id', 'intval'))) -> delete();
+      //再更新
+      if(preg_match_all('/<img\s+src=\"(.*?)\".*?\/>/i', $_POST['content'], $arr)){
+	  $data = array();
+	  $data['aid'] = $this -> _post('id', 'intval');
+	  $data['colid'] = $this -> _post('colid', 'intval');
+	  foreach($arr[1] as $value){
+	    $data['address'] = $value;
+	    $data['addtime'] = time();
+	    $infoarticlepic -> add($data);
+	  }
+	}
+
       //更新其他数据
       if(!$infoarticle -> create()){
 	$this -> error($infoarticle -> getError());
@@ -583,6 +610,23 @@ class ContentAction extends CommonAction {
 
   //文章图片管理
   public function infoimage(){
+    $infoarticlepic = M('InfoArticlePic');
+    $result = $infoarticlepic -> table('yesow_info_article_pic as iap') -> field('iap.id,iap.address,itc.name as cname,isshow_index,isshow_onelist,isshow_twolist') -> where(array('aid' => $this -> _get('id', 'intval'))) -> join('yesow_info_two_column as itc ON iap.colid = itc.id') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //设置文章图片显示
+  public function setpicisshow(){
+    $infoarticlepic = M('InfoArticlePic');
+    $data = array();
+    $data['id'] = $this -> _get('id', 'intval');
+    $data[$this -> _get('type')] = $this -> _get('value', 'intval');
+    if($infoarticlepic -> save($data)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> success(L('DATA_UPDATE_ERROR'));
+    }
   }
 
 

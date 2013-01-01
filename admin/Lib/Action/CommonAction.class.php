@@ -34,7 +34,7 @@ class CommonAction extends Action {
     foreach($menu_arr as $key => $value){
       foreach($value as $key2 => $value2){
 	//排除掉不显示的模块
-	if(preg_match('/add|edit|del|audit/i', $key2) || $key2 == 'groupuser' || $key2 == 'app' || $key2 == 'module' || $key2 == 'action' || $key2 == 'infomationtwocolumn'){
+	if(preg_match('/add|edit|del|audit/i', $key2) || $key2 == 'groupuser' || $key2 == 'app' || $key2 == 'module' || $key2 == 'action' || $key2 == 'infomationtwocolumn' || $key2 == 'infoimage'){
 	  unset($menu_arr[$key][$key2]);
 	}
       }

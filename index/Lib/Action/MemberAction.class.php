@@ -22,10 +22,11 @@ class MemberAction extends CommonAction {
 	$_POST['conid'] = $_POST['conid2'];
 	unset($_POST['conid2']);
       }
-      //图片没处理
+
        if(!$info_article -> create()){
 	 $this -> error($info_article -> getError());
-      }
+       }
+           
       if($iaid = $info_article -> add()){
 	//使用文章id写文章分站表
 	if(!empty($_POST['childsite'])){
@@ -37,6 +38,20 @@ class MemberAction extends CommonAction {
 	    $childsite_infoatricle -> add($data);
 	  }
 	}
+
+	//提取文章图片，写入文章图片表
+	if(preg_match_all('/<img\s+src=\"(.*?)\".*?\/>/i', $_POST['content'], $arr)){
+	  $infoarticlepic = M('InfoArticlePic');
+	  $data = array();
+	  $data['aid'] = $iaid;
+	  $data['colid'] = $this -> _post('colid', 'intval');
+	  foreach($arr[1] as $value){
+	    $data['address'] = $value;
+	    $data['addtime'] = time();
+	    $infoarticlepic -> add($data);
+	  }
+	}
+
 	$this -> success(L('DATA_ADD_SUCCESS'), U('member/article'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -91,6 +106,21 @@ class MemberAction extends CommonAction {
 	$_POST['conid'] = $_POST['conid2'];
 	unset($_POST['conid2']);
       }
+      //再处理文章图片表
+      //先删除
+      $infoarticlepic = M('InfoArticlePic');
+      $infoarticlepic -> where(array('aid' => $this -> _post('id', 'intval'))) -> delete();
+      //再更新
+      if(preg_match_all('/<img\s+src=\"(.*?)\".*?\/>/i', $_POST['content'], $arr)){
+	  $data = array();
+	  $data['aid'] = $this -> _post('id', 'intval');
+	  $data['colid'] = $this -> _post('colid', 'intval');
+	  foreach($arr[1] as $value){
+	    $data['address'] = $value;
+	    $data['addtime'] = time();
+	    $infoarticlepic -> add($data);
+	  }
+	}
       //更新其他数据
       if(!$infoarticle -> create()){
 	$this -> error($infoarticle -> getError());

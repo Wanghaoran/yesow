@@ -1,0 +1,76 @@
+<div class="panel">
+
+<h1>标题</h1>
+
+      <div>
+
+<div layoutH="120">
+
+<table class="list" width="99%">
+
+      <thead>
+
+            <tr>
+
+                  <th colspan="3">图片信息</th>
+
+                  <th colspan="3">显示设置</th>
+            </tr>
+
+            <tr>
+
+                  <th width="80">编号</th>
+
+		  <th width="100">客户名称</th>
+
+                  <th width="100">所属栏目</th>
+
+                  <th width="50">资讯首页显示</th>
+                  <th width="50">一级分类显示</th>
+                  <th width="50">二级分类显示</th>
+            </tr>
+
+      </thead>
+
+      <tbody>
+  <volist name="result" id="r">
+  <tr>
+
+	      <td><!--{$r.id}--!></td>
+
+		  <td><img src="<!--{$r.address}--!>" width="100"/></td>
+
+		  <td><!--{$r.cname}--!></td>
+		  <eq name="r.isshow_index" value="1">
+		  <td><a href="__URL__/setpicisshow/type/isshow_index/id/<!--{$r.id}--!>/value/0/navTabId/infoimage" target="ajaxTodo" style="color:green;font-size:15px;">显示</a></td>
+		  <else/>
+		  <td><a href="__URL__/setpicisshow/type/isshow_index/id/<!--{$r.id}--!>/value/1/navTabId/infoimage" target="ajaxTodo" style="color:red;font-size:15px;">不显示</a></td>
+		  </eq>
+		  <eq name="r.isshow_onelist" value="1">
+		  <td><a href="__URL__/setpicisshow/type/isshow_onelist/id/<!--{$r.id}--!>/value/0/navTabId/infoimage" target="ajaxTodo" style="color:green;font-size:15px;">显示</a></td>
+		  <else/>
+		  <td><a href="__URL__/setpicisshow/type/isshow_onelist/id/<!--{$r.id}--!>/value/1/navTabId/infoimage" target="ajaxTodo" style="color:red;font-size:15px;">不显示</a></td>
+		  </eq>
+		  <eq name="r.isshow_twolist" value="1">
+		  <td><a href="__URL__/setpicisshow/type/isshow_twolist/id/<!--{$r.id}--!>/value/0/navTabId/infoimage" target="ajaxTodo" style="color:green;font-size:15px;">显示</a></td>
+		  <else/>
+		  <td><a href="__URL__/setpicisshow/type/isshow_twolist/id/<!--{$r.id}--!>/value/1/navTabId/infoimage" target="ajaxTodo" style="color:red;font-size:15px;">不显示</a></td>
+		  </eq>
+		</tr>
+		</volist>
+
+
+      </tbody>
+
+</table>
+
+</div>
+
+
+
+            
+
+      </div>
+
+</div>
+
