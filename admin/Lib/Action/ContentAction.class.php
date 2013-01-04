@@ -463,7 +463,7 @@ class ContentAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ioc.name as classname,itc.name as colname,ita.name as titlename,ica.name as contentname,ia.title,a.name as aname,m.name as mname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> join('yesow_info_one_column as ioc ON ia.classid = ioc.id') -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> join('yesow_admin as a ON ia.auditid = a.id') -> join('yesow_member as m ON ia.authorid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ioc.name as classname,itc.name as colname,ita.name as titlename,ica.name as contentname,ia.title,a.name as aname,m.name as mname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> join('yesow_info_one_column as ioc ON ia.classid = ioc.id') -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> join('yesow_admin as a ON ia.auditid = a.id') -> join('yesow_member as m ON ia.authorid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('status ASC,addtime DESC') -> select();
     $this -> assign('result', $result);
 
     //每页条数
@@ -583,7 +583,7 @@ class ContentAction extends CommonAction {
     $infoarticle = M('InfoArticle');
     $where_audit = array();
     $where_audit['id'] = array('IN', $this -> _post('ids'));  
-    $data_audit = array('status' => 1);
+    $data_audit = array('status' => 2);
     $data_audit['auditid'] = $this -> _session(c('user_auth_key'), 'intval');
     $data_audit['checktime'] = time();
     if($infoarticle -> where($where_audit) -> save($data_audit)){
@@ -598,7 +598,7 @@ class ContentAction extends CommonAction {
     $infoarticle = M('InfoArticle');
     $where_audit = array();
     $where_audit['id'] = array('IN', $this -> _post('ids'));
-    $data_audit = array('status' => 2);
+    $data_audit = array('status' => 1);
     $data_audit['auditid'] = $this -> _session(c('user_auth_key'), 'intval');
     $data_audit['checktime'] = time();
     if($infoarticle -> where($where_audit) -> save($data_audit)){

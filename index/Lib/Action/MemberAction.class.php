@@ -78,7 +78,7 @@ class MemberAction extends CommonAction {
     $count = $infoarticle -> where($where) -> count('id');
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC')  -> select();
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('status ASC,addtime DESC')  -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
@@ -122,6 +122,8 @@ class MemberAction extends CommonAction {
 	  }
 	}
       //更新其他数据
+      //文章状态变为 已审未过
+      $_POST['status'] = 1;
       if(!$infoarticle -> create()){
 	$this -> error($infoarticle -> getError());
       }

@@ -13,7 +13,11 @@
 	  <label>所属一级栏目：</label>
 	  <select class="combox" name="oneid">
 	    <volist name="result_one" id="ro">
+	    <eq name="Think.get.oneid" value="$ro.id">
+	    <option value="<!--{$ro.id}--!>" selected="selected"><!--{$ro.name}--!></option>
+	    <else/>
 	    <option value="<!--{$ro.id}--!>"><!--{$ro.name}--!></option>
+	    </eq>
 	    </volist>
 	  </select>
 	</div>
