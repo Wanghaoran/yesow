@@ -51,8 +51,8 @@ table.table_list th button.hover{ background-position:0 -20px;}
 table.table_list th h3{ display:inline; color:#F60;}
 table.table_list tr{ border-bottom:1px solid #eee;}
 table.table_list td.fz label{ display:inline-block; zoom:1; padding-right:5px;}
-.w100{width:100px;}
-.w80{width:80px;}
+.w100{width:150px;}
+.w80{width:100px;}
 button.add_article_btn{ margin:0 10px;width:200px; height:30px; background:#ccc; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center;}
 button.add_article_btn.hover{ background:#F60;}
 /**分页**/

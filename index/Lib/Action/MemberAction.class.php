@@ -71,16 +71,38 @@ class MemberAction extends CommonAction {
 
   //资讯文章首页
   public function article(){
-    $infoarticle = M('InfoArticle');
     $where = array();
-    $where['authorid'] = $this -> _session('user_id', 'intval');
+    //处理搜索
+    if(isset($_POST['submit'])){
+      if(!empty($_POST['keyword'])){
+	$where['ia.keyword'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+      }
+      if(!empty($_POST['csid'])){
+	$result_childsite_infoarticle_temp = M('ChildsiteInfoarticle') -> field('iaid') -> where(array('csid' => $this -> _post('csid', 'intval'))) -> select();
+	$result_childsite_infoarticle = array();
+	//格式化
+	foreach($result_childsite_infoarticle_temp as $value){
+	  $result_childsite_infoarticle[] = intval($value['iaid']);
+	}
+	$where['ia.id'] = array('in', $result_childsite_infoarticle);
+      }
+      if(!empty($_POST['colid'])){
+	$colid = M('InfoTwoColumn') -> getFieldByname($this -> _post('colid'), 'id');
+	$where['ia.colid'] = intval($colid);
+      }
+    }
+    $infoarticle = M('InfoArticle');
+    $where['ia.authorid'] = $this -> _session('user_id', 'intval');
     import("ORG.Util.Page");// 导入分页类
-    $count = $infoarticle -> where($where) -> count('id');
+    $count = $infoarticle -> table('yesow_info_article as ia') -> where($where) -> count('id');
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('status ASC,addtime DESC')  -> select();
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ita.name as tname,ia.title,ica.name as cname,ia.hits,ia.addtime,ia.checktime,ia.status') -> where($where) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> join('yesow_info_content_attribute as ica ON ia.conid = ica.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('status ASC,addtime DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
+    //查所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
 

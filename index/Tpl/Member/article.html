@@ -55,18 +55,20 @@
 				<div id="main_r">
 					<table class="user_search">
 						<tbody>
-						<tr>
-							<td>关键词：<input class="keywords w100" name="keywords" type="text" /></td>
+						  <tr>
+						    <form action="__ACTION__" method="post" id="search">
+							<td>关键词：<input class="keywords w100" name="keyword" type="text" /></td>
 							<td>所在地：
-								<select class="address" name="address">
+								<select class="address" name="csid">
 									<option value="">选择省份</option>
-									<option value="1">北京</option>
-									<option value="2">河北</option>
+									<volist name="result_childsite" id="rc">
+									<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+									</volist>
 								</select>
 							</td>
-							<td>发布人：<input class="username w80" name="username" type="text" /></td>
-							<td>栏目：<input class="category w80" name="category" type="text" /></td>
-							<td><button class="user_search_btn">搜索</button></td>
+							<td>栏目：<input class="category w80" name="colid" type="text" /></td>
+							<td><button class="user_search_btn" onclick="document.getElemetById('search').submit()" name="submit">搜索</button></td>
+							</form>
 						</tr>
 						</tbody>
 					</table>

@@ -625,11 +625,14 @@ class ContentAction extends CommonAction {
     if($infoarticlepic -> save($data)){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
-      $this -> success(L('DATA_UPDATE_ERROR'));
+      $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
 
-
+  //文章评论管理
+  public function infocomment(){
+    $this -> display();
+  }
 
   /* ------------  文章管理   -------------- */
 }
