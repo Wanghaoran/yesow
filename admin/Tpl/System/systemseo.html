@@ -1,0 +1,32 @@
+
+<div class="panel">
+  <h1>SEO设置</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/navTabId/systemseo" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:95%;">
+      <label style="width:100%;">填写说明：<span style="color:red;">分站名：</span>{site}</label>
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label>站点Title：</label>
+      <input type="text" class="required" name="sy_title" size="130" value="<!--{$title}--!>" />
+      </p>
+      <p style="width:100%;">
+      <label>站点Keywords：</label>
+      <input type="text" class="required" name="sy_keywords" size="130" value="<!--{$keywords}--!>" />
+      </p>
+      <p style="width:100%;">
+      <label>站点Description：</label>
+      <input type="text" class="required" name="sy_description" size="130" value="<!--{$description}--!>" />
+      </p>
+      
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

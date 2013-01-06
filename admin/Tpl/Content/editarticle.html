@@ -47,12 +47,12 @@
     });
   }
 </script>
-
+<!--你看看现在对吗？应该不对啊，==没保存这个 你写的都没执行到啊保存 ====  就保存这一个  ceshi--!>
 
 <div class="panel">
   <h1>文章编辑</h1>
   <div class="pageFormContent" layoutH="56">
-    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/article" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/article" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
       <p style="width:500px;">
       <label>所属栏目：</label>
       <select name="classid" onchange="getdata($(this).val());">

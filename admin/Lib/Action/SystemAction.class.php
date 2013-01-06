@@ -1117,4 +1117,30 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
+  /* ------------  系统设置   -------------- */
+  //SEO设置
+  public function systemseo(){
+    $system = D('System');
+    //处理更新
+    if(!empty($_POST['sy_title'])){
+      foreach($_POST as $key => $value){
+	if(substr($key, 0, 3) == 'sy_'){
+	  $data = array();
+	  $where = array();
+	  $where['name'] = substr($key, 3);
+	  $data['value'] = $value;
+	  $system -> where($where) -> save($data);
+	}
+      }
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }
+
+    $this -> assign('title', $system -> getFieldByname('title', 'value'));
+    $this -> assign('keywords', $system -> getFieldByname('keywords', 'value'));
+    $this -> assign('description', $system -> getFieldByname('description', 'value'));
+    $this -> display();
+  }
+
+  /* ------------  系统设置   -------------- */
+
 }
