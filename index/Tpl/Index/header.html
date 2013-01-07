@@ -1,0 +1,85 @@
+<div id="minitop"><div id="minitop_l"></div>
+   		<div id="minitop_c">
+		  <p id="welcome">
+		欢迎来到华东地区最大IT搜索中心&nbsp;
+		<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+		<span id="login_link">尊敬的 <!--{$Think.session.username}--!> 您好，欢迎回来</span>
+		<span id="resige_link">[<a href="__APP__/member/index" target="_blank">会员中心</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__APP__/public/logout">安全退出</a>]</span>&nbsp;
+		<else/>
+		<span id="login_link">[<a href="__APP__/login">登录</a>]</span>&nbsp;
+               	<span id="resige_link">[<a href="#">免费注册</a>]</span>&nbsp;
+		<span id="getpass_link">[<a href="#">找回密码</a>]</span>&nbsp;
+		</if>
+		</p>
+            <p id="webtool">
+               	<a href="#">设为首页</a>&nbsp;
+               	<a href="#">加入收藏</a>&nbsp;
+               	<a href="#">网站地图</a>&nbsp;
+            </p>
+        </div>
+   		<div id="minitop_r"></div>
+        <div class="clear"></div>
+      </div>
+      <div id="top">
+    	<div id="top_l">
+        	<a href="#" id="logo">易搜</a>
+            <span id="web_desc">中国最专业和权威的it渠道平台</span>
+        </div>
+    	<div id="top_c">
+        	<div id="top_search">
+            	<form action="" method="get" >
+            		<input type="text" name="s" id="s" class="input" value="请输入您要搜索的内容" />
+                	<button id="go" name="go" >搜索</button>
+                </form>
+            </div>
+            <div id="top_search_tool">
+            	<a href="#">高级搜索</a>
+            	<a href="#">帮助中心</a>
+            </div>
+            <p class="clear" id="hot_search">
+            		<b>热门搜索:</b>
+                    <a href="#">搜索关键词</a>&nbsp;
+                    <a href="#">搜索关键词</a>&nbsp;
+                    <a href="#">搜索关键词</a>&nbsp;
+                    <a href="#">搜索关键词</a>&nbsp;
+                    <a href="#">搜索关键词</a>&nbsp;
+            </p>
+        </div>
+    	<div id="top_r">
+        <a href="#"><img src="__PUBLIC__/index/image/tiaotu.gif" /></a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--导航-->
+    <div id="nav">
+    	<div id="nav01">
+        	<div id="nav01_l"></div>
+        	<div id="nav01_c">
+            	<ul id="nav01_ul">
+                	<li class="hover"><a href="#">易搜首页</a></li>
+                	<li><a href="#">渠道黄页</a></li>
+                	<li><a href="#">企业会员</a></li>
+                	<li><a href="#">出租招聘</a></li>
+                	<li><a href="__APP__/info">咨询文章</a></li>
+                	<li><a href="#">招商引资</a></li>
+                	<li><a href="#">代理加盟</a></li>
+                	<li class="last"><a href="#">易搜商城</a></li>
+                </ul>
+	      </div>
+	      
+        	<div id="nav01_r"></div>
+            <div class="clear"></div>
+        </div>
+    	<div id="nav02">
+			<ul id="nav02_ul">
+			  <li><a href="" >1</a><a href="" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a href="" >帮助中心</a><a href="" >关于我们</a></li>
+				<li class="none"><a href="" >第二个01</a><a href="" >第二个02</a><a href="" >第二个03</a><a href="" >第二个04</a></li>
+				<li class="none"><a href="" >第三个01</a><a href="" >第三个02</a><a href="" >第三个03</a><a href="" >第三个04</a></li>
+				<li class="none"><a href="" >第四个01</a><a href="" >第四个02</a><a href="" >第四个03</a><a href="" >第四个04</a></li>
+				<li class="none"><volist name="index_article_nav" id="ian"><a href="__APP__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
+				<li class="none"><a href="" >第六个01</a><a href="" >第六个02</a><a href="" >第六个03</a><a href="" >第六个04</a></li>
+				<li class="none"><a href="" >第七个01</a><a href="" >第七个02</a><a href="" >第七个03</a><a href="" >第七个04</a></li>
+				<li class="none"><a href="" >第八个01</a><a href="" >第八个02</a><a href="" >第八个03</a><a href="" >第八个04</a></li>
+			</ul>	
+        </div>

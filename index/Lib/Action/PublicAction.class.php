@@ -14,7 +14,7 @@ class PublicAction extends Action {
     if($result = $member -> field('id,name') -> where($where) -> find()){
       session(C('USER_AUTH_KEY'), $result['id']);
       session('username', $result['name']);
-      $this -> success(L('LOGIN_SUCCESS'), U('Member/article'));
+      $this -> success(L('LOGIN_SUCCESS'), U('Member/index'));
     }else{
       $this -> error(L('PASSWORD_ERROR'));
     }
@@ -26,7 +26,7 @@ class PublicAction extends Action {
       session(C('USER_AUTH_KEY'), null);
       session(null);
       session('[destroy]');
-      $this -> success(L('LOGOUT_SUCCESS'), U(C('USER_AUTH_GATEWAY')));
+      $this -> success(L('LOGOUT_SUCCESS'));
     }else{
       $this -> error(L('LOGOUT_ERROR'));
     }

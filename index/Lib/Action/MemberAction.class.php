@@ -9,6 +9,7 @@ class MemberAction extends CommonAction {
 
   //会员中心首页
   public function index(){
+    dump($_SESSION);
   
   }
 

@@ -1,7 +1,42 @@
 <?php
 class IndexAction extends CommonAction {
+
+  //前置方法，检测变量
+  public function _initialize(){
+    //资讯导航
+    if(S('index_article_nav')){
+      $this -> assign('index_article_nav', S('index_article_nav'));
+    }else{
+      $index_article_nav = $this -> getonearticle();
+      $this -> assign('index_article_nav', $index_article_nav);
+      S('index_article_nav', $index_article_nav);   
+    }
+  }
+  //首页
   public function index(){
     $this -> display();
+  }
+
+  //获得一级资讯分类
+  private function getonearticle(){
+    $articleonecolumn = M('InfoOneColumn');
+    return $articleonecolumn -> field('id,name') -> where(array('isnav' => 1)) -> order('sort ASC') -> select();
+  }
+
+  //资讯首页
+  public function info(){
+    dump('资讯首页');
+  }
+
+  //资讯一级页
+  public function infolist(){
+    dump('资讯一级栏目页');
+    dump($_GET);
+  }
+
+  //资讯二级详情页
+  public function infodetail(){
+    dump('资讯二级栏目页');
   }
 
   //查看文章
