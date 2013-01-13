@@ -56,15 +56,23 @@
     	<div id="nav01">
         	<div id="nav01_l"></div>
         	<div id="nav01_c">
-            	<ul id="nav01_ul">
-                	<li class="hover"><a href="#">易搜首页</a></li>
+		  <ul id="nav01_ul">
+		    <if condition="MODULE_NAME eq 'Index'">
+		    <li class="hover"><a href="__ROOT__">易搜首页</a></li>
+		    <else/>
+		    <li><a href="__ROOT__">易搜首页</a></li>
+		    </if>
                 	<li><a href="#">渠道黄页</a></li>
                 	<li><a href="#">企业会员</a></li>
-                	<li><a href="#">出租招聘</a></li>
-                	<li><a href="__ROOT__/info">咨询文章</a></li>
+			<li><a href="#">出租招聘</a></li>
+			<if condition="MODULE_NAME eq 'Info'">
+			<li class="hover"><a href="__ROOT__/info">资讯文章</a></li>
+			<else/>
+			<li><a href="__ROOT__/info">资讯文章</a></li>
+			</if>
                 	<li><a href="#">招商引资</a></li>
                 	<li><a href="#">代理加盟</a></li>
-                	<li class="last"><a href="#">易搜商城</a></li>
+			<li class="last"><a href="#">易搜商城</a></li>
                 </ul>
 	      </div>
 	      
@@ -72,12 +80,20 @@
             <div class="clear"></div>
         </div>
     	<div id="nav02">
-			<ul id="nav02_ul">
-			  <li><a href="" >1</a><a href="" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a href="" >帮助中心</a><a href="" >关于我们</a></li>
+	  <ul id="nav02_ul">
+	    <if condition="MODULE_NAME eq 'Index'">
+	    <li><a href="" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a href="" >帮助中心</a><a href="" >关于我们</a></li>
+	    <else/>
+	    <li class="none"><a href="" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a href="" >帮助中心</a><a href="" >关于我们</a></li>
+	    </if>
 				<li class="none"><a href="" >第二个01</a><a href="" >第二个02</a><a href="" >第二个03</a><a href="" >第二个04</a></li>
 				<li class="none"><a href="" >第三个01</a><a href="" >第三个02</a><a href="" >第三个03</a><a href="" >第三个04</a></li>
 				<li class="none"><a href="" >第四个01</a><a href="" >第四个02</a><a href="" >第四个03</a><a href="" >第四个04</a></li>
+				<if condition="MODULE_NAME eq 'Info'">
+				<li><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
+				<else/>
 				<li class="none"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
+				</if>
 				<li class="none"><a href="" >第六个01</a><a href="" >第六个02</a><a href="" >第六个03</a><a href="" >第六个04</a></li>
 				<li class="none"><a href="" >第七个01</a><a href="" >第七个02</a><a href="" >第七个03</a><a href="" >第七个04</a></li>
 				<li class="none"><a href="" >第八个01</a><a href="" >第八个02</a><a href="" >第八个03</a><a href="" >第八个04</a></li>

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	<include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/info">资讯文章</a> &gt;
+		<a href="__ROOT__/infolist/<!--{$title1.id}--!>"><!--{$title1.name}--!></a> &gt;
+		<a href="__ROOT__/infodetail/<!--{$title2.id}--!>"><!--{$title2.name}--!></a> &gt;
+		<span>文章详情</span> 
+	</div>
+	<!--咨询文章详情页-->
+	<div id="main13">
+		<div id="main13_l">
+			<div class="cat_header"></div>
+			<div class="cat_bod">
+			  <h2 class="article_title"><!--{$result.title}--!></h2>
+			  <p class="article_info">出处：<!--{$result.source}--!> 作者：<!--{$result.mname}--!> 责任编辑：<!--{$result.aname|default="无"}--!> 发布日期：<!--{$result.addtime|date="Y-m-d", ###}--!></p>
+				<p class="article_notic"><marquee align="middle" behavior="scroll">易搜提醒：别忘了去产品展示中查看您想要的产品资料和价格</marquee></p>
+				<div class="article_bod">
+				  <p>
+				  <!--{$result.content|stripslashes}--!>
+				  </p>
+				</div>
+			</div>
+			
+			<div class="comment_list">
+				<h3>评论列表</h3>
+				<ul class="comment_list_ul">
+					<li>
+						<p class="comment_list_head">1楼 匿名用户在2012-02-02发表了评论:</p>
+						<p class="comment_list_bod">这里是用户给与的评论文字，当然在这里的文字不可能是非常多非常多的，在这里程序可以控制下最多的评论文字数量。</p>
+					</li>
+					<li>
+						<p class="comment_list_head">2楼 匿名用户在2012-02-02发表了评论:</p>
+						<p class="comment_list_bod">这里是用户给与的评论文字，当然在这里的文字不可能是非常多非常多的，在这里程序可以控制下最多的评论文字数量。</p>
+					</li>
+				</ul>
+				<div class="page">
+					<span>共72条数据</span>
+					<a href="#">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">4</a>
+					<a href="#">5</a>
+					<a href="#">下一页</a>
+				</div>			
+			</div>
+
+			<div class="article_comment">
+				<p class="comment_notic">注：评论审核后才能被公开。</p>
+				<div class="articlt_comment_body">
+					<div class="article_comment_l">
+						<div class="article_comment_content">
+							<textarea class="article_comment_bod" name="">请输入评论内容</textarea>
+						</div>
+					</div>
+					<div class="article_comment_r">
+						<div class="article_comment_r_t">
+							<input type="text" value="验证码" />
+							<img src="" />
+							<a href="javascript:;" >换一个</a>
+						</div>
+						<div class="article_comment_r_d">
+							<button type="submit" >提交评论</button>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="main13_r">
+			<div class="main09_r_rmsj">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>最新更新</h3>
+						</div>
+					</div>
+				</div>
+				<ul class="bl_list">
+				  <volist name="recent_updates" id="ru">
+				  <li><a href="__ACTION__/id/<!--{$ru.id}--!>"><span>[<b><!--{$ru.cname}--!></b>]</span> <!--{$ru.title}--!> </a><span class="time"><!--{$ru.addtime|date="Y-m-d", ###}--!></span></li>
+				  </volist>	  
+				</ul>
+				<div class="clear"></div>
+			</div>
+			<div class="clear" style="height:5px;"></div>
+			<div class="main09_r_rmsj">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>热门点击</h3>
+						</div>
+					</div>
+				</div>
+				<ul class="bl_list">
+				  <volist name="hot_clicks" id="hc">
+				  <li><a href="__ACTION__/id/<!--{$hc.id}--!>"><span>[<b><!--{$hc.cname}--!></b>]</span> <!--{$hc.title}--!> </a><span class="time"><!--{$hc.addtime|date="Y-m-d", ###}--!></span></li>
+				  </volist>		  
+				</ul>
+				<div class="clear"></div>
+			</div>
+			
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--咨询文章详情页-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

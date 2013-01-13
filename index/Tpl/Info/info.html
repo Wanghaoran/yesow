@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script src="__PUBLIC__/index/javascript/jquery.KinSlideshow-1.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("#KinSlideshow").KinSlideshow();
+})
+</script>
+</head>
+<body id="body_index">
+  <div id="warp_body">
+    <include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<span>资讯文章</span> 
+	</div>
+	<!--咨询文章-->
+	<div id="main10">
+		<div id="main10_t">
+			<div class="main10_t_l">
+				<div class="cat_header">
+					<h3>最新更新</h3>
+					<a href="#" class="more" ><!-- 更多 --!></a>
+				</div>
+				<div class="cat_bod">
+				  <ul class="main10_t_ul">
+				    <volist name="result_newest" id="rn">
+				    <li><a href="__ROOT__/article/<!--{$rn.id}--!>" target="_blank" ><!--{$rn.title}--!></a></li>
+				    </volist>
+				  </ul>
+				</div>
+			</div>
+			<div class="main10_t_c">
+			  <div id="KinSlideshow" style="visibility:hidden;">
+			    <volist name="result_pic" id="rp">
+			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="310" height="300" /></a>
+		    </volist>
+                </div>
+			</div>
+			<div class="main10_t_r">
+				<div class="cat_header">
+					<h3>热门看点</h3>
+					<a href="#" class="more" ><!-- 更多 --!></a>
+				</div>
+				<div class="cat_bod">
+				  <ul class="main10_t_ul">
+				    <volist name="result_hotpoint" id="rh">
+				    <li><a href="__ROOT__/article/<!--{$rh.id}--!>" target="_blank" ><!--{$rh.title}--!></a></li>
+				    </volist>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="index_gg01">
+			<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+		</div>
+		<div id="main10_m">
+		  <volist name="result_one_column" id="roc" mod="3">
+		  <eq name="mod" value="0">
+		  <div class="main_10_m_item">
+		    </eq>
+		    <eq name="mod" value="0">
+		    <div class="main10_m_l">
+		    </eq>
+		    <eq name="mod" value="1">
+		    <div class="main10_m_c">
+		    </eq>
+		    <eq name="mod" value="2">
+		    <div class="main10_m_r">
+		    </eq>
+					<div class="cat_header">
+					  <h3><!--{$roc.name}--!></h3>
+					  <a href="__ROOT__/infolist/<!--{$roc.id}--!>" class="more" >更多</a>
+					</div>
+					<div class="cat_bod">
+						<ul class="main10_m_ul">
+							<li class="first">
+								<div class="list_img">
+								  <a href="__ROOT__/article/<!--{$roc.fristarticle.0.id}--!>" target="_blank"><img src="<!--{$roc.fristarticle.0.pic|default='__PUBLIC__/index/image/nopicture.gif'}--!>" width="125" height="100" /></a>
+								</div>
+								<div class="list_info">
+								  <h3><a href="__ROOT__/article/<!--{$roc.fristarticle.0.id}--!>" target="_blank"><!--{$roc.fristarticle.0.title}--!></a></h3>
+									<p><!--{$roc.fristarticle.0.content}--!></p>
+								</div>
+								<div class="clear"></div>
+								</li>
+								<foreach name="roc.articlelist" item="roca" key="x">
+								<li>● <a href="__ROOT__/article/<!--{$roca.id}--!>" target="_blank">&nbsp;<!--{$roca.tname}--!> |　<!--{$roca.title}--!></a></li>
+								</foreach>
+
+								
+
+						</ul>
+					</div>
+				</div>
+				
+				<eq name="mod" value="2">
+				<div class="clear"></div>
+			      </div>
+			      </eq>
+			      <eq name="result_one_column_num" value="$key">
+			      <div class="clear"></div>
+			      </eq>
+			      <eq name="mod" value="2">
+			<div class="index_gg01">
+				<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+			      </div>
+			      </eq>
+
+			</volist>
+			
+
+			
+		</div>
+		<div id="main10_d"></div>
+	</div>
+	<!--咨询文章结束-->
+
+
+	<include file="Index:footer" />	
+		
+		
+		
+		
+</div>
+</body>
+</html>

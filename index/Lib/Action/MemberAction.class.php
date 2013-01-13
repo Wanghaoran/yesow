@@ -1,5 +1,5 @@
 <?php
-class MemberAction extends CommonAction {
+class MemberAction extends MemberCommonAction {
   //登录验证
   public function _initialize(){
     if(!$_SESSION[C('USER_AUTH_KEY')]){
@@ -41,7 +41,7 @@ class MemberAction extends CommonAction {
 	}
 
 	//提取文章图片，写入文章图片表
-	if(preg_match_all('/<img.*?src=\"(.*?)\".*?\/>/i', $_POST['content'], $arr)){
+	if(preg_match_all('/<img.*?src=\"(.*?)\".*?\>/i', $_POST['content'], $arr)){
 	  $infoarticlepic = M('InfoArticlePic');
 	  $data = array();
 	  $data['aid'] = $iaid;
@@ -134,7 +134,7 @@ class MemberAction extends CommonAction {
       $infoarticlepic = M('InfoArticlePic');
       $infoarticlepic -> where(array('aid' => $this -> _post('id', 'intval'))) -> delete();
       //再更新
-      if(preg_match_all('/<img.*?src=\"(.*?)\".*?\/>/i', $_POST['content'], $arr)){
+      if(preg_match_all('/<img.*?src=\"(.*?)\".*?\>/i', $_POST['content'], $arr)){
 	  $data = array();
 	  $data['aid'] = $this -> _post('id', 'intval');
 	  $data['colid'] = $this -> _post('colid', 'intval');

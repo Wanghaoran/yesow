@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	<include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/info">资讯文章</a> &gt;
+		<a href="__ROOT__/infolist/<!--{$onetitle.id}--!>"><!--{$onetitle.name}--!></a> &gt;
+		<span><!--{$twotitle}--!></span> 
+	</div>
+	<!--咨询文章分页-->
+	<div id="main12">
+		<div id="main12_l">
+			<div class="cat_header">
+			  <h3><!--{$twotitle}--!></h3>
+			</div>
+			<div class="cat_bod">
+			  <ul class="cat_list_bod_img">
+			    <volist name="result_left_pic" id="rlp">
+			    <li><a href="__ROOT__/article/<!--{$rlp.aid}--!>" target="_blank" ><img src="<!--{$rlp.address}--!>" /></a></li>
+			    </volist>
+				</ul>
+				<ul class="cat_list_title">
+				  <volist name="result_article" id="ra">
+				  <li><a href="__ROOT__/article/<!--{$ra.id}--!>" target="_blank" >[<!--{$ra.tname}--!>] <!--{$ra.title}--!> </a></li>
+				  </volist>
+				</ul>
+				<div class="clear"></div>
+				
+				<div class="page">
+				  <!--{$show}--!>
+				</div>
+			</div>
+		</div>
+		<div id="main12_r">
+			<div class="main12_r_item">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>热门看点</h3>
+						</div>
+					</div>
+				</div>
+				<ul class="bl_list main11_l_d">
+				  <volist name="result_hot_point" id="rhp">
+					<li>
+						<div class="bl_list_img">
+						  <img src="<!--{$rhp.address|default='__PUBLIC__/index/image/nopicture.gif'}--!>" width="80" height="60">
+						</div>
+						<a href="__ROOT__/article/<!--{$rhp.id}--!>">[<!--{$rhp.addtime|date="Y-m-d", ###}--!>] <!--{$rhp.title}--!> </a>
+					</li>
+					</volist>
+				</ul>				
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--咨询文章分页结束-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

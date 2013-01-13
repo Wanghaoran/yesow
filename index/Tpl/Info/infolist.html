@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script src="__PUBLIC__/index/javascript/jquery.KinSlideshow-1.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("#KinSlideshow").KinSlideshow();
+})
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	<include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/info">资讯文章</a> &gt;
+		<span><!--{$title}--!></span> 
+	</div>
+	<!--咨询文章分页-->
+	<div id="main11">
+		<div id="main11_l">
+			<div class="main11_l_t">
+			  <div id="KinSlideshow" style="visibility:hidden;">
+			    <volist name="result_pic" id="rp">
+			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="295" height="295" /></a>
+			    </volist>
+			    </div>
+			</div>
+			<div class="main11_l_d">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>热门看点</h3>
+						</div>
+					</div>
+				</div>
+				<ul class="bl_list main11_l_d">
+				  <volist name="result_hot_point" id="rhp">
+					<li>
+						<div class="bl_list_img">
+						  <img src="<!--{$rhp.address|default='__PUBLIC__/index/image/nopicture.gif'}--!>" width="80" height="60" />
+						</div>
+						<a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" >[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!></a>
+						</li>
+						</volist>
+				</ul>
+			</div>
+		</div>
+		<div id="main11_r">
+		  <volist name="result_two_column" id="rtc">
+			<div class="main11_r_item">
+				<div class="cat_header">
+				  <h3><a href="__ROOT__/infodetail/<!--{$rtc.id}--!>"><!--{$rtc.name}--!></a></h3>
+				</div>
+				<div class="cat_bod">
+					<div class="main11_cat_bod_l">
+						<div class="cat_first_image">
+						  <img src="<!--{$rtc.firstarticle.address|default='__PUBLIC__/index/image/nopicture.gif'}--!>" width="125" height="100" />
+						</div>
+						<div class="cat_first_info">
+						<h3><a href="__ROOT__/article/<!--{$rtc.firstarticle.id}--!>" target="_blank"><!--{$rtc.firstarticle.title}--!></a></h3>
+						<p><!--{$rtc.firstarticle.content}--!><a class="more" href="__ROOT__/article/<!--{$rtc.firstarticle.id}--!>" target="_blank">[详细]</a>
+							</p>
+						</div>
+						<div class="line"></div>
+						<ul class="main11_cat_bod_l_list">
+						  <volist name="rtc.articlelist" id="rtca">
+						  <li>●  <a href="__ROOT__/article/<!--{$rtca.id}--!>" target="_blank">&nbsp;<!--{$rtca.tname}--!> | <!--{$rtca.title}--!></a></li>
+						  </volist>
+						</ul>
+					</div>
+					<div class="main11_cat_bod_r">
+						<ul class="main11_cat_bod_r_list">
+						  <li class="title"><!--{$rtc.name}--!> 热评文章</li>
+						  <volist name="rtc.hotcomments" id="rtch">
+						  <li><a href="__ROOT__/article/<!--{$rtca.id}--!>"><!--{$rtch.title}--!></a></li>
+						  </volist>
+						</ul>
+					</div><!--main11_cat_bod_r-->
+					<div class="clear"></div>
+				</div><!--cat_bod-->		
+			      </div>
+			      </volist>
+				
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--咨询文章分页结束-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	
+	<include file="Index:footer" />
+</div>
+</body>
+</html>
