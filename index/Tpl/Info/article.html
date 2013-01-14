@@ -90,7 +90,7 @@
 				</div>
 				<ul class="bl_list">
 				  <volist name="recent_updates" id="ru">
-				  <li><a href="__ACTION__/id/<!--{$ru.id}--!>"><span>[<b><!--{$ru.cname}--!></b>]</span> <!--{$ru.title}--!> </a><span class="time"><!--{$ru.addtime|date="Y-m-d", ###}--!></span></li>
+				  <li><a href="__ACTION__/id/<!--{$ru.id}--!>"><span>[<b><!--{$ru.cname}--!></b>]</span> <!--{$ru.title|msubstr=0,9}--!> </a><span class="time"><!--{$ru.addtime|date="Y-m-d", ###}--!></span></li>
 				  </volist>	  
 				</ul>
 				<div class="clear"></div>
@@ -106,7 +106,7 @@
 				</div>
 				<ul class="bl_list">
 				  <volist name="hot_clicks" id="hc">
-				  <li><a href="__ACTION__/id/<!--{$hc.id}--!>"><span>[<b><!--{$hc.cname}--!></b>]</span> <!--{$hc.title}--!> </a><span class="time"><!--{$hc.addtime|date="Y-m-d", ###}--!></span></li>
+				  <li><a href="__ACTION__/id/<!--{$hc.id}--!>"><span>[<b><!--{$hc.cname}--!></b>]</span> <!--{$hc.title|msubstr=0,9}--!> </a><span class="time"><!--{$hc.addtime|date="Y-m-d", ###}--!></span></li>
 				  </volist>		  
 				</ul>
 				<div class="clear"></div>

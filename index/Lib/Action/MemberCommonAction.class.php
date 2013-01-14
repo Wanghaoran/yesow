@@ -1,4 +1,4 @@
 <?php
-class IndexCommonAction extends Action {
+class MemberCommonAction extends Action {
 
 }
