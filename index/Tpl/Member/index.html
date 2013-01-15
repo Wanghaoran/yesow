@@ -9,41 +9,15 @@
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
 </head>
 <body id="body_user">
-	<div id="user_t">
-    	<div class="warp_850">
-        	<div id="top">
-            	<div id="logo">
-                	<a href="#" >易搜首页</a>
-                </div>
-                <div id="tools">
-		  <p>欢迎会员 <!--{$Think.session.username}--!> <a href="#">退出</a> 您的会员级别是:普通会员，目前为E币模式</p>
-                    <p>您还有155524E币，你还有RMB余额755.35元</p>
-                    <p class="tel_num">咨询电话:0571-56761176 56761178</p>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div id="nav">
-            	<ul>
-                	<li class="hover"><a href="#">我的易搜</a></li>
-                	<li><a href="#">资金管理</a></li>
-                	<li><a href="#">网上购物</a></li>
-                	<li><a href="#">商家服务</a></li>
-                	<li><a href="#">个人服务</a></li>
-                	<li><a href="#">易搜联盟</a></li>
-                	<li><a href="#">使用帮助</a></li>
-                </ul>
-            </div>
-            <div id="kong"></div>
-        </div>
-    </div>
+  <include file="header" />
 	<div id="user_m">
     	<div class="warp_850">
         	<div id="main">
             	<div id="main_l">
                 	<div id="main_l_tit"><h3>我的易搜</h3></div>
                     <ul>
-                    	<li><a href="#">基本信息管理</a></li>
-                    	<li class="hover"><a href="#">安全设置管理</a></li>
+                    	<li class="hover"><a href="#">基本信息管理</a></li>
+                    	<li><a href="#">安全设置管理</a></li>
                     	<li><a href="#">特权设置管理</a></li>
                     	<li><a href="#">寻找我的组织</a></li>
                     </ul>
@@ -53,12 +27,12 @@
                     <div class="main_rm_con">
                     	<ul class="user_set">
                         	<li class="admin_img"><a href="#"><img src="__PUBLIC__/index/style/images/user/img_admin.jpg" /></a><h2>信息认证</h2></li>
-                            <li><div class="div_span">会员帐号：</div><div>******</div></li>
+				<li><div class="div_span">会员帐号：</div><div><!--{$Think.session.username}--!></div></li>
                             <li><div class="div_span">会员余额：</div><div>RMB:0.3元[<a href="#">充值</a>]<br />EB:120元[<a href="#">充值</a>]</div></li>
                             <li><div class="div_span">当前等级：</div><div>普通会员</div></li>
                             <div class="clear"></div>
-                            <li class="long_text"><div class="div_span">最近登录IP：</div><div>198.1.1.2</div></li>
-                            <li  class="long_text"><div class="div_span">上次登录时间：</div><div>2012年5月1日 12：50:30</div></li>
+			    <li class="long_text"><div class="div_span">最近登录IP：</div><div><!--{$Think.session.last_login_ip}--!></div></li>
+			    <li  class="long_text"><div class="div_span">上次登录时间：</div><div><!--{$Think.session.last_login_time|date="Y-m-d H:i:s", ###}--!></div></li>
                             <li class="btn_img1"><a href="#"><img src="__PUBLIC__/index/style/images/user/img_icon4.jpg" /></a><a href="#"><img src="__PUBLIC__/index/style/images/user/img_icon3.jpg" /></a></li>
                         </ul>
                         <div class="clear"></div>
@@ -144,25 +118,8 @@
             </div>
         </div>
     </div>
-	<div id="user_d">
-		<div class="warp_850">
-			<p>
-				<a href="">关于易搜</a> |
-				<a href="">发展历程</a> |
-				<a href="">服务声明</a> |
-				<a href="">业务介绍</a> |
-				<a href="">优势介绍</a> |
-				<a href="">站点地图</a> |
-				<a href="">联系方式</a> |
-				<a href="">付款方式</a> |
-				<a href="">广告服务</a>
-			</p>
-			<p>
-				Copyright &copy; www.yesow.com All rights reserved<br>
-				浙B2-20080069
-			</p>
-		</div>
-	</div>
+
+    <include file="footer" />
 	<script type="text/javascript">
 		$(function(){
 			$('button').hover(function(){

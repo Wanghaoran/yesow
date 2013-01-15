@@ -10,13 +10,23 @@ class PublicAction extends Action {
     $member = M('Member');
     $where = array();
     $where['name'] = $this -> _post('name');
-    $where['password'] = $this -> _post('password', 'md5');
-    if($result = $member -> field('id,name') -> where($where) -> find()){
+    $where['status'] = 1;
+    if($result = $member -> field('id,password,name,last_login_ip,last_login_time') -> where($where) -> find()){
+      if($result['password'] != $this -> _post('password', 'md5')){
+	$this -> error(L('PASSWORD_ERROR'));
+      }
       session(C('USER_AUTH_KEY'), $result['id']);
       session('username', $result['name']);
+      session('last_login_ip', $result['last_login_ip']);
+      session('last_login_time', $result['last_login_time']);
+      //更新登录信息
+      $data['id'] = $result['id'];
+      $data['last_login_ip'] = get_client_ip();
+      $data['last_login_time'] = time();
+      $member -> save($data);
       $this -> success(L('LOGIN_SUCCESS'), U('Member/index'));
     }else{
-      $this -> error(L('PASSWORD_ERROR'));
+      $this -> error(L('NAME_ERROR'));
     }
   }
 

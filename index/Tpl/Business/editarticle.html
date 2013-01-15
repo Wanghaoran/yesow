@@ -71,33 +71,7 @@
 </script>
 </head>
 <body id="body_user">
-	<div id="user_t">
-    	<div class="warp_850">
-        	<div id="top">
-            	<div id="logo">
-                	<a href="#" >易搜首页</a>
-                </div>
-                <div id="tools">
-		  <p>欢迎会员 <!--{$Think.session.username}--!> <a href="__APP__/Public/logout">退出</a> 您的会员级别是:普通会员，目前为E币模式</p>
-                    <p>您还有155524E币，你还有RMB余额755.35元</p>
-                    <p class="tel_num">咨询电话:0571-56761176 56761178</p>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div id="nav">
-            	<ul>
-                	<li><a href="#">我的易搜</a></li>
-                	<li><a href="#">资金管理</a></li>
-                	<li><a href="#">网上购物</a></li>
-                	<li class="hover"><a href="#">商家服务</a></li>
-                	<li><a href="#">个人服务</a></li>
-                	<li><a href="#">易搜联盟</a></li>
-                	<li><a href="#">使用帮助</a></li>
-                </ul>
-            </div>
-            <div id="kong"></div>
-        </div>
-    </div>
+	<include file="Member:header" />
 	<div id="user_m">
     	<div class="warp_850">
         	<div id="main">
@@ -127,77 +101,112 @@
 									<select class="" name="classid" onchange="getdata($(this).val());" >
 										<option value="" >请选择</option>
 										<volist name="result_one_col" id="roc">
+										<eq name="result.classid" value="$roc.id">
+										<option value="<!--{$roc.id}--!>" selected="selected"><!--{$roc.name}--!></option>
+										<else/>
 										<option value="<!--{$roc.id}--!>"><!--{$roc.name}--!></option>
+										</eq>
 
 										</volist>
 									</select>
-									<select class="" name="colid" id="twocolumn" >
-										<option value="" >请选择</option>
-									</select>
+									<select name="colid" id="twocolumn" style="margin-left:10px;">
+	<volist name="result_two_col" id="rtc">
+	<eq name="result.colid" value="$rtc.id">
+	<option value="<!--{$rtc.id}--!>" selected="selected"><!--{$rtc.name}--!></option>
+	<else/>
+	<option value="<!--{$rtc.id}--!>"><!--{$rtc.name}--!></option>
+	</eq>
+	</volist>
+      </select>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									文章标题：
-									<select class="" name="tid" id="titleattribute" >
-										<option value="" >请选择</option>
-									</select>
-									<input name="title" class="" style="width:250px" />
+									<select name="tid" id="titleattribute">
+	<volist name="result_title" id="rt">
+	<eq name="result.tid" value="$rt.id">
+	<option value="<!--{$rt.id}--!>" selected="selected"><!--{$rt.name}--!></option>
+	<else/>
+	<option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+									<input name="title" class="" style="width:250px"  value="<!--{$result.title}--!>" />
 									<strong>*</strong>
 								</td>
 								<td>
 									文章来源：
-									<input class="" name="source" />
+									<input class="" name="source" value="<!--{$result.source}--!>" />
 									<strong>*</strong>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									关&nbsp;键&nbsp;字：
-									<input name="keyword" class="" style="width:352px" />
+									<input name="keyword" class="" style="width:352px" value="<!--{$result.keyword}--!>" />
 									<strong>*</strong>
 								</td>
 								<td>
 									内容属性：
-									<select class="" onchange="getconatt($(this).val());" name="conid" id="contentattribute" >
-										<option value="" >请选择</option>
-									      </select>
-	    <select name="conid2" id="contenttwoattribute" style="margin-left:5px;display:none;">
+									<select name="conid" id="contentattribute" onchange="getconatt($(this).val());">
+	<volist name="result_content" id="rc">
+	<eq name="result.conid" value="$rc.id">
+	<option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+	<else/>
+	<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      <present name="result_contwoatt">
+      <select name="conid2" id="contenttwoattribute" style="margin-left:20px;">
+	<volist name="result_contwoatt" id="rcta">
+	<eq name="result.conid" value="$rcta.id">
+	<option value="<!--{$rcta.id}--!>" selected="selected"><!--{$rcta.name}--!></option>
+	<else/>
+	<option value="<!--{$rcta.id}--!>"><!--{$rcta.name}--!></option>
+	</eq>
+	</volist>
+      </select>
+      <else/>
+      <select name="conid2" id="contenttwoattribute" style="margin-left:20px;display:none;">
 	<option value="">请选择</option>
-      </select>								      
+      </select>
+      </present>							      
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
 								<div class="art_content">
-								  <textarea name="content" id="editor_id" style="width:100%;height:400px;visibility:hidden;"></textarea>
+								  <textarea name="content" id="editor_id" style="width:100%;height:400px;visibility:hidden;"><!--{$result.content}--!></textarea>
 								</div>
 								</td>
 							</tr>
 							<tr>
 								<td class="fz" colspan="2">
 								  <p>所属站点：</p>
-								  <volist name="result_site" id="rs">
-								  <input type="checkbox" name="childsite[]" value="<!--{$rs.id}--!>" id="rs<!--{$rs.id}--!>" /><label for="rs<!--{$rs.id}--!>"><!--{$rs.name}--!></label>
+								  <volist name="result_childsite" id="rs">
+								  <input type="checkbox"  <?php echo in_array($rs['id'], $result_childsite_infoarticle) ? "checked" : "" ?> name="childsite[]" value="<!--{$rs.id}--!>" id="rs<!--{$rs.id}--!>" /><label for="rs<!--{$rs.id}--!>"><!--{$rs.name}--!></label>
 								  </volist>
 								</td>
 							</tr>
 							<tr>
 							  <td>发布作者：<input type="text" name="" id="" readonly="readonly" value="<!--{$Think.session.username}--!>"/></td>
-								<td>联系电话：<input type="text" name="tel" id="" value="<!--{$result_member.tel}--!>" /></td>
+								<td>联系电话：<input type="text" name="tel" id="" value="<!--{$result.tel}--!>" /></td>
 							</tr>
 							<tr>
-								<td>联系Q&nbspQ：<input type="text" name="qqcode" id="" value="<!--{$result_member.qqcode}--!>" /></td>
-								<td>E-mail&nbsp;&nbsp;：<input type="text" name="email" id="" value="<!--{$result_member.e-mail}--!>"/></td>
+								<td>联系Q&nbspQ：<input type="text" name="qqcode" id="" value="<!--{$result.qqcode}--!>" /></td>
+								<td>E-mail&nbsp;&nbsp;：<input type="text" name="email" id="" value="<!--{$result.email}--!>"/></td>
 							</tr>
 							<tr>
-								<td>联系地址：<input type="text" name="address" id="" value="<!--{$result_member.address}--!>"/></td>
-								<td>所属单位：<input type="text" name="unit" id="" value="<!--{$result_member.unit}--!>" /></td>
-							</tr>
+								<td>联系地址：<input type="text" name="address" id="" value="<!--{$result.address}--!>"/></td>
+								<td>所属单位：<input type="text" name="unit" id="" value="<!--{$result.unit}--!>" /></td>
+							      </tr>
+							      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
 							<tr>
 								<td colspan="2" style="text-align:center">
-									<button class="add_article_btn" name="" id="" onclick="document.getElementById('article').onsubmit();" >发布文章</button>
-									<button class="add_article_btn" name="" id="" >取消发布</button>
+									<button class="add_article_btn" name="" id="" onclick="document.getElementById('article').onsubmit();" >编辑文章</button>
+									<button class="add_article_btn" name="" id="" >取消编辑</button>
 									<button class="add_article_btn" name="" id="" >清空内容</button>
 								</td>
 							      </tr> 
@@ -209,25 +218,7 @@
             </div>
         </div>
     </div>
-	<div id="user_d">
-		<div class="warp_850">
-			<p>
-				<a href="">关于易搜</a> |
-				<a href="">发展历程</a> |
-				<a href="">服务声明</a> |
-				<a href="">业务介绍</a> |
-				<a href="">优势介绍</a> |
-				<a href="">站点地图</a> |
-				<a href="">联系方式</a> |
-				<a href="">付款方式</a> |
-				<a href="">广告服务</a>
-			</p>
-			<p>
-				Copyright &copy; www.yesow.com All rights reserved<br>
-				浙B2-20080069
-			</p>
-		</div>
-	</div>
+	<include file="Member:footer" />
 	<script type="text/javascript">
 		$(function(){
 			$('button').hover(function(){

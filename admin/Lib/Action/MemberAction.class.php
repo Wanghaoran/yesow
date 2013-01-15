@@ -5,12 +5,277 @@ class MemberAction extends CommonAction {
 
   //注册会员管理
   public function member(){
+    $childsite = M('ChildSite');
+    //查分站信息
+    $result_childsite = $childsite -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+
+    $member = M('Member');
+    $where = array();
+    //构建查询条件
+    if(!empty($_POST['name'])){
+      $where['m.' . $this -> _post('key')] = $this -> _post('name');
+    }
+    if(!empty($_POST['csid'])){
+      $where['m.csid'] = $this -> _post('csid', 'intval');
+    }
+    if(!empty($_POST['csaid'])){
+      $where['m.csaid'] = $this -> _post('csaid', 'intval');
+    }
+    //记录总数
+    $count = $member -> table('yesow_member as m') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //会员数据
+    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
   }
 
-  //短消息管理
-  public function message(){
-  
+  //会员学历管理
+  public function memberedu(){
+    $member_edu = M('MemberEdu');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $member_edu -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //结果
+    $result = $member_edu -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加会员学历
+  public function addmemberedu(){
+    if(!empty($_POST['name'])){
+      $member_edu = D('MemberEdu');
+      if(!$member_edu -> create()){
+	$this -> error($member_edu -> getError());
+      }
+      if($member_edu -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //编辑会员学历
+  public function editmemberedu(){
+    $member_edu = D('MemberEdu');
+    if(!empty($_POST['name'])){
+      if(!$member_edu -> create()){
+	$this -> error($member_edu -> getError());
+      }
+      if($member_edu -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $member_edu -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除会员学历
+  public function delmemberedu(){
+    $member_edu = M('MemberEdu');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($member_edu -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //会员职业管理
+  public function membercareer(){
+    $member_career = M('MemberCareer');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $member_career -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //结果
+    $result = $member_career -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加会员职业
+  public function addmembercareer(){
+      if(!empty($_POST['name'])){
+	$member_career = D('MemberCareer');
+      if(!$member_career -> create()){
+	$this -> error($member_career -> getError());
+      }
+      if($member_career -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //编辑会员职业
+  public function editmembercareer(){
+    $member_career = D('MemberCareer');
+    if(!empty($_POST['name'])){
+      if(!$member_career -> create()){
+	$this -> error($member_career -> getError());
+      }
+      if($member_career -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $member_career -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除会员职业
+  public function delmembercareer(){
+    $member_career = M('MemberCareer');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($member_career -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //会员收入管理
+  public function memberincome(){
+    $member_income = M('MemberIncome');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $member_income -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //结果
+    $result = $member_income -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加会员收入
+  public function addmemberincome(){
+    if(!empty($_POST['name'])){
+      $member_income = D('MemberIncome');
+      if(!$member_income -> create()){
+	$this -> error($member_income -> getError());
+      }
+      if($member_income -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //编辑会员收入
+  public function editmemberincome(){
+    $member_income = D('MemberIncome');
+    if(!empty($_POST['name'])){
+      if(!$member_income -> create()){
+	$this -> error($member_income -> getError());
+      }
+      if($member_income -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $member_income -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除会员收入
+  public function delmemberincome(){
+    $member_income = M('MemberIncome');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($member_income -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   /* ----------- 会员管理 ------------ */
+
 }

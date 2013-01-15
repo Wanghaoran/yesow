@@ -210,4 +210,15 @@ class PublicAction extends Action {
       }
     }
   }
+
+    //ajax获取分站下地区
+  public function ajaxgetcsaid(){
+    $result_temp = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $this -> _get('id', 'intval'))) -> select();
+    $result = array();
+    //格式化结果集
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['name']);
+    }
+    echo json_encode($result);
+  }
 }

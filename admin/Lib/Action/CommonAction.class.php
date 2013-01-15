@@ -43,5 +43,4 @@ class CommonAction extends Action {
     $this -> display();
   }
 
-
 }
