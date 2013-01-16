@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | Reachvc 网站公共语言文件
+// | Yesow 网站公共语言文件
 // +-----------------------------------------------------------------------
 // | Last Update Time : 2012-11-19 21:45
 // +----------------------------------------------------------------------
@@ -43,5 +43,13 @@ return array(
   'ARTICLE_CONTENT_EMPTY' => '内容不能为空',
   'ARTICLE_SOURCE_EMPTY' => '文章来源不能为空',
   'ARTICLE_KEYWORD_EMPTY' => '关键词不能为空',
+  'MEMBER_NAME_EMPTY' => '会员用户名不能为空',
+  'MEMBER_PWDQUESTION_EMPTY' => '会员密码提示问题不能为空',
+  'MEMBER_PWDANSWER_EMPTY' => '会员密码提示答案不能为空',
+  'MEMBER_NICKNAME_EMPTY' => '会员昵称不能为空',
+  'MEMBER_PWD_EMPTY' => '会员登录密码不能为空',
+  'MEMBER_TEL_EMPTY' => '会员联系电话不能为空',
+  'MEMBER_EMAIL_EMPTY' => '会员电子邮件不能为空',
+  'MEMBER_EMAIL_ERROR' => '会员电子邮件格式错误',
 
 );

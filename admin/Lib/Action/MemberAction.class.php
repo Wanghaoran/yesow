@@ -45,6 +45,59 @@ class MemberAction extends CommonAction {
     $this -> display();
   }
 
+  //编辑会员
+  public function editmember(){
+    $member = D('Member');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(empty($_POST['password'])){
+	unset($_POST['password']);
+      }else{
+	$_POST['password'] = md5($_POST['password']);
+      }
+      if(!$member -> create()){
+	$this -> error($member -> getError());
+      }
+      if($member -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //会员数据
+    $result = $member -> field('csid,csaid,eduid,careerid,incomeid,name,nickname,passwordquestion,passwordanswer,status,ischeck,fullname,idnumber,sex,tel,qqcode,msn,email,address,zipcode,unit,homepage,headico') -> find($this -> _get('id','intval'));
+    $this -> assign('result', $result);
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    //查询学历
+    $result_memberedu = M('MemberEdu') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_memberedu', $result_memberedu);
+    //查询职业
+    $result_membercareer = M('MemberCareer') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_membercareer', $result_membercareer);
+    //查询收入
+    $result_memberincome = M('MemberIncome') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_memberincome', $result_memberincome);
+
+    $this -> display();
+  }
+
+  //删除会员
+  public function delmember(){
+    $member = M('Member');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($member -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
   //会员学历管理
   public function memberedu(){
     $member_edu = M('MemberEdu');

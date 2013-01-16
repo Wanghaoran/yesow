@@ -46,14 +46,14 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li class=""><a class="delete" href="__URL__/delmembercareer/navTabId/membercareer" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择职业"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editmembercareer/id/{sid_role}" target="dialog" mask="true" warn="请选择学历"><span>编辑</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delmember/navTabId/member" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择会员"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editmember/id/{sid_role}" target="dialog" mask="true" warn="请选择会员"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delmembercareer'])">
-	    <li class=""><a class="delete" href="__URL__/delmembercareer/navTabId/membercareer" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择学历"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['system']['delmember'])">
+	    <li class=""><a class="delete" href="__URL__/delmember/navTabId/member" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择会员"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['editmemberedu'])">
-	    <li><a class="edit" href="__URL__/editmembercareer/id/{sid_role}" target="dialog" mask="true" warn="请选择学历"><span>编辑</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['system']['editmember'])">
+	    <li><a class="edit" href="__URL__/editmember/id/{sid_role}" target="dialog" mask="true" warn="请选择会员"><span>编辑</span></a></li>
 	    </if>
 	    </if>
 		</ul>

@@ -1,0 +1,237 @@
+<script type="text/javascript" src="__PUBLIC__/index/javascript/pop-ico.js"></script>
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/member" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>用户名：</label>
+		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(30个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>头像：</label>
+		<!-- 头像选择 start -->
+                    <div class="cmt-ico" style="position: relative">
+                            <a class="head-ico show-ico-btn" title="选择头像"><img
+                                    class="focus-ico"
+				    src="__PUBLIC__/index/style/images/user/<!--{$result.headico}--!>"
+                                    alt="选择头像" width="40" height="40">
+                            </a>
+			    <input type="hidden" name="headico" value="<!--{$result.headico}--!>">
+                            <!-- 弹出窗口  start-->
+                            <div class="pop-ico" style="display: none">
+                                <div class="ico-title">
+                                    <span>选择头像</span>
+                                    <a title="关闭窗口" class="hide-ico-btn">x</a>
+                                </div>
+                                <div class="ico-list">
+                                    <a data-src="1.gif" class="cur"><img src="__PUBLIC__/index/style/images/user/1.gif" width="40" height="40"></a>
+                                    <a data-src="2.gif"><img src="__PUBLIC__/index/style/images/user/2.gif" width="40" height="40"></a>
+                                    <a data-src="3.gif"><img src="__PUBLIC__/index/style/images/user/3.gif" width="40" height="40"></a>
+                                    <a data-src="4.gif"><img src="__PUBLIC__/index/style/images/user/4.gif" width="40" height="40"></a>
+                                    <a data-src="5.gif"><img src="__PUBLIC__/index/style/images/user/5.gif" width="40" height="40"></a>
+                                    <a data-src="6.gif"><img src="__PUBLIC__/index/style/images/user/6.gif" width="40" height="40"></a>
+                                    <a data-src="7.gif"><img src="__PUBLIC__/index/style/images/user/7.gif" width="40" height="40"></a>
+                                    <a data-src="8.gif"><img src="__PUBLIC__/index/style/images/user/8.gif" width="40" height="40"></a>
+                                    <a data-src="9.gif"><img src="__PUBLIC__/index/style/images/user/9.gif" width="40" height="40"></a>
+                                    <a data-src="10.gif"><img src="__PUBLIC__/index/style/images/user/10.gif" width="40" height="40"></a>
+                                    <a data-src="11.gif"><img src="__PUBLIC__/index/style/images/user/11.gif" width="40" height="40"></a>
+                                    <a data-src="12.gif"><img src="__PUBLIC__/index/style/images/user/12.gif" width="40" height="40"></a>
+                                    <a data-src="13.gif"><img src="__PUBLIC__/index/style/images/user/13.gif" width="40" height="40"></a>
+                                    <a data-src="14.gif"><img src="__PUBLIC__/index/style/images/user/14.gif" width="40" height="40"></a>
+                                    <a data-src="15.gif"><img src="__PUBLIC__/index/style/images/user/15.gif" width="40" height="40"></a>
+                                    <a data-src="16.gif"><img src="__PUBLIC__/index/style/images/user/16.gif" width="40" height="40"></a>
+                                    <a data-src="17.gif"><img src="__PUBLIC__/index/style/images/user/17.gif" width="40" height="40"></a>
+                                    <a data-src="18.gif"><img src="__PUBLIC__/index/style/images/user/18.gif" width="40" height="40"></a>
+                                    <a data-src="19.gif"><img src="__PUBLIC__/index/style/images/user/19.gif" width="40" height="40"></a>
+                                    <a data-src="20.gif"><img src="__PUBLIC__/index/style/images/user/20.gif" width="40" height="40"></a>
+                                    <a data-src="21.gif"><img src="__PUBLIC__/index/style/images/user/21.gif" width="40" height="40"></a>
+                                    <a data-src="22.gif"><img src="__PUBLIC__/index/style/images/user/22.gif" width="40" height="40"></a>
+                                    <a data-src="23.gif"><img src="__PUBLIC__/index/style/images/user/23.gif" width="40" height="40"></a>
+                                    <a data-src="24.gif"><img src="__PUBLIC__/index/style/images/user/24.gif" width="40" height="40"></a>
+                                    <a data-src="25.gif"><img src="__PUBLIC__/index/style/images/user/25.gif" width="40" height="40"></a>
+                                    <a data-src="26.gif"><img src="__PUBLIC__/index/style/images/user/25.gif" width="40" height="40"></a>
+                                    <a data-src="27.gif"><img src="__PUBLIC__/index/style/images/user/27.gif" width="40" height="40"></a>
+                                    <a data-src="28.gif"><img src="__PUBLIC__/index/style/images/user/28.gif" width="40" height="40"></a>
+                                    <a data-src="29.gif"><img src="__PUBLIC__/index/style/images/user/29.gif" width="40" height="40"></a>
+                                    <a data-src="30.gif"><img src="__PUBLIC__/index/style/images/user/30.gif" width="40" height="40"></a>
+                                    <a data-src="31.gif"><img src="__PUBLIC__/index/style/images/user/31.gif" width="40" height="40"></a>
+                                    <a data-src="32.gif"><img src="__PUBLIC__/index/style/images/user/32.gif" width="40" height="40"></a>
+                                    <a data-src="33.gif"><img src="__PUBLIC__/index/style/images/user/33.gif" width="40" height="40"></a>
+                                    <a data-src="34.gif"><img src="__PUBLIC__/index/style/images/user/34.gif" width="40" height="40"></a>
+                                    <a data-src="35.gif"><img src="__PUBLIC__/index/style/images/user/35.gif" width="40" height="40"></a>
+                                    <a data-src="36.gif"><img src="__PUBLIC__/index/style/images/user/36.gif" width="40" height="40"></a>
+                                    <a data-src="37.gif"><img src="__PUBLIC__/index/style/images/user/37.gif" width="40" height="40"></a>
+                                    <a data-src="38.gif"><img src="__PUBLIC__/index/style/images/user/38.gif" width="40" height="40"></a>
+                                    <a data-src="39.gif"><img src="__PUBLIC__/index/style/images/user/39.gif" width="40" height="40"></a>
+			      	    <a data-src="40.gif"><img src="__PUBLIC__/index/style/images/user/40.gif" width="40" height="40"></a>
+
+                                </div>
+                            </div>
+                            <!-- 弹出窗口  end-->
+                    </div>
+		    <!-- 头像选择 end -->
+	</div>
+	<div class="unit">
+		<label>帐号状态：</label>
+		<select class="combox" name="status">
+		  <eq name="result.status" value="1">
+		  <option value="1" selected="selected">启用</option>
+		  <option value="0">禁用</option>
+		  <else/>
+		  <option value="1">启用</option>
+		  <option value="0" selected="selected">禁用</option>
+		  </eq>
+		</select>
+	  </div>
+	<div class="unit">
+		<label>地区：</label>
+		<select class="combox" name="csid" ref="csaids" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+		  <volist name="result_childsite" id="rc">
+		  <eq name="result.csid" value="$rc.id">
+		  <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+		<select class="combox" name="csaid" id="csaids">
+		  <volist name="result_childsitearea" id="rca">
+		  <eq name="result.csaid" value="$rca.id">
+		  <option value="<!--{$rca.id}--!>" selected="selected"><!--{$rca.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rca.id}--!>"><!--{$rca.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	 </div>
+	 <div class="unit">
+		<label>学历：</label>
+		<select class="combox" name="eduid">
+		  <volist name="result_memberedu" id="rme">
+		  <eq name="result.eduid" value="$rme.id">
+		  <option value="<!--{$rme.id}--!>" selected="selected"><!--{$rme.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rme.id}--!>"><!--{$rme.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	  </div>
+	  <div class="unit">
+		<label>职业：</label>
+		<select class="combox" name="careerid">
+		  <volist name="result_membercareer" id="rmc">
+		  <eq name="result.careerid" value="$rmc.id">
+		  <option value="<!--{$rmc.id}--!>" selected="selected"><!--{$rmc.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rmc.id}--!>"><!--{$rmc.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	  </div>
+	  <div class="unit">
+		<label>收入：</label>
+		<select class="combox" name="incomeid">
+		  <volist name="result_memberincome" id="rmi">
+		  <eq name="result.incomeid" value="$rmi.id">
+		  <option value="<!--{$rmi.id}--!>" selected="selected"><!--{$rmi.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rmi.id}--!>"><!--{$rmi.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	      </div>
+	      <div class="unit">
+		<label>昵称：</label>
+		<input type="text" class="required" name="nickname" size="30" value="<!--{$result.nickname}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>联系电话：</label>
+		<input type="text" class="required digits" name="tel" value="<!--{$result.tel}--!>" />
+	</div>
+	 <div class="unit">
+		<label>密码：</label>
+		<input type="text" name="password"  /><label>(留空为不更改)</label>
+	</div>
+	<div class="unit">
+		<label>密码提示问题：</label>
+		<input type="text" class="required" name="passwordquestion" size="30" value="<!--{$result.passwordquestion}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>密码提示答案：</label>
+		<input type="text" class="required" name="passwordanswer" size="30" value="<!--{$result.passwordanswer}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>电子邮件：</label>
+		<input type="text" class="required email" name="email" size="25" value="<!--{$result.email}--!>" /><label>(200个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>邮箱验证：</label>
+		<select class="combox" name="ischeck">
+		  <eq name="result.ischeck" value="1">
+		  <option value="1" selected="selected">通过</option>
+		  <option value="0">未通过</option>
+		  <else/>
+		  <option value="1">通过</option>
+		  <option value="0" selected="selected">未通过</option>
+		  </eq>
+		</select>
+	      </div>
+	      <div class="unit">
+		<label>真实姓名：</label>
+		<input type="text" name="fullname" value="<!--{$result.fullname}--!>" /><label>(10个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>身份证号：</label>
+		<input type="text" class="digits" name="idnumber" value="<!--{$result.idnumber}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>性别：</label>
+		<select class="combox" name="sex">
+		  <eq name="result.sex" value="1">
+		  <option value="1" selected="selected">男</option>
+		  <option value="0">女</option>
+		  <else/>
+		  <option value="1">男</option>
+		  <option value="0" selected="selected">女</option>
+		  </eq>
+		</select>
+	      </div>
+	      <div class="unit">
+		<label>QQ号码：</label>
+		<input type="text" class="digits" name="qqcode" value="<!--{$result.qqcode}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>MSN号码：</label>
+		<input type="text" name="msn" value="<!--{$result.msn}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>联系地址：</label>
+		<input type="text" name="address" size="40" value="<!--{$result.address}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>所在单位：</label>
+		<input type="text" name="unit" size="40" value="<!--{$result.unit}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>邮编：</label>
+		<input type="text" name="zipcode" class="digits" value="<!--{$result.zipcode}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>个人主页：</label>
+		<input type="text" name="homepage" size="40" value="<!--{$result.homepage}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -4,11 +4,11 @@
 		欢迎来到华东地区最大IT搜索中心&nbsp;
 		<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 		<span id="login_link">尊敬的 <!--{$Think.session.username}--!> 您好，欢迎回来</span>
-		<span id="resige_link">[<a href="__APP__/member/index" target="_blank">会员中心</a>]</span>&nbsp;
-		<span id="resige_link">[<a href="__APP__/public/logout">安全退出</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__ROOT__/member/index" target="_blank">会员中心</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__ROOT__/public/logout">安全退出</a>]</span>&nbsp;
 		<else/>
-		<span id="login_link">[<a href="__APP__/login">登录</a>]</span>&nbsp;
-               	<span id="resige_link">[<a href="#">免费注册</a>]</span>&nbsp;
+		<span id="login_link">[<a href="__ROOT__/login">登录</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__ROOT__/register/one">免费注册</a>]</span>&nbsp;
 		<span id="getpass_link">[<a href="#">找回密码</a>]</span>&nbsp;
 		</if>
 		</p>
