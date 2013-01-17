@@ -115,7 +115,7 @@ var getchildsitearea = function(val){
                                     src="__PUBLIC__/index/style/images/user/1.JPG"
                                     alt="选择头像" width="40" height="40">
 				  </a>
-				  <input type="hidden" name="headico" value="__PUBLIC__/index/style/images/user/1.JPG">
+				  <input type="hidden" name="headico" value="1.JPG">
                             <!-- 弹出窗口  start-->
                             <div class="pop-ico" style="display: none">
                                 <div class="ico-title">
@@ -217,8 +217,8 @@ var getchildsitearea = function(val){
               <tr>
                 <td align="left">您的性别: </td>
                 <td align="left"><select name="memsex" id="memsex">
-                    <option value="男" selected="selected">男</option>
-                    <option value="女">女</option>
+                    <option value="1" selected="selected">男</option>
+                    <option value="2">女</option>
                 </select>                    </td>
               </tr>
               <tr>
@@ -272,14 +272,14 @@ var getchildsitearea = function(val){
               </tr>
               <tr>
                 <td align="left"><strong>用户类型: </strong></td>
-                <td align="left"><input value="9" name="rank" class="small" type="hidden">
+                <td align="left">
                   普通用户（若需申请成为高级用户，请注册登录后在控制面板中升级） </td>
               </tr>
               <tr>
                 <td align="left"><strong>注册校验 </strong>* </td>
                 <td align="left">
                   <span style="float:left;">验证码：</span>
-		  <span style="float:left;"><input type="text" size="4" />&nbsp;&nbsp;&nbsp;<img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></span>
+		  <span style="float:left;"><input type="text" id="verify" size="4" />&nbsp;&nbsp;&nbsp;<img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></span><span id="chkverify"></span>
                   <br>                
                   </td>
               </tr>

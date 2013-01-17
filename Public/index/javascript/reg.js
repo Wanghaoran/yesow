@@ -14,7 +14,7 @@ $(document).ready(function(){
 	$('#memtel').after('<span id="chkmemtel" class="msgdiv">您目前的联系电话</span>');
 	$('#companyname').after('<span id="chkcompanyname" class="msgdiv">您目前的工作单位</span>');
     $('#tuijian').after('<span id="chktuijian" class="msgdiv">请填写推荐您来本站注册的人的帐号，没有可以为空</span>');
-	$('#getcode').after('<span id="chkCode" class="msgdiv">请输入和图片上一致的验证码</span>');
+	$('#code').after('<span id="chkverify" class="msgdiv">请输入和图片上一致的验证码</span>');
 	$('#memdizhi').after('<span id="chkmemdizhi" class="msgdiv">所在地区</span>');
 
 	$('#username').focus(function(){ 
@@ -304,7 +304,30 @@ $(document).ready(function(){
 			$('#memtel').after('<span id="chkmemtel" class="rightdiv">输入正确</span>');
 		}
 
-	}); 
+	});
+
+	//验证码
+	$('#verify').focus(function(){ 
+		$('#chkverify').remove();
+		$('#code').after('<span id="chkverify" class="msgdiv">请输入和图片上一致的验证码</span>');
+	});
+	$('#verify').blur(function(){
+	  var p = $('#verify')[0].value;
+	  $.ajax({
+	    type: "POST",
+	    url: "checkverify",
+	    data: "name="+p,
+	    success: function(msg){
+	      if(msg=="1"){
+		$('#chkverify').remove();
+		$('#code').after('<span id="chkverify" class="rightdiv">验证码输入正确</span>');
+	      }else{
+		$('#chkverify').remove();
+		$('#code').after('<span id="chkverify" class="errdiv">验证码输入错误</span>');
+	      }
+	    }
+	  });
+	});
   
 });
 
@@ -471,28 +494,18 @@ $(document).ready(function(){
 			document.form1.memdizhi.blur();
 		return false;
 		}
-		
-			else if(document.form1.tuijian.value=="")
+		else if(document.form1.verify.value=="")
 		{
-			document.form1.tuijian.focus();
-			document.form1.tuijian.blur();
-
-		
-		
-		return false;
-		}
-		else if(document.form1.code.value=="")
-		{
-		    document.form1.code.focus();
-			document.form1.code.blur();
+		    document.form1.verify.focus();
+			document.form1.verify.blur();
 			//$('#chkCode').remove();
 			//$('#getcode').after('<span id="chkCode" class="errdiv">请输入的验证码</span>');
 		return false;
 		}
-		else if($('#chkCode')[0].className!='rightdiv')
+		else if($('#chkverify')[0].className!='rightdiv')
 		{
-			document.form1.code.focus();
-			document.form1.code.blur();
+			document.form1.verify.focus();
+			document.form1.verify.blur();
 		return false;
 		}
 

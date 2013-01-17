@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜－会员服务中心－页面跳转</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript">
+  var i = <!--{$time}--!>;
+    function onload()
+    {
+        var timeturn = document.getElementById('timeturn');
+        i--;
+        timeturn.innerHTML = i+'秒';
+        setTimeout("onload()",1100);
+        if(i==0)
+	{
+	  window.location.href="<!--{$url}--!>"; 
+        }
+   }
+ </script>
+
+</head>
+<body id="body_user">
+  <include file="Register:header" />
+	<div id="user_m">
+    	<div class="warp_850">
+	  <div id="main">
+	    <eq name="status" value="1">
+		  <div class="reg">
+		    <div class="currect"><!--{$title}--!></div>
+		    <div class="tiaozhuan"><span id="timeturn"><!--{$time}--!>秒</span>后自动跳转，如果不想等待，请点击<a href="<!--{$url}--!>">这里</a>跳转</div>
+		  </div>
+		  <else/>
+		  <div class="reg">
+                	<div class="failed"><!--{$title}--!></div>
+                    <div class="tiaozhuan"><span id="timeturn"><!--{$time}--!></span>后自动跳转，如果不想等待，请点击<a href="<!--{$url}--!>">这里</a>跳转</div>
+		  </div>
+		  </eq>
+    
+		</div>
+        </div>
+    </div>
+    <include file="Register:footer" />
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F54b6f7368126ad54eeaafed0a50fc6f9' type='text/javascript'%3E%3C/script%3E"));
+
+onload();
+</script>
+</body>
+</html>

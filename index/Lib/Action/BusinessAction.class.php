@@ -68,7 +68,7 @@ class BusinessAction extends MemberCommonAction {
     //处理搜索
     if(isset($_POST['submit'])){
       if(!empty($_POST['keyword'])){
-	$where['ia.keyword'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+	$where['ia.title'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
       }
       if(!empty($_POST['csid'])){
 	$result_childsite_infoarticle_temp = M('ChildsiteInfoarticle') -> field('iaid') -> where(array('csid' => $this -> _post('csid', 'intval'))) -> select();

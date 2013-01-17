@@ -151,9 +151,9 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 #vip input{ vertical-align:middle;}
 
 
-.currect{ width:200px; margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/user/currectbg.jpg) left center no-repeat; font-size:16px; color:#000;}
+.currect{ width:500px; margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/user/currectbg.jpg) left center no-repeat; font-size:16px; color:#000;}
 .tiaozhuan{ width:800px; height:30px; line-height:30px; text-align:center; font-size:12px; color:#aaa; margin-bottom:50px;}
-.failed{ width:200px; margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/user/failbg.jpg) left center no-repeat; font-size:16px; color:#000;}
+.failed{ width:500px; margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/user/failbg.jpg) left center no-repeat; font-size:16px; color:#000;}
 
 .cmt-ico .head-ico img {border: 1px dashed #F60;padding: 2px;}
 .pop-ico{position: absolute;width: 500px; height: 280px; overflow-x:hidden; overflow-y:auto; top: 0px;left: 50px;background: #FFF;border: 1px solid #D7D7D7;z-index: 100}

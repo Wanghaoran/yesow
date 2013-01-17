@@ -7,13 +7,13 @@
 
 if (!defined('THINK_PATH')) exit();
 return array(
-  'LOGIN_NAME_EMPTY' => '帐号不能为空',
-  'NAME_ERROR' => '帐号不存在或已禁用',
-  'LOGIN_PWD_EMPTY' => '密码不能为空',
-  'PASSWORD_ERROR' => '密码错误',
+  'LOGIN_NAME_EMPTY' => '帐号不能为空,请重新输入',
+  'NAME_ERROR' => '帐号不存在或已禁用,请重新输入',
+  'LOGIN_PWD_EMPTY' => '密码不能为空,请重新输入',
+  'PASSWORD_ERROR' => '密码错误,请重新输入',
   'LOGIN_VERIFY_EMPTY' => '验证码不能为空',
   'VERIFY_ERROR' => '验证码错误',
-  'LOGIN_SUCCESS' => '登录成功',
+  'LOGIN_SUCCESS' => '登录成功,欢迎光临',
   'LOGOUT_SUCCESS' => '退出成功',
   'LOGOUT_ERROR' => '退出失败，您已经退出',
   'LOGIN_NOT' => '您还未登录',
@@ -51,5 +51,8 @@ return array(
   'MEMBER_TEL_EMPTY' => '会员联系电话不能为空',
   'MEMBER_EMAIL_EMPTY' => '会员电子邮件不能为空',
   'MEMBER_EMAIL_ERROR' => '会员电子邮件格式错误',
+  'SEND_EMAIL_SUCCESS' => '验证邮件发送成功，请登录邮箱查收',
+  'CHECK_EMAIL_SUCCESS' => '邮箱验证成功，现在转到登录页面',
+  'CHECK_EMAIL_ERROR' => '邮箱验证失败，请重新验证',
 
 );

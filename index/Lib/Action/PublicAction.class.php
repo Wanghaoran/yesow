@@ -13,7 +13,8 @@ class PublicAction extends Action {
     $where['status'] = 1;
     if($result = $member -> field('id,password,name,last_login_ip,last_login_time') -> where($where) -> find()){
       if($result['password'] != $this -> _post('password', 'md5')){
-	$this -> error(L('PASSWORD_ERROR'));
+	R('Register/errorjump',array(L('PASSWORD_ERROR')));
+	exit();
       }
       session(C('USER_AUTH_KEY'), $result['id']);
       session('username', $result['name']);
@@ -24,9 +25,9 @@ class PublicAction extends Action {
       $data['last_login_ip'] = get_client_ip();
       $data['last_login_time'] = time();
       $member -> save($data);
-      $this -> success(L('LOGIN_SUCCESS'), U('Member/index'));
+      R('Register/successjump',array(L('LOGIN_SUCCESS'), U('Member/index')));
     }else{
-      $this -> error(L('NAME_ERROR'));
+      R('Register/errorjump',array(L('NAME_ERROR')));
     }
   }
 
@@ -36,9 +37,9 @@ class PublicAction extends Action {
       session(C('USER_AUTH_KEY'), null);
       session(null);
       session('[destroy]');
-      $this -> success(L('LOGOUT_SUCCESS'));
+      R('Register/successjump',array(L('LOGOUT_SUCCESS')));
     }else{
-      $this -> error(L('LOGOUT_ERROR'));
+      R('Register/errorjump',array(L('LOGOUT_ERROR')));
     }
   }
 

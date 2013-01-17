@@ -24,7 +24,7 @@ class RegisterAction extends Action {
 
   //注册第三步
   public function three(){
-  
+    $this -> display();
   }
 
   //检测用户名是否重复
@@ -47,8 +47,92 @@ class RegisterAction extends Action {
     }
   }
 
+  //检测验证码
+  public function checkverify(){
+    if(md5($_POST['name']) == session('verify')){
+      echo 1;
+    }else{
+      echo 0;
+    }
+  }
+
+  //检测用户邮箱
+  public function checkuseremail(){
+    $email = M('Member') -> getFieldByname($this -> _post('name'), 'email');
+    if($email == $_POST['email']){
+      echo 1;
+    }else{
+      echo 0;
+    }
+  }
+
   //处理注册
   public function reg(){
-    dump($_POST);
+    $member = D('Admin://Member');
+    if(!$member -> create()){
+      $this -> error($member -> getError());
+    }
+    if($member -> add()){
+      $this -> successjump(L('USER_REGISTER_SUCCESS'), '__ROOT__/register/three');
+    }else{
+      $this -> error(L('USER_REGISTER_ERROR'));
+    }
   }
+
+  //发送邮箱验证邮件
+  public function sendcheckemail(){
+    //加密邮箱
+    $email = encode_pass($_POST['email'], C('KEY'));
+    $name = encode_pass($_POST['username'], C('KEY'));
+    $url = 'http://www.yesow.com/register/checkmail/username/' . $name . '/email/' . $email;
+    $content = '尊敬的' . $_POST['username'] . '用户您好：恭喜您已经注册成为易搜会员！感谢您对易搜（ www.yesow.com）的关注和认可，在易搜您将找到全国33个省、市、直辖市的所有电脑、数码等IT商家信息，赶快验证您的邮箱后登陆易搜，查询和发布您的商家信息和产品信息，积累易搜币您可以通过升级来查看客户资料和信息，你也可以直接在“我要充值”处充值人民币（RMB）也可以查看你想要的信息！目前充值有很大优惠！惊喜等着您哦！海量的IT商家信息应有尽有，高品质的服务有求必应！请点此链接完成 ' . $url . '如果以上连接你无法点击进入，请将以下地址复制在地址栏上访问即可完成验证：' . $url . ' ';
+    import('ORG.Util.Mail');
+    SendMail($_POST['email'],'yesow注册用户验证邮件',$content,'yesow管理员');
+    $this -> successjump(L('SEND_EMAIL_SUCCESS'), U('Public/login'));
+  }
+
+  //邮箱验证
+  public function checkmail(){
+    $email = encode_pass($this -> _get('email'), C('KEY'), 'decode');
+    $name = encode_pass($this -> _get('username'), C('KEY'), 'decode');
+    $user_email = M('Member') -> getFieldByname($name, 'email');
+    if($email == $user_email){
+      //更新数据
+      $where = array();
+      $where['name'] = $name;
+      $where['email'] = $email;
+      M('Member') -> where($where) -> save(array('ischeck' => 1));
+      $this -> successjump(L('CHECK_EMAIL_SUCCESS'), U('Public/login'));
+    }else{
+      $this -> errorjump(L('CHECK_EMAIL_ERROR'), U('Register/three'));
+    }
+  }
+
+  //成功跳转
+  public function successjump($title, $url="", $time=3){
+    $this -> assign('title', $title);
+    if(empty($url)){
+      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+    }else{
+      $this -> assign('url', $url);
+    }
+    $this -> assign('time', $time);
+    $this -> assign('status', 1);
+    $this -> display('./index/Tpl/Register/jumpurl.html');
+  }
+
+  //失败跳转
+  public function errorjump($title, $url="", $time=3){
+    $this -> assign('title', $title);
+    if(empty($url)){
+      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+    }else{
+      $this -> assign('url', $url);
+    }
+    $this -> assign('time', $time);
+    $this -> assign('status', 0);
+    $this -> display('./index/Tpl/Register/jumpurl.html');
+  }
+
+  
 }
