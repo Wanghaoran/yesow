@@ -125,7 +125,7 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .reg_con h2{ font-size:14px; font-weight:bold; width:834px; text-align:center; height:50px; line-height:50px;}
 	.reg_c1{ width:732px; height:500px; border:#8b8b8b 1px solid; overflow-x:hidden; overflow-y:auto; padding:30px 50px;}
 	.reg_c2{ width:834px; text-align:center; margin:20px auto;}
-	.reg_c2 button{ height:30px; font-size:14px;}
+	.reg_c2 button{ height:30px; font-size:14px; margin:0 5px;}
 	
 .tableclass td{ height:25px;}
 .tableclass td input{ vertical-align:middle;}
