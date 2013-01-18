@@ -39,5 +39,6 @@ return array(
 
   //密钥
   'KEY' => 'yesow',
-  
+  //网站主目录
+  'WEBSITE' => 'http://42.121.116.205/yesow/',  
 );

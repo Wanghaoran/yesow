@@ -69,7 +69,7 @@ ul.user_box li p,ul.user_box li.no_border{ text-indent:25px; line-height:25px; f
 
 
 /**底部**/
-#user_d{width:100%; height:250px; background:url(images/user/bg.gif) repeat-x 0 -170px; padding-top:5px;}
+#user_d{width:100%; height:100px; background:url(images/user/bg.gif) repeat-x 0 -170px; padding-top:5px;}
 #user_d .warp_850 p{ line-height:20px; text-align:center; padding-top:10px;}
 
 /**顶部搜索**/
