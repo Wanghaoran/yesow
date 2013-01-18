@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜会员中心－个人信息修改</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/pop-ico.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/edit_user_reg.js"></script>
+<script type="text/javascript">
+var getchildsitearea = function(val){
+    $.ajax({
+      url:'/yesow/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '<option value="">请选择</option>';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#memdizhi').html(_nstr).show();
+	  }else{
+	  $('#memdizhi').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+</script>
+</head>
+<body id="body_user">
+  <include file="header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">个人信息修改</div>
+                    <form name="form1" id="form1" action="__ACTION__" method="post" onSubmit="return cheakform();">
+                    <div class="main_rlong_con">
+                            <div class="main_rlong_c1">
+                                    <!-- 头像选择 start -->
+                                    <div class="cmt-ico" style="position: relative">
+                                            <a class="head-ico show-ico-btn" title="选择头像"><img
+                                                    class="focus-ico"
+						    src="__PUBLIC__/index/style/images/user/<!--{$result.headico}--!>"
+						    alt="选择头像"  width="80" height="80" border="0" /><br /><div class="text">修改头像</div><input type="hidden" name="headico" value="<!--{$result.headico}--!>"></a>
+                                            <!-- 弹出窗口  start-->
+                                            <div class="pop-ico" style="display: none">
+                                                <div class="ico-title">
+                                                    <span>选择头像</span>
+                                                    <a title="关闭窗口" class="hide-ico-btn">x</a>
+                                                </div>
+                                                <div class="ico-list">
+                                                    <a data-src="1.JPG" class="cur"><img src="__PUBLIC__/index/style/images/user/1.JPG" width="40" height="40"></a>
+                                                    <a data-src="2.JPG"><img src="__PUBLIC__/index/style/images/user/2.JPG" width="40" height="40"></a>
+                                                    <a data-src="3.JPG"><img src="__PUBLIC__/index/style/images/user/3.JPG" width="40" height="40"></a>
+                                                    <a data-src="4.JPG"><img src="__PUBLIC__/index/style/images/user/4.JPG" width="40" height="40"></a>
+                                                    <a data-src="5.JPG"><img src="__PUBLIC__/index/style/images/user/5.JPG" width="40" height="40"></a>
+                                                    <a data-src="6.JPG"><img src="__PUBLIC__/index/style/images/user/6.JPG" width="40" height="40"></a>
+                                                    <a data-src="7.JPG"><img src="__PUBLIC__/index/style/images/user/7.JPG" width="40" height="40"></a>
+                                                    <a data-src="8.JPG"><img src="__PUBLIC__/index/style/images/user/8.JPG" width="40" height="40"></a>
+                                                    <a data-src="9.JPG"><img src="__PUBLIC__/index/style/images/user/9.JPG" width="40" height="40"></a>
+                                                    <a data-src="10.JPG"><img src="__PUBLIC__/index/style/images/user/10.JPG" width="40" height="40"></a>
+                                                    <a data-src="11.JPG"><img src="__PUBLIC__/index/style/images/user/11.JPG" width="40" height="40"></a>
+                                                    <a data-src="12.JPG"><img src="__PUBLIC__/index/style/images/user/12.JPG" width="40" height="40"></a>
+                                                    <a data-src="13.JPG"><img src="__PUBLIC__/index/style/images/user/13.JPG" width="40" height="40"></a>
+                                                    <a data-src="14.JPG"><img src="__PUBLIC__/index/style/images/user/14.JPG" width="40" height="40"></a>
+                                                    <a data-src="15.JPG"><img src="__PUBLIC__/index/style/images/user/15.JPG" width="40" height="40"></a>
+                                                    <a data-src="16.JPG"><img src="__PUBLIC__/index/style/images/user/16.JPG" width="40" height="40"></a>
+                                                    <a data-src="17.JPG"><img src="__PUBLIC__/index/style/images/user/17.JPG" width="40" height="40"></a>
+                                                    <a data-src="18.JPG"><img src="__PUBLIC__/index/style/images/user/18.JPG" width="40" height="40"></a>
+                                                    <a data-src="19.JPG"><img src="__PUBLIC__/index/style/images/user/19.JPG" width="40" height="40"></a>
+                                                    <a data-src="20.JPG"><img src="__PUBLIC__/index/style/images/user/20.JPG" width="40" height="40"></a>
+                                                    <a data-src="21.JPG"><img src="__PUBLIC__/index/style/images/user/21.JPG" width="40" height="40"></a>
+                                                    <a data-src="22.JPG"><img src="__PUBLIC__/index/style/images/user/22.JPG" width="40" height="40"></a>
+                                                    <a data-src="23.JPG"><img src="__PUBLIC__/index/style/images/user/23.JPG" width="40" height="40"></a>
+                                                    <a data-src="24.JPG"><img src="__PUBLIC__/index/style/images/user/24.JPG" width="40" height="40"></a>
+                                                    <a data-src="25.JPG"><img src="__PUBLIC__/index/style/images/user/25.JPG" width="40" height="40"></a>
+                                                    <a data-src="26.JPG"><img src="__PUBLIC__/index/style/images/user/25.JPG" width="40" height="40"></a>
+                                                    <a data-src="27.JPG"><img src="__PUBLIC__/index/style/images/user/27.JPG" width="40" height="40"></a>
+                                                    <a data-src="28.JPG"><img src="__PUBLIC__/index/style/images/user/28.JPG" width="40" height="40"></a>
+                                                    <a data-src="29.JPG"><img src="__PUBLIC__/index/style/images/user/29.JPG" width="40" height="40"></a>
+                                                    <a data-src="30.JPG"><img src="__PUBLIC__/index/style/images/user/30.JPG" width="40" height="40"></a>
+                                                    <a data-src="31.JPG"><img src="__PUBLIC__/index/style/images/user/31.JPG" width="40" height="40"></a>
+                                                    <a data-src="32.JPG"><img src="__PUBLIC__/index/style/images/user/32.JPG" width="40" height="40"></a>
+                                                    <a data-src="33.JPG"><img src="__PUBLIC__/index/style/images/user/33.JPG" width="40" height="40"></a>
+                                                    <a data-src="34.JPG"><img src="__PUBLIC__/index/style/images/user/34.JPG" width="40" height="40"></a>
+                                                    <a data-src="35.JPG"><img src="__PUBLIC__/index/style/images/user/35.JPG" width="40" height="40"></a>
+                                                    <a data-src="36.JPG"><img src="__PUBLIC__/index/style/images/user/36.JPG" width="40" height="40"></a>
+                                                    <a data-src="37.JPG"><img src="__PUBLIC__/index/style/images/user/37.JPG" width="40" height="40"></a>
+                                                    <a data-src="38.JPG"><img src="__PUBLIC__/index/style/images/user/38.JPG" width="40" height="40"></a>
+                                                    <a data-src="39.JPG"><img src="__PUBLIC__/index/style/images/user/39.JPG" width="40" height="40"></a>
+                                                    <a data-src="40.JPG"><img src="__PUBLIC__/index/style/images/user/40.JPG" width="40" height="40"></a>
+                                                    <a data-src="41.JPG"><img src="__PUBLIC__/index/style/images/user/41.JPG" width="40" height="40"></a>
+                                                    <a data-src="42.JPG"><img src="__PUBLIC__/index/style/images/user/42.JPG" width="40" height="40"></a>
+                                                    <a data-src="43.JPG"><img src="__PUBLIC__/index/style/images/user/43.JPG" width="40" height="40"></a>
+                                                    <a data-src="44.JPG"><img src="__PUBLIC__/index/style/images/user/44.JPG" width="40" height="40"></a>
+                                                    <a data-src="45.JPG"><img src="__PUBLIC__/index/style/images/user/45.JPG" width="40" height="40"></a>
+                                                    <a data-src="46.JPG"><img src="__PUBLIC__/index/style/images/user/46.JPG" width="40" height="40"></a>
+                                                    <a data-src="47.JPG"><img src="__PUBLIC__/index/style/images/user/47.JPG" width="40" height="40"></a>
+                                                    <a data-src="48.JPG"><img src="__PUBLIC__/index/style/images/user/48.JPG" width="40" height="40"></a>
+                                                    <a data-src="49.JPG"><img src="__PUBLIC__/index/style/images/user/49.JPG" width="40" height="40"></a>
+                                                    <a data-src="50.JPG"><img src="__PUBLIC__/index/style/images/user/50.JPG" width="40" height="40"></a>
+                                                </div>
+                                            </div>
+                                            <!-- 弹出窗口  end-->
+                                    </div>
+                                    <!-- 头像选择 end -->
+                                <div class="clear"></div>
+                            </div>
+                            <div class="main_rlong_c2">
+                              <table align="center" border="0" width="610" class="tableclass2">
+                                  <tbody>
+                                  <tr>
+                                    <td align="right" width="16%">会员帐号: </td>
+				    <td align="left" width="84%"><input id="username1" value="<!--{$result.name}--!>" class="small" readonly="1" disabled="ture" type="text"><span class="tips">会员账号不可修改</span> </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right" width="16%">您的昵称: </td>
+				    <td align="left" width="84%"><input name="nickname" value="<!--{$result.nickname}--!>" id="nickname" class="small" type="text"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">您的密码: </td>
+                                    <td align="left"><input name="password" id="password" class="small" type="password"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">确认密码: </td>
+                                    <td align="left"><input name="password1" id="password1" class="small" type="password"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">密码保护问题: </td>
+				    <td align="left"><input name="memtishi" id="memtishi" value="<!--{$result.passwordquestion}--!>" class="small" type="text"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">提示问题回答:&nbsp;</td>
+				    <td align="left"><input name="memhueda" id="memhueda" value="<!--{$result.passwordanswer}--!>" class="small" type="text"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">电子邮件: </td>
+				    <td align="left"><input name="email" id="email" value="<!--{$result.email}--!>" class="small" type="text"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">联系电话:&nbsp;</td>
+				    <td align="left"><input name="memtel" id="memtel" value="<!--{$result.tel}--!>" class="small" type="text"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">所在单位: </td>
+				    <td align="left"><input name="companyname" id="companyname" value="<!--{$result.unit}--!>" class="small" type="text"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">推荐人: </td>
+                                    <td align="left"><input id="tuijian1" name="tuijian" value="待开发" class="small" readonly="1" disabled="ture" qform_group_id="" type="text"><span class="tips">推荐人账号不可修改</span></td>
+                                  </tr> 
+                                  <tr>
+                                    <td align="right">现所在地: </td>
+                                    <td align="left"><select class="prov" name="province" id="province" onchange="getchildsitearea($(this).val());">
+		      <option selected="selected" value="">请选择</option>
+		      <volist name="result_childsite" id="rcs">
+		      <eq name="result.csid" value="$rcs.id">
+		      <option value="<!--{$rcs.id}--!>" selected="selected"><!--{$rcs.name}--!></option>
+		      <else/>
+		      <option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+		      </eq>
+		      </volist>
+		    </select> 
+		    <select class="city" name="memdizhi" id="memdizhi">
+		      <option selected="selected" value="">请选择</option>
+		      <volist name="result_childsitearea" id="rcsa">
+		      <eq name="result.csaid" value="$rcsa.id">
+		      <option value="<!--{$rcsa.id}--!>" selected="selected"><!--{$rcsa.name}--!></option>
+		      <else/>
+		      <option value="<!--{$rcsa.id}--!>"><!--{$rcsa.name}--!></option>
+		      </eq>
+		      </volist>
+		    </select></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">您的姓名: </td>
+				    <td align="left"><input name="memximin" value="<!--{$result.fullname}--!>" id="memximin" title="请正确填写姓名~20:" class="small"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">身份证号: </td>
+				    <td align="left"><input name="memcard" value="<!--{$result.idnumber}--!>" id="memcard" title="请正确填写身份证号~18:" size="30" class="small"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">您的性别: </td>
+                                    <td align="left">
+				      <select name="memsex" id="memsex">
+					<eq name="result.sex" value="1">
+                                            <option value="1" selected="selected">男</option>
+					    <option value="2">女</option>
+					    <else/>
+					    <option value="1">男</option>
+					    <option value="2" selected="selected">女</option>
+					    </eq>
+                                        </select>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">您的学历: </td>
+                                    <td align="left">
+                                        <select name="memedu" id="memedu">
+					  <volist name="result_memberedu" id="rme">
+					  <eq name="result.eduid" value="$rme.id">
+					  <option value="<!--{$rme.id}--!>" selected="selected"><!--{$rme.name}--!></option>
+					  <else/>
+					  <option value="<!--{$rme.id}--!>"><!--{$rme.name}--!></option>
+					  </eq>
+					  </volist>
+                                        </select>                    
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">您的职业: </td>
+                                    <td align="left">
+                                        <select name="memzhiye" id="memzhiye">
+					  <volist name="result_membercareer" id="rmc">
+					  <eq name="result.careerid" value="$rmc.id">
+					  <option value="<!--{$rmc.id}--!>" selected="selected"><!--{$rmc.name}--!></option>
+					  <else/>
+					  <option value="<!--{$rmc.id}--!>"><!--{$rmc.name}--!></option>
+					  </eq>
+					  </volist>
+                                        </select>                    
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">您的收入: </td>
+                                    <td align="left">
+                                        <select name="memincome" id="memincome">
+					  <volist name="result_memberincome" id="rmi">
+					  <eq name="result.incomeid" value="$rmi.id">
+					  <option value="<!--{$rmi.id}--!>" selected="selected"><!--{$rmi.name}--!></option>
+					  <else/>
+					  <option value="<!--{$rmi.id}--!>"><!--{$rmi.name}--!></option>
+					  </eq>
+					  </volist>
+                                        </select>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">Q Q号码: </td>
+				    <td align="left"><input name="memqq" value="<!--{$result.qqcode}--!>" id="memqq" title="请正确填写QQ号码~24:" class="small"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">MSN号码: </td>
+				    <td align="left"><input name="memmsn" value="<!--{$result.msn}--!>" id="memmsn" title="请正确填写MSN号码~48:" class="small"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">个人主页: </td>
+				    <td align="left"><input name="memhomepage" value="<!--{$result.homepage}--!>" id="memhomepage" title="请正确填写个人主页~80:" class="small"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">联系地址: </td>
+				    <td align="left"><input name="memaddress" value="<!--{$result.address}--!>" id="memaddress" title="请正确填写联系地址~100:" class="small"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="right">邮政编码: </td>
+				    <td align="left"><input name="memzipcode" value="<!--{$result.zipcode}--!>" id="memzipcode" title="请正确填写邮政编码~12:" class="small"></td>
+				  </tr>
+                                  <tr>
+                                    <td colspan="2" height="30"  class="td_bordnone"></td>
+                                  </tr>
+                                   
+                                  
+                                  <tr>
+                                    <td colspan="2" align="center" height="40" class="td_bordnone">
+                                         <div class="editbtn">
+					   <input id="submit" name="submit" value="修改个人信息" class="BtnC" type="submit" />
+					   <input id="reset" name="reset" value="重置" class="BtnC" type="reset" />
+                                         </div>
+                                     </td>
+                                   </tr>
+                                   <tr>
+                                      <td colspan="2" height="30"  class="td_bordnone"></td>
+                                   </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                    </div>
+                    </form>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="footer" />
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>

@@ -5,6 +5,8 @@ a:visited{color:#333; text-decoration:none;}
 a:active{color:#333; text-decoration:none;}
 a:hover{color:#ff9900; text-decoration:underline;}
 .warp_850{width:850px; margin:0 auto; height:100%;}
+.warp_900{width:950px; margin:0 auto; height:100%;}
+
 /**顶部**/
 #user_t{width:100%; height:155px; background:url(images/user/bg.gif) repeat-x 0 0;}
 #top{padding:13px 0 10px 0;}
@@ -104,16 +106,23 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 
 
 /**用户登陆**/
-#login_l{width:550px; height:450px;float:left;}
+#login_l{width:500px; height:520px;float:left;}
 #login_l img{float:left;}
-#login_r{width:255px; float:left; padding-top:100px;}
-#login_body{width:245px; border:1px solid #ccc; background:#F8F8F8;}
-.login_tit{width:100%; height:30px; background:#666;}
-.login_tit h2{padding:0 20px; height:30px; line-height:30px; color:#FFF;}
-#login_body input{width:215px; height:14px; line-height:14px; padding:6px 4px; border:1px solid #ccc; margin:0 10px;}
+#login_r{width:305px; float:left; padding-top:100px;}
+#login_body{width:315px; border:1px solid #ccc; background:#fff;}
+.login_tit{width:100%; height:35px; line-height:35px; background:#666;}
+.login_tit h2{padding:0 20px; color:#FFF;}
+.login_con{ padding:20px 0 0 20px;}
+#login_body input{width:180px; height:14px; line-height:14px; padding:6px 4px; border:1px solid #ccc; margin:0 10px; vertical-align:middle;}
 #login_body p{ padding:10px 0 5px 10px;}
-#login_body button{ width:225px; height:35px; line-height:30px; margin:5px 0 0 10px; padding:0; border:0; background:url(images/user/login_btn.jpg) no-repeat 0 0;}
-#login_body button.hover{ background-position:0 -35px;}
+#login_body button{ width:110px; height:27px; line-height:27px; margin:5px 0 0 10px; padding:0; border:0; background:#fc5416; color:#fff;}
+#login_body button.hover{ background:#f9622b;}
+#login_body span{ padding-left:20px;}
+#login_body span a{ color:#aaa;}
+#login_body span a:hover{ color:#ff9900;}
+#login_body input.input_chk{ width:14px; height:14px; margin:0 2px 0 15px; padding:0; vertical-align:middle; border:none;}
+#login_body div.login_text1{height:14px; line-height:14px; margin:10px auto; padding-left:60px;}
+#login_body div.login_text2{height:40px; line-height:40px; margin:10px auto; padding-left:60px;}
 
 /**用户注册**/
 .reg{ width:834px; height:auto; margin:0 auto;}
@@ -129,10 +138,14 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 	
 .tableclass td{ height:25px;}
 .tableclass td input{ vertical-align:middle;}
+.tableclass2 td{ height:30px; border-bottom:#cfcfcf 1px solid;}
+.tableclass2 td input{ vertical-align:middle;}
+.tableclass2 td.td_bordnone{ height:30px; border-bottom:none;}
+
 .small {width: 180px; height:20px; line-height:20px;}
-.msgdiv {color:#336699;padding:5px 0 5px 53px;background:url(images/user/chk_msg.gif) 30px no-repeat;}
-.errdiv {color:#FF0000;padding:5px 0 5px 53px;background:url(images/user/chk_error.gif) 30px no-repeat;}
-.rightdiv {color:#505050;padding:5px 0 5px 53px;background:url(images/user/chk_right.gif) 30px no-repeat;}
+.msgdiv {color:#336699;padding:5px 0 5px 33px;background:url(images/user/chk_msg.gif) 10px no-repeat;}
+.errdiv {color:#FF0000;padding:5px 0 5px 33px;background:url(images/user/chk_error.gif) 10px no-repeat;}
+.rightdiv {color:#505050;padding:5px 0 5px 33px;background:url(images/user/chk_right.gif) 10px no-repeat;}
 .noticediv{display:none;border:1px #fc5959 solid;background:#FFFDF4 url(images/user/chk_error.gif) 10px no-repeat;padding-left:33px;line-height:25px;margin:3px 0px}
 .okdiv{display:none;border:1px #fc5959 solid;background:#FFFDF4 url(images/user/chk_right.gif) 10px no-repeat;padding-left:33px;line-height:25px;margin:3px 0px}
 .securenotice{line-height:100px;color:#FF0000;text-align:center;}
@@ -150,7 +163,6 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 #vip label {clear: right;font-size: 12px;line-height: 20px;COLOR: #4b579b;margin-left:40px; width:80px;}
 #vip input{ vertical-align:middle;}
 
-
 .currect{ width:500px; margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/user/currectbg.jpg) left center no-repeat; font-size:16px; color:#000;}
 .tiaozhuan{ width:800px; height:30px; line-height:30px; text-align:center; font-size:12px; color:#aaa; margin-bottom:50px;}
 .failed{ width:500px; margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/user/failbg.jpg) left center no-repeat; font-size:16px; color:#000;}
@@ -162,3 +174,21 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .pop-ico .ico-list{padding: 7px}
 .pop-ico .ico-list a img {border: 1px dashed #DDD;cursor: pointer;}
 .pop-ico .ico-list a:hover img, .pop-ico .ico-list .cur img {border: 1px dashed #F60;}
+
+#main_rlong{float:left; width:788px; border:#BDBDBD 1px solid;}
+.main_rlong_tit{ width:778px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
+.main_rlong_con{ width:768px; padding:10px;}
+.main_rlong_c1{ float:left; width:84px; margin:10px;}
+.main_rlong_c1 img{ padding:1px;border:#e3e3e3 1px solid; vertical-align:middle;}
+.main_rlong_c1 div.text{ float:left; width:84px; height:25px; line-height:25px; text-align:center; padding-top:10px;}
+.main_rlong_c1 div.text a{ color:#4B579B}
+.main_rlong_c1 div.text a:hover{ color:#ff9900}
+.main_rlong_c2{ float:left; width:610px; padding-left:20px;}
+
+#editvip{ margin:10px auto;}
+#editvip label {clear: right; font-size: 12px;line-height: 20px; color:#4b579b; width:80px; text-align:right;}
+#editvip select{ vertical-align:middle; width:185px; height:25px; line-height:25px;}
+#editvip input{ vertical-align:middle;}
+.editclass{clear:both; border-bottom:1px solid #cfcfcf; line-height:34px;  padding:3px 0; width:500px;}
+.editbtn{ clear:both; width:340px; margin:10px auto;}
+.tips{ padding-left:10px;}

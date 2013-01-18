@@ -2,40 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title>易搜会员中心－登录</title>
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
 </head>
 <body id="body_user">
-  <include file="Register:header" />
+  <include file="Member:header" />
 	<div id="user_m">
     	<div class="warp_850">
         	<div id="main">
 				<div id="login_l">
 					<div class="login_img">
-						<img src="__PUBLIC__/index/image/login_img.jpg" width="550" height="450" />
+						<img src="__PUBLIC__/index/image/login_img.jpg" width="480" height="510" border="0"/>
 					</div>
 				</div>
 				<div id="login_r">
-					<div id="login_body">						
-						<div class="login_tit">
+					<div id="login_body">	
+                    	<div class="login_tit">
 							<h2>用户登陆</h2>
-						</div>
-						
+						</div>					
 						<form action="__URL__/checklogin" method="post">
-							<p>用户名：</p>
-							<input type="text" name="name" id="" class="" />
-							<p>密码</p>
-							<input type="password" name="password" id="" class="" />
+                        <div class="login_con">
+							<p>用户名：<input type="text" name="name" id="" class="" /></p>
+                            <div class="clear"></div>
+							<p>密&nbsp;&nbsp;&nbsp;码：<input type="password" name="password" id="" class="" /></p>
 							<div class="clear"></div>
-							<P>
-								<a href="__ROOT__/register/one" >注册用户</a> |
-								<a href="#" >找回密码</a> 
-							</P>
-							<button type="submit" name="submit" id="" class=""></button>
+							<div class="login_text1">
+								<input type="checkbox" class="input_chk"/>记住登陆状态<img src="__PUBLIC__/index/image/login_icon1.jpg" width="14" height="14" border="0" style="vertical-align:middle; padding-left:5px;" /><span><a href="__ROOT__/register/one">免费注册</a></span>
+							</div>
+                            <div class="clear"></div>
+                            <div class="login_text2">
+							<button type="submit" name="submit" id="" class="">登&nbsp;&nbsp;录</button><span><a href="#" >忘记密码？</a></span>
+                            </div>
 							<div class="clear" style="height:10px;"></div>
+                        </div>
 						</form>
 					</div>
 				</div>
@@ -43,25 +45,7 @@
             </div>
         </div>
     </div>
-	<div id="user_d">
-		<div class="warp_850">
-			<p>
-				<a href="">关于易搜</a> |
-				<a href="">发展历程</a> |
-				<a href="">服务声明</a> |
-				<a href="">业务介绍</a> |
-				<a href="">优势介绍</a> |
-				<a href="">站点地图</a> |
-				<a href="">联系方式</a> |
-				<a href="">付款方式</a> |
-				<a href="">广告服务</a>
-			</p>
-			<p>
-				Copyright &copy; www.yesow.com All rights reserved<br>
-				浙B2-20080069
-			</p>
-		</div>
-	</div>
+    <include file="Member:footer" />
 	<script type="text/javascript">
 		$(function(){
 			$('button').hover(function(){

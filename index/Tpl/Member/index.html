@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title>易搜会员中心－首页</title>
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
@@ -13,17 +13,9 @@
 	<div id="user_m">
     	<div class="warp_850">
         	<div id="main">
-            	<div id="main_l">
-                	<div id="main_l_tit"><h3>我的易搜</h3></div>
-                    <ul>
-                    	<li class="hover"><a href="#">基本信息管理</a></li>
-                    	<li><a href="#">安全设置管理</a></li>
-                    	<li><a href="#">特权设置管理</a></li>
-                    	<li><a href="#">寻找我的组织</a></li>
-                    </ul>
-                </div>
+		  <include file="sidebar" />
 				<div id="main_rm">
-					<div class="main_rm_tit">安全设置</div>
+					<div class="main_rm_tit">个人信息</div>
                     <div class="main_rm_con">
                     	<ul class="user_set">
                         	<li class="admin_img"><a href="#"><img src="__PUBLIC__/index/style/images/user/img_admin.jpg" /></a><h2>信息认证</h2></li>
@@ -33,7 +25,7 @@
                             <div class="clear"></div>
 			    <li class="long_text"><div class="div_span">最近登录IP：</div><div><!--{$Think.session.last_login_ip}--!></div></li>
 			    <li  class="long_text"><div class="div_span">上次登录时间：</div><div><!--{$Think.session.last_login_time|date="Y-m-d H:i:s", ###}--!></div></li>
-                            <li class="btn_img1"><a href="#"><img src="__PUBLIC__/index/style/images/user/img_icon4.jpg" /></a><a href="#"><img src="__PUBLIC__/index/style/images/user/img_icon3.jpg" /></a></li>
+                            <li class="btn_img1"><a href="__URL__/edituserinfo"><img src="__PUBLIC__/index/style/images/user/img_icon4.jpg" /></a><a href="#"><img src="__PUBLIC__/index/style/images/user/img_icon3.jpg" /></a></li>
                         </ul>
                         <div class="clear"></div>
                     </div>

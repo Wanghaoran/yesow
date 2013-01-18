@@ -4,11 +4,17 @@
             	<div id="logo">
                 	<a href="__ROOT__">易搜首页</a>
                 </div>
-                <div id="tools">
+		<div id="tools">
+		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 		  <p>欢迎会员 <!--{$Think.session.username}--!> <a href="__APP__/Public/logout">退出</a> 您的会员级别是:普通会员</p>
                     <p>您还有155524E币，你还有RMB余额755.35元</p>
                     <p class="tel_num">咨询电话:0571-56761176 56761178</p>
-                </div>
+		  <else/>
+		  <p>您好，您还没有登录&nbsp;&nbsp;&nbsp;<a href="__ROOT__/Register/one">免费注册</a> | <a href="__ROOT__/Public/login">用户登录</a></p>
+		  <br>	  
+                    <p class="tel_num">咨询电话:0571-56761176 56761178</p>
+		    </if>
+		    </div>
                 <div class="clear"></div>
             </div>
             <div id="nav">

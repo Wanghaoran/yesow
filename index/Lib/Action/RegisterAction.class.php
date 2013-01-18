@@ -69,6 +69,10 @@ class RegisterAction extends Action {
   //处理注册
   public function reg(){
     $member = D('admin://Member');
+    //如果昵称为空，用用户名当昵称
+    if(empty($_POST['nickname'])){
+      $_POST['nickname'] = $_POST['username'];
+    }
     if(!$member -> create()){
       $this -> error($member -> getError());
     }
