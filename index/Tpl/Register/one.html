@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+
 </head>
 <body id="body_user">
   <include file="Member:header" />
@@ -333,9 +334,12 @@
                                 </div></TD>
                             </TR></TBODY></TABLE>
                         </div>
-                        <div class="reg_c2">
-                        	<button onclick="location = '__ROOT__/register/two'">同意，继续申请</button>
-                            <button onclick="location = '__ROOT__'">算了，不申请了</button>
+			<div class="reg_c2">
+			  <form action="__ACTION__" id="form1" method="post">
+			    <input type="hidden" name="steps" value="two" />
+			  </form>
+			    <button onclick="$('#form1').submit();">同意，继续申请</button>
+			    <button onclick="location.href='__ROOT__';">算了，不申请了</button>
                         </div>
                     </div>
                 </div>
@@ -343,14 +347,5 @@
         </div>
     </div>
     <include file="Member:footer" />
-	<script type="text/javascript">
-		$(function(){
-			$('button').hover(function(){
-				$(this).addClass('hover');	
-			},function(){
-				$(this).removeClass('hover');	
-			})		
-		})
-	</script>
 </body>
 </html>

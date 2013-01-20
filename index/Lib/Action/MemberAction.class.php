@@ -10,11 +10,6 @@ class MemberAction extends MemberCommonAction {
   public function edituserinfo(){
     $member = D('admin://Member');
     if(!empty($_POST['nickname'])){
-      if(empty($_POST['password'])){
-	unset($_POST['password']);
-      }else{
-	$_POST['password'] = md5($_POST['password']);
-      }
       //如果更新了email,则需要重新验证
       $oldemail = $member -> getFieldByid(session(C('USER_AUTH_KEY')), 'email');
       if($oldemail != $_POST['email']){
@@ -25,6 +20,10 @@ class MemberAction extends MemberCommonAction {
 	R('Register/errorjump',array($member -> getError()));
       }
       if($member -> save()){
+	//更新成功重新生成缓存信息
+	$cachedata = $member -> field('nickname,headico') -> find($_POST['id']);
+	session('username', $cachedata['nickname']);
+	session('headico', $cachedata['headico']);
 	if(isset($_POST['ischeck'])){
 	  R('Register/successjump',array(L('UPDETA_USER_DATA_CHENGE_EMAIL'), U('Register/three')));
 	}else{
@@ -68,6 +67,16 @@ class MemberAction extends MemberCommonAction {
     }else{
       echo 1;
     }
+  }
+
+  //用户升级管理
+  public function userupdeta(){
+    $this -> display();
+  }
+
+  //安全设置首页
+  public function safe(){
+    $this -> display();
   }
 
   

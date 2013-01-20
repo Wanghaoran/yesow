@@ -45,67 +45,36 @@
 <div class="pageContent">
 	<div class="panelBar">
 	  <ul class="toolBar">
-	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li class=""><a class="delete" href="__URL__/delmember/navTabId/member" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择会员"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editmember/id/{sid_role}" target="dialog" mask="true" warn="请选择会员"><span>编辑</span></a></li>
-	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delmember'])">
-	    <li class=""><a class="delete" href="__URL__/delmember/navTabId/member" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择会员"><span>删除</span></a></li>
-	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['editmember'])">
-	    <li><a class="edit" href="__URL__/editmember/id/{sid_role}" target="dialog" mask="true" warn="请选择会员"><span>编辑</span></a></li>
-	    </if>
-	    </if>
 		</ul>
 	</div>
 
 	<table class="table" width="100%" layoutH="138">
 		<thead>
 		  <tr>
-		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="60">编号</th>
 			<th width="60">用户名</th>
-			<th width="60">昵称</th>
-			<th width="100">电子邮件</th>
-			<th width="40">性别</th>
 			<th width="60">省份</th>
 			<th width="60">地区</th>
 			<th width="60">会员等级</th>
-			<th width="60">注册时间</th>
-			<th width="100">最近登录时间</th>
-			<th width="40">状态</th>
-			<th width="40">验证</th>
+			<th width="100">上次登录时间</th>
+			<th width="100">本次登录时间</th>
+			<th width="70">总登录次数</th>
+			<th width="100">最后登录IP</th>
 
 		</tr>
 		</thead>
 		<tbody>
 		<volist name="result" id="r">
-		<tr target="sid_role" rel="<!--{$r.id}--!>">
-		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+		<tr>
 			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.nickname}--!></td>
-			  <td><!--{$r.email}--!></td>
-			  <eq name="r.sex" value="1">
-			  <td>男</td>
-			  <else/>			  
-			  <td>女</td>
-			  </eq>			  
+			  <td><!--{$r.name}--!></td>		  
 			  <td><!--{$r.csname}--!></td>			  			  
 			  <td><!--{$r.csaname}--!></td>			  			  
 			  <td>×××</td>			  			  
-			  <td><!--{$r.join_time|date="Y-m-d", ###}--!></td>
+			  <td><!--{$r.lastest_login_time|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.last_login_time|date="Y-m-d H:i:s", ###}--!></td>
-			  <eq name="r.status" value="1">
-			  <td style="color:green;">启用</td>
-			  <else/>			  
-			  <td style="color:red;">禁用</td>
-			  </eq>
-			  <eq name="r.ischeck" value="1">
-			  <td style="color:green;">是</td>
-			  <else/>
-			  <td style="color:red;">否</td>
-			  </eq>			  
+			  <td><!--{$r.login_count}--!></td>
+			  <td><!--{$r.last_login_ip}--!></td>
 			</tr>
 		</volist>
 		</tbody>

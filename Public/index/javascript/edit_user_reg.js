@@ -5,8 +5,6 @@ $(document).ready(function(){
 
 	//初始提示
 	$('#nickname').after('<span id="chknickname" class="msgdiv">取个你喜欢的名字,由6位以上数字或字母组合而成</span>');
-	$('#password').after('<span id="chkPass" class="msgdiv">密码由5-20个字母或数字组成,留空为不更改</span>');
-	$('#password1').after('<span id="chkRepass" class="msgdiv">请重复输入和上面相同的密码</span>');
 	$('#memtishi').after('<span id="chkmemtishi" class="msgdiv">密码丢掉后可以找回的问题提示</span>');
 	$('#memhueda').after('<span id="chkmemhueda" class="msgdiv">找回密码必须回答的答案</span>');
     $('#email').after('<span id="chkEmail" class="msgdiv">请正确填写您的邮件地址，邮箱件验证后方可使用帐号</span>');
@@ -29,51 +27,7 @@ $(document).ready(function(){
 		  $('#chknickname').remove();
 		  $('#nickname').after('<span id="chknickname" class="rightdiv">该昵称可以使用</span>');	
 		}
-	}); 
-
-
-	$('#password').focus(function(){ 
-		$('#chkPass').remove();
-		$('#password').after('<span id="chkPass" class="msgdiv">密码由5-20个字母或数字组成,留空为不更改</span>');
-	}); 
-
-
-	$('#password').blur(function(){ 
-		var p=$("#password")[0].value;
-		var patrn=/^(\w){5,20}$/;
-		if(p != ''){
-		if(!patrn.exec(p)){
-			$('#chkPass').remove();
-			$('#password').after('<span id="chkPass" class="errdiv">密码必须由5-20个字母或数字组成</span>');
-		}else{
-			$('#chkPass').remove();
-			$('#password').after('<span id="chkPass" class="rightdiv">该登录密码可以使用</span>');
-		}
-		}
-	}); 
-
-	$('#password1').focus(function(){ 
-		$('#chkRepass').remove();
-		$('#password1').after('<span id="chkRepass" class="msgdiv">请重复输入和上面相同的密码</span>');
-	}); 
-
-	$('#password1').blur(function(){ 
-		var p=$("#password1")[0].value;
-		var w=$("#password")[0].value;
-		var patrn=/^(\w){5,20}$/;
-		if(p != ''){
-		if(!patrn.exec(p)){
-			$('#chkRepass').remove();
-			$('#password1').after('<span id="chkRepass" class="errdiv">登录密码必须由5-20个英文字母或数字组成</span>');
-		}else if(p!=w){
-			$('#chkRepass').remove();
-			$('#password1').after('<span id="chkRepass" class="errdiv">两次输入的密码不一致，请输入和上面相同的密码</span>');
-		}else{
-			$('#chkRepass').remove();
-			$('#password1').after('<span id="chkRepass" class="rightdiv">输入正确</span>');
-		}
-		}
-	}); 
+	});  
 
 	$('#email').focus(function(){ 
 		$('#chkEmail').remove();
@@ -274,31 +228,6 @@ $(document).ready(function(){
 		
 			document.form1.nickname.focus();
 			document.form1.nickname.blur();
-
-		return false;
-		}
-	 	else if($('#chkPass')[0].className=='errdiv')
-		{
-			document.form1.password.focus();
-			document.form1.password.blur();
-		return false;
-		}
-		else if($('#chkRepass')[0].className=='errdiv')
-		{
-			document.form1.password1.focus();
-			document.form1.password1.blur();
-		return false;
-		}
-	 	else if($('#password')[0].value != $('#password1')[0].value){
-			document.form1.password1.focus();
-			document.form1.password1.blur();
-			return false;
-		}
-		else if(document.form1.password.value!=document.form1.password1.value)
-		{
-		
-			document.form1.password1.focus();
-			document.form1.password1.blur();
 
 		return false;
 		}

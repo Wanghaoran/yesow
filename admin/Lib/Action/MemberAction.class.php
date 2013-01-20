@@ -35,7 +35,7 @@ class MemberAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //会员数据
-    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> where($where) -> select();
+    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> order('id DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -330,5 +330,63 @@ class MemberAction extends CommonAction {
   }
 
   /* ----------- 会员管理 ------------ */
+
+
+  /* ----------- 统计管理 ------------ */
+
+  //今日登陆用户
+  public function todaylogin(){
+    $childsite = M('ChildSite');
+    //查分站信息
+    $result_childsite = $childsite -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+
+    $member = M('Member');
+    $where = array();
+    //构建查询条件
+    if(!empty($_POST['name'])){
+      $where['m.' . $this -> _post('key')] = $this -> _post('name');
+    }
+    if(!empty($_POST['csid'])){
+      $where['m.csid'] = $this -> _post('csid', 'intval');
+    }
+    if(!empty($_POST['csaid'])){
+      $where['m.csaid'] = $this -> _post('csaid', 'intval');
+    }
+    //计算时间区间
+    $year = date("Y");
+    $month = date("m");
+    $day = date("d");
+    $dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
+    $dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+    $where['m.last_login_time'] = array(array('gt', $dayBegin),array('lt', $dayEnd));
+    //记录总数
+    $count = $member -> table('yesow_member as m') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,cs.name as csname,csa.name as csaname,m.lastest_login_time,m.last_login_time,m.login_count,m.last_login_ip') -> where($where) -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> order('m.last_login_time DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    
+
+    $this -> display();
+  }
+
+  /* ----------- 统计管理 ------------ */
+
+
 
 }

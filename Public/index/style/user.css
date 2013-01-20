@@ -192,3 +192,14 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .editclass{clear:both; border-bottom:1px solid #cfcfcf; line-height:34px;  padding:3px 0; width:500px;}
 .editbtn{ clear:both; width:340px; margin:10px auto;}
 .tips{ padding-left:10px;}
+
+.user_password{ width:834px; margin:50px auto; text-align:center; font-size:14px;}
+.user_p1{float:left; width:100px; height:30px; line-height:30px; text-align:right;}
+.user_p2{float:left; height:30px; line-height:30px; text-align:left;}
+
+.h2_clss1{ font-size:12px; font-weight:bold; color:#00F; height:30px; line-height:30px; padding-left:5px;}
+.tableclass3{ width:765px; border:#ccc 1px solid; border-collapse:collapse; margin:0 auto;}
+.tableclass3 th{ background:#eee; height:30px; line-height:30px; border:#ccc 1px solid; border-collapse:collapse;}
+.tableclass3 td{ background:#fff; height:30px; line-height:30px; text-align:center; font-weight:bold; border:#ccc 1px solid; border-collapse:collapse;}
+ul.ul_checked{ padding:10px;}
+ul.ul_checked li{ float:left; font-size:12px; font-weight:normal;}

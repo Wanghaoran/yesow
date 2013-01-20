@@ -1,25 +1,42 @@
 <?php
 class RegisterAction extends Action {
-  //注册第一步
-  public function one(){
-    $this -> display();
-  }
-
-  //注册第二步
-  public function two(){
-    //查询分站
-    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
-    $this -> assign('result_childsite', $result_childsite);
-    //查询学历
-    $result_memberedu = M('MemberEdu') -> field('id,name') -> order('sort ASC') -> select();
-    $this -> assign('result_memberedu', $result_memberedu);
-    //查询职业
-    $result_membercareer = M('MemberCareer') -> field('id,name') -> order('sort ASC') -> select();
-    $this -> assign('result_membercareer', $result_membercareer);
-    //查询收入
-    $result_memberincome = M('MemberIncome') -> field('id,name') -> order('sort ASC') -> select();
-    $this -> assign('result_memberincome', $result_memberincome);
-    $this -> display();
+  //注册
+  public function index(){
+    //注册第二步
+    if(!empty($_POST['steps'])){
+      //查询分站
+      $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+      $this -> assign('result_childsite', $result_childsite);
+      //查询学历
+      $result_memberedu = M('MemberEdu') -> field('id,name') -> order('sort ASC') -> select();
+      $this -> assign('result_memberedu', $result_memberedu);
+      //查询职业
+      $result_membercareer = M('MemberCareer') -> field('id,name') -> order('sort ASC') -> select();
+      $this -> assign('result_membercareer', $result_membercareer);
+      //查询收入
+      $result_memberincome = M('MemberIncome') -> field('id,name') -> order('sort ASC') -> select();
+      $this -> assign('result_memberincome', $result_memberincome);
+      $this -> display('two');
+      exit();
+    }
+    //注册第三步
+    if(!empty($_POST['username'])){
+      $member = D('admin://Member');
+      //如果昵称为空，用用户名当昵称
+      if(empty($_POST['nickname'])){
+	$_POST['nickname'] = $_POST['username'];
+      }
+      if(!$member -> create()){
+	$this -> errorjump($member -> getError());
+      }
+      if($member -> add()){
+	$this -> successjump(L('USER_REGISTER_SUCCESS'), '__ROOT__/register/three');
+      }else{
+	$this -> errorjump(L('USER_REGISTER_ERROR'));
+      }
+      exit();
+    }
+    $this -> display('one');
   }
 
   //注册第三步
@@ -138,6 +155,67 @@ class RegisterAction extends Action {
     $this -> assign('status', 0);
     $this -> display('./index/Tpl/Register/jumpurl.html');
     exit();
+  }
+
+  //密码找回
+  public function forgetpassword(){
+    //验证第二步
+    if(!empty($_POST['username'])){
+      $member = M('Member');
+      $data = $member -> field('name,passwordquestion') -> where(array('name' => $this -> _post('username'))) -> find();
+      if(!$data){
+	$this -> errorjump(L('USER_FORGET_PASSWORD_USERNAME_ERROR'));
+      }else{
+	$this -> assign('data', $data);
+      }
+      $this -> display('forgetpasswordtwo');
+      exit();
+    }
+    //验证第三步
+    if(!empty($_POST['answer'])){
+      $member = M('Member');
+      $answer = $member -> getFieldByname($this -> _post('name'), 'passwordanswer');
+      //查用户id
+      $id = $member -> getFieldByname($this -> _post('name'), 'id');
+      if($answer != $this -> _post('answer')){
+	$this -> errorjump(L('USER_FORGET_PASSWORD_ANSWER_ERROR'));
+      }else{
+	//将用户id写入session
+	session('forgetpassword_userid', $id);
+	$this -> display('forgetpasswordthree');
+      }
+      exit();
+    }
+    //重设密码
+    if(!empty($_POST['password'])){
+      if($_POST['password'] != $_POST['password1']){
+	$this -> errorjump(L('PASSWORD_NEQ'));
+      }
+      $member = M('Member');
+      $data['id'] = session('forgetpassword_userid');
+      $data['password'] = $this -> _post('password', 'md5');
+      //更改成功清除登录信息重新登录
+      if($member -> save($data)){
+	session(C('USER_AUTH_KEY'), null);
+	session(null);
+	session('[destroy]');
+	$this -> successjump(L('PASSWORD_CHANGE_SUCCESS'), U('Public/login'));
+      }else{
+	$this -> errorjump(L('DATA_UPDATE_ERROR'));
+      }
+      exit();
+    }
+    $this -> display('forgetpasswordone');
+  }
+
+  //验证密保问题
+  public function checkpasswordquestion(){
+    $answer = M('Member') -> getFieldByname($this -> _post('name'), 'passwordanswer');
+    if($answer == $this -> _post('answer')){
+      echo 0;
+    }else{
+      echo 1;
+    }
   }
 
   
