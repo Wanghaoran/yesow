@@ -79,5 +79,51 @@ class MemberAction extends MemberCommonAction {
     $this -> display();
   }
 
+  //安全设置 - 密码设置详情页
+  public function setsafepwd(){
+    $member = D('admin://Member');
+    //处理登录密码更新
+    if(!empty($_POST['memtishi'])){
+      //处理密码字段
+      if(!empty($_POST['password'])){
+	$data['password'] = md5($_POST['password']);
+      }
+      $data['id'] = session(C('USER_AUTH_KEY'));
+      $data['passwordquestion'] = $_POST['memtishi'];
+      $data['passwordanswer'] = $_POST['memhueda'];
+      if(!$member -> create($data)){
+	R('Register/errorjump',array($member -> getError()));
+      }
+      if($member -> save()){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Member/safe')));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+      }
+    }
+    //处理交易密码更新
+    if($_POST['mod'] == 'trader'){
+      $pwd = $member -> getFieldByid(session(C('USER_AUTH_KEY')), 'password');
+      if($pwd != $this -> _post('password3', 'md5')){
+	R('Register/errorjump',array(L('PASSWORD_ERROR')));
+      }
+      $data = array();
+      $data['id'] = session(C('USER_AUTH_KEY'));
+      $data['traderspassword'] = $this -> _post('password4', 'md5');
+      if($member -> save($data)){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Member/safe')));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+      }
+    }
+    $result = $member -> field('passwordquestion,passwordanswer') -> find(session(C('USER_AUTH_KEY')));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //安全设置 - 资金设置详情页
+  public function setsafemonery(){
+    $this -> display();
+  }
+
   
 }

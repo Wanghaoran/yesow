@@ -10,7 +10,7 @@ return array(
   'LOGIN_NAME_EMPTY' => '帐号不能为空,请重新输入',
   'NAME_ERROR' => '帐号不存在或已禁用,请重新输入',
   'LOGIN_PWD_EMPTY' => '密码不能为空,请重新输入',
-  'PASSWORD_ERROR' => '密码错误,请重新输入',
+  'PASSWORD_ERROR' => '登录密码错误,请重新输入',
   'MAIL_CHECK_ERROR' => '登录成功，您还没有通过邮箱验证，请先进行邮箱验证',
   'LOGIN_VERIFY_EMPTY' => '验证码不能为空',
   'VERIFY_ERROR' => '验证码错误',

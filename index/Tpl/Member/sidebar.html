@@ -6,7 +6,7 @@
 			  <else/>
 			  <li><a href="__URL__/index">基本信息管理</a></li>
 			  </if>
-			  <if condition="(ACTION_NAME eq 'safe')">
+			  <if condition="(ACTION_NAME eq 'safe') OR (ACTION_NAME eq 'setsafepwd') OR (ACTION_NAME eq 'setsafemonery')">
 			  <li class="hover"><a href="__URL__/safe">安全设置管理</a></li>
 			  <else/>
 			  <li><a href="__URL__/safe">安全设置管理</a></li>

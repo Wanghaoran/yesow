@@ -2,6 +2,10 @@
 class RegisterAction extends Action {
   //注册
   public function index(){
+    //如果已登录则不能注册
+    if(isset($_SESSION[C('USER_AUTH_KEY')])){
+      $this -> redirect('Member/index');
+    }
     //注册第二步
     if(!empty($_POST['steps'])){
       //查询分站
@@ -159,6 +163,10 @@ class RegisterAction extends Action {
 
   //密码找回
   public function forgetpassword(){
+    //如果已登录则不能找回密码
+    if(isset($_SESSION[C('USER_AUTH_KEY')])){
+      $this -> redirect('Member/index');
+    }
     //验证第二步
     if(!empty($_POST['username'])){
       $member = M('Member');

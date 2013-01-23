@@ -8,7 +8,6 @@ $(document).ready(function(){
 	$('#memtishi').after('<span id="chkmemtishi" class="msgdiv">密码丢掉后可以找回的问题提示</span>');
 	$('#memhueda').after('<span id="chkmemhueda" class="msgdiv">找回密码必须回答的答案</span>');
     $('#email').after('<span id="chkEmail" class="msgdiv">请正确填写您的邮件地址，邮箱件验证后方可使用帐号</span>');
-	$('#memtel').after('<span id="chkmemtel" class="msgdiv">您目前的联系电话</span>');
 	$('#memdizhi').after('<span id="chkmemdizhi" class="msgdiv">所在地区</span>');
 
 
@@ -125,27 +124,6 @@ $(document).ready(function(){
 		}
 
 	}); 
-
-	
-   $('#memtel').focus(function(){ 
-		$('#chkmemtel').remove();
-		$('#memtel').after('<span id="chkmemtel" class="msgdiv">请输入手机号码，如：13912345678</span>');
-	}); 
-
-	$('#memtel').blur(function(){
-		var p=$("#memtel")[0].value;
-		if(p==''){
-			$('#chkmemtel').remove();
-			$('#memtel').after('<span id="chkmemtel" class="errdiv">请输入正确的手机号码，如：13912345678</span>');
-		}else if(p.length<10){
-			$('#chkmemtel').remove();
-			$('#memtel').after('<span id="chkmemtel" class="errdiv">请输入正确的手机号码，如：13912345678</span>');
-		}else{
-			$('#chkmemtel').remove();
-			$('#memtel').after('<span id="chkmemtel" class="rightdiv">输入正确</span>');
-		}
-
-	});
 
 	//验证码
 	$('#verify').focus(function(){ 
@@ -265,13 +243,6 @@ $(document).ready(function(){
 		{
 			document.form1.email.focus();
 			document.form1.email.blur();
-		return false;
-		}
-		else if(document.form1.memtel.value=="")
-		{
-			document.form1.memtel.focus();
-			document.form1.memtel.blur();
-
 		return false;
 		}
 		else if($('#chkmemtel')[0].className == 'errdiv')

@@ -128,7 +128,7 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .reg{ width:834px; height:auto; margin:0 auto;}
 .reg_title{ height:31px; line-height:31px; width:834px; border-bottom:#ff8b01 1px solid; text-align:center; margin-top:20px;}
 	ul.ul_reg li{ float:left; width:228px; height:30px; border:#e4e3e3 1px solid; border-bottom:none; background:#f3f3f3; color:#8b8b8b; font-size:14px; font-weight:bold;}
-	ul.ul_reg li.choice{ width:230px; height:31px; background:url(images/user/btn_regbg.jpg) no-repeat; border:none; color:#fff;}
+	ul.ul_reg li.choice{ width:230px; height:31px; background:url(images/user/btn_regbg.gif) top center no-repeat; border:none; color:#fff;}
 	ul.ul_reg li.li_img{ width:72px; height:31px; background:url(images/user/icon_reg.jpg) no-repeat; border:none;}
 .reg_con{ width:834px;  margin:10px auto;}
 .reg_con h2{ font-size:14px; font-weight:bold; width:834px; text-align:center; height:50px; line-height:50px;}
@@ -203,3 +203,17 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .tableclass3 td{ background:#fff; height:30px; line-height:30px; text-align:center; font-weight:bold; border:#ccc 1px solid; border-collapse:collapse;}
 ul.ul_checked{ padding:10px;}
 ul.ul_checked li{ float:left; font-size:12px; font-weight:normal;}
+
+/* switchBox */
+.switchBox{width:750px; margin: 10px auto;}
+.switchBox dt{height:31px; border-bottom:#ff8b01 1px solid;}
+.switchBox dt a{ border:#e4e3e3 1px solid; border-bottom:none; background:#f3f3f3;color:#7c7c7c;cursor:pointer;float:left;font-size:14px;height:30px;line-height:30px;text-align:center;text-decoration:none;width:100px; font-weight:bold; margin-right:10px;}
+.switchBox dt .on{ background:url(images/user/btn_regbg.gif) left bottom no-repeat;}
+.switchBox dt .on,.switchBox dt a:hover{color:#fff;}
+.switchBox dd{clear:both;display:none;height:auto;line-height:20px;padding:10px;font-family:"宋体";}
+
+.main_con2{ width:700px;}
+.main_button{ width:600px;margin:0 auto; text-align:center;}
+.main_button button{ height:30px; line-height:20px; font-size:14px; }
+
+.user_p3{float:left; width:150px; height:30px; line-height:30px; text-align:right;}

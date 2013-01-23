@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜会员中心－我的易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/ks-switch.pack.js"></script>
+<script type="text/javascript">
+$(function($){
+	$("#switchBox").switchTab({titCell: "dt a", trigger: "click", delayTime: 0});
+});
+</script>
+</head>
+<body id="body_user">
+  <include file="Member:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="Member:sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">用户升级管理</div>
+                   <div class="clear30"></div>
+                    <!--tab切換內容 開始-->
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#">转出额度</a>
+                                <a href="#">消费额度</a>
+                            </dt>
+                            <!--nav end-->
+                            <dd>
+                                <!--tab转出额度 start-->
+                                <div class="main_con2">
+                                    <form name="form1" id="form1" onSubmit="return cheakform();">
+                                    <div class="user_password" style="width:600px;">
+                                        <p><div class="user_p3">当前每日转出限额：</div><div class="user_p2">您还没有设置当前每日限额</div></p>
+                                        <div class="clear"></div>
+                                        <p><div class="user_p3">请输入登录密码：</div><div class="user_p2"><input name="money1" id="money1" value="" class="small" type="text"><span class="msgdiv">最高每日转出额度</span></div></p>
+                                        <div class="clear"></div>
+                                        <p><div class="user_p3">输入新交易密码：</div><div class="user_p2"><input name="password5" id="password5" value="" class="small" type="password"><span class="msgdiv">请输入您已经设置好的密码</span></div></p>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="main_button">
+                                        <button style="margin-right:10px;">修改</button><button>取消</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                <div class="clear30"></div>     
+                                <!--tab转出额度 end--> 
+                            </dd>
+                            <dd>
+                                <!--tab消费额度 start-->
+                                <div class="main_con2">
+                                    <form name="form1" id="form1" onSubmit="return cheakform();">
+                                    <div class="user_password" style="width:600px;">
+                                        <p><div class="user_p3">当前每日消费限额：</div><div class="user_p2">您还没有设置当前每日限额</div></p>
+                                        <div class="clear"></div>
+                                        <p><div class="user_p3">重新设置每日限额：</div><div class="user_p2"><input name="money1" id="money1" value="" class="small" type="text"><span class="msgdiv">最高每日消费额度</span></div></p>
+                                        <div class="clear"></div>
+                                        <p><div class="user_p3">输入新交易密码：</div><div class="user_p2"><input name="password6" id="password6" value="" class="small" type="password"><span class="msgdiv">请输入您已经设置好的密码</span></div></p>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="main_button">
+                                        <button style="margin-right:10px;">修改</button><button>取消</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                <div class="clear30"></div>  
+                                <!--tab消费额度 end--> 
+                            </dd>
+                        </dl>
+                    </div>
+                    <!--tab切換內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+      </div>
+      <include file="Member:footer" />
+</body>
+</html>
