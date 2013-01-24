@@ -122,6 +122,60 @@ class MemberAction extends MemberCommonAction {
 
   //安全设置 - 资金设置详情页
   public function setsafemonery(){
+    $member = M('Member');
+    //更新每日转出额度
+    if($_POST['mod'] == 'transferlimit'){
+      //查交易密码
+      $traderspassword = $member -> getFieldByid(session(C('USER_AUTH_KEY')), 'traderspassword');
+      if($traderspassword == ''){
+	R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), U('Member/setsafepwd')));
+      }
+      if($this -> _post('traderspassword', 'md5') != $traderspassword){
+	R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR')));
+      }else{
+	$data = array();
+	$data['id'] = session(C('USER_AUTH_KEY'));
+	$data['transferlimit'] = $this -> _post('money1', 'intval');
+	if($member -> save($data)){
+	  R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Member/safe')));
+	}else{
+	  R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+	}
+      }
+    }
+    //更新每日消费限额
+    if($_POST['mod'] == 'consumptionlimit'){
+      //查交易密码
+      $traderspassword = $member -> getFieldByid(session(C('USER_AUTH_KEY')), 'traderspassword');
+      if($traderspassword == ''){
+	R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), U('Member/setsafepwd')));
+      }
+      if($this -> _post('traderspassword2', 'md5') != $traderspassword){
+	R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR')));
+      }else{
+	$data = array();
+	$data['id'] = session(C('USER_AUTH_KEY'));
+	$data['consumptionlimit'] = $this -> _post('money2', 'intval');
+	if($member -> save($data)){
+	  R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Member/safe')));
+	}else{
+	  R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+	}
+      }
+    }
+    //查询每日转出额度和消费限额
+    $result = $member -> field('transferlimit,consumptionlimit') -> find(session(C('USER_AUTH_KEY')));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //特权设置管理
+  public function privilege(){
+    $this -> display();
+  }
+
+  //组织管理
+  public function organization(){
     $this -> display();
   }
 

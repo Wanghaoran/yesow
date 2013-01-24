@@ -26,13 +26,13 @@
 	    <li class=""><a class="delete" href="__URL__/delmemberincome/navTabId/memberincome" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择区间"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/editmemberincome/id/{sid_role}" target="dialog" mask="true" warn="请选择区间"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addmemberincome'])">
+	    <if condition="isset($_SESSION['acc_arr']['member']['addmemberincome'])">
 	    <li><a class="add" href="__URL__/addmemberincome" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delmemberedu'])">
+	    <if condition="isset($_SESSION['acc_arr']['member']['delmemberedu'])">
 	    <li class=""><a class="delete" href="__URL__/delmemberincome/navTabId/memberincome" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择区间"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['editmemberincome'])">
+	    <if condition="isset($_SESSION['acc_arr']['member']['editmemberincome'])">
 	    <li><a class="edit" href="__URL__/editmemberincome/id/{sid_role}" target="dialog" mask="true" warn="请选择区间"><span>编辑</span></a></li>
 	    </if>
 	    </if>

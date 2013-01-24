@@ -265,15 +265,15 @@ function redirect($url, $time=0, $msg='') {
     }
 }
 
-// 全局缓存设置和读取
-function S($name, $value='', $expire=null, $type='',$options=null) {
+// 全局缓存设置和读取 app 参数是自定义扩展
+function S($name, $value='', $expire=null, $type='',$options=null, $app=APP_NAME) {
     static $_cache = array();
     //取得缓存对象实例
     $cache = Cache::getInstance($type,$options);
     if ('' !== $value) {
         if (is_null($value)) {
             // 删除缓存
-            $result = $cache->rm($name);
+            $result = $cache->rm($name, $app);
             if ($result)
                 unset($_cache[$type . '_' . $name]);
             return $result;

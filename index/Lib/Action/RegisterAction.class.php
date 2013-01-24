@@ -170,7 +170,18 @@ class RegisterAction extends Action {
     //验证第二步
     if(!empty($_POST['username'])){
       $member = M('Member');
-      $data = $member -> field('name,passwordquestion') -> where(array('name' => $this -> _post('username'))) -> find();
+      $data = $member -> field('name,email,passwordquestion,passwordemail') -> where(array('name' => $this -> _post('username'))) -> find();
+      //如果没有设置密保问题，则生产随机密码并发送到邮箱
+      if(empty($data['passwordquestion'])){
+	//如果可通过密码找回的次数为0，则提示并退出
+	if($data['passwordemail'] == 0){
+	  $this -> display('noforgetpasswordemail');
+	  exit();
+	}
+	$this -> assign('count', ($data['passwordemail'] - 1));
+	$this -> display('forgetpasswordemail');
+	exit();
+      }
       if(!$data){
 	$this -> errorjump(L('USER_FORGET_PASSWORD_USERNAME_ERROR'));
       }else{
@@ -209,7 +220,7 @@ class RegisterAction extends Action {
 	session('[destroy]');
 	$this -> successjump(L('PASSWORD_CHANGE_SUCCESS'), U('Public/login'));
       }else{
-	$this -> errorjump(L('DATA_UPDATE_ERROR'));
+	$this -> errorjump(L('PASSWORD_DATA_UPDATE_ERROR'));
       }
       exit();
     }
@@ -224,6 +235,30 @@ class RegisterAction extends Action {
     }else{
       echo 1;
     }
+  }
+
+  //通过邮箱重置密码
+  public function passwordemail(){
+    $member = M('Member');
+    //先验证
+    $question = $member -> getFieldByname($this -> _get('name'), 'passwordquestion');
+    if(!empty($question)){
+      $this -> errorjump(L('PASSWORD_EMAIL_NAME_ERROR'));
+    }
+    //重新生成随机密码
+    import('ORG.Util.String');
+    $password = String::randString(8);
+    //更新用户密码
+    if($member -> where(array('name' => $this -> _get('name'))) -> save(array('password' => md5($password), 'passwordemail' => array('exp','passwordemail-1')))){
+      $email = $member -> getFieldByname($this -> _get('name'), 'email');
+      import('ORG.Util.Mail');
+      SendMail($email,'yesow用户密码找回邮件',"尊敬的用户{$_GET['name']}您好，您在易搜网站上重置的密码为：{$password} 请使用新密码登录网站，如有疑问，请联系易搜客服:0571-88396114 88396195咨询",'yesow管理员');
+      $this -> successjump(L('PASSWORD_EMAIL_SUCCESS'), U('Public/login'));
+    }else{
+      $this -> errorjump(L('DATA_UPDATE_ERROR'));
+    }
+    
+
   }
 
   

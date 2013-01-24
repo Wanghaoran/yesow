@@ -216,8 +216,14 @@ class CacheFile extends Cache {
      * @return boolen
      +----------------------------------------------------------
      */
-    public function rm($name) {
-        return unlink($this->filename($name));
+    public function rm($name, $app) {
+      //自定义扩展 可以删除其他项目下的缓存文件
+      // author whrlmc@139.com
+      $name = $this->filename($name);
+      if($app != APP_NAME){
+	$name = str_replace(APP_NAME, $app, $name);
+      }
+        return unlink($name);
     }
 
     /**

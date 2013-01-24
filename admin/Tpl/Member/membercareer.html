@@ -26,13 +26,13 @@
 	    <li class=""><a class="delete" href="__URL__/delmembercareer/navTabId/membercareer" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择职业"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/editmembercareer/id/{sid_role}" target="dialog" mask="true" warn="请选择学历"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addmembercareer'])">
+	    <if condition="isset($_SESSION['acc_arr']['member']['addmembercareer'])">
 	    <li><a class="add" href="__URL__/addmembercareer" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delmembercareer'])">
+	    <if condition="isset($_SESSION['acc_arr']['member']['delmembercareer'])">
 	    <li class=""><a class="delete" href="__URL__/delmembercareer/navTabId/membercareer" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择学历"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['editmemberedu'])">
+	    <if condition="isset($_SESSION['acc_arr']['member']['editmemberedu'])">
 	    <li><a class="edit" href="__URL__/editmembercareer/id/{sid_role}" target="dialog" mask="true" warn="请选择学历"><span>编辑</span></a></li>
 	    </if>
 	    </if>

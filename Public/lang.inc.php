@@ -54,6 +54,7 @@ return array(
   'MEMBER_EMAIL_EMPTY' => '会员电子邮件不能为空',
   'MEMBER_EMAIL_ERROR' => '会员电子邮件格式错误',
   'SEND_EMAIL_SUCCESS' => '验证邮件发送成功，请登录邮箱查收',
+  'PASSWORD_EMAIL_SUCCESS' => '重置密码邮件发送成功，请登录邮箱查收',
   'CHECK_EMAIL_SUCCESS' => '邮箱验证成功，现在转到登录页面',
   'CHECK_EMAIL_ERROR' => '邮箱验证失败，请重新验证',
   'UPDETA_USER_DATA_CHENGE_EMAIL' => '数据更新成功，由于您更改了电子邮箱，所以需要再次验证',

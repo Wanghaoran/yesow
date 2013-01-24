@@ -11,7 +11,50 @@
 <script type="text/javascript">
 $(function($){
 	$("#switchBox").switchTab({titCell: "dt a", trigger: "click", delayTime: 0});
-});
+	});
+$(document).ready(function(){
+    $('#money1').after('<span id="chkmoney1" class="msgdiv">最高每日转出额度,留空为不限制</span>');
+    $('#money2').after('<span id="chkmoney2" class="msgdiv">最高每日消费额度,留空为不限制</span>');
+    $('#traderspassword').after('<span id="chktraderspassword" class="msgdiv">请输入交易密码</span>');
+    $('#traderspassword2').after('<span id="chktraderspassword2" class="msgdiv">请输入交易密码</span>');
+    $('#traderspassword').focus(function(){ 
+      $('#chktraderspassword').remove();
+      $('#traderspassword').after('<span id="chktraderspassword" class="msgdiv">请输入交易密码</span>');
+      });
+   $('#traderspassword').blur(function(){ 
+     var p=$("#traderspassword")[0].value;
+     if(p == ''){
+     $('#chktraderspassword').remove();
+     $('#traderspassword').after('<span id="chktraderspassword" class="errdiv">交易密码不能为空</span>');
+     }
+     });
+   $('#traderspassword2').focus(function(){ 
+      $('#chktraderspassword2').remove();
+      $('#traderspassword2').after('<span id="chktraderspassword2" class="msgdiv">请输入交易密码</span>');
+      });
+   $('#traderspassword2').blur(function(){ 
+     var p=$("#traderspassword2")[0].value;
+     if(p == ''){
+     $('#chktraderspassword2').remove();
+     $('#traderspassword2').after('<span id="chktraderspassword2" class="errdiv">交易密码不能为空</span>');
+     }
+     });
+   });
+function cheakform(){
+  if(document.form1.traderspassword.value == ''){	
+    document.form1.traderspassword.focus();
+    document.form1.traderspassword.blur();
+    return false;
+  }
+}
+
+function cheakform2(){
+  if(document.form2.traderspassword2.value == ''){	
+    document.form2.traderspassword2.focus();
+    document.form2.traderspassword2.blur();
+    return false;
+  }
+}
 </script>
 </head>
 <body id="body_user">
@@ -21,7 +64,7 @@ $(function($){
         	<div id="main">
 		  <include file="Member:sidebar" />
                 <div id="main_rlong">
-                	<div class="main_rlong_tit">用户升级管理</div>
+                	<div class="main_rlong_tit">资金安全设置</div>
                    <div class="clear30"></div>
                     <!--tab切換內容 開始-->
                     <div class="main">
@@ -35,19 +78,20 @@ $(function($){
                             <dd>
                                 <!--tab转出额度 start-->
                                 <div class="main_con2">
-                                    <form name="form1" id="form1" onSubmit="return cheakform();">
+                                    <form name="form1" id="form1" action="__ACTION__" method="post" onSubmit="return cheakform();">
                                     <div class="user_password" style="width:600px;">
-                                        <p><div class="user_p3">当前每日转出限额：</div><div class="user_p2">您还没有设置当前每日限额</div></p>
+				      <p><div class="user_p3">当前每日转出限额：</div><div class="user_p2"><!--{$result.transferlimit|default='不限制'}--!></div></p>
                                         <div class="clear"></div>
-                                        <p><div class="user_p3">请输入登录密码：</div><div class="user_p2"><input name="money1" id="money1" value="" class="small" type="text"><span class="msgdiv">最高每日转出额度</span></div></p>
+                                        <p><div class="user_p3">重新设置每日限额：</div><div class="user_p2"><input name="money1" id="money1" value="" class="small" type="text"></div></p>
                                         <div class="clear"></div>
-                                        <p><div class="user_p3">输入新交易密码：</div><div class="user_p2"><input name="password5" id="password5" value="" class="small" type="password"><span class="msgdiv">请输入您已经设置好的密码</span></div></p>
+                                        <p><div class="user_p3">输入交易密码：</div><div class="user_p2"><input name="traderspassword" id="traderspassword" value="" class="small" type="password"></div></p>
                                         <div class="clear"></div>
+				      </div>
+				      <input type="hidden" name="mod" value="transferlimit" />
+				  </form>
+				  <div class="main_button">
+                                        <button style="margin-right:10px;" onclick="$('#form1').submit();">修改</button><button onlick="location.href='__URL__/safe'">取消</button>
                                     </div>
-                                    <div class="main_button">
-                                        <button style="margin-right:10px;">修改</button><button>取消</button>
-                                    </div>
-                                    </form>
                                 </div>
                                 <div class="clear30"></div>     
                                 <!--tab转出额度 end--> 
@@ -55,19 +99,20 @@ $(function($){
                             <dd>
                                 <!--tab消费额度 start-->
                                 <div class="main_con2">
-                                    <form name="form1" id="form1" onSubmit="return cheakform();">
+                                    <form name="form2" id="form2" action="__ACTION__" method="post" onSubmit="return cheakform2();">
                                     <div class="user_password" style="width:600px;">
-                                        <p><div class="user_p3">当前每日消费限额：</div><div class="user_p2">您还没有设置当前每日限额</div></p>
+				      <p><div class="user_p3">当前每日消费限额：</div><div class="user_p2"><!--{$result.consumptionlimit|default='不限制'}--!></div></p>
                                         <div class="clear"></div>
-                                        <p><div class="user_p3">重新设置每日限额：</div><div class="user_p2"><input name="money1" id="money1" value="" class="small" type="text"><span class="msgdiv">最高每日消费额度</span></div></p>
+                                        <p><div class="user_p3">重新设置每日限额：</div><div class="user_p2"><input name="money2" id="money2" value="" class="small" type="text"></div></p>
                                         <div class="clear"></div>
-                                        <p><div class="user_p3">输入新交易密码：</div><div class="user_p2"><input name="password6" id="password6" value="" class="small" type="password"><span class="msgdiv">请输入您已经设置好的密码</span></div></p>
+                                        <p><div class="user_p3">输入交易密码：</div><div class="user_p2"><input name="traderspassword2" id="traderspassword2" value="" class="small" type="password"></div></p>
                                         <div class="clear"></div>
+				      </div>
+				      <input type="hidden" name="mod" value="consumptionlimit">
+				  </form>
+				  <div class="main_button">
+                                        <button style="margin-right:10px;" onclick="$('#form2').submit();">修改</button><button onclick="location.href='__URL__/safe'">取消</button>
                                     </div>
-                                    <div class="main_button">
-                                        <button style="margin-right:10px;">修改</button><button>取消</button>
-                                    </div>
-                                    </form>
                                 </div>
                                 <div class="clear30"></div>  
                                 <!--tab消费额度 end--> 
