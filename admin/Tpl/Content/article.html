@@ -105,7 +105,7 @@
 			  <td><!--{$r.aname}--!></td>			 
 			  <td><!--{$r.mname}--!></td>
 			  <td><!--{$r.hits}--!></td>
-			  <td>0<!-- 未做 --></td>
+			  <td><!--{$r.count|default=0}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.checktime|date="Y-m-d", ###}--!></td>
 			  <eq name="r.status" value="0">

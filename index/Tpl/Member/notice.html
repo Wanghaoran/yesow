@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜会员中心－公告详情</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript">
+//更改字体大小
+var status0        = '';
+var curfontsize    = 10;
+var curlineheight  = 20;
+var i,a;
+
+function fontSize(type,objname,num){
+  
+  if (type=="b"){
+ 	  for (i=1;i<=num ;i++ )
+	  {
+	  a=objname+i
+      document.getElementById(a).style.fontSize='12pt';
+      document.getElementById(a).style.lineHeight='22pt';
+	 }
+	 writeCookie("win_fontsize", "b", 1000);
+	 }
+  if (type=="m"){
+ 	  for (i=1;i<=num ;i++ )
+	  {
+	  a=objname+i
+      document.getElementById(a).style.fontSize='10.5pt';
+      document.getElementById(a).style.lineHeight='20pt';
+	 }
+ 	 writeCookie("win_fontsize", "m", 1000);
+	 }
+  if (type=="s"){
+		for (i=1;i<=num ;i++ )
+	  {
+	  a=objname+i
+      document.getElementById(a).style.fontSize='9pt';
+      document.getElementById(a).style.lineHeight='15pt';
+	  }
+	 writeCookie("win_fontsize", "s", 1000);
+	}
+}
+</script>
+</head>
+<body id="body_user">
+  <include file="Member:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="Member:sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">公告详情</div>
+                    <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="news_content">
+		      <div class="currentpath">&nbsp;<A href="__ROOT__/member">易搜会员中心</A> &gt; <A href="__ROOT__/member/noticelist">公告列表</A> &gt; <!--{$result.title}--!></div>
+                        <div class="mid_single_con">
+                            <div id=articlebody1 class="articlebody">
+			      <div id="articletitle"><!--{$result.title}--!></div>
+			      <div id="articletime">发表日期：<!--{$result.addtime|date="Y-m-d H:i:s", ###}--!>【字体：<A title=改变正文字体大小 
+        href="javascript:fontSize('b','articlebody','1')">大</A>&nbsp;<A title=改变正文字体大小 
+        href="javascript:fontSize('m','articlebody','1')">中</A>&nbsp;<A title=改变正文字体大小 
+        href="javascript:fontSize('s','articlebody','1')">小</A>】</div>
+                                <div id="articlecontent">
+				  <!--{$result.content|nl2br}--!>
+                            </div>
+                            <SCRIPT language=javascript> var myfontsize; myfontsize=readCookie('win_fontsize'); fontSize(myfontsize,'ArticleBody','1'); </SCRIPT>
+			    <div class="fenge">
+			      <empty name="before">
+			      <div id="articlepPrev">上一篇：没有了</div>
+			      <else/>
+			      <div id="articlepPrev">上一篇：<A href="__ACTION__/id/<!--{$before.id}--!>"><!--{$before.title}--!></A></div>
+			      </empty>
+                                  <empty name="after">
+			      <div id="articlepPrev">下一篇：没有了</div>
+			      <else/>
+			      <div id="articlepPrev">下一篇：<A href="__ACTION__/id/<!--{$after.id}--!>"><!--{$after.title}--!></A></div>
+			      </empty>
+                              </div>
+                        	</div>
+                        </div>
+                    </div> 
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Member:footer" />
+</body>
+</html>

@@ -62,7 +62,7 @@ class InfoAction extends IndexCommonAction {
       $result_two_column[$key]['firstarticle'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,content,iap.address') -> where(array('ia.colid' => $value['id'], 'ia.status' => 2)) -> join('yesow_info_article_pic as iap ON ia.id = iap.aid') -> order('ia.addtime DESC') -> find();
       $result_two_column[$key]['firstarticle']['content'] = msubstr(strip_tags($result_two_column[$key]['firstarticle']['content']), 0, 135);
       //分类热评  暂时做成以点击量排序
-      $result_two_column[$key]['hotcomments'] = $article -> table('yesow_info_article as ia') -> field('id,title') -> where(array('ia.colid' => $value['id'], 'ia.status' => 2)) -> order('ia.hits DESC') -> limit($conf['hotcommentnum']) -> select();
+      $result_two_column[$key]['hotcomments'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title') -> join('(SELECT aid,COUNT(id) as count FROM yesow_info_article_comment GROUP BY aid) as ctc ON ia.id = ctc.aid') -> where(array('ia.colid' => $value['id'], 'ia.status' => 2)) -> order('ctc.count DESC') -> limit($conf['hotcommentnum']) -> select();
     }
     $this -> assign('result_two_column', $result_two_column);
     $this -> display();
@@ -103,6 +103,7 @@ class InfoAction extends IndexCommonAction {
   public function article(){
     $id = $this -> _get('id', 'intval');
     $infoarticle = M('InfoArticle');
+    $comment = M('InfoArticleComment');
     //面包屑
     $title = $infoarticle -> field('classid,colid') -> find($id);
     $this -> assign('title1', M('InfoOneColumn') -> field('id,name') -> find($title['classid']));
@@ -118,6 +119,37 @@ class InfoAction extends IndexCommonAction {
     //读取热门点击
     $hot_clicks = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> order('hits DESC') -> limit(10) -> select();
     $this -> assign('hot_clicks', $hot_clicks);
+    //读取评论
+    $comment_where = array();
+    $comment_where['iac.aid'] = $id;
+    $comment_where['iac.status'] = 2;
+    import("ORG.Util.Page");// 导入分页类
+    $count = $comment -> table('yesow_info_article_comment as iac') -> where($comment_where) -> count('id');
+    $page = new Page($count, 5);//每页5条
+    $page->setConfig('header','条评论');
+    $show = $page -> show();
+    $result_comment = $comment -> table('yesow_info_article_comment as iac') -> field('m.name,iac.content,iac.addtime,iac.floor') -> where($comment_where) -> join('yesow_member as m ON iac.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
+    $this -> assign('result_comment', $result_comment);
+    $this -> assign('show', $show);
     $this -> display();
+  }
+
+  //提交评论
+  public function commit(){
+    if($this -> _post('code', 'md5') != $_SESSION['verify']){
+      $this -> error(L('VERIFY_ERROR'));
+    }
+    $commit = D('InfoArticleComment');
+    $data['aid'] = $this -> _post('aid', 'intval');
+    $data['mid'] = isset($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+    $data['content'] = $this -> _post('content');
+    if(!$commit -> create($data)){
+      $this -> error($commit -> getError());
+    }
+    if($commit -> add()){
+      $this -> success(L('ARTICLE_COMMIT_ADD_SUCCESS'));
+    }else{
+      $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
+    }
   }
 }

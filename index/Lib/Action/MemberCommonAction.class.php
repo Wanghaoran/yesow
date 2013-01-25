@@ -14,7 +14,7 @@ class MemberCommonAction extends Action {
       $this -> assign('member_background_notice', S('member_background_notice'));
     }else{
       $notice = M('MemberBackgroundNotice');
-      $result = $notice -> field('title,addtime') -> order('addtime DESC') -> limit(10) -> select();
+      $result = $notice -> field('id,title,addtime') -> order('addtime DESC') -> limit(10) -> select();
       S('member_background_notice', $result);
       $this -> assign('member_background_notice', $result);
     }

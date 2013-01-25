@@ -179,5 +179,36 @@ class MemberAction extends MemberCommonAction {
     $this -> display();
   }
 
+  //公告列表
+  public function noticelist(){
+    $notice = M('MemberBackgroundNotice');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $notice -> count('id');
+    $page = new Page($count, 15);//每页15条
+    $page->setConfig('header','条公告');
+    $show = $page -> show();
+    $result = $notice -> field('id,title,addtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //公告详情页
+  public function notice(){
+    $notice = M('MemberBackgroundNotice');
+    $id = $this -> _get('id', 'intval');
+
+    //本条记录
+    $result = $notice -> field('title,content,addtime') -> find($id);
+    $this -> assign('result', $result);
+    //上条记录
+    $before = $notice -> field('id,title') -> where(array('id' => array('lt', $id))) -> order('addtime DESC') -> find();
+    $this -> assign('before', $before);
+    //下条记录
+    $after = $notice -> field('id,title') -> where(array('id' => array('gt', $id))) -> order('addtime ASC') -> find();
+    $this -> assign('after', $after);
+    $this -> display();
+  }
+
   
 }

@@ -10,6 +10,7 @@ $app_config = array(
     'infolist/:id' => 'info/infolist', //资讯一级栏目页
     'infodetail/:id' => 'info/infodetail', //资讯一级栏目页
     'article/:id' => 'info/article',//查看文章
+    'commit' => 'info/commit',//提交评论
     'login' => 'public/login',//登录
   ),
 );

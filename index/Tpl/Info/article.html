@@ -7,6 +7,43 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script>
+  $(document).ready(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+      $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+    });
+  });
+
+  function submitcommit(){
+    //console();
+    if($('#content')[0].value == ''){
+      alert('评论内容不能为空');
+      }else if($('#verify')[0].value == ''){
+      alert('验证码不能为空');
+      }else{
+      var p = $('#content')[0].value;
+      var m = $('#verify')[0].value;
+      $.ajax({
+	type: "POST",
+	url: "__ROOT__/commit",
+	datatype: "json",
+	data: "content=" + p + "&code=" + m + "&aid=<!--{$Think.get.id}--!>",
+	success: function(msg){
+	  msg = jQuery.parseJSON(msg);
+	  if(msg.status == 0){
+	    alert('错误提示：' + msg.message);
+	    }else{
+	    alert('成功提示：' + msg.message);
+	    location.reload();
+	  }
+	}
+      });
+    }
+  }
+
+</script>
+
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -37,23 +74,16 @@
 			<div class="comment_list">
 				<h3>评论列表</h3>
 				<ul class="comment_list_ul">
-					<li>
-						<p class="comment_list_head">1楼 匿名用户在2012-02-02发表了评论:</p>
-						<p class="comment_list_bod">这里是用户给与的评论文字，当然在这里的文字不可能是非常多非常多的，在这里程序可以控制下最多的评论文字数量。</p>
-					</li>
-					<li>
-						<p class="comment_list_head">2楼 匿名用户在2012-02-02发表了评论:</p>
-						<p class="comment_list_bod">这里是用户给与的评论文字，当然在这里的文字不可能是非常多非常多的，在这里程序可以控制下最多的评论文字数量。</p>
-					</li>
+				  <volist name="result_comment" id="rc">
+				  <li>
+				  <p class="comment_list_head"><!--{$rc.floor}--!> 楼 <!--{$rc.name|default='游客'}--!> 在 <!--{$rc.addtime|date="Y-m-d", ###}--!> 发表了评论:</p>
+				  <p class="comment_list_bod"><!--{$rc.content|nl2br}--!></p>
+				  </li>
+				  </volist>
+
 				</ul>
 				<div class="page">
-					<span>共72条数据</span>
-					<a href="#">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页</a>
+				  <!--{$show}--!>
 				</div>			
 			</div>
 
@@ -62,17 +92,17 @@
 				<div class="articlt_comment_body">
 					<div class="article_comment_l">
 						<div class="article_comment_content">
-							<textarea class="article_comment_bod" name="">请输入评论内容</textarea>
+							<textarea class="article_comment_bod" id="content"></textarea>
 						</div>
 					</div>
 					<div class="article_comment_r">
 						<div class="article_comment_r_t">
-							<input type="text" value="验证码" />
-							<img src="" />
-							<a href="javascript:;" >换一个</a>
+							<input type="text" id="verify" />
+							<img id="code" src="__ROOT__/admin.php/public/verify" />
+							<a onclick='$("#code").attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());'>换一个</a>
 						</div>
 						<div class="article_comment_r_d">
-							<button type="submit" >提交评论</button>
+							<button onclick="submitcommit();" >提交评论</button>
 						</div>
 					</div>
 					<div class="clear"></div>

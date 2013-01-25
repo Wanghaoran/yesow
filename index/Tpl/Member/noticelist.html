@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜会员中心－公告列表</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Member:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="Member:sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">公告列表</div>
+                    <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="boxpindao_list">
+		      <ul>
+			<volist name="result" id="r">
+			<li><h2><span><!--{$r.addtime|date="Y-m-d", ###}--!></span><a href="__URL__/notice/id/<!--{$r.id}--!>" target="_blank" title="<!--{$r.title}--!>"><!--{$r.title}--!></a></h2></li>
+			</volist>
+                            
+                        </ul>
+                        <div class="clear30"></div>
+			<div class="fenye" id="fenye">
+			  <!--{$show}--!>
+                        </div>
+            		</div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Member:footer" />
+</body>
+</html>
