@@ -12,6 +12,8 @@ $app_config = array(
     'article/:id' => 'info/article',//查看文章
     'commit' => 'info/commit',//提交评论
     'login' => 'public/login',//登录
+    'noticelist' => 'index/noticelist',//站点公告列表
+    'notice/:id' => 'index/notice',//站点公告详情
   ),
 );
 

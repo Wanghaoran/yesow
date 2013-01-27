@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>页面未找到 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script type="text/javascript">
+    var i = 5
+    function onload()
+    {
+        var timeturn = document.getElementById('timeturn');
+        i--;
+        timeturn.innerHTML = i+'秒';
+        setTimeout("onload()",1100);
+        if(i==0)
+       {
+           window.location.href="__ROOT__";
+        }
+    }
+ </script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	
+    
+    <!--导航-->
+    <include file="Index:header" />
+    <!--主体-->
+    <div style=" clear:both; 521px; padding:50px 200px; margin:0 auto;">
+        <div><img src="__PUBLIC__/index/image/index404.gif" width="512" height="312" border="0" /></div>
+        <div style="text-align:center"><span id="timeturn">5秒</span>后自动跳转到首页，如果不想等待，请点击<a href="__ROOT__">这里</a>跳转</div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear" style="height:30px;"></div>
+    <include file="Index:footer" />
+  </div>
+</body>
+<script>
+  onload();
+</script>
+</html>

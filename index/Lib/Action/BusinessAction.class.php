@@ -45,7 +45,7 @@ class BusinessAction extends MemberCommonAction {
 	  }
 	}
 
-	$this -> success(L('DATA_ADD_SUCCESS'), U('member/article'));
+	$this -> success(L('DATA_ADD_SUCCESS'), U('Business/article'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
@@ -143,7 +143,7 @@ class BusinessAction extends MemberCommonAction {
 	$this -> error($infoarticle -> getError());
       }
       $infoarticle -> save();
-      $this -> success(L('DATA_UPDATE_SUCCESS'), U('member/article'));
+      $this -> success(L('DATA_UPDATE_SUCCESS'), U('Business/article'));
     }
 
     //文章数据

@@ -1,5 +1,5 @@
 <?php
-class MemberBackgroundNoticeModel extends CommonModel {
+class TitleNoticeModel extends CommonModel {
   protected $_validate = array(
     array('title', 'require', '{%ARTICLE_TITLE_EMPTY}'),
   );

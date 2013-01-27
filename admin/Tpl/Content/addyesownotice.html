@@ -1,0 +1,47 @@
+
+<div class="panel">
+  <h1>新增公告</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/yesownotice" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+
+      <p style="width:600px;"><label>文章标题：</label>
+      <select name="titleattribute">
+	<option value="公告">公告</option>
+	<option value="促销">促销</option>
+	<option value="申明">申明</option>
+	<option value="消息">消息</option>
+      </select>
+      <input style="margin-left:10px;" type="text" class="textInput required" name="title" size="50">
+      </p>
+      <p>
+      <label>文章来源：</label>
+      <input type="text" class="textInput required" name="source">
+      </p>
+
+      <p style="width:600px;">
+      <label>关键词：</label>
+      <input type="text" class="textInput required" name="keywords" size="60" />
+      </p>
+      
+      
+      <div class="divider"></div>
+      <p style="width:100%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"></textarea>
+
+	</p>
+	<div class="divider"></div>
+	<p style="width:100%;">所属分站：</p>
+	<volist name="result_childsite" id="rc">
+	<label style="width:58px;"><input type="checkbox" value="<!--{$rc.id}--!>" name="childsite[]"><!--{$rc.name}--!></label>
+	</volist>
+	<div class="divider"></div>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

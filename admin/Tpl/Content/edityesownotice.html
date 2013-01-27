@@ -1,0 +1,51 @@
+
+<div class="panel">
+  <h1>编辑公告</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/yesownotice" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+
+      <p style="width:600px;"><label>文章标题：</label>
+      <select name="titleattribute">
+	<volist name="titleattribute" id="tt">
+	<eq name="result.titleattribute" value="$tt">
+	<option value="<!--{$tt}--!>" selected="selected"><!--{$tt}--!></option>
+	<else/>
+	<option value="<!--{$tt}--!>"><!--{$tt}--!></option>
+	</eq>
+	</volist>
+      </select>
+      <input style="margin-left:10px;" type="text" class="textInput required" name="title" size="50" value="<!--{$result.title}--!>">
+      </p>
+      <p>
+      <label>文章来源：</label>
+      <input type="text" class="textInput required" name="source" value="<!--{$result.source}--!>" />
+      </p>
+
+      <p style="width:600px;">
+      <label>关键词：</label>
+      <input type="text" class="textInput required" name="keywords" size="60" value="<!--{$result.keywords}--!>" />
+      </p>
+
+      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+      
+      <div class="divider"></div>
+      <p style="width:100%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"><!--{$result.content|stripslashes}--!></textarea>
+
+	</p>
+	<div class="divider"></div>
+	<p style="width:100%;">所属分站：</p>
+	<volist name="result_childsite" id="rc">
+	<label style="width:58px;"><input type="checkbox" <?php echo in_array($rc['id'], $result_notice_childsite) ? "checked" : "" ?> value="<!--{$rc.id}--!>" name="childsite[]"><!--{$rc.name}--!></label>
+	</volist>
+	<div class="divider"></div>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

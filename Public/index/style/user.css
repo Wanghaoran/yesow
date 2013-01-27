@@ -242,3 +242,40 @@ ul.ul_checked li{ float:left; font-size:12px; font-weight:normal;}
 .fenge{ PADDING-RIGHT: 10px; BORDER-TOP: #999999 1px dashed; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; PADDING-TOP: 10px; HEIGHT: 20px;}
 #articlepPrev { float:left; width:50%;}
 #articlenext {float:left; width:50%;}
+/*404*/
+.user_404{ width:512px; height:312px; background:url(images/user/404.gif) no-repeat; margin:10px auto;}
+/*短信*/
+.main_con3{ width:740px;}
+.sms_bar{ float:right; margin:0 0 20px 0;}
+#switchBox2 div.maintext{ float:left;}
+#switchBox2 div.labeltext{ float:left;}
+#switchBox2 label{display:block;position:relative; vertical-align:middle;}
+#switchBox2 label span{float:left;position:absolute; height:20px; line-height:20px;left:2px;color:#BCBCBC;cursor:text;}
+#switchBox2 label .input_txt{width:148px;border:solid 1px #ccc;box-shadow:0 1px 10px rgba(0,0,0,0.1) inset;height:18px;line-height:18px;}
+#switchBox2 label .input_txt:focus{box-shadow:0 0 4px rgba(255,153,164,0.8);border:solid 1px #ff8b01;}
+#switchBox2 label .border_radius{color:#666;}
+.select_css1 select{ height:20px; vertical-align:middle; margin-left:10px;}
+
+.btn_search a{ width:50px; height:20px; display:block; line-height:20px; padding:0; margin:0; border:0; background:url(images/user/btn.gif) top center no-repeat; text-align:center;}
+.btn_search a:hover{ background:url(images/user/btn.gif) bottom center no-repeat;}
+
+.ml10{ margin-left:10px;}
+.mr10{ margin-left:10px;}
+.clear10{ clear:both; height:10px;}
+
+.btn_long a{ width:100px; height:20px; display:block; line-height:20px; padding:0; margin:0; border:0; background:url(images/user/longbtn.gif) top center no-repeat; text-align:center;}
+.btn_long a:hover{ background:url(images/user/longbtn.gif) bottom center no-repeat;}
+
+.sms_bottom{ margin:20px auto 0;}
+.sms_botleft{ float:left;}
+.sms_botright{ float:right;}
+
+table.table_sms{ width:100%; border-collapse:collapse; border:none; text-align:center;}
+table.table_sms th{ font-size:12px; font-weight:bold; border-bottom:#666 1px dotted; border-collapse:collapse; height:30px; line-height:30px;}
+table.table_sms td{ border-bottom:#666 1px dotted; border-collapse:collapse; height:25px; line-height:25px;}
+
+.page2{ padding:0px 0; text-align:right;}
+.page2 a, .page2 span{display:inline-block; margin-left:5px; height:18px; line-height:18px; padding:0 8px; border:1px solid #ccc;
+font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
+}
+.page2 span{ border:0; height:18px; line-height:18px;}

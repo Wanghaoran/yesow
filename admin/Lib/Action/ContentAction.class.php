@@ -676,7 +676,7 @@ class ContentAction extends CommonAction {
 
   //编辑文章评论
   public function editinfocomment(){
-    $comment = D('admin://InfoArticleComment');
+    $comment = D('index://InfoArticleComment');
     //处理更新
     if(!empty($_POST['floor'])){
       if(!$comment -> create()){
@@ -732,4 +732,326 @@ class ContentAction extends CommonAction {
   }
 
   /* ------------  文章管理   -------------- */
+
+  /* ----------- 公告管理 ------------ */
+
+   //标题公告管理
+  public function titlenotice(){
+    $notice = M('TitleNotice');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['title'])){
+      $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    //记录总数
+    $count = $notice -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //数据
+    $result = $notice -> field('id,title,addtime') -> where($where) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();  
+  }
+
+  //添加标题公告
+  public function addtitlenotice(){
+    //处理添加
+    if(!empty($_POST['title'])){
+      $notice = D('TitleNotice');
+      if(!$notice -> create()){
+	$this -> error($notice -> getError());
+      }
+      if($notice -> add()){
+	//删除缓存
+	S('index_title_notice', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除标题公告
+  public function deltitlenotice(){
+    $notice = M('TitleNotice');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($notice -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_title_notice', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑标题公告
+  public function edittitlenotice(){
+    $notice = D('TitleNotice');
+    //处理更新
+    if(!empty($_POST['title'])){
+      if(!$notice -> create()){
+	$this -> error($notice -> getError());
+      }
+      if($notice -> save()){
+	//删除缓存
+	S('index_title_notice', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //数据
+    $result = $notice -> field('title,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //易搜公告管理
+  public function yesownotice(){
+    $notice = M('Notice');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['title'])){
+      $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $notice -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $notice -> field('id,titleattribute,title,source,clickcount,addtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加易搜公告
+  public function addyesownotice(){
+    if(!empty($_POST['title'])){
+      $notice = D('Notice');
+      if(!$notice -> create()){
+	$this -> error($notice -> getError());
+      }
+      if($id = $notice -> add()){
+	//添加成功写公告-分站关系表
+	if(!empty($_POST['childsite'])){
+	  foreach($_POST['childsite'] as $value){
+	    $data = array();
+	    $data['nid'] = $id;
+	    $data['csid'] = $value;
+	    M('NoticeChildsite') -> add($data);
+	  }
+	}
+	//删除缓存
+	S('index_yesow_notice', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //编辑易搜公告
+  public function edityesownotice(){
+    $notice = D('Notice');
+    $notice_childsite = M('NoticeChildsite');
+    if(!empty($_POST['title'])){
+      $id = $this -> _post('id', 'intval');
+      //先更新公告分站对应表
+        //先删除
+      $notice_childsite -> where(array('nid' => $id)) -> delete();
+        //再添加
+      if(!empty($_POST['childsite'])){
+	foreach($_POST['childsite'] as $value){
+	  $data = array();
+	  $data['nid'] = $id;
+	  $data['csid'] = $value;
+	  $notice_childsite -> add($data);
+	}
+      }
+      //再更新公告表
+      if(!$notice -> create()){
+	$this -> error($notice -> getError());
+      }
+      $notice -> save();
+      //删除缓存
+      S('index_yesow_notice', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }
+    //查询公告数据
+    $result = $notice -> field('title,titleattribute,keywords,content,source') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //标题属性
+    $this -> assign('titleattribute', array('公告','促销','申明','消息'));
+    //公告分站关系
+    $temp_notice_childsite = $notice_childsite -> field('csid') -> where(array('nid' => $this -> _get('id', 'intval'))) -> select();
+    $result_notice_childsite = array();
+    foreach($temp_notice_childsite as $value){
+      $result_notice_childsite[] = $value['csid'];
+    }
+    $this -> assign('result_notice_childsite', $result_notice_childsite);
+    $this -> display();
+  }
+
+  //删除易搜公告
+  public function delyesownotice(){
+    //删除文章
+    $notice = M('Notice');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($notice -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_yesow_notice', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //公告评论管理
+  public function noticecomment(){
+    $comment = M('NoticeComment');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['content'])){
+      $where['nc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where['nc.mid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['nc.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['nc.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $comment -> table('yesow_notice_comment as nc') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $comment -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name,nc.addtime,nc.status') -> where($where) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //编辑公告评论
+  public function editnoticecomment(){
+    $comment = D('index://NoticeComment');
+    //处理更新
+    if(!empty($_POST['floor'])){
+      if(!$comment -> create()){
+	$this -> error($comment -> getError());
+      }
+      if($comment -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $comment -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> where(array('nc.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除公告评论
+  public function delnoticecomment(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $comment = M('NoticeComment');
+    if($comment -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核评论
+  public function passauditnoticecomment(){
+    $comment = M('NoticeComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 2);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核评论
+  public function nopassauditnoticecomment(){
+    $comment = M('NoticeComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 1);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  /* ----------- 公告管理 ------------ */
 }

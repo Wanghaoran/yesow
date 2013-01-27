@@ -5,10 +5,10 @@ class InfoAction extends IndexCommonAction {
   public function info(){
     //最新更新
     $article = M('InfoArticle');
-    $result_newest = $article -> field('id,title') -> order('addtime DESC') -> limit(10) -> select();
+    $result_newest = $article -> field('id,title') -> where('status=2') -> order('addtime DESC') -> limit(10) -> select();
     $this -> assign('result_newest', $result_newest);
     //热门看点
-    $result_hotpoint = $article -> field('id,title') -> order('hits DESC') -> limit(10) -> select();
+    $result_hotpoint = $article -> field('id,title') -> where('status=2') -> order('hits DESC') -> limit(10) -> select();
     $this -> assign('result_hotpoint', $result_hotpoint);
     //图片幻灯
     $article_pic = M('InfoArticlePic');

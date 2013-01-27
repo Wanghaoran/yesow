@@ -9,14 +9,13 @@ class MemberCommonAction extends Action {
 
   //首页前置操作
   public function _before_index(){
-    //生成公告
-    if(S('member_background_notice')){
-      $this -> assign('member_background_notice', S('member_background_notice'));
+    //获取公告
+    if(S('index_yesow_notice')){
+      $this -> assign('index_yesow_notice', S('index_yesow_notice'));
     }else{
-      $notice = M('MemberBackgroundNotice');
-      $result = $notice -> field('id,title,addtime') -> order('addtime DESC') -> limit(10) -> select();
-      S('member_background_notice', $result);
-      $this -> assign('member_background_notice', $result);
+      $result = M('Notice') -> field('id,title,titleattribute,addtime') -> order('addtime DESC') -> limit(10) -> select();
+      S('index_yesow_notice', $result);
+      $this -> assign('index_yesow_notice', $result);
     }
   }
 
@@ -27,7 +26,7 @@ class MemberCommonAction extends Action {
 
   //特权设置前置操作
   public function _before_privilege(){
-      $this -> _before_index();
+    $this -> _before_index();
   }
 
   //特权设置前置操作
