@@ -22,6 +22,180 @@ class IndexAction extends CommonAction {
     $this -> display();
   }
 
+  //快捷操作 - 评论管理
+  public function notice(){
+    $where_info = array();
+    $where_notice = array();
+    //处理搜索
+    if(!empty($_POST['content'])){
+      $where_notice['nc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+      $where_info['iac.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where_notice['nc.mid'] = intval($authorid);
+      $where_info['iac.mid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where_notice['nc.addtime'] = array(array('gt', $addtime));
+      $where_info['iac.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where_notice['nc.addtime'][] = array('lt', $endtime);
+      $where_info['iac.addtime'][] = array('lt', $endtime);
+    }
+
+    //资讯评论  type = 1 代表资讯
+    $info = M('InfoArticle');
+    $sql_info = $info -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.floor,iac.content,m.name,iac.addtime,iac.status,0+1 as type') -> where($where_info) -> order('status ASC,iac.addtime DESC') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> buildSql();
+
+    //公告评论  type = 2 代表公告
+    $notice = M('NoticeComment');
+    $sql_notice = $notice -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name,nc.addtime,nc.status,1+1 as type') -> where($where_notice) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> buildSql();
+
+    //合并查询语句
+    if(empty($_POST['type'])){
+      $sql = '(' . $sql_notice . ' UNION ALL ' . $sql_info . ')';
+    }else if($_POST['type'] == 'info'){
+      $sql = '(' . $sql_info . ')';
+    }else if($_POST['type'] == 'notice'){
+      $sql = '(' . $sql_notice . ')';
+    }
+
+    //记录总数
+    $count = M() -> table($sql . ' a') -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //合并结果集
+    $result = M() -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('status ASC,addtime DESC') -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //快捷操作 - 编辑评论
+  public function editnotice(){
+    //处理更新
+    if(!empty($_POST['floor'])){
+      list($id, $type) = explode('@@@', $_POST['id']);
+      if($type == 1){
+	$model = D('index://InfoArticleComment');
+      }else if($type == 2){
+	$model = D('index://NoticeComment');
+      }
+      $_POST['id'] = $id;
+      if(!$a = $model -> create()){
+	$this -> error($model -> getError());
+      }
+      if($model -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    list($id, $type) = explode('@@@', $_GET['id']);
+    //1代表资讯  2代表公告
+    if($type == 1){
+      $model = D('index://InfoArticle');
+      $result = $model -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.floor,iac.content,m.name') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> where(array('iac.id' => $this -> _get('id', 'intval'))) -> find();
+      
+    }else if($type == 2){
+      $model = D('index://NoticeComment');
+      $result = $model -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> where(array('nc.id' => $this -> _get('id', 'intval'))) -> find();
+    }
+    
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //快捷操作 - 删除评论
+  public function delnotice(){
+    $notice_del = array();
+    $info_del = array();
+    foreach(explode(',', $_POST['ids']) as $value){
+      list($id, $type) = explode('@@@', $value);
+      if($type == 1){
+	$info_del[] = $id;
+      }else if($type == 2){
+	$notice_del[] = $id;
+      }
+    }
+    $num = 0;
+    //分别删除两站表
+    $num += M('InfoArticleComment') -> where(array('id' => array('in', $info_del))) -> delete();
+    $num += M('NoticeComment') -> where(array('id' => array('in', $notice_del))) -> delete();
+    if($num != 0){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //快捷操作 - 通过审核评论
+  public function passauditnotice(){
+    $notice_pass = array();
+    $info_pass = array();
+    foreach(explode(',', $_POST['ids']) as $value){
+      list($id, $type) = explode('@@@', $value);
+      if($type == 1){
+	$info_pass[] = $id;
+      }else if($type == 2){
+	$notice_pass[] = $id;
+      }
+    }
+    $data = array('status' => 2);
+    $num = 0;
+    //分别更新两张表
+    $num += M('InfoArticleComment') -> where(array('id' => array('in', $info_pass))) -> save($data);
+    $num += M('NoticeComment') -> where(array('id' => array('in', $notice_pass))) -> save($data);
+    if($num != 0){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //快捷操作 - 不通过审核评论
+  public function nopassauditnotice(){
+    $notice_pass = array();
+    $info_pass = array();
+    foreach(explode(',', $_POST['ids']) as $value){
+      list($id, $type) = explode('@@@', $value);
+      if($type == 1){
+	$info_pass[] = $id;
+      }else if($type == 2){
+	$notice_pass[] = $id;
+      }
+    }
+    $data = array('status' => 1);
+    $num = 0;
+    //分别更新两张表
+    $num += M('InfoArticleComment') -> where(array('id' => array('in', $info_pass))) -> save($data);
+    $num += M('NoticeComment') -> where(array('id' => array('in', $notice_pass))) -> save($data);
+    if($num != 0){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
   //文件上传，整合kindeditor
   public function uploadfile(){
     //文件保存目录路径

@@ -986,7 +986,7 @@ class ContentAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $comment -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name,nc.addtime,nc.status') -> where($where) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> select();
+    $result = $comment -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name,nc.addtime,nc.status') -> where($where) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
