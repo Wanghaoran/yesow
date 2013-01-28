@@ -50,11 +50,11 @@ class IndexAction extends CommonAction {
 
     //资讯评论  type = 1 代表资讯
     $info = M('InfoArticle');
-    $sql_info = $info -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.floor,iac.content,m.name,iac.addtime,iac.status,0+1 as type') -> where($where_info) -> order('status ASC,iac.addtime DESC') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> buildSql();
+    $sql_info = $info -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.aid as fid,iac.floor,iac.content,m.name,iac.addtime,iac.status,0+1 as type') -> where($where_info) -> order('status ASC,iac.addtime DESC') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> buildSql();
 
     //公告评论  type = 2 代表公告
     $notice = M('NoticeComment');
-    $sql_notice = $notice -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name,nc.addtime,nc.status,1+1 as type') -> where($where_notice) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> buildSql();
+    $sql_notice = $notice -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.nid as fid,nc.floor,nc.content,m.name,nc.addtime,nc.status,1+1 as type') -> where($where_notice) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> buildSql();
 
     //合并查询语句
     if(empty($_POST['type'])){

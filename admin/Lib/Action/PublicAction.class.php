@@ -221,4 +221,15 @@ class PublicAction extends Action {
     }
     echo json_encode($result);
   }
+
+  //ajax获取速查主营类别 - 二级
+  public function ajaxgetcompanycategorytwo(){
+    $result_temp = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $this -> _get('id', 'intval'))) -> order('sort ASC') -> select();
+    $result = array();
+    //格式化结果集
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['name']);
+    }
+    echo json_encode($result);
+  }
 }

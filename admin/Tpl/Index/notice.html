@@ -94,11 +94,12 @@
 		  <td><!--{$r.id}--!></td>
 		  <eq name="r.type" value="1">
 		  <td style="color:green;">资讯</td>
+		  <td><a href="__ROOT__/article/<!--{$r.fid}--!>" target="_blank"><!--{$r.title}--!></a></td>
 		  </eq>
 		  <eq name="r.type" value="2">
 		  <td style="color:blue;">公告</td>
-		  </eq>
-			  <td><!--{$r.title}--!></td>			 
+		  <td><a href="__ROOT__/notice/<!--{$r.fid}--!>" target="_blank"><!--{$r.title}--!></a></td>
+		  </eq>			 
 			  <td><!--{$r.floor}--!></td>			 
 			  <td><!--{$r.content}--!></td>			 			 
 			  <td><!--{$r.name|default="游客"}--!></td>			 

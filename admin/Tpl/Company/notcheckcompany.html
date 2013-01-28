@@ -1,3 +1,5 @@
+<div class="page unitBox" style="display: block;">
+  <div style="float:left; display:block; overflow:auto; width:519px;" class="unitBox" id="jbsxBox2">
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
   <input type="hidden" name="name" value="<!--{$Think.request.name}--!>" />
@@ -7,12 +9,24 @@
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 	<div class="searchBar">
-		<ul class="searchContent">
-			<li>
-				<label>类别名称：</label>
-				<input type="text" name="name" />
+	  <ul class="searchContent">
+	    <li style="width:205px;">
+			<label style="width:37px;">搜索：</label>
+			  <input type="text" name="search_name" size="10" />
+				<select class="combox" name="search_key">
+				  <option value="name">公司名称</option>
+				  <option value="nickname">公司地址</option>
+				  <option value="e-mail">公司电话</option>
+				  <option value="fullname">主营类别</option>
+				  <option value="fullname">添加人</option>
+				</select>
 				</li>
-				<input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+		  <li style="width:250px;">
+		  <label>添加时间：</label>
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_starttime" />
+		    -  
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_endtime" />
+		  </li>
 		</ul>
 		<div class="subBar">
 			<ul>
@@ -27,13 +41,9 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addcompanycategory/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
 	    <li class=""><a class="delete" href="__URL__/delcompanycategory/navTabId/companycategory" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editcompanycategory/id/{sid_role}" target="dialog" mask="true" warn="请选择类别"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['company']['addcompanycategory'])">
-	    <li><a class="add" href="__URL__/addcompanycategoryid/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
-	    </if>
+	    
 	    <if condition="isset($_SESSION['acc_arr']['company']['delcompanycategory'])">
 	    <li class=""><a class="delete" href="__URL__/delcompanycategory/navTabId/companycategory" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
 	    </if>
@@ -47,12 +57,8 @@
 	<table class="table" width="100%" layoutH="138">
 		<thead>
 		  <tr>
-		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
-			<th width="60">编号</th>
-			<th width="200">分类名称</th>
-			<th width="60">排序</th>
-			<th width="120">备注</th>
-			<th width="28">操作</th>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+		<th>公司名称</th>
 
 		</tr>
 		</thead>
@@ -60,11 +66,11 @@
 		<volist name="result" id="r">
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
-			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.sort}--!></td>			  
-			  <td><!--{$r.remark}--!></td>
-			  <td><a href="__ACTION__/id/<!--{$r.id}--!>" target="navTab" rel="companycategory">子分类</a></td>
+		  <eq name="r.ischeck" value="1">
+		  <td><a rel="jbsxBox3" target="ajax" href="__URL__/editnotcheckcompany/id/<!--{$r.id}--!>" style="color:blue;"><!--{$r.name}--!></a></td>
+		  <else/>
+		  <td><a rel="jbsxBox3" target="ajax" href="__URL__/editnotcheckcompany/id/<!--{$r.id}--!>" style="color:red;"><!--{$r.name}--!></a></td>
+		  </eq>
 			</tr>
 		</volist>
 		</tbody>
@@ -80,4 +86,13 @@
 
 </div>
 
+
+    
+
+	</div>
+	
+	<div style="margin-left:520px;" class="unitBox" id="jbsxBox3">
+	  <include file="Company:editnotcheckcompany" />
+</div>
+</div>
 
