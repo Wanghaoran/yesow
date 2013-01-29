@@ -20,9 +20,9 @@
 </script>
 
 <div class="panel">
-  <h1><!--{$result_edit.name}--!>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[添加时间：<!--{$result_edit.jointime|date="Y-m-d H:i:s", ###}--!>]</h1>
+  <h1><!--{$result_edit.name}--!></h1>
   <div class="pageFormContent" layoutH="40">
-    <form method="post" action="__ACTION__/navTabId/notcheckcompany" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    <form method="post" action="__ACTION__/navTabId/checkcompany" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
       <p style="width:100%"><label style="width:80px;">公司名称：</label>
       <input type="text" class="textInput required" id="name" name="name" size="68" value="<!--{$result_edit.name}--!>">
       </p>
@@ -98,8 +98,11 @@
 	</volist>
       </select>
       </p>
-      <p style="width:100%"><label style="width:80px;">公司网址：</label>
-      <input type="text" class="textInput" id="website" name="website" size="68" value="<!--{$result_edit.website}--!>">
+      <p style="width:50%"><label style="width:80px;">公司网址：</label>
+      <input type="text" class="textInput" id="website" name="website" size="23" value="<!--{$result_edit.website}--!>">
+      </p>
+      <p style="width:50%"><label style="width:80px;">点击量：</label>
+      <input type="text" class="textInput" name="clickcount" size="23" value="<!--{$result_edit.clickcount}--!>">
       </p>
       <p style="width:100%"><label style="width:80px;">关键词：</label>
       <input type="text" class="textInput" name="keyword" size="68" value="<!--{$result_edit.keyword}--!>">
@@ -112,41 +115,22 @@
 	  <li><a href="javascript:createabout();" class="button"><span>生成简介</span></a></li>
 	</ul>
       </div>
-      
-
-
-  
-	<div class="divider"></div>
-	<p>添加人信息：</p>
-	<p style="width:50%"><label style="width:80px;">添加人：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addname}--!>">
+      <div class="divider"></div>
+      <p style="width:100%;height:100%;">
+      <label style="width:30%;">审核人：<span style="color:green;"><!--{$result_edit.auditname}--!></span></label><label style="width:30%;">编辑人：<span style="color:blue;"><!--{$result_edit.updatename|default="无"}--!></span></label><label style="width:30%;">删除人：<span style="color:red;"><!--{$result_edit.delname|default="无"}--!></span></label>
       </p>
-      <p style="width:50%"><label style="width:80px;">电话：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addtel}--!>">
+      <div class="divider"></div>
+      <p style="width:100%;height:100%;">
+      <label style="width:45%;">添加时间：<!--{$result_edit.addtime|date="Y-m-d H:i:s", ###}--!></label><label style="width:45%;">最后更新时间：<!--{$result_edit.updatetime|date="Y-m-d H:i:s", ###}--!></label>
       </p>
-      <p style="width:100%"><label style="width:80px;">单位：</label>
-      <input type="text" class="textInput" readonly="readonly" size="68" value="<!--{$result_edit.addunit}--!>">
-      </p>
-      <p style="width:100%"><label style="width:80px;">地址：</label>
-      <input type="text" class="textInput" readonly="readonly" size="68" value="<!--{$result_edit.addaddress}--!>">
-      </p>
-      <p style="width:50%"><label style="width:80px;">邮箱：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addemail}--!>">
-      </p>
-      <p style="width:50%"><label style="width:80px;">身份证号：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addnumberid}--!>">
-      </p>
-      <p>
-            <input type="hidden" name="id" value="<!--{$id}--!>">
-      </p>
+      <input type="hidden" name="id" value="<!--{$id}--!>" />
       
       <div class="formBar">
 	<ul>
-	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">通过</button></div></div></li>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">编辑</button></div></div></li>
 	  <li><div class="button"><div class="buttonContent"><button type="reset">重置</button></div></div></li>
 	</ul>
       </div>
-
     </form>
 
   </div>

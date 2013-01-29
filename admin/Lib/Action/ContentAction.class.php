@@ -664,7 +664,7 @@ class ContentAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $comment -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.floor,iac.content,m.name,iac.addtime,iac.status') -> where($where) -> order('status ASC,iac.addtime DESC') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> select();
+    $result = $comment -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,ia.id as iaid,iac.floor,iac.content,m.name,iac.addtime,iac.status') -> where($where) -> order('status ASC,iac.addtime DESC') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -741,10 +741,10 @@ class ContentAction extends CommonAction {
     $where = array();
     //处理搜索
     if(!empty($_POST['title'])){
-      $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+      $where['tn.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
     }
     //记录总数
-    $count = $notice -> where($where) -> count('id');
+    $count = $notice -> table('yesow_title_notice as tn') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -756,7 +756,7 @@ class ContentAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //数据
-    $result = $notice -> field('id,title,addtime') -> where($where) -> order('addtime DESC') -> select();
+    $result = $notice -> table('yesow_title_notice as tn') -> field('tn.id,tnt.name as tname,tn.title,tn.addtime') -> where($where) -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('addtime DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -782,6 +782,9 @@ class ContentAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
+    //查询分类
+    $result_type = M('TitleNoticeType') -> field('id,name') -> select();
+    $this -> assign('result_type', $result_type);
     $this -> display();
   }
 
@@ -816,8 +819,11 @@ class ContentAction extends CommonAction {
       }
     }
     //数据
-    $result = $notice -> field('title,remark') -> find($this -> _get('id', 'intval'));
+    $result = $notice -> field('tid,title,remark') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
+    //查询分类
+    $result_type = M('TitleNoticeType') -> field('id,name') -> select();
+    $this -> assign('result_type', $result_type);
     $this -> display();
   }
 
@@ -986,7 +992,7 @@ class ContentAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $comment -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name,nc.addtime,nc.status') -> where($where) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $comment -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,n.id as nid,nc.floor,nc.content,m.name,nc.addtime,nc.status') -> where($where) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);

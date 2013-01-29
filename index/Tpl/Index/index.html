@@ -88,14 +88,14 @@
 			<div id="main01_r_bod">
 			  <ul>
 			    <volist name="index_yesow_notice" id="iyn">
-			    <li><span>[<a href="#"><!--{$iyn.titleattribute}--!></a>] </span><a href="__ROOT__/notice/<!--{$iyn.id}--!>" target="_blank"><!--{$iyn.title|msubstr=0, 23}--!></a></li>
+			    <li><span>[<a href="#"><!--{$iyn.titleattribute}--!></a>] </span><a href="__ROOT__/notice/<!--{$iyn.id}--!>" target="_blank"><!--{$iyn.title|msubstr=0, 21}--!></a></li>
 			    </volist>
 
 				      </ul>
 				      <!-- 数据更新消息 start -->
 				<ul class="none">
 				  <volist name="index_title_notice" id="itn">
-				  <li><span>[<a href="#">公告</a>] </span><a href="#"><!--{$itn.title}--!></a></li>
+				  <li><span>[<a href="#"><!--{$itn.tname}--!></a>] </span><a href="#"><!--{$itn.title}--!></a></li>
 				  </volist>
 				      </ul>
 				      <!-- 数据更新消息 end -->

@@ -51,8 +51,9 @@
 			<th width="60">编号</th>
 			<th width="200">分类名称</th>
 			<th width="60">排序</th>
-			<th width="120">备注</th>
 			<th width="28">操作</th>
+			<th width="120">备注</th>
+
 
 		</tr>
 		</thead>
@@ -62,9 +63,9 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.sort}--!></td>			  
+			  <td><!--{$r.sort}--!></td>
+			  <td><a href="__ACTION__/id/<!--{$r.id}--!>" target="navTab" rel="companycategory" style="color:blue;">子分类</a></td>			  
 			  <td><!--{$r.remark}--!></td>
-			  <td><a href="__ACTION__/id/<!--{$r.id}--!>" target="navTab" rel="companycategory">子分类</a></td>
 			</tr>
 		</volist>
 		</tbody>

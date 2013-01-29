@@ -5,8 +5,17 @@
 		<div class="pageFormContent" layoutH="58">
 		
 	<div class="unit">
-		<label>公告标题：</label>
-		<input type="text" class="required" name="title" value="<!--{$result.title}--!>" /><label>(255个字符以内)</label>
+	  <label>公告标题：</label>
+	  <select class="combox" name="tid">
+	    <volist name="result_type" id="rt">
+	    <eq name="result.tid" value="$rt.id">
+	    <option value="<!--{$rt.id}--!>" selected="selected"><!--{$rt.name}--!></option>
+	    <else/>
+	    <option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+	    </eq>
+	    </volist>
+	  </select>
+		<input type="text" class="required" name="title" value="<!--{$result.title}--!>" size="40" /><label>(255个字符以内)</label>
 	</div>
 	
 	<div class="unit">

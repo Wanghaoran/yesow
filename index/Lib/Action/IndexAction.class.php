@@ -57,7 +57,7 @@ class IndexAction extends IndexCommonAction {
     if(S('index_title_notice')){
       $this -> assign('index_title_notice', S('index_title_notice'));
     }else{
-      $result = M('TitleNotice') -> field('title') -> order('addtime DESC') -> limit(10) -> select();
+      $result = M('TitleNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name as tname') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(10) -> select();
       S('index_title_notice', $result);
       $this -> assign('index_title_notice', $result);
     }
