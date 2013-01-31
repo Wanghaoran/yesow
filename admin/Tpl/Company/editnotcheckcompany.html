@@ -22,7 +22,7 @@
 <div class="panel">
   <h1><!--{$result_edit.name}--!>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[添加时间：<!--{$result_edit.jointime|date="Y-m-d H:i:s", ###}--!>]</h1>
   <div class="pageFormContent" layoutH="40">
-    <form method="post" action="__ACTION__/navTabId/notcheckcompany" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    <form method="post" action="__ACTION__/navTabId/notcheckcompany" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
       <p style="width:100%"><label style="width:80px;">公司名称：</label>
       <input type="text" class="textInput required" id="name" name="name" size="68" value="<!--{$result_edit.name}--!>">
       </p>
@@ -104,6 +104,10 @@
       <p style="width:100%"><label style="width:80px;">关键词：</label>
       <input type="text" class="textInput" name="keyword" size="68" value="<!--{$result_edit.keyword}--!>">
       </p>
+      <p style="width:100%"><label style="width:80px;">形象照片：</label>
+      <input type="file" class="textInput" name="image" />
+      
+      </p>
       <p style="width:100%;height:100%;"><label style="width:80px;">公司简介：</label>
       <textarea name="content" id="content"  rows="8" cols="65" ><!--{$result_edit.content}--!></textarea>
       </p>
@@ -117,7 +121,7 @@
 
   
 	<div class="divider"></div>
-	<p>添加人信息：</p>
+	<p><b>添加人信息：</b></p>
 	<p style="width:50%"><label style="width:80px;">添加人：</label>
       <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addname}--!>">
       </p>

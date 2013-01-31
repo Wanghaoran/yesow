@@ -4,12 +4,12 @@
 		欢迎来到华东地区最大IT搜索中心&nbsp;
 		<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 		<span id="login_link">尊敬的 <!--{$Think.session.username}--!> 您好，欢迎回来</span>
-		<span id="resige_link">[<a href="__ROOT__/member/index" target="_blank">会员中心</a>]</span>&nbsp;
-		<span id="resige_link">[<a href="__ROOT__/public/logout">安全退出</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__ROOT__/member.php" target="_blank">会员中心</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__ROOT__/member.php/public/logout">安全退出</a>]</span>&nbsp;
 		<else/>
-		<span id="login_link">[<a href="__ROOT__/login">登录</a>]</span>&nbsp;
-		<span id="resige_link">[<a href="__ROOT__/register">免费注册</a>]</span>&nbsp;
-		<span id="getpass_link">[<a href="__ROOT__/register/forgetpassword">找回密码</a>]</span>&nbsp;
+		<span id="login_link">[<a href="__ROOT__/member.php/public/login">登录</a>]</span>&nbsp;
+		<span id="resige_link">[<a href="__ROOT__/member.php/register">免费注册</a>]</span>&nbsp;
+		<span id="getpass_link">[<a href="__ROOT__/member.php/register/forgetpassword">找回密码</a>]</span>&nbsp;
 		</if>
 		</p>
             <p id="webtool">
@@ -47,7 +47,7 @@
             </p>
         </div>
     	<div id="top_r">
-        <a href="#"><img src="__PUBLIC__/index/image/tiaotu.gif" /></a>
+        <a href="__ROOT__/company/addcompany"><img src="__PUBLIC__/index/image/tiaotu.gif" /></a>
         </div>
         <div class="clear"></div>
     </div>
@@ -62,7 +62,11 @@
 		    <else/>
 		    <li><a href="__ROOT__">易搜首页</a></li>
 		    </if>
-                	<li><a href="#">渠道黄页</a></li>
+		    <if condition="MODULE_NAME eq 'Company'">
+		    <li class="hover"><a href="__ROOT__/company">渠道黄页</a></li>
+		    <else/>
+		    <li><a href="__ROOT__/company">渠道黄页</a></li>
+		    </if>
                 	<li><a href="#">企业会员</a></li>
 			<li><a href="#">出租招聘</a></li>
 			<if condition="MODULE_NAME eq 'Info'">
@@ -86,7 +90,12 @@
 	    <else/>
 	    <li class="none"><a href="" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a href="" >帮助中心</a><a href="" >关于我们</a></li>
 	    </if>
-				<li class="none"><a href="" >第二个01</a><a href="" >第二个02</a><a href="" >第二个03</a><a href="" >第二个04</a></li>
+	    <if condition="MODULE_NAME eq 'Company'">
+	    <li><a href="" >渠道黄页01</a><a href="" >渠道黄页02</a><a href="" >渠道黄页03</a><a href="" >渠道黄页04</a></li>
+	    <else/>
+	    <li class="none"><a href="" >渠道黄页01</a><a href="" >渠道黄页02</a><a href="" >渠道黄页03</a><a href="" >渠道黄页04</a></li>
+	    </if>
+
 				<li class="none"><a href="" >第三个01</a><a href="" >第三个02</a><a href="" >第三个03</a><a href="" >第三个04</a></li>
 				<li class="none"><a href="" >第四个01</a><a href="" >第四个02</a><a href="" >第四个03</a><a href="" >第四个04</a></li>
 				<if condition="MODULE_NAME eq 'Info'">

@@ -1,5 +1,5 @@
 <?php
-class IndexAction extends IndexCommonAction {
+class IndexAction extends CommonAction {
 
   //首页
   public function index(){

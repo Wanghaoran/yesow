@@ -61,5 +61,11 @@ return array(
   'CHECK_EMAIL_SUCCESS' => '邮箱验证成功，现在转到登录页面',
   'CHECK_EMAIL_ERROR' => '邮箱验证失败，请重新验证',
   'UPDETA_USER_DATA_CHENGE_EMAIL' => '数据更新成功，由于您更改了电子邮箱，所以需要再次验证',
+  'COMPANY_NAME_EMPTY' => '商家名称不能为空',
+  'COMPANY_ADDRESS_EMPTY' => '公司地址不能为空',
+  'COMPANY_COMPANYPHONE_EMPTY' => '联系电话不能为空',
+  'COMPANY_LINKMAN_EMPTY' => '联系人不能为空',
+  'COMPANY_MANPRODUCTS_EMPTY' => '主营产品不能为空',
+  'COMPANY_KEYWORD_EMPTY' => '关键字不能为空',
 
 );

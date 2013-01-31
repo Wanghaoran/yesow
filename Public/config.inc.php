@@ -36,9 +36,10 @@ return array(
   'MAIL_CHARSET'=>'UTF-8',//编码
   'MAIL_AUTH'=>true,//邮箱认证
   'MAIL_HTML'=>true,//true HTML格式 false TXT格式
-
   //密钥
   'KEY' => 'yesow',
   //网站主目录
-  'WEBSITE' => 'http://42.121.116.205/yesow/',  
+  'WEBSITE' => 'http://42.121.116.205/yesow/',
+  //企业形象照片保存路径
+  'COMPANY_PIC_PATH' => './Upload/companypic/'
 );

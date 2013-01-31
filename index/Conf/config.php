@@ -3,7 +3,6 @@ $common_config = include './Public/config.inc.php';
 
 $app_config = array(
   'USER_AUTH_KEY' => 'user_id',
-  'USER_AUTH_GATEWAY' => '/Public/login',
   'URL_ROUTER_ON' => true,  //开启url路由
   'URL_ROUTE_RULES' => array(
     'info' => 'info/info',//资讯首页
@@ -11,7 +10,6 @@ $app_config = array(
     'infodetail/:id' => 'info/infodetail', //资讯一级栏目页
     'article/:id' => 'info/article',//查看文章
     'commit' => 'info/commit',//提交评论
-    'login' => 'public/login',//登录
     'noticelist' => 'index/noticelist',//站点公告列表
     'notice/:id' => 'index/notice',//站点公告详情
   ),

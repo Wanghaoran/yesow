@@ -1,5 +1,5 @@
 <?php
-class InfoAction extends IndexCommonAction {
+class InfoAction extends CommonAction {
 
   //资讯首页
   public function info(){
