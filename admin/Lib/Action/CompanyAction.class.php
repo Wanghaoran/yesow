@@ -335,8 +335,13 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_edit', $result_edit);
     //根据cid，查询原公司信息
     $company = M('Company');
-    $result_old_company = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname, csa.name as csaname, ct.name as ctname, cc.name as ccname,c.website,c.keyword,c.content') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $result_edit['cid'])) -> find();
+    $result_old_company = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid, cs.name as csname, c.csaid, csa.name as csaname, c.typeid, ct.name as ctname, c.ccid, cc.name as ccname,c.website,c.keyword,c.content') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $result_edit['cid'])) -> find();
     $this -> assign('result_old_company',$result_old_company);
+    //查原公司的ccid的pid
+    $temp_pid = M('CompanyCategory') -> getFieldByid($result_old_company['ccid'], 'pid');
+    $this -> assign('result_old_ccid_pid', $temp_pid);
+    //pid的name
+    $this -> assign('result_old_ccid_pic_name', M('CompanyCategory') -> getFieldByid($temp_pid, 'name'));
     //根据csid 查分站下地区列表
     $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();
     $this -> assign('result_childsite_area', $result_childsite_area);
@@ -368,6 +373,60 @@ class CompanyAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
+  }
+
+  //会员报错数据
+  public function reporterrorcompany(){
+    $report = M('CompanyReport');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+    
+    }
+
+    //记录总数
+    $count = $report -> table('yesow_company_report as cr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+
+    //数据
+    $result = $report -> table('yesow_company_report as cr') -> field('cr.id,p.name as pname,cet.name as cetname,cr.description,m.name as mname,cr.addtime,a.name as aname,cr.audittime,cr.status') -> where($where) -> order('cr.status ASC,cr.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> join('yesow_company as p ON cr.cid = p.id') -> join('yesow_company_error_type as cet ON cr.cetid = cet.id') -> join('yesow_member as m ON cr.mid = m.id') -> join('yesow_admin as a ON cr.auditid = a.id') -> select();
+    $this -> assign('result', $result);
+    //查分站信息
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //编辑会员报错
+  public function editreporterrorcompany(){
+    echo '报错id:' . $_GET['id'];
+  }
+
+  //删除会员报错
+  public function delreporterrorcompany(){
+    echo '删除id' . $_POST['ids'];
+  }
+
+  //通过审核会员报错
+  public function passauditreporterrorcompany(){
+    echo '通过审核id' . $_POST['ids'];
+  }
+
+  //不通过审核会员报错
+  public function nopassauditreporterrorcompany(){
+    echo '不通过审核id' . $_POST['ids'];
   }
 
   //速查已审数据

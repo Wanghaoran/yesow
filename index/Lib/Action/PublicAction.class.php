@@ -129,5 +129,10 @@ class PublicAction extends Action {
       exit;
     }
 
+  //ajax获取分站下地区的区号
+  public function getchildsitecode(){
+    echo M('ChildSiteArea') -> getFieldByid($this -> _get('id', 'intval'), 'code');
+  }
+
     //
 }

@@ -22,7 +22,7 @@ class CompanyAction extends CommonAction {
   }
 
   //添加速查信息
-  public function addcompany(){
+  public function add(){
     //处理添加
     if(!empty($_POST['companyname'])){
       if($this -> _post('verify', 'md5') != $_SESSION['verify']){
@@ -40,7 +40,7 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	$this -> success(L('DATA_ADD_SUCCESS'));
+	$this -> success(L('DATA_ADD_SUCCESS'), U('Company/add'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }

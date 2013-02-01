@@ -1,5 +1,5 @@
 <div class="page unitBox" style="display: block;">
-  <div style="float:left; display:block; overflow:auto; width:519px;" class="unitBox" id="jbsxBox2">
+  <div style="float:left; display:block; overflow:auto; width:519px;" class="unitBox" id="jbsxBox6">
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
   <input type="hidden" name="search_name" value="<!--{$Think.request.search_name}--!>" />
@@ -80,9 +80,9 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 		  <eq name="r.ischeck" value="1">
-		  <td><a rel="jbsxBox3" target="ajax" href="__URL__/editchangenotcheckcompany/id/<!--{$r.id}--!>" style="color:blue;"><!--{$r.name}--!></a></td>
+		  <td><a rel="jbsxBox7" target="ajax" href="__URL__/editchangenotcheckcompany/id/<!--{$r.id}--!>" style="color:blue;"><!--{$r.name}--!></a></td>
 		  <else/>
-		  <td><a rel="jbsxBox3" target="ajax" href="__URL__/editchangenotcheckcompany/id/<!--{$r.id}--!>" style="color:red;"><!--{$r.name}--!></a></td>
+		  <td><a rel="jbsxBox7" target="ajax" href="__URL__/editchangenotcheckcompany/id/<!--{$r.id}--!>" style="color:red;"><!--{$r.name}--!></a></td>
 		  </eq>
 			</tr>
 		</volist>
@@ -104,7 +104,7 @@
 
 	</div>
 	
-	<div style="margin-left:520px;" class="unitBox" id="jbsxBox3">
+	<div style="margin-left:520px;" class="unitBox" id="jbsxBox7">
 	  <include file="Company:editchangenotcheckcompany" />
 </div>
 </div>

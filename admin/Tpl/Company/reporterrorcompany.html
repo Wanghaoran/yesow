@@ -1,0 +1,135 @@
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="csid" value="<!--{$Think.request.csid}--!>" />
+  <input type="hidden" name="csaid" value="<!--{$Think.request.csaid}--!>" />
+  <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
+  <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+  <input type="hidden" name="name" value="<!--{$Think.request.name}--!>" />
+  <input type="hidden" name="key" value="<!--{$Think.request.key}--!>" />
+</form>
+
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+	  <ul class="searchContent">
+	    <li style="width:300px;" >
+	    <label style="width:37px;">关键字</label>
+	    <input type="text" name="name" />
+				<select class="combox" name="key">
+				  <option value="name">公司名称</option>
+				  <option value="address">公司地址</option>
+				  <option value="companyphone">公司电话</option>
+				  <option value="website">公司网址</option>
+				  <option value="category">主营类别</option>
+				  <option value="auditname">审核人</option>
+				  <option value="reportname">报错人</option>
+				</select>
+	    </li>
+		  <li style="width:200px;">
+			<label style="width:37px;">地区：</label>
+			<select class="combox" name="csid" ref="csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+				  <option value="">请选择</option>
+				  <volist name="result_childsite" id="rc">
+				  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+				  </volist>
+				</select>
+				<select class="combox" name="csaid" id="csaid">
+				  <option value="">请选择</option>
+				</select>
+			</li>
+		  <li style="width:370px;">
+		  <label style="width:60px;">报错时间：</label>
+		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		    -  
+		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  </li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li class=""><a class="delete" href="__URL__/delreporterrorcompany/navTabId/reporterrorcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择报错信息"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editreporterrorcompany/id/{sid_role}" target="dialog" mask="true" warn="请选择报错信息"><span>编辑</span></a></li>
+	    <li class="line">line</li>
+	    <li class=""><a class="icon" href="__URL__/passauditreporterrorcompany/navTabId/reporterrorcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些信息吗?" warn="请选择报错信息"><span>通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/nopassauditreporterrorcompany/navTabId/reporterrorcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些信息吗?" warn="请选择报错信息"><span>不通过审核</span></a></li>
+	    
+	    <li class="line">line</li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['company']['delreporterrorcompany'])">
+	    <li class=""><a class="delete" href="__URL__/delreporterrorcompany/navTabId/reporterrorcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择报错信息"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['editreporterrorcompany'])">
+	    <li><a class="edit" href="__URL__/editreporterrorcompany/id/{sid_role}" target="dialog" mask="true" warn="请选择报错信息"><span>编辑</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['passauditreporterrorcompany'])">
+	    <li class="line">line</li>
+	    <li class=""><a class="icon" href="__URL__/passauditreporterrorcompany/navTabId/reporterrorcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些信息吗?" warn="请选择报错信息"><span>通过审核</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['nopassauditreporterrorcompany'])">
+	    <li class=""><a class="icon" href="__URL__/nopassauditreporterrorcompany/navTabId/reporterrorcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些信息吗?" warn="请选择报错信息"><span>不通过审核</span></a></li>
+	    </if>
+	    </if>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+		    <th width="15">编号</th>
+		    <th width="90">公司名称</th>
+		    <th width="50">错误类型</th>
+		    <th width="100">报错描述</th>
+		    <th width="35">报错人</th>
+		    <th width="60">报错时间</th>
+		    <th width="35">审核人</th>
+		    <th width="60">审核时间</th>
+		    <th width="40">状态</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+		  <td><!--{$r.id}--!></td>
+		  <td><!--{$r.pname}--!></td>
+		  <td><!--{$r.cetname}--!></td>
+		  <td><!--{$r.description}--!></td>
+		  <td><!--{$r.mname}--!></td>
+		  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+		  <td><!--{$r.aname}--!></td>
+		  <td><!--{$r.audittime|date="Y-m-d H:i:s", ###}--!></td>
+			  <eq name="r.status" value="0">
+			  <td style="color:red;">未审未过</td>
+			  </eq>
+			  <eq name="r.status" value="1">
+			  <td style="color:green;">已审未过</td>
+			  </eq>
+			  <eq name="r.status" value="2">
+			  <td style="color:blue;">已审已过</td>
+			  </eq>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

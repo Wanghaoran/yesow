@@ -52,86 +52,84 @@
     });
   }
 
+  var getchildsitecode = function(val){
+    $.ajax({
+      url: '__ROOT__/index.php/public/getchildsitecode/id/' + val,
+      success: function(ress){
+	 $('#companyphone')[0].value = ress + '-';
+      },
+    });
+  }
+
   var cheakform = function(){
     if($('#companyname')[0].value == ''){
       $('#companyname').focus();
-      $('#companyname').after('<div id="chkcompanyname" class="tipsy" style="display:block;"><div class="tipsy-inner">公司名称不能为空</div></div>');
+      alert('公司名称不能为空');
       return false;
     }
     if($('#companyaddress')[0].value == ''){
       $('#companyaddress').focus();
-      $('#companyaddress').after('<div id="chkcompanyaddress" class="tipsy" style="display:block;"><div class="tipsy-inner">公司地址不能为空</div></div>');
+      alert('公司地址不能为空');
       return false;
     }
     if($('#companycsaid')[0].value == ''){
       $('#companycsaid').focus();
-      $('#companycsaid').after('<div id="chkcompanycsaid" class="tipsy" style="display:block;"><div class="tipsy-inner">地区不能为空</div></div>');
+      alert('所在地区不能为空');
       return false;
     }
     if($('#manproducts')[0].value == ''){
       $('#manproducts').focus();
-      $('#manproducts').after('<div id="chkmanproducts" class="tipsy" style="display:block;"><div class="tipsy-inner">主营产品不能为空</div></div>');
+      alert('主营产品不能为空');
       return false;
     }
     if($('#companyccid')[0].value == ''){
       $('#companyccid').focus();
-      $('#companyccid').after('<div id="chkcompanyccid" class="tipsy" style="display:block;"><div class="tipsy-inner">类别不能为空</div></div>');
+      alert('主营类别不能为空');
       return false;
     }
     if($('#companykeyword')[0].value == ''){
       $('#companykeyword').focus();
-      $('#companykeyword').after('<div id="chkcompanykeyword" class="tipsy" style="display:block;"><div class="tipsy-inner">关键字不能为空</div></div>');
+      alert('关键字不能为空');
+      return false;
+    }
+    if($('#addname')[0].value == ''){
+      $('#addname').focus();
+      alert('添加人姓名不能为空');
+      return false;
+    }
+    if($('#addtel')[0].value == ''){
+      $('#addtel').focus();
+      alert('添加人电话不能为空');
+      return false;
+    }
+    if($('#addnumberid')[0].value == ''){
+      $('#addnumberid').focus();
+      alert('添加人身份证号不能为空');
       return false;
     }
     return true
   }
 
-  $(document).ready(function(){
-    $('#companyaddress').focus(function(){
-      $('#chkcompanyaddress').remove();
-    });
-    $('#companyaddress').blur(function(){
-      $('#chkcompanyaddress').remove();
-    });
-    $('#companyname').focus(function(){
-      $('#chkcompanyname').remove();
-    });
-    $('#companyname').blur(function(){
-      $('#chkcompanyname').remove();
-    });
-    $('#companycsaid').focus(function(){
-      $('#chkcompanycsaid').remove();
-    });
-    $('#companycsaid').blur(function(){
-      $('#chkcompanycsaid').remove();
-    });
-    $('#manproducts').focus(function(){
-      $('#chkmanproducts').remove();
-    });
-    $('#manproducts').blur(function(){
-      $('#chkmanproducts').remove();
-    });
-    $('#companyccid').focus(function(){
-      $('#chkcompanyccid').remove();
-    });
-    $('#companyccid').blur(function(){
-      $('#chkcompanyccid').remove();
-    });
-    $('#companykeyword').focus(function(){
-      $('#chkcompanykeyword').remove();
-    });
-    $('#companykeyword').blur(function(){
-      $('#chkcompanykeyword').remove();
-    });
-
-  });
+  function createabout(){
+    var content = '';
+    var name = $('#companyname')[0].value;
+    var csid = $('#companycsid option:selected').text();
+    var csaid = $('#companycsaid option:selected').text();
+    var address = $('#companyaddress')[0].value;
+    var manproducts = $('#manproducts')[0].value;
+    var linkman = $('#companylinkman')[0].value;
+    var typeid = $('#companytypeid option:selected').text();
+    var website = $('#companywebsite')[0].value;
+    content += '    ' + name + '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' + name + '这里在此我们全体成员祝你网上浏缆愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国' + csid + csaid + '地区,公司地址在' + address + '，公司主要经营' + manproducts + '，欢迎来人来电咨询和联系我们，公司联系人是' + linkman + '，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    ' + name + '将会为你提供优质的售前、售中和售后服务，我们作为' + typeid + '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' + csid + '地区IT行业争光！为' + csaid + '的经济发展争光！！欢迎访问我公司网站：' + website + '也许会给你带来意外的收获！';
+    $('#companycontent')[0].value = content;
+  }
 
 </script>
 
 </head>
 <body id="body_index">
 <div id="warp_body">
-<include file="Index:header" />
+  <include file="Index:header" />
 	<div id="mbx">
 		<span>您的位置:</span>
 		<a href="__ROOT__">易搜首页</a> &gt;
@@ -169,7 +167,7 @@
                 <li>
                 	<div class="div_left">公司类型</div>
 			<div class="div_mid1">
-			  <select class="div_select2" name="companytypeid">
+			  <select class="div_select2" id="companytypeid" name="companytypeid">
 			    <volist name="result_company_type" id="rct">
 			    <option value="<!--{$rct.id}--!>"><!--{$rct.name}--!></option>
 			    </volist>
@@ -177,8 +175,8 @@
                     <div class="div_left">形象上传</div>
                     <div class="fl">
 
-<input name="pic" type="file" style="width:200px;position:absolute;opacity:0;filter:alpha(opacity=0);"  onchange="this.form.inputs.value=this.value.substr(this.value.lastIndexOf('\\')+1);"/>
-<input name="inputs" type="input" style="width:190px; height:25px;" /> <input name="" type="button" value="浏览..." class="upfile_btn"/>
+<input name="pic" type="file" size="33" style="width:270px; height:22px; position:absolute;opacity:0;filter:alpha(opacity=0);"  onchange="this.form.inputs.value=this.value.substr(this.value.lastIndexOf('\\')+1);"/>
+<input name="inputs" type="input" style="width:190px; height:20px;" /> <input name="" type="button" value="浏览..." class="upfile_btn"/>
 
 
                     </div>
@@ -188,25 +186,27 @@
                 <li>
                 	<div class="div_left">所在地区</div>
 			<div class="div_mid1" style="position:relative;">
-			  <select class="div_select1" name="companycsid" onchange="getchildsitearea($(this).val());">
+			<select class="div_select1" name="companycsid" onchange="getchildsitearea($(this).val());">
 			    <option value="">请选择</option>
 			    <volist name="result_childsite" id="rc">
 			    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
 			    </volist>
 			</select>
-			  <select class="div_select1" id="companycsaid" name="companycsaid" >
+			  <select class="div_select1" id="companycsaid" name="companycsaid" onchange="getchildsitecode($(this).val());" >
 			  <option value="">请选择</option>
 		      </select>
                     </div>
                     <div class="div_left">联系人</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="companylinkman" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="companylinkman" name="companylinkman" /></div>
+                    <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
                 <li>
-                	<div class="div_left">移动电话</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="mobilephone" /></div>
                     <div class="div_left">联系电话</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="companyphone" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="companyphone" name="companyphone" /></div>
+                    <div class="div_left">移动电话</div>
+                    <div class="div_mid1"><input type="text" class="div_input1" name="mobilephone" /></div>
+                    <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -218,7 +218,7 @@
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">商家网址</div>
-                    <div class="div_mid1"><input type="text" class="div_input2" name="companywebsite" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input2" id="companywebsite" name="companywebsite" /></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -249,7 +249,7 @@
                 <div class="clear"></div>
                  <li>
                 	<div class="div_left">公司简介</div>
-                    <div class="div_mid2"><textarea class="div_textarea1" name="companycontent"></textarea><br /><a href="javascript:alert('暂未开放此功能');" class="btn_scjs">生成简介</a></div>
+                    <div class="div_mid2"><textarea class="div_textarea1" id="companycontent" name="companycontent"></textarea><br /><a href="javascript:createabout();" class="btn_scjs">生成简介</a></div>
                     <div class="div_right">如果您有自己的公司简介，请自行添加。如果没有，请点击下方的生成简介按钮，系统会自动生成您的企业简介，请核对后再提交。</div>
                 </li>
                 <div class="clear"></div>
@@ -264,9 +264,9 @@
             <ul class="info_table">
             	<li>
                 	<div class="div_left">您的姓名</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="addname" value="<!--{$add_info.fullname}--!>" /></div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input1" id="addname" name="addname" value="<!--{$add_info.fullname}--!>" /></div>
                     <div class="div_left">您的电话</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="addtel" value="<!--{$add_info.tel}--!>" /></div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input1" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -283,7 +283,7 @@
                 	<div class="div_left">电子邮件</div>
                     <div class="div_mid1"><input type="text" class="div_input1" name="addemail" value="<!--{$add_info.email}--!>" /></div>
                     <div class="div_left">身份证号</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /></div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input1" id="addnumberid" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -306,6 +306,7 @@
 		</a>
 	</div>
 	<include file="Index:footer" />
+	
 </div>
 </body>
 </html>

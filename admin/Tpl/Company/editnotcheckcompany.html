@@ -4,7 +4,7 @@
   }
 </style>
 <script>
-  function createabout(){
+  function createabout3(){
     var content = '';
     var name = $('#name')[0].value;
     var csid = $('#csid option:selected').text();
@@ -15,7 +15,7 @@
     var typeid = $('#typeid option:selected').text();
     var website = $('#website')[0].value;
     content += '    ' + name + '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' + name + '这里在此我们全体成员祝你网上浏缆愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国' + csid + csaid + '地区,公司地址在' + address + '，公司主要经营' + manproducts + '，欢迎来人来电咨询和联系我们，公司联系人是' + linkman + '，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    ' + name + '将会为你提供优质的售前、售中和售后服务，我们作为' + typeid + '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' + csid + '地区IT行业争光！为' + csaid + '的经济发展争光！！欢迎访问我公司网站：' + website + '也许会给你带来意外的收获！';
-    $('#content')[0].value = content;
+    $('#content3')[0].value = content;
   }
 </script>
 
@@ -24,13 +24,13 @@
   <div class="pageFormContent" layoutH="40">
     <form method="post" action="__ACTION__/navTabId/notcheckcompany" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
       <p style="width:100%"><label style="width:80px;">公司名称：</label>
-      <input type="text" class="textInput required" id="name" name="name" size="68" value="<!--{$result_edit.name}--!>">
+      <input type="text" class="textInput required" id="name" name="name" style="width:79%" value="<!--{$result_edit.name}--!>">
       </p>
       <p style="width:100%"><label style="width:80px;">公司地址：</label>
-      <input type="text" class="textInput required" id="address" name="address" size="68" value="<!--{$result_edit.address}--!>">
+      <input type="text" class="textInput required" id="address" name="address" style="width:79%" value="<!--{$result_edit.address}--!>">
       </p>
-      <p style="width:100%;height:61px;"><label style="width:80px;">主营类别：</label>
-      <textarea name="manproducts" id="manproducts"  rows="3" cols="65" ><!--{$result_edit.manproducts}--!></textarea>
+      <p style="width:100%;height:58px;"><label style="width:80px;">主营类别：</label>
+      <textarea name="manproducts" id="manproducts" style="width:79%;height:60px;" ><!--{$result_edit.manproducts}--!></textarea>
       </p>
       <p style="width:50%"><label style="width:80px;">公司电话：</label>
       <input type="text" class="textInput required" name="companyphone" size="23" value="<!--{$result_edit.companyphone}--!>">
@@ -99,46 +99,37 @@
       </select>
       </p>
       <p style="width:100%"><label style="width:80px;">公司网址：</label>
-      <input type="text" class="textInput" id="website" name="website" size="68" value="<!--{$result_edit.website}--!>">
+      <input type="text" class="textInput" id="website" name="website" style="width:79%" value="<!--{$result_edit.website}--!>">
       </p>
       <p style="width:100%"><label style="width:80px;">关键词：</label>
-      <input type="text" class="textInput" name="keyword" size="68" value="<!--{$result_edit.keyword}--!>">
+      <input type="text" class="textInput" name="keyword" style="width:79%" value="<!--{$result_edit.keyword}--!>">
       </p>
       <p style="width:100%"><label style="width:80px;">形象照片：</label>
       <input type="file" class="textInput" name="image" />
       
       </p>
-      <p style="width:100%;height:100%;"><label style="width:80px;">公司简介：</label>
-      <textarea name="content" id="content"  rows="8" cols="65" ><!--{$result_edit.content}--!></textarea>
-      </p>
-      <div class="formBar">
-	<ul>
-	  <li><a href="javascript:createabout();" class="button"><span>生成简介</span></a></li>
-	</ul>
-      </div>
-      
-
-
-  
+      <p style="width:100%;height:100%;"><label style="width:80px;">公司简介：<br/><br/><br/><a href="javascript:createabout3();" class="button"><span>生成简介</span></a></label>
+      <textarea name="content" id="content3" style="width:79%;height:100px;" ><!--{$result_edit.content}--!></textarea>
+      </p> 
 	<div class="divider"></div>
 	<p><b>添加人信息：</b></p>
 	<p style="width:50%"><label style="width:80px;">添加人：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addname}--!>">
+      <input type="text" readonly="readonly" size="24" value="<!--{$result_edit.addname}--!>">
       </p>
       <p style="width:50%"><label style="width:80px;">电话：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addtel}--!>">
+      <input type="text" readonly="readonly" size="24" value="<!--{$result_edit.addtel}--!>">
       </p>
       <p style="width:100%"><label style="width:80px;">单位：</label>
-      <input type="text" class="textInput" readonly="readonly" size="68" value="<!--{$result_edit.addunit}--!>">
+      <input type="text" class="textInput" readonly="readonly" style="width:79%"  value="<!--{$result_edit.addunit}--!>">
       </p>
       <p style="width:100%"><label style="width:80px;">地址：</label>
-      <input type="text" class="textInput" readonly="readonly" size="68" value="<!--{$result_edit.addaddress}--!>">
+      <input type="text" class="textInput" readonly="readonly" style="width:79%"  value="<!--{$result_edit.addaddress}--!>">
       </p>
       <p style="width:50%"><label style="width:80px;">邮箱：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addemail}--!>">
+      <input type="text" readonly="readonly" size="24" value="<!--{$result_edit.addemail}--!>">
       </p>
       <p style="width:50%"><label style="width:80px;">身份证号：</label>
-      <input type="text" readonly="readonly" size="23" value="<!--{$result_edit.addnumberid}--!>">
+      <input type="text" readonly="readonly" size="24" value="<!--{$result_edit.addnumberid}--!>">
       </p>
       <p>
             <input type="hidden" name="id" value="<!--{$id}--!>">
