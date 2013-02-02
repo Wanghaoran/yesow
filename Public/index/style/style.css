@@ -535,7 +535,7 @@ p.comment_notic{font-weight:bold; color:#C00; padding-bottom:5px;}
 #main14 .cat_bod h4 span.fontclor2{ color:#333333; font-weight:normal;}
 #main14 .cat_bod h4 span.fontclor3 a{ color:#0100cc; font-weight:normal;}
 #main14 .cat_bod h3{ width:80px; height:30px; line-height:30px; text-align:center; color:#F60; margin:10px 0;}
-#main14 ul.info_table{ width:960px;}
+#main14 ul.info_table{ width:930px;}
 #main14 ul.info_table li{ float:left; margin-bottom:5px;}
 #main14 ul.info_table li div input{ border:#cccccc 1px solid; }
 #main14 ul.info_table li div.div_left{float:left; width:65px; height:22px; line-height:22px; font-weight:bold; text-align:right; padding-right:5px; color:#656565;}
@@ -545,16 +545,18 @@ p.comment_notic{font-weight:bold; color:#C00; padding-bottom:5px;}
 #main14 ul.info_table li div input.div_input2{ width:598px;height:20px; line-height:20px;}
 #main14 ul.info_table li div input.div_input3{ width:348px;height:20px; line-height:20px;}
 #main14 ul.info_table li div input.div_input4{ width:58px;height:20px; line-height:20px;}
-#main14 ul.info_table li div.div_right{ color:#ff5500; line-height:22px; text-align:left; width:250px; float:left; padding:0 0 0 10px;}
+#main14 ul.info_table li div input.div_input5{ width:248px;height:20px; line-height:20px;}
+#main14 ul.info_table li div input.div_input6{ width:583px;height:20px; line-height:20px;}
+#main14 ul.info_table li div.div_right{ color:#ff5500; line-height:22px; text-align:left; width:220px; float:left; padding:0 0 0 10px;}
 #main14 ul.info_table li div select.div_select1{ width:80px; height:22px; line-height:22px; margin-right:10px;}
 #main14 ul.info_table li div select.div_select2{ width:170px; height:22px; line-height:22px; margin-right:10px;}
 #main14 ul.info_table li div textarea.div_textarea1{ width:598px; height:100px; line-height:20px; border:#cccccc 1px solid;}
 .fl{ float:left;}
-a.btn_scjs{ float:right; margin-top:5px; background:url(images/addedit_btn.gif) bottom left no-repeat;font-size:14px; font-weight:bold; display:block;width:90px; height:30px; line-height:30px; text-align:center; color:#fff;}
+a.btn_scjs{ float:right; margin-top:5px; background:url(images/addedit_btn.gif) bottom center no-repeat;font-size:12px; font-weight:bold; display:block;width:60px; height:22px; line-height:22px; text-align:center; color:#fff; margin-top:60px;}
 a.ishave{ width:90px; height:21px; line-height:21px; font-size:12px; color:#fff; background:url(images/addedit_btn.gif) top left no-repeat; display:block; text-align:center; float:left;}
-button.tijiao{ width:90px; height:30px; line-height:30px; font-size:14px; font-weight:bold; color:#fff; background:url(images/addedit_btn.gif) bottom left no-repeat; border:none;}
+input.tijiao{ width:90px; height:30px; line-height:30px; font-size:14px; font-weight:bold; color:#fff; background:url(images/addedit_btn.gif) bottom left no-repeat; border:none;}
 
-input.upfile_btn{ width:70px; height:24px; line-height:24px; vertical-align:middle; _margin-bottom:10px; color:#fff; background:#fe9e0b; cursor:pointer;}
+input.upfile_btn{ width:70px; height:24px; line-height:24px; vertical-align:middle; _margin-bottom:10px; color:#fff; background:#fe9e0b;}
 
 /* tipsy */
 .tipsy{padding:5px;font-size:11px;line-height:13px;background:url(images/tipsy.gif) no-repeat left center;opacity:0.9; position:absolute; right:0; top:0; z-index:999;}

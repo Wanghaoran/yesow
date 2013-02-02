@@ -131,7 +131,8 @@ class PublicAction extends Action {
 
   //ajax获取分站下地区的区号
   public function getchildsitecode(){
-    echo M('ChildSiteArea') -> getFieldByid($this -> _get('id', 'intval'), 'code');
+    $code = M('ChildSiteArea') -> getFieldByid($this -> _get('id', 'intval'), 'code');
+    echo preg_replace('/[a-zA-Z]/i', '', $code);
   }
 
     //

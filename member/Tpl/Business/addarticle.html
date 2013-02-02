@@ -14,7 +14,7 @@
         KindEditor.ready(function(K) {
 	  editor = K.create('#editor_id', {
 	    uploadJson : '__APP__/public/uploadfile',
-	    fileManagerJson : '__PUBLIC__/kindeditor/php/file_manager_json.php',
+	    fileManagerJson : './kindeditor/php/file_manager_json.php'
 	  });
         });
 </script>
@@ -71,7 +71,7 @@
 </script>
 </head>
 <body id="body_user">
-  <include file="Index:header" />
+<include file="Index:header" />
 	<div id="user_m">
     	<div class="warp_850">
         	<div id="main">
@@ -97,8 +97,7 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									所属栏目：
-									<select class="" name="classid" onchange="getdata($(this).val());" >
+									所属栏目：<select class="" name="classid" onchange="getdata($(this).val());" >
 										<option value="" >请选择</option>
 										<volist name="result_one_col" id="roc">
 										<option value="<!--{$roc.id}--!>"><!--{$roc.name}--!></option>
@@ -112,33 +111,28 @@
 							</tr>
 							<tr>
 								<td>
-									文章标题：
-									<select class="" name="tid" id="titleattribute" >
+									文章标题：<select class="" name="tid" id="titleattribute" >
 										<option value="" >请选择</option>
-									</select>
-									<input name="title" class="" style="width:250px" />
-									<strong>*</strong>
+									</select><input name="title" class="" style="width:247px; margin-left:5px;" />
+									<strong><font color="#ff5500">*</font></strong>
 								</td>
-								<td>
-									文章来源：
-									<input class="" name="source" />
-									<strong>*</strong>
+								<td style="white-space:nowrap">
+									文章来源：<input class="" name="source" /><strong>
+                                    <font color="#ff5500">*</font></strong>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									关&nbsp;键&nbsp;字：
-									<input name="keyword" class="" style="width:352px" />
-									<strong>*</strong>
+									关&nbsp;键&nbsp;字&nbsp;：<input name="keyword" class="" style="width:332px" />
+									<strong><font color="#ff5500">*</font></strong>
 								</td>
 								<td>
-									内容属性：
-									<select class="" onchange="getconatt($(this).val());" name="conid" id="contentattribute" >
+									内容属性：<select class="" onchange="getconatt($(this).val());" name="conid" id="contentattribute" >
 										<option value="" >请选择</option>
 									      </select>
 	    <select name="conid2" id="contenttwoattribute" style="margin-left:5px;display:none;">
 	<option value="">请选择</option>
-      </select>								      
+      </select>									      
 								</td>
 							</tr>
 							<tr>
@@ -157,20 +151,17 @@
 								</td>
 							</tr>
 							<tr>
-							  <td>发布作者：<input type="text" name="" id="" readonly="readonly" value="<!--{$Think.session.username}--!>"/></td>
-								<td>联系电话：<input type="text" name="tel" id="" value="<!--{$result_member.tel}--!>" /></td>
+							  <td colspan="2">发布作者：<input type="text" name="" id="" readonly="readonly" value="<!--{$Think.session.username}--!>" style="width:269px;" />&nbsp;&nbsp;联系电话：<input type="text" name="tel" id="" value="<!--{$result_member.tel}--!>" style="width:269px;" /></td>
 							</tr>
 							<tr>
-								<td>联系Q&nbspQ：<input type="text" name="qqcode" id="" value="<!--{$result_member.qqcode}--!>" /></td>
-								<td>E-mail&nbsp;&nbsp;：<input type="text" name="email" id="" value="<!--{$result_member.email}--!>"/></td>
+								<td colspan="2">联系Q&nbspQ：<input type="text" name="qqcode" id="" value="<!--{$result_member.qqcode}--!>" style="width:269px;" /><span style="padding-left:18px;">E-mail：</span><input type="text" name="email" id="" value="<!--{$result_member.email}--!>" style="width:269px;"/></td>
 							</tr>
 							<tr>
-								<td>联系地址：<input type="text" name="address" id="" value="<!--{$result_member.address}--!>"/></td>
-								<td>所属单位：<input type="text" name="unit" id="" value="<!--{$result_member.unit}--!>" /></td>
+								<td colspan="2">联系地址：<input type="text" name="address" id="" value="<!--{$result_member.address}--!>" style="width:269px;"/>&nbsp;&nbsp;所属单位：<input type="text" name="unit" id="" value="<!--{$result_member.unit}--!>" style="width:269px;" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" style="text-align:center">
-									<button class="add_article_btn" name="" id="" onclick="document.getElementById('article').onsubmit();" >发布文章</button>
+									<button class="add_article_btn" name="" id="" onClick="document.getElementById('article').onsubmit();" >发布文章</button>
 									<button class="add_article_btn" name="" id="" >取消发布</button>
 									<button class="add_article_btn" name="" id="" >清空内容</button>
 								</td>
@@ -183,15 +174,24 @@
             </div>
         </div>
     </div>
-	<include file="Index:footer" />
-	<script type="text/javascript">
-		$(function(){
-			$('button').hover(function(){
-				$(this).addClass('hover');	
-			},function(){
-				$(this).removeClass('hover');	
-			})		
-		})
-	</script>
+	<div id="user_d">
+		<div class="warp_850">
+			<p>
+				<a href="">关于易搜</a> |
+				<a href="">发展历程</a> |
+				<a href="">服务声明</a> |
+				<a href="">业务介绍</a> |
+				<a href="">优势介绍</a> |
+				<a href="">站点地图</a> |
+				<a href="">联系方式</a> |
+				<a href="">付款方式</a> |
+				<a href="">广告服务</a>
+			</p>
+			<p>
+				Copyright &copy; www.yesow.com All rights reserved<br>
+				浙B2-20080069
+			</p>
+		</div>
+	</div>
 </body>
 </html>

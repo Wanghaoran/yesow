@@ -17,7 +17,7 @@ class BusinessAction extends CommonAction {
       }
 
        if(!$info_article -> create()){
-	 $this -> error($info_article -> getError());
+	R('Register/errorjump',array($info_article -> getError()));
        }
            
       if($iaid = $info_article -> add()){
@@ -44,10 +44,9 @@ class BusinessAction extends CommonAction {
 	    $infoarticlepic -> add($data);
 	  }
 	}
-
-	$this -> success(L('DATA_ADD_SUCCESS'), U('Business/article'));
+	R('Register/successjump',array(L('DATA_ADD_SUCCESS'), U('Business/article')));
       }else{
-	$this -> error(L('DATA_ADD_ERROR'));
+	R('Register/errorjump',array(L('DATA_ADD_ERROR')));
       }
     }
     //查所有一级分类
@@ -67,8 +66,8 @@ class BusinessAction extends CommonAction {
     $where = array();
     //处理搜索
     if(isset($_POST['submit'])){
-      if(!empty($_POST['keyword'])){
-	$where['ia.title'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+      if(!empty($_POST['title'])){
+	$where['ia.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
       }
       if(!empty($_POST['csid'])){
 	$result_childsite_infoarticle_temp = M('ChildsiteInfoarticle') -> field('iaid') -> where(array('csid' => $this -> _post('csid', 'intval'))) -> select();
@@ -140,10 +139,10 @@ class BusinessAction extends CommonAction {
       //文章状态变为 已审未过
       $_POST['status'] = 1;
       if(!$infoarticle -> create()){
-	$this -> error($infoarticle -> getError());
+	R('Register/errorjump',array($infoarticle -> getError()));
       }
       $infoarticle -> save();
-      $this -> success(L('DATA_UPDATE_SUCCESS'), U('Business/article'));
+      R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Business/article')));
     }
 
     //文章数据

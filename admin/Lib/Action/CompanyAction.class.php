@@ -381,11 +381,42 @@ class CompanyAction extends CommonAction {
     $where = array();
     //处理搜索
     if(!empty($_POST['name'])){
-    
+      if($_POST['key'] == 'name'){
+	$where['p.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+      }else if($_POST['key'] == 'address'){
+	$where['p.address'] = array('LIKE', '%' . $this -> _post('name') . '%');
+      }else if($_POST['key'] == 'companyphone'){
+	$where['p.companyphone'] = array('LIKE', '%' . $this -> _post('name') . '%');
+      }else if($_POST['key'] == 'website'){
+	$where['p.website'] = array('LIKE', '%' . $this -> _post('name') . '%');
+      }else if($_POST['key'] == 'category'){
+	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('name'), 'id');
+	$where['p.ccid'] = $ccid;
+      }else if($_POST['key'] == 'auditname'){
+	$auditaid = M('Admin') -> getFieldByname($this -> _post('name'), 'id');
+	$where['cr.auditid'] = $auditaid;
+      }else if($_POST['key'] == 'reportname'){
+	$auditaid = M('Member') -> getFieldByname($this -> _post('name'), 'id');
+	$where['cr.mid'] = $auditaid;
+      }
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['cr.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['cr.addtime'][] = array('lt', $endtime);
+    }
+    if(!empty($_POST['csid'])){
+      $where['p.csid'] = $this -> _post('csid', 'intval');
+    }
+    if(!empty($_POST['csaid'])){
+      $where['p.csaid'] = $this -> _post('csaid', 'intval');
     }
 
     //记录总数
-    $count = $report -> table('yesow_company_report as cr') -> where($where) -> count('id');
+    $count = $report -> table('yesow_company_report as cr') -> join('yesow_company as p ON cr.cid = p.id') -> where($where) -> count('cr.id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -395,7 +426,7 @@ class CompanyAction extends CommonAction {
     $page = new Page($count, $listRows);
 
     //数据
-    $result = $report -> table('yesow_company_report as cr') -> field('cr.id,p.name as pname,cet.name as cetname,cr.description,m.name as mname,cr.addtime,a.name as aname,cr.audittime,cr.status') -> where($where) -> order('cr.status ASC,cr.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> join('yesow_company as p ON cr.cid = p.id') -> join('yesow_company_error_type as cet ON cr.cetid = cet.id') -> join('yesow_member as m ON cr.mid = m.id') -> join('yesow_admin as a ON cr.auditid = a.id') -> select();
+    $result = $report -> table('yesow_company_report as cr') -> field('cr.id,cr.cid,p.name as pname,cet.name as cetname,cr.description,m.name as mname,cr.addtime,a.name as aname,cr.audittime,cr.status') -> where($where) -> order('cr.status ASC,cr.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> join('yesow_company as p ON cr.cid = p.id') -> join('yesow_company_error_type as cet ON cr.cetid = cet.id') -> join('yesow_member as m ON cr.mid = m.id') -> join('yesow_admin as a ON cr.auditid = a.id') -> select();
     $this -> assign('result', $result);
     //查分站信息
     $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
@@ -411,28 +442,97 @@ class CompanyAction extends CommonAction {
 
   //编辑会员报错
   public function editreporterrorcompany(){
-    echo '报错id:' . $_GET['id'];
+    $company = D('Company');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(!$company -> create()){
+	$this -> error($company -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	$company -> pic = $this -> upload();
+      }
+      $company -> updateaid = session(C('USER_AUTH_KEY'));
+      if($company -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //结果
+    $result = $company -> field('name,address,manproducts,companyphone,mobilephone,linkman,email,qqcode,csid,csaid,typeid,ccid,website,clickcount,keyword,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //根据csid 查分站下地区列表
+    $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> select();
+    $this -> assign('result_childsite_area', $result_childsite_area);
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询公司类型
+    $result_company_type = M('CompanyType') -> field('id,name') -> select();
+    $this -> assign('result_company_type', $result_company_type);
+    //查询ccid对应的主营一级类别
+    $result_ccid_one = M('CompanyCategory') -> getFieldByid($result['ccid'], 'pid');
+    $this -> assign('result_ccid_one', $result_ccid_one);
+    //查询对应主营类别 - 二级
+    $result_company_category_two = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $result_ccid_one)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_two', $result_company_category_two);
+    //查询主营类别 - 一级
+    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_one', $result_company_category_one);
+    $this -> display();
   }
 
   //删除会员报错
   public function delreporterrorcompany(){
-    echo '删除id' . $_POST['ids'];
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $companyreport = M('CompanyReport');
+    if($companyreport -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //通过审核会员报错
   public function passauditreporterrorcompany(){
-    echo '通过审核id' . $_POST['ids'];
+    $companyreport = M('CompanyReport');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array();
+    $data_audit['status'] = 2;
+    $data_audit['auditid'] = session(C('USER_AUTH_KEY'));
+    $data_audit['audittime'] = time();
+    if($companyreport -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
   }
 
   //不通过审核会员报错
   public function nopassauditreporterrorcompany(){
-    echo '不通过审核id' . $_POST['ids'];
+    $companyreport = M('CompanyReport');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array();
+    $data_audit['status'] = 1;
+    $data_audit['auditid'] = session(C('USER_AUTH_KEY'));
+    $data_audit['audittime'] = time();
+    if($companyreport -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
   }
 
   //速查已审数据
   public function checkcompany(){
     $company = M('Company');
     $where = array();
+    if($_SESSION[C('USER_AUTH_KEY')] != 1){
+      $where['delaid'] = array('exp', 'IS NULL');
+    }
     //处理搜索
     if(!empty($_POST['search_name'])){
       if($_POST['search_key'] == 'name'){
@@ -446,6 +546,12 @@ class CompanyAction extends CommonAction {
       }else if($_POST['search_key'] == 'category'){
 	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('search_name'), 'id');
 	$where['ccid'] = $ccid;
+      }else if($_POST['search_key'] == 'auditname'){
+	$auditaid = M('Admin') -> getFieldByname($this -> _post('search_name'), 'id');
+	$where['auditaid'] = $auditaid;
+      }else if($_POST['search_key'] == 'updatename'){
+	$auditaid = M('Admin') -> getFieldByname($this -> _post('search_name'), 'id');
+	$where['updateaid'] = $auditaid;
       }
     }
     if(!empty($_POST['search_starttime'])){
@@ -480,12 +586,14 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $company -> field('id,name') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $company -> field('id,delaid,name') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
     $this -> assign('currentPage', $pageNum);
+    //总页数
+    $this -> assign('countNum', ceil($count / $listRows));
     $this -> assign('count', $count);
     $this -> assign('count_del', $count_del);
 
@@ -541,7 +649,27 @@ class CompanyAction extends CommonAction {
 
   //删除速查已审数据
   public function delcheckcompany(){
-    $this -> error('功能暂未开发，要删除的id为' . $_POST['ids']);
+    //功能说明：如果是总管理(id=1)则直接删除数据，否则只是将delaid设为删除人的id，实际并不删除
+    if($_SESSION[C('USER_AUTH_KEY')] == 1){
+      $where_del = array();
+      $where_del['id'] = array('in', $_POST['ids']);
+      $company = M('Company');
+      if($company -> where($where_del) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    }else{
+      $where_update = array();
+      $where_update['id'] = array('in', $_POST['ids']);
+      $data['delaid'] = session(C('USER_AUTH_KEY'));
+      $company = D('Company');
+      if($company -> where($where_update) -> save($data)){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    }
   }
   /* --------------- 速查数据管理 ---------------- */
 }

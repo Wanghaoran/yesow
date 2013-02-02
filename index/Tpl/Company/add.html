@@ -57,7 +57,7 @@
       url: '__ROOT__/index.php/public/getchildsitecode/id/' + val,
       success: function(ress){
 	 $('#companyphone')[0].value = ress + '-';
-      },
+      }
     });
   }
 
@@ -155,7 +155,7 @@
                     <div class="div_mid2" style=" position:relative;">
                     <input type="text" id="companyname" class="div_input2" name="companyname" />
                     </div>
-                    <div class="div_right"><span class="fl">*</span><a href="" class="ishave">查看是否已有</a></div>
+                    <div class="div_right"><span class="fl">*</span><a href="javascript:alert('还没有做，搜索做好了再做这个')" class="ishave">查看是否已有</a></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -186,7 +186,7 @@
                 <li>
                 	<div class="div_left">所在地区</div>
 			<div class="div_mid1" style="position:relative;">
-			<select class="div_select1" name="companycsid" onchange="getchildsitearea($(this).val());">
+			<select class="div_select1" id="companycsid" name="companycsid" onchange="getchildsitearea($(this).val());">
 			    <option value="">请选择</option>
 			    <volist name="result_childsite" id="rc">
 			    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
@@ -244,14 +244,15 @@
                     <div class="div_mid1" style="position:relative">
                         <input type="text" class="div_input1" id="companykeyword" name="companykeyword" />
                     </div>
-                    <div class="div_right">*3-5个主营品牌词汇，词与词之间用1个空格隔开</div>
+                    <div class="div_right">*3-5个主营品牌词汇,用空格隔开</div>
                 </li>
                 <div class="clear"></div>
-                 <li>
-                	<div class="div_left">公司简介</div>
-                    <div class="div_mid2"><textarea class="div_textarea1" id="companycontent" name="companycontent"></textarea><br /><a href="javascript:createabout();" class="btn_scjs">生成简介</a></div>
+<li>
+                	<div class="div_left">公司简介<br /><a href="javascript:createabout();" class="btn_scjs">生成简介</a></div>
+                    <div class="div_mid2"><textarea class="div_textarea1" id="companycontent" name="companycontent"></textarea></div>
                     <div class="div_right">如果您有自己的公司简介，请自行添加。如果没有，请点击下方的生成简介按钮，系统会自动生成您的企业简介，请核对后再提交。</div>
                 </li>
+                 
                 <div class="clear"></div>
             </ul>
             <div class="clear"></div>
@@ -264,37 +265,40 @@
             <ul class="info_table">
             	<li>
                 	<div class="div_left">您的姓名</div>
-                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input1" id="addname" name="addname" value="<!--{$add_info.fullname}--!>" /></div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addname" name="addname" value="<!--{$add_info.fullname}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                     <div class="div_left">您的电话</div>
-                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input1" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /></div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                 </li>
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">单位名称</div>
-                    <div class="div_mid1"><input type="text" class="div_input2" name="addunit" value="<!--{$add_info.unit}--!>" /></div>
+			<div class="div_mid2"><input type="text" class="div_input6" name="addunit" value="<!--{$add_info.unit}--!>" /></div>
+			<div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">单位地址</div>
-                    <div class="div_mid1"><input type="text" class="div_input2" name="addaddress" value="<!--{$add_info.address}--!>" /></div>
+			<div class="div_mid2"><input type="text" class="div_input6" name="addaddress" value="<!--{$add_info.address}--!>" /></div>
+			<div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">电子邮件</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="addemail" value="<!--{$add_info.email}--!>" /></div>
+			<div class="div_mid1"><input type="text" class="div_input5" name="addemail" value="<!--{$add_info.email}--!>" /></div>
                     <div class="div_left">身份证号</div>
-                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input1" id="addnumberid" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /></div>
+		    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addnumberid" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+		    <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
-                <li>
+<li>
                 	<div class="div_left">验证码</div>
-			<div class="fl"><input type="text" class="div_input4" name="verify" /></div><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" />
+					<div class="div_mid2"><div class="fl"><input type="text" class="div_input4" name="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div></div>
+                    <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
-                <li>
-		<input type="submit" value="提交" />
-                </li>
+                <li><div style="margin:10px 0 10px 300px;"><input type="submit" value="提交" class="tijiao"/></div></li>
                 <div class="clear"></div>
+                
 	      </ul>
 	      </form>
         </div>

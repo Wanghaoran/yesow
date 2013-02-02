@@ -99,8 +99,7 @@ table.table_list tr{ border-bottom:1px solid #eee;}
 table.table_list td.fz label{ display:inline-block; zoom:1; padding-right:5px;}
 .w100{width:100px;}
 .w80{width:80px;}
-button.add_article_btn{ margin:0 10px;width:200px; height:30px; background:#ccc; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center;}
-button.add_article_btn.hover{ background:#F60;}
+button.add_article_btn{ margin:10px;width:160px; height:30px; line-height:30px; background:url(images/user/RightColumn_Btn.gif) 0 -60px no-repeat; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center; cursor:pointer;}
 /**分页**/
 .page{ padding:10px 0; text-align:right;}
 .page a, .page span{display:inline-block; margin-left:5px; height:20px; line-height:20px; padding:0 8px; border:1px solid #ccc;
@@ -213,9 +212,8 @@ ul.ul_checked li{ float:left; font-size:12px; font-weight:normal;}
 /* switchBox */
 .switchBox{width:750px; margin: 10px auto;}
 .switchBox dt{height:31px; border-bottom:#ff8b01 1px solid;}
-.switchBox dt a{ border:#e4e3e3 1px solid; border-bottom:none; background:#f3f3f3;color:#7c7c7c;cursor:pointer;float:left;font-size:14px;height:30px;line-height:30px;text-align:center;text-decoration:none;width:100px; font-weight:bold; margin-right:10px;}
-.switchBox dt .on{ background:url(images/user/btn_regbg.gif) left bottom no-repeat;}
-.switchBox dt .on,.switchBox dt a:hover{color:#fff;}
+.switchBox dt a{ border:#e4e3e3 1px solid; border-bottom:none; text-decoration: none; background:#f3f3f3;color:#7c7c7c;cursor:pointer;float:left;font-size:14px;height:30px;line-height:30px;text-align:center;text-decoration:none;width:100px; font-weight:bold; margin-right:10px;}
+.switchBox dt a.on{ background:url(images/user/btn_regbg.gif) left bottom no-repeat; text-decoration: none; color:#fff;}
 .switchBox dd{clear:both;display:none;height:auto;line-height:20px;padding:10px;font-family:"宋体";}
 
 .main_con2{ width:700px;}

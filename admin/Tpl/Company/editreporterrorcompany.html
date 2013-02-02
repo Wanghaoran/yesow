@@ -1,0 +1,130 @@
+<script>
+  function createabout5(){
+    var content = '';
+    var name = $('#name5')[0].value;
+    var csid = $('#csid5 option:selected').text();
+    var csaid = $('#csaid5 option:selected').text();
+    var address = $('#address5')[0].value;
+    var manproducts = $('#manproducts5')[0].value;
+    var linkman = $('#linkman5')[0].value;
+    var typeid = $('#typeid5 option:selected').text();
+    var website = $('#website5')[0].value;
+    content += '    ' + name + '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' + name + '这里在此我们全体成员祝你网上浏缆愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国' + csid + csaid + '地区,公司地址在' + address + '，公司主要经营' + manproducts + '，欢迎来人来电咨询和联系我们，公司联系人是' + linkman + '，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    ' + name + '将会为你提供优质的售前、售中和售后服务，我们作为' + typeid + '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' + csid + '地区IT行业争光！为' + csaid + '的经济发展争光！！欢迎访问我公司网站：' + website + '也许会给你带来意外的收获！';
+    $('#content5')[0].value = content;
+  }
+</script>
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" enctype="multipart/form-data" action="__ACTION__/callbackType/closeCurrent/navTabId/reporterrorcompany" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	      <div class="unit">
+		<label style="width:75px;">公司名称：</label>
+		<input type="text" class="required" style="width:75%;" id="name5" name="name" value="<!--{$result.name}--!>"/>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">公司地址：</label>
+		<input type="text" class="required" style="width:75%;" id="address5" name="address" value="<!--{$result.address}--!>"/>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">主营类别：</label>
+		<textarea name="manproducts" id="manproducts5" style="width:75%;height:60px;"><!--{$result.manproducts}--!></textarea>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">公司电话：</label>
+		<input type="text" class="textInput" style="width:25%;" name="companyphone" value="<!--{$result.companyphone}--!>"/>
+		<label style="width:75px;margin-left:40px;">移动电话：</label>
+		<input type="text" class="textInput" style="width:25%;" name="mobilephone" value="<!--{$result.mobilephone}--!>"/>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">联系人：</label>
+		<input type="text" class="textInput" style="width:25%;" name="linkman" id="linkman5" value="<!--{$result.linkman}--!>"/>
+		<label style="width:75px;margin-left:40px;">电子邮件：</label>
+		<input type="text" class="textInput" style="width:25%;" name="email" value="<!--{$result.email}--!>"/>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">联系QQ：</label>
+		<input type="text" class="textInput" style="width:25%;" name="qqcode" value="<!--{$result.qqcode}--!>"/>
+		<label style="width:75px;margin-left:40px;">所在地：</label>
+		<select class="combox" id="csid5" name="csid" ref="csaid5" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+		  <volist name="result_childsite" id="rc">
+		  <eq name="result.csid" value="$rc.id">
+		  <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+		<select class="combox" name="csaid" id="csaid5">
+		  <volist name="result_childsite_area" id="rca">
+		  <eq name="result.csaid" value="$rca.id">
+		  <option value="<!--{$rca.id}--!>" selected="selected"><!--{$rca.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rca.id}--!>"><!--{$rca.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">公司类型：</label>
+		<select class="combox" id="typeid5" name="typeid">
+		  <volist name="result_company_type" id="rct">
+		  <eq name="result.typeid" value="$rct.id">
+		  <option value="<!--{$rct.id}--!>" selected="selected"><!--{$rct.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rct.id}--!>"><!--{$rct.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+		<label style="width:75px;margin-left:100px;">主营类别：</label>
+		<select class="combox" ref="ccid5" refUrl="__APP__/public/ajaxgetcompanycategorytwo/id/{value}">
+		  <volist name="result_company_category_one" id="rcco">
+		  <eq name="result_ccid_one" value="$rcco.id">
+		  <option value="<!--{$rcco.id}--!>" selected="selected"><!--{$rcco.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+		<select class="combox" name="ccid" id="ccid5">
+		  <volist name="result_company_category_two" id="rcct">
+		  <eq name="result.ccid" value="$rcct.id">
+		  <option value="<!--{$rcct.id}--!>" selected="selected"><!--{$rcct.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rcct.id}--!>"><!--{$rcct.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	      </div>
+	       <div class="unit">
+		<label style="width:75px;">公司网址：</label>
+		<input type="text" class="textInput" style="width:25%;" id="website5" name="website" value="<!--{$result.website}--!>"/>
+		<label style="width:75px;margin-left:40px;">点击量：</label>
+		<input type="text" class="textInput" style="width:25%;" name="clickcount" value="<!--{$result.clickcount}--!>"/>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">关键词：</label>
+		<input type="text" class="textInput" style="width:75%;" name="keyword" value="<!--{$result.keyword}--!>"/>
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">形象照片：</label>
+		<input type="file" class="textInput" name="image" />
+	      </div>
+	      <div class="unit">
+		<label style="width:75px;">公司简介：<br/><br/><br/><a href="javascript:createabout5();" class="button"><span>生成简介</span></a></label>
+		<textarea name="content" id="content5" style="width:75%;height:100px;"><!--{$result.content}--!></textarea>
+	      </div>
+
+	    </div>
+	    <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

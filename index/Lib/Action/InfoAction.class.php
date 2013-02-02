@@ -125,7 +125,7 @@ class InfoAction extends CommonAction {
     $comment_where['iac.status'] = 2;
     import("ORG.Util.Page");// 导入分页类
     $count = $comment -> table('yesow_info_article_comment as iac') -> where($comment_where) -> count('id');
-    $page = new Page($count, 5);//每页5条
+    $page = new Page($count, 10);//每页10条
     $page->setConfig('header','条评论');
     $show = $page -> show();
     $result_comment = $comment -> table('yesow_info_article_comment as iac') -> field('m.name,iac.content,iac.addtime,iac.floor') -> where($comment_where) -> join('yesow_member as m ON iac.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
