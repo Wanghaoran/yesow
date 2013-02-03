@@ -135,5 +135,43 @@ class PublicAction extends Action {
     echo preg_replace('/[a-zA-Z]/i', '', $code);
   }
 
-    //
+  //成功跳转
+  public function successjump($title, $url="", $time=3){
+    $this -> assign('title', $title);
+    if(empty($url)){
+      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+    }else{
+      $this -> assign('url', $url);
+    }
+    $this -> assign('time', $time);
+    $this -> assign('status', 1);
+    $this -> display('./index/Tpl/Public/jumpurl.html');
+    exit();
+  }
+
+  //失败跳转
+  public function errorjump($title, $url="", $time=3){
+    $this -> assign('title', $title);
+    if(empty($url)){
+      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+    }else{
+      $this -> assign('url', $url);
+    }
+    $this -> assign('time', $time);
+    $this -> assign('status', 0);
+    $this -> display('./index/Tpl/Public/jumpurl.html');
+    exit();
+  }
+
+  //按钮跳转
+  public function infojump($title, $url=""){
+    $this -> assign('title', $title);
+    if(empty($url)){
+      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+    }else{
+      $this -> assign('url', $url);
+    }
+    $this -> display('./index/Tpl/Public/infojump.html');
+    exit();
+  }
 }

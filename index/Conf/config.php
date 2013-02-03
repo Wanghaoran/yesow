@@ -12,6 +12,7 @@ $app_config = array(
     'commit' => 'info/commit',//提交评论
     'noticelist' => 'index/noticelist',//站点公告列表
     'notice/:id' => 'index/notice',//站点公告详情
+    'company/:id\d' => 'company/info',//速查详情页
   ),
 );
 

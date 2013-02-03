@@ -498,7 +498,8 @@ class CompanyAction extends CommonAction {
   public function passauditreporterrorcompany(){
     $companyreport = M('CompanyReport');
     $where_audit = array();
-    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $where_audit['id'] = array('IN', $this -> _post('ids'));
+    $where_audit['status'] = 0;
     $data_audit = array();
     $data_audit['status'] = 2;
     $data_audit['auditid'] = session(C('USER_AUTH_KEY'));
@@ -514,7 +515,8 @@ class CompanyAction extends CommonAction {
   public function nopassauditreporterrorcompany(){
     $companyreport = M('CompanyReport');
     $where_audit = array();
-    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $where_audit['id'] = array('IN', $this -> _post('ids'));
+    $where_audit['status'] = 0;  
     $data_audit = array();
     $data_audit['status'] = 1;
     $data_audit['auditid'] = session(C('USER_AUTH_KEY'));
@@ -586,7 +588,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $company -> field('id,delaid,name') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $company -> field('id,delaid,name') -> where($where) -> order('delaid DESC,addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -670,6 +672,11 @@ class CompanyAction extends CommonAction {
 	$this -> error(L('DATA_DELETE_ERROR'));
       }
     }
+  }
+
+  //速查评论管理
+  public function companycomment(){
+    echo '速查评论';
   }
   /* --------------- 速查数据管理 ---------------- */
 }

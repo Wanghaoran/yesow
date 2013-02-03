@@ -41,29 +41,15 @@
 				<span class="desc">最新更新(24小时内)</span>
 			</div>
 			<div class="main01_l_bod">
-				<ul id="main01_l_ul">
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-					<li><a href="">六盘水实惠电脑</a></li>
-					<li class="odd_li"><a href="">六盘水实惠电脑</a></li>
-				</ul>
+			  <ul id="main01_l_ul">
+			    <volist name="new_company" id="nc" mod="2">
+			    <eq name="mod" value="1">
+			    <li class="odd_li"><a href="__ROOT__/company/<!--{$nc.id}--!>" target="_blank"><!--{$nc.name}--!></a></li>
+			    <else/>
+			    <li><a href="__ROOT__/company/<!--{$nc.id}--!>" target="_blank"><!--{$nc.name}--!></a></li>
+			    </eq>
+			    </volist>
+			  </ul>
 			</div>
 			<div class="border_ui">
 				<div class="border_ui_r">

@@ -41,5 +41,7 @@ return array(
   //网站主目录
   'WEBSITE' => 'http://42.121.116.205/yesow/',
   //企业形象照片保存路径
-  'COMPANY_PIC_PATH' => './Upload/companypic/'
+  'COMPANY_PIC_PATH' => './Upload/companypic/',
+  //企业形象照片显示地址
+  'COMPANY_PIC_PATH_SAVE' => __ROOT__ . '/Upload/companypic/',
 );

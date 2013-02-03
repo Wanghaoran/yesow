@@ -7,6 +7,8 @@ class IndexAction extends CommonAction {
     $this -> gettitlenotice();
     //易搜公告动态
     $this -> getyesownotice();
+    //最新IT商家
+    $this -> newcompany();
 
     $this -> display();
   }
@@ -72,6 +74,13 @@ class IndexAction extends CommonAction {
       S('index_yesow_notice', $result);
       $this -> assign('index_yesow_notice', $result);
     }
+  }
+
+  //最新IT商家
+  private function newcompany(){
+    $company = M('Company');
+    $new_company = $company -> field('id,name') -> order('addtime DESC') -> limit(20) -> select();
+    $this -> assign('new_company', $new_company);
   }
 
   //提交评论

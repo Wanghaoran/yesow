@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>跳转页面 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+</head>
+<script type="text/javascript">
+  var i = <!--{$time}--!>;
+    function onload()
+    {
+        var timeturn = document.getElementById('timeturn');
+        i--;
+        timeturn.innerHTML = i+'秒';
+        setTimeout("onload()",1100);
+        if(i==0)
+	{
+	  window.location.href="<!--{$url}--!>"; 
+        }
+   }
+ </script>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+    <!--主体-->
+    <div id="user_m">
+    	<div class="warp_850">
+	  <div id="main">
+	    <eq name="status" value="1">
+		  <div style=" clear:both; width:321px; margin:0 auto;">
+		    <div class="index_currect"><!--{$title}--!></div>
+		    <div class="tiaozhuan"><span id="timeturn"><!--{$time}--!>秒</span>后自动跳转，如果不想等待，请点击<a href="<!--{$url}--!>">这里</a>跳转</div>
+		  </div>
+		  <else/>
+		  <div style=" clear:both; width:321px; margin:0 auto;">
+                	<div class="index_failed"><!--{$title}--!></div>
+                    <div class="tiaozhuan"><span id="timeturn"><!--{$time}--!></span>后自动跳转，如果不想等待，请点击<a href="<!--{$url}--!>">这里</a>跳转</div>
+		  </div>
+		  </eq>
+    
+		</div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+    <script type="text/javascript">
+      onload();
+    </script>
+</div>
+</body>
+</html>

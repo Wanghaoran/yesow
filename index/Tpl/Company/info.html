@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script language="JavaScript">
+function viewDetail()
+{
+  var isblock = document.getElementById("isblock");   
+  if(isblock.style.display=="none")
+	{
+	isblock.style.display = "block";
+	}
+	else
+	{
+	isblock.style.display = "none";
+	}
+
+}
+function hiddenDetail()
+{
+	var isblock = document.getElementById("isblock");
+	isblock.style.display = "none";
+}
+function showLi()
+{
+  var liadmin = document.getElementById("liadmin");   
+  if(liadmin.style.display=="none")
+	{
+	liadmin.style.display = "block";
+	}
+	else
+	{
+	liadmin.style.display = "none";
+	}
+
+}
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/company">渠道黄页</a> &gt;
+		<span>商家详情</span> 
+	</div>
+    <!--关键排名-->
+	<div id="main09">
+		<div id="main09_l">
+			<div class="cat_header">
+				<h3>商家名片</h3>
+			</div>
+			<div class="cat_bod">
+				<ul class="saledetail">
+				  <li class="li_h1"><!--{$result.name}--!><span>人气 [ <!--{$result.clickcount}--!> ]</span></li>
+				  <li class="li_img"><a href="#"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic|default='detailimg.gif'}--!>" width="343" height="275" border="0" /></a></li>
+                    <li>
+                        <h2>
+			  <span class="span_left">企业类型：</span><!--{$result.ctname}--!>
+                        </h2>
+                        <h2>
+			  <span class="span_left">所在地区：</span><!--{$result.csname}--!> <!--{$result.csaname}--!>
+                        </h2>
+                        <h2>
+			  <span class="span_left">主营类别：</span><!--{$result.ccname}--!>
+                        </h2>
+                        <h2>
+			  <span class="span_left">主营产品：</span><!--{$result.manproducts}--!>
+                        </h2>
+                        <h2>
+			  <span class="span_left">联系人：</span><!--{$result.linkman}--!>
+                        </h2>
+                        <h2>
+			  <span class="span_left">公司地址：</span><!--{$result.address}--!>
+                        </h2>
+                        <div class="div_info">
+			  <p>联系电话：<!--{$result.mobilephone}--!></p>
+			  <p>联系Q Q：<!--{$result.qqcode}--!></p>
+			  <p>电子邮件：<!--{$result.email}--!></p>
+			  <p>公司网址：<!--{$result.website}--!></p>
+                            <div>
+                            <a href="#">点击查看</a><a href="" class="btn_tuijian"></a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+				<div class="clear10"></div>
+                <ul class="saledetail_btn">
+                	<li class="btn_add"><a href="__URL__/add" target="_blank">我要添加</a></li>
+                    <li class="btn_gaicuo"><a href="#">我要改错</a></li>
+                    <li class="btn_baocuo"><a href="#">我要报错</a></li>
+                    <li class="btn_copy"><a href="#">单条复制</a></li>
+                    <li class="btn_download"><a href="#">单个下载</a></li>
+                </ul>
+                <div class="clear10"></div>
+                <h3 class="h3_text">企业在线</h3>
+                <ul class="ul_qq">
+                	<li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                    <li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                    <li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                    <li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                    <li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                    <li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                    <li>
+                    	<img  style="CURSOR: pointer" onclick="javascript:window.open('http://bizapp.qq.com/webc.htm?new=0&sid=8888888&eid=&o=www.yesow.com&q=7&ref='+document.location, '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"  border="0" SRC="http://im.bizapp.qq.com:8000/zx_qq.gif">
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <h3 class="h3_text">公司简介</h3>
+                <div class="div_about">
+		  <p><!--{$result.content|nl2br}--!></p>
+                </div>
+                <div class="clear"></div>
+                <h3 class="h3_line">网友评论</h3>
+                <ul class="ul_taolun">
+                	<li>
+                    	<dl>
+                        	<dt>用了你们的产品，真的感觉很不错！</dt>
+                            <dd>用户ID：10001010</dd>
+                            <dd>留言者：乌云龙</dd>
+                            <dd>留言日期：2013-02-03</dd>
+                            <dd>评分：10</dd>
+                        </dl>
+                    </li>
+                    <li>
+                    	<dl>
+                        	<dt>用了你们的产品，真的感觉很不错！</dt>
+                            <dd>用户ID：10001010</dd>
+                            <dd>留言者：乌云龙</dd>
+                            <dd>留言日期：2013-02-03</dd>
+                            <dd>评分：10</dd>
+                        </dl>
+                    </li>
+                    <li>
+                    	<dl>
+                        	<dt>用了你们的产品，真的感觉很不错！</dt>
+                            <dd>用户ID：10001010</dd>
+                            <dd>留言者：乌云龙</dd>
+                            <dd>留言日期：2013-02-03</dd>
+                            <dd>评分：10</dd>
+                        </dl>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+				<div class="page" style="padding-right:10px;">
+					<span>共72条数据</span>
+					<a href="#">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">4</a>
+					<a href="#">5</a>
+					<a href="#">下一页</a>
+				</div>
+                <h3 class="h3_line">我要评论</h3>
+                <div class="div_pinglun">
+                	<h4 class="h4_zhuyi">注：所有评论审核后才能被公开</h4>
+                  <ul class="ul_pinglun">
+                    	<li>
+                        	<div class="div_left">内&nbsp;&nbsp;容</div>
+                            <div class="div_right"><textarea class="txt_pl"></textarea></div>
+                        </li>
+                        <li>
+                            <div class="div_left">评&nbsp;&nbsp;分</div>
+                            <div class="div_right">
+                            	<select>
+                                	<option>请选择评分</option>
+                                </select><span>&nbsp;*&nbsp;请投出你公平的一票</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="div_left">验证码</div>
+                            <div class="div_right">
+                            	<div class="fl"><input type="text" class="div_input4" name="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div>
+                            </div>
+                        </li>
+                        <li>
+                           <a href="" class="btn_fbpl">发表评论</a> <h5 class="h5_text">发表评论表示同意<a onclick="showLi()">[用户协议]</a></h5>
+                        </li>
+                        <li id="liadmin" style="display:none">
+                        	<h6>用户协议</h6>
+                            <p>请客观公正的评论公司真实情况，含有辱骂、诽谤、人身攻击等言语以及无关话题本站有权删除</p>
+                            <p>尊重网上道德，请尊重您自己</p>
+                            <p>遵守《全国人大常委会关于维护互联网安全的决定》及中华人民共和国其他各项有关法律法规</p>
+                            <p>承当一切因您的行为而直接或间接的民事或刑事法律责任</p>
+                            <p>网站管理人员有权保留或删除留言中的任意内容</p>
+                            <p>您在IT公司速查手册发表言论时，本站有权在网站内转载或引用</p>
+                            <p>参与本留言即表明您已经阅读并接受上述条款</p>
+                        </li>
+                    </ul>
+                    <div class="clear"></div>
+              </div>
+                <div class="clear"></div>
+			</div>
+		</div>
+		<div id="main09_r">
+			<div class="main09_r_rmsj">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>最新更新同行</h3>
+						</div>
+					</div>
+				</div>
+				<ul class="bl_list">
+				  <volist name="result_counterparts" id="rc">
+				  <li><a href="__ROOT__/company/<!--{$rc.id}--!>"><span>[<b><!--{$rc.csname}--!></b>]</span><!--{$rc.name|msubstr=0,11}--!></a><span class="time"><!--{$rc.updatetime|date="Y-m-d", ###}--!></span></li>
+				  </volist>
+				</ul>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/image/bl_gg.gif" width="295" height="100" /></a></div>
+			
+			<div class="main09_r_tjqd">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>推荐商家</h3>
+						</div>
+					</div>
+				</div>
+				<ul class="bl_list">
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
+					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>				
+				</ul>
+				<div class="clear"></div>
+			</div>
+			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/image/bl_gg.gif" width="295" height="100" /></a></div>
+			
+		</div>
+		<div class="clear"></div>
+	</div>
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

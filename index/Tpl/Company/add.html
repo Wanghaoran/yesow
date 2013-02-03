@@ -62,6 +62,11 @@
   }
 
   var cheakform = function(){
+    var patrn=/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/;
+    var RegCellPhone = /^([0-9]{11})?$/;
+    var qqcode = /[1-9][0-9]{4,}/;
+    var website = /[a-zA-z]+:\/\/[^\s]*/;
+    var addtel = /^[0-9]\d*$/;
     if($('#companyname')[0].value == ''){
       $('#companyname').focus();
       alert('公司名称不能为空');
@@ -87,6 +92,26 @@
       alert('主营类别不能为空');
       return false;
     }
+    if(!patrn.exec($('#email')[0].value)){
+      $('#email').focus();
+      alert('电子邮件格式不正确');
+      return false;
+    }
+    if(!RegCellPhone.exec($('#mobilephone')[0].value)){
+      $('#mobilephone').focus();
+      alert('移动电话格式不正确');
+      return false;
+    }
+    if(!qqcode.exec($('#qqcode')[0].value)){
+      $('#qqcode').focus();
+      alert('联系QQ格式不正确');
+      return false;
+    }
+    if(!website.exec($('#companywebsite')[0].value)){
+      $('#companywebsite').focus();
+      alert('商家网址格式不正确');
+      return false;
+    }
     if($('#companykeyword')[0].value == ''){
       $('#companykeyword').focus();
       alert('关键字不能为空');
@@ -102,9 +127,19 @@
       alert('添加人电话不能为空');
       return false;
     }
+    if(!addtel.exec($('#addtel')[0].value)){
+      $('#addtel').focus();
+      alert('添加人电话格式不对');
+      return false;
+    }
     if($('#addnumberid')[0].value == ''){
       $('#addnumberid').focus();
       alert('添加人身份证号不能为空');
+      return false;
+    }
+    if(!addtel.exec($('#addnumberid')[0].value)){
+      $('#addnumberid').focus();
+      alert('添加人身份证号格式不对');
       return false;
     }
     return true
@@ -205,15 +240,15 @@
                     <div class="div_left">联系电话</div>
                     <div class="div_mid1"><input type="text" class="div_input1" id="companyphone" name="companyphone" /></div>
                     <div class="div_left">移动电话</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="mobilephone" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="mobilephone" name="mobilephone" /></div>
                     <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">联系QQ</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="qqcode" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="qqcode" name="qqcode" /></div>
                     <div class="div_left">电子邮件</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" name="email" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="email" name="email" /></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -223,7 +258,7 @@
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">主营产品</div>
-			<div class="div_mid2" style="position:relative;"><textarea class="div_textarea1" id="manproducts" name="manproducts"></textarea></div>
+			<div class="div_mid2" style="position:relative;"><textarea class="div_textarea1" id="manproducts" name="manproducts" style="max-width:598px;"></textarea></div>
                     <div class="div_right">*为让客户尽快找到您，请将您填写的产品精确到品牌，如：方正台式机、HP打印机等。严禁添加国家规定的违禁产品：如电子狗、针孔摄像头、针孔摄像机等！300字以内。</div>
                 </li>
                 <div class="clear"></div>
@@ -249,7 +284,7 @@
                 <div class="clear"></div>
 <li>
                 	<div class="div_left">公司简介<br /><a href="javascript:createabout();" class="btn_scjs">生成简介</a></div>
-                    <div class="div_mid2"><textarea class="div_textarea1" id="companycontent" name="companycontent"></textarea></div>
+                    <div class="div_mid2"><textarea class="div_textarea1" id="companycontent" name="companycontent" style="max-width:598px;"></textarea></div>
                     <div class="div_right">如果您有自己的公司简介，请自行添加。如果没有，请点击下方的生成简介按钮，系统会自动生成您的企业简介，请核对后再提交。</div>
                 </li>
                  

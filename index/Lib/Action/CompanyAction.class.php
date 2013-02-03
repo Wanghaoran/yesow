@@ -26,11 +26,11 @@ class CompanyAction extends CommonAction {
     //处理添加
     if(!empty($_POST['companyname'])){
       if($this -> _post('verify', 'md5') != $_SESSION['verify']){
-	$this -> error(L('VERIFY_ERROR'));
+	R('Public/errorjump',array(L('VERIFY_ERROR')));
       }
       $companyaudit = D('admin://CompanyAudit');
       if(!$a = $companyaudit -> create()){
-	$this -> error($companyaudit -> getError());
+	R('Public/errorjump',array($companyaudit -> getError()));
       }
       if(isset($_SESSION[C('USER_AUTH_KEY')])){
 	$companyaudit -> mid = session(C('USER_AUTH_KEY'));
@@ -40,9 +40,9 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	$this -> success(L('DATA_ADD_SUCCESS'), U('Company/add'));
+	R('Public/infojump',array(L('COMPANY_ADD_SUCCESS'), U('Company/add')));
       }else{
-	$this -> error(L('DATA_ADD_ERROR'));
+	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
       }
     }
     //查询分站
@@ -59,6 +59,21 @@ class CompanyAction extends CommonAction {
       $add_info = M('Member') -> field('fullname,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
       $this -> assign('add_info', $add_info);
     }
+    $this -> display();
+  }
+
+  //速查详情页
+  public function info(){
+    $company = M('Company');
+    $id = $this -> _get('id', 'intval');
+    //点击量加一
+    $company -> where(array('id' => $id)) -> setInc('clickcount');
+    //结果
+    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.qqcode,c.email,c.website') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
+    $this -> assign('result', $result);
+    //最新更新同行
+    $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where(array('c.ccid' => $result['ccid'])) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site as cs ON c.csid = cs.id') -> select();
+    $this -> assign('result_counterparts', $result_counterparts);
     $this -> display();
   }
 }
