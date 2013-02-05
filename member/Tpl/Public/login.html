@@ -22,8 +22,13 @@
 					<div id="login_body">	
                     	<div class="login_tit">
 							<h2>用户登陆</h2>
-						</div>					
-						<form action="__URL__/checklogin" method="post">
+						      </div>
+						      <if condition="(isset($_GET['a_c'])) AND (isset($_GET['m_d']))">
+						      <form action="__URL__/checklogin/a_c/<!--{$Think.get.a_c}--!>/m_d/<!--{$Think.get.m_d}--!>/id/<!--{$Think.get.id}--!>" method="post">
+						      <else/>
+						      <form action="__URL__/checklogin" method="post">
+						      </if>
+      						      
                         <div class="login_con">
 							<p>用户名：<input type="text" name="name" id="" class="" /></p>
                             <div class="clear"></div>

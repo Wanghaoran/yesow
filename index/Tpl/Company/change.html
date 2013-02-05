@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IT商家信息改错页 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script>
+  $(function(){
+     //点击图片更换验证码
+     $("#code").click(function(){
+         $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+    });
+  });
+ 
+  var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#companycsaid').html(_nstr).show();
+	  }else{
+	  $('#companycsaid').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+
+  var getcompanycategorytwo = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcompanycategorytwo/id/' + val,
+      success:function(ress){
+	var _nstr = '<option value="">请选择</option>';
+	if(ress != null){
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#companyccid').html(_nstr).show();
+	  }else{
+	  $('#companyccid').html(_nstr).hide();
+	}
+      },
+      dataType:'json'
+    });
+  }
+
+  var getchildsitecode = function(val){
+    $.ajax({
+      url: '__ROOT__/index.php/public/getchildsitecode/id/' + val,
+      success: function(ress){
+	 $('#companyphone')[0].value = ress + '-';
+      }
+    });
+  }
+
+  var cheakform = function(){
+    var patrn=/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/;
+    var RegCellPhone = /^([0-9]{11})?$/;
+    var qqcode = /[1-9][0-9]{4,}/;
+    var website = /[a-zA-z]+:\/\/[^\s]*/;
+    var addtel = /^[0-9]\d*$/;
+    if($('#companyname')[0].value == ''){
+      $('#companyname').focus();
+      alert('公司名称不能为空');
+      return false;
+    }
+    if($('#companyaddress')[0].value == ''){
+      $('#companyaddress').focus();
+      alert('公司地址不能为空');
+      return false;
+    }
+    if($('#companycsaid')[0].value == ''){
+      $('#companycsaid').focus();
+      alert('所在地区不能为空');
+      return false;
+    }
+    if($('#manproducts')[0].value == ''){
+      $('#manproducts').focus();
+      alert('主营产品不能为空');
+      return false;
+    }
+    if($('#companyccid')[0].value == ''){
+      $('#companyccid').focus();
+      alert('主营类别不能为空');
+      return false;
+    }
+    if($('#companykeyword')[0].value == ''){
+      $('#companykeyword').focus();
+      alert('关键字不能为空');
+      return false;
+    }
+    if($('#addname')[0].value == ''){
+      $('#addname').focus();
+      alert('改错人姓名不能为空');
+      return false;
+    }
+    if($('#addtel')[0].value == ''){
+      $('#addtel').focus();
+      alert('改错人电话不能为空');
+      return false;
+    }
+    if(!addtel.exec($('#addtel')[0].value)){
+      $('#addtel').focus();
+      alert('改错人电话格式不对');
+      return false;
+    }
+    if($('#addnumberid')[0].value == ''){
+      $('#addnumberid').focus();
+      alert('改错人身份证号不能为空');
+      return false;
+    }
+    if(!addtel.exec($('#addnumberid')[0].value)){
+      $('#addnumberid').focus();
+      alert('改错人身份证号格式不对');
+      return false;
+    }
+    return true
+  }
+
+  function createabout(){
+    var content = '';
+    var name = $('#companyname')[0].value;
+    var csid = $('#companycsid option:selected').text();
+    var csaid = $('#companycsaid option:selected').text();
+    var address = $('#companyaddress')[0].value;
+    var manproducts = $('#manproducts')[0].value;
+    var linkman = $('#companylinkman')[0].value;
+    var typeid = $('#companytypeid option:selected').text();
+    var website = $('#companywebsite')[0].value;
+    content += '    ' + name + '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' + name + '这里在此我们全体成员祝你网上浏缆愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国' + csid + csaid + '地区,公司地址在' + address + '，公司主要经营' + manproducts + '，欢迎来人来电咨询和联系我们，公司联系人是' + linkman + '，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    ' + name + '将会为你提供优质的售前、售中和售后服务，我们作为' + typeid + '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' + csid + '地区IT行业争光！为' + csaid + '的经济发展争光！！欢迎访问我公司网站：' + website + '也许会给你带来意外的收获！';
+    $('#companycontent')[0].value = content;
+  }
+
+</script>
+
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/company">渠道黄页</a> &gt;
+		<a href="__ROOT__/company/<!--{$Think.get.id}--!>"><!--{$result.name}--!></a> &gt;
+		<span>商家信息改错</span> 
+	</div>
+    <!--添加修改-->
+	<div id="main14">
+        <div class="cat_header">
+            <h3>添加企业</h3>
+        </div>
+        <div class="cat_bod">
+            <h4>
+            	<span class="fontclor1">注意：</span>
+                <span class="fontclor2">带*为必填选项，通过审核将获得50EB 未通过审核被删除将会扣除10EB，请保证添加的准确性。</span>
+                <span class="fontclor3"><a href="#">什么是EB？</a></span>
+            </h4>
+	    <h3>企业信息</h3>
+	    <form id="form1" action="__ACTION__" method="post" enctype="multipart/form-data"  onSubmit="return cheakform();" >
+            <ul class="info_table">
+            	<li>
+                	<div class="div_left">商家名称</div>
+                    <div class="div_mid2" style=" position:relative;">
+		      <input type="text" id="companyname" class="div_input2" name="companyname" value="<!--{$result.name}--!>" />
+                    </div>
+                    <div class="div_right"><span class="fl">*</span><a href="javascript:alert('还没有做，搜索做好了再做这个')" class="ishave">查看是否已有</a></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">公司地址</div>
+			<div class="div_mid2" style=" position:relative;"><input type="text" class="div_input2" id="companyaddress"  name="companyaddress" value="<!--{$result.address}--!>" /></div>
+                    <div class="div_right">*杭州市文三路100号****楼***室</div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">公司类型</div>
+			<div class="div_mid1">
+			  <select class="div_select2" id="companytypeid" name="companytypeid">
+			    <volist name="result_company_type" id="rct">
+			    <eq name="result.typeid" value="$rct.id">
+			    <option value="<!--{$rct.id}--!>" selected="selected"><!--{$rct.name}--!></option>
+			    <else/>
+			    <option value="<!--{$rct.id}--!>"><!--{$rct.name}--!></option>
+			    </eq>
+			    </volist>
+			</select></div>
+                    <div class="div_left">形象上传</div>
+                    <div class="fl">
+
+<input name="pic" type="file" size="33" style="width:270px; height:22px; position:absolute;opacity:0;filter:alpha(opacity=0);"  onchange="this.form.inputs.value=this.value.substr(this.value.lastIndexOf('\\')+1);"/>
+<input name="inputs" type="input" style="width:190px; height:20px;" /> <input name="" type="button" value="浏览..." class="upfile_btn"/>
+
+
+                    </div>
+                    <div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">所在地区</div>
+			<div class="div_mid1" style="position:relative;">
+			<select class="div_select1" id="companycsid" name="companycsid" onchange="getchildsitearea($(this).val());">
+			    <option value="">请选择</option>
+			    <volist name="result_childsite" id="rc">
+			    <eq name="result.csid" value="$rc.id">
+			    <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+			    <else/>
+			    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+			    </eq>
+			    </volist>
+			</select>
+			  <select class="div_select1" id="companycsaid" name="companycsaid" onchange="getchildsitecode($(this).val());" >
+			    <option value="">请选择</option>
+			    <volist name="result_childsite_area" id="rca">
+			    <eq name="result.csaid" value="$rca.id">
+			    <option value="<!--{$rca.id}--!>" selected="selected"><!--{$rca.name}--!></option>
+			    <else/>
+			    <option value="<!--{$rca.id}--!>"><!--{$rca.name}--!></option>
+			    </eq>
+			    </volist>
+		      </select>
+                    </div>
+                    <div class="div_left">联系人</div>
+		    <div class="div_mid1"><input type="text" class="div_input1" id="companylinkman" name="companylinkman"  value="<!--{$result.linkman}--!>" /></div>
+                    <div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                    <div class="div_left">联系电话</div>
+		    <div class="div_mid1"><input type="text" class="div_input1" id="companyphone" name="companyphone" value="<!--{$result.companyphone}--!>" /></div>
+                    <div class="div_left">移动电话</div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="mobilephone" name="mobilephone" value="<!--{$result.mobilephone}--!>" /></div>
+                    <div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">联系QQ</div>
+			<div class="div_mid1"><input type="text" class="div_input1" id="qqcode" name="qqcode" value="<!--{$result.qqcode}--!>" /></div>
+                    <div class="div_left">电子邮件</div>
+		    <div class="div_mid1"><input type="text" class="div_input1" id="email" name="email" value="<!--{$result.email}--!>" /></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">商家网址</div>
+			<div class="div_mid1"><input type="text" class="div_input2" id="companywebsite" name="companywebsite" value="<!--{$result.website}--!>" /></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">主营产品</div>
+			<div class="div_mid2" style="position:relative;"><textarea class="div_textarea1" id="manproducts" name="manproducts" style="max-width:598px;"><!--{$result.manproducts}--!></textarea></div>
+                    <div class="div_right">*为让客户尽快找到您，请将您填写的产品精确到品牌，如：方正台式机、HP打印机等。严禁添加国家规定的违禁产品：如电子狗、针孔摄像头、针孔摄像机等！300字以内。</div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">主营类别</div>
+                    <div class="div_mid1" style="position:relative">
+		      <select class="div_select1" onchange="getcompanycategorytwo($(this).val());">
+			    <option value="">请选择</option>
+			    <volist name="result_company_category_one" id="rcco">
+			    <eq name="result_ccid_one" value="$rcco.id">
+			    <option value="<!--{$rcco.id}--!>" selected="selected"><!--{$rcco.name}--!></option>
+			    <else/>
+			    <option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
+			    </eq>
+			    </volist>
+			  </select>
+			  <select class="div_select1" id="companyccid" name="companyccid" >
+			    <option value="">请选择</option>
+			    <volist name="result_company_category_two" id="rcct">
+			    <eq name="result.ccid" value="$rcct.id">
+			    <option value="<!--{$rcct.id}--!>" selected="selected"><!--{$rcct.name}--!></option>
+			    <else/>
+			    <option value="<!--{$rcct.id}--!>"><!--{$rcct.name}--!></option>
+			    </eq>
+			    </volist>
+		      </select>
+                    </div>
+                    <div class="div_left">关键词</div>
+                    <div class="div_mid1" style="position:relative">
+		      <input type="text" class="div_input1" id="companykeyword" name="companykeyword" value="<!--{$result.keyword}--!>" />
+                    </div>
+                    <div class="div_right">*3-5个主营品牌词汇,用空格隔开</div>
+                </li>
+                <div class="clear"></div>
+<li>
+                	<div class="div_left">公司简介<br /><a href="javascript:createabout();" class="btn_scjs">生成简介</a></div>
+			<div class="div_mid2"><textarea class="div_textarea1" id="companycontent" name="companycontent" style="max-width:598px;"><!--{$result.content}--!></textarea></div>
+                    <div class="div_right">如果您有自己的公司简介，请自行添加。如果没有，请点击下方的生成简介按钮，系统会自动生成您的企业简介，请核对后再提交。</div>
+                </li>
+                 
+                <div class="clear"></div>
+            </ul>
+            <div class="clear"></div>
+            <h3>改错人信息</h3>
+            <h4>
+                <span class="fontclor1">注意：</span>
+                <span class="fontclor2">改错人信息均为必填项，登陆后才能得到系统奖励的EB。</span>
+                <span class="fontclor3"><a href="#">什么是EB？</a></span>
+            </h4>
+            <ul class="info_table">
+            	<li>
+                	<div class="div_left">您的姓名</div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addname" name="addname" value="<!--{$add_info.fullname}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+                    <div class="div_left">您的电话</div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">单位名称</div>
+			<div class="div_mid2"><input type="text" class="div_input6" name="addunit" value="<!--{$add_info.unit}--!>" /></div>
+			<div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">单位地址</div>
+			<div class="div_mid2"><input type="text" class="div_input6" name="addaddress" value="<!--{$add_info.address}--!>" /></div>
+			<div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+                <li>
+                	<div class="div_left">电子邮件</div>
+			<div class="div_mid1"><input type="text" class="div_input5" name="addemail" value="<!--{$add_info.email}--!>" /></div>
+                    <div class="div_left">身份证号</div>
+		    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addnumberid" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+		    <div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+<li>
+                	<div class="div_left">验证码</div>
+					<div class="div_mid2"><div class="fl"><input type="text" class="div_input4" name="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div></div>
+                    <div class="div_right"></div>
+                </li>
+                <div class="clear"></div>
+                <li><div style="margin:10px 0 10px 300px;"><input type="submit" name="submit" value="提交" class="tijiao"/></div></li>
+                <div class="clear"></div>
+		<input type="hidden" name="cid" value="<!--{$Think.get.id}--!>" />
+	      </ul>
+	      </form>
+        </div>
+		<div class="clear"></div> 
+	</div>
+    <div class="index_gg01">
+		<a href="#">
+			<img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90" />
+		</a>
+	</div>
+	<include file="Index:footer" />
+	
+</div>
+</body>
+</html>

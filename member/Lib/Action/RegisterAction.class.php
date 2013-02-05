@@ -120,9 +120,23 @@ class RegisterAction extends Action {
   public function successjump($title, $url="", $time=3){
     $this -> assign('title', $title);
     if(empty($url)){
-      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+      if(!empty($_GET['a_c']) && !empty($_GET['m_d'])){
+	$t_url = '__ROOT__/' . $this -> _get('a_c') . '/' . $this -> _get('m_d');
+      }
+      if(!empty($_GET['id'])){
+	$t_url = $t_url . '/id/' . $this -> _get('id');
+      }
+      $r_url = isset($t_url) ? $t_url : $_SERVER["HTTP_REFERER"];
+      $this -> assign('url', $r_url);
     }else{
-      $this -> assign('url', $url);
+      if(!empty($_GET['a_c']) && !empty($_GET['m_d'])){
+	$t_url = '__ROOT__/' . $this -> _get('a_c') . '/' . $this -> _get('m_d');
+      }
+      if(!empty($_GET['id'])){
+	$t_url = $t_url . '/id/' . $this -> _get('id');
+      }
+      $r_url = isset($t_url) ? $t_url : $url;
+      $this -> assign('url', $r_url);
     }
     $this -> assign('time', $time);
     $this -> assign('status', 1);
@@ -134,9 +148,23 @@ class RegisterAction extends Action {
   public function errorjump($title, $url="", $time=3){
     $this -> assign('title', $title);
     if(empty($url)){
-      $this -> assign('url', $_SERVER["HTTP_REFERER"]);
+      if(!empty($_GET['a_c']) && !empty($_GET['m_d'])){
+	$t_url = '__ROOT__/' . $this -> _get('a_c') . '/' . $this -> _get('m_d');
+      }
+      if(!empty($_GET['id'])){
+	$t_url = $t_url . '/id/' . $this -> _get('id');
+      }
+      $r_url = isset($t_url) ? $t_url : $_SERVER["HTTP_REFERER"];
+      $this -> assign('url', $r_url);
     }else{
-      $this -> assign('url', $url);
+      if(!empty($_GET['a_c']) && !empty($_GET['m_d'])){
+	$t_url = '__ROOT__/' . $this -> _get('a_c') . '/' . $this -> _get('m_d');
+      }
+      if(!empty($_GET['id'])){
+	$t_url = $t_url . '/id/' . $this -> _get('id');
+      }
+      $r_url = isset($t_url) ? $t_url : $url;
+      $this -> assign('url', $r_url);
     }
     $this -> assign('time', $time);
     $this -> assign('status', 0);

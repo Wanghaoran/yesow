@@ -11,7 +11,7 @@ class PublicAction extends Action {
     $where = array();
     $where['name'] = $this -> _post('name');
     $where['status'] = 1;
-    if($result = $member -> field('id,password,nickname,name,ischeck,last_login_ip,last_login_time,headico,login_count') -> where($where) -> find()){
+    if($result = $member -> field('id,name,password,nickname,name,ischeck,last_login_ip,last_login_time,headico,login_count') -> where($where) -> find()){
       if($result['password'] != $this -> _post('password', 'md5')){
 	R('Register/errorjump',array(L('PASSWORD_ERROR')));
       }
@@ -19,6 +19,7 @@ class PublicAction extends Action {
 	R('Register/errorjump', array(L('MAIL_CHECK_ERROR'), U('Register/three')));
       }
       session(C('USER_AUTH_KEY'), $result['id']);
+      session('name', $result['name']);
       session('username', $result['nickname']);
       session('last_login_ip', $result['last_login_ip']);
       session('last_login_time', $result['last_login_time']);

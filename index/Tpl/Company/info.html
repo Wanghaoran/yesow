@@ -2,43 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title><!--{$result.name}--!>_<!--{$result.csaname}--!>IT商家联系方式_易搜_<!--{$result.csname}--!>IT商家信息详情页</title>
+<meta name="Keywords" content="<!--{$result.manproducts}--!>,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT黄页,易搜,IT黄页"/>
+<meta name="description" content="<!--{$result.name}--!>主要经营<!--{$result.manproducts}--!>，期待结识更多的商家合作并共同发展"/>
+
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
-<script language="JavaScript">
-function viewDetail()
-{
-  var isblock = document.getElementById("isblock");   
-  if(isblock.style.display=="none")
-	{
-	isblock.style.display = "block";
-	}
-	else
-	{
-	isblock.style.display = "none";
-	}
+<script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/dialog.js"></script>
+<script type="text/javascript">
+  var clickview = function(){
+    $.ajax({
+      url:'__APP__/public/ajaxmembercompany',
+      success: function(ress){
+        $('#isblock2').html(ress);
+        $("#isblock2").css("display","block");
+      }
+    });
+  }
 
-}
-function hiddenDetail()
-{
-	var isblock = document.getElementById("isblock");
-	isblock.style.display = "none";
-}
-function showLi()
-{
-  var liadmin = document.getElementById("liadmin");   
-  if(liadmin.style.display=="none")
-	{
-	liadmin.style.display = "block";
-	}
-	else
-	{
-	liadmin.style.display = "none";
-	}
+  var quitview = function(){
+    $("#isblock2").css("display","none");
+  }
 
-}
+  var confirmview = function(){
+    $.ajax({
+      url:'__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>',
+      success: function(ress){
+        if(ress == 1){
+	  alert('扣款成功！您在购买此信息起的24小时内可免费浏览！');
+	  location.reload();
+	  }else{
+	  alert('扣款失败！账户余额不足或网络错误！');
+	  }
+      }
+    });
+  }
 </script>
 </head>
 <body id="body_index">
@@ -78,23 +79,49 @@ function showLi()
                         </h2>
                         <h2>
 			  <span class="span_left">公司地址：</span><!--{$result.address}--!>
-                        </h2>
-                        <div class="div_info">
+			</h2>
+			<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+			<div class="div_info">
 			  <p>联系电话：<!--{$result.mobilephone}--!></p>
 			  <p>联系Q Q：<!--{$result.qqcode}--!></p>
 			  <p>电子邮件：<!--{$result.email}--!></p>
 			  <p>公司网址：<!--{$result.website}--!></p>
-                            <div>
-                            <a href="#">点击查看</a><a href="" class="btn_tuijian"></a>
+			  <div style="position:relative;">
+                            <a onclick="clickview()">点击查看</a><a href="" class="btn_tuijian"></a>
+                            	<div class="isblock" id="isblock2" style="display:none;">   
+                                </div>
                             </div>
-                        </div>
+			</div>
+			<else/>
+			 <div class="div_info" style="position:relative;">
+			   <div class="isblock" id="isblock" style="height:105px; top:-5px;">
+			     <br />
+			     您尚未登陆，登陆后能获得更多的功能。
+			     <br /><br />
+			     <script type="text/javascript">
+			       function poplogin(){
+				 var api = $.dialog({id:'L1360'});
+				 /* jQuery ajax */
+				 $.ajax({
+				   url:'__ROOT__/public/ajaxlogin',
+				   success:function(data){
+				   api.content(data);
+				   },
+				   cache:false
+				   });
+			       }
+			     </script>
+			     <a onclick="poplogin()">【登陆】</a>
+			   </div>
+			 </div>
+			 </if>
                     </li>
                 </ul>
 				<div class="clear10"></div>
                 <ul class="saledetail_btn">
                 	<li class="btn_add"><a href="__URL__/add" target="_blank">我要添加</a></li>
-                    <li class="btn_gaicuo"><a href="#">我要改错</a></li>
-                    <li class="btn_baocuo"><a href="#">我要报错</a></li>
+			<li class="btn_gaicuo"><a href="__ROOT__/change/<!--{$Think.get.id}--!>" target="_blank">我要改错</a></li>
+		    <li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank">我要报错</a></li>
                     <li class="btn_copy"><a href="#">单条复制</a></li>
                     <li class="btn_download"><a href="#">单个下载</a></li>
                 </ul>
