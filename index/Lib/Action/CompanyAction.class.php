@@ -65,6 +65,7 @@ class CompanyAction extends CommonAction {
   //速查详情页
   public function info(){
     $company = M('Company');
+    $comment = M('CompanyComment');
     $id = $this -> _get('id', 'intval');
     //点击量加一
     $company -> where(array('id' => $id)) -> setInc('clickcount');
@@ -89,6 +90,19 @@ class CompanyAction extends CommonAction {
     //最新更新同行
     $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where(array('c.ccid' => $result['ccid'])) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site as cs ON c.csid = cs.id') -> select();
     $this -> assign('result_counterparts', $result_counterparts);
+    //读取评论
+    $comment_where = array();
+    $comment_where['cc.cid'] = $id;
+    $comment_where['cc.status'] = 2;
+    import("ORG.Util.Page");// 导入分页类
+    $count = $comment -> table('yesow_company_comment as cc') -> where($comment_where) -> count('id');
+    $page = new Page($count, 10);//每页10条
+    $page->setConfig('header','条评论');
+    $show = $page -> show();
+    $result_comment = $comment -> table('yesow_company_comment as cc') -> field('m.name,cc.content,cc.addtime,cc.floor,cc.score') -> where($comment_where) -> join('yesow_member as m ON cc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
+    $this -> assign('result_comment', $result_comment);
+    $this -> assign('show', $show);
+
     $this -> display();
   }
 
@@ -210,5 +224,25 @@ class CompanyAction extends CommonAction {
       $this -> assign('add_info', $add_info);
     }
     $this -> display();
+  }
+
+  //提交评论
+  public function commit(){
+    if($this -> _post('code', 'md5') != $_SESSION['verify']){
+      $this -> error(L('VERIFY_ERROR'));
+    }
+    $commit = D('CompanyComment');
+    $data['cid'] = $this -> _post('cid', 'intval');
+    $data['mid'] = isset($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+    $data['content'] = $this -> _post('content');
+    $data['score'] = $this -> _post('score');
+    if(!$commit -> create($data)){
+      $this -> error($commit -> getError());
+    }
+    if($commit -> add()){
+      $this -> success(L('ARTICLE_COMMIT_ADD_SUCCESS'));
+    }else{
+      $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
+    }
   }
 }

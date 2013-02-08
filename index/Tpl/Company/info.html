@@ -40,6 +40,52 @@
       }
     });
   }
+function showLi()
+{
+  var liadmin = document.getElementById("liadmin");   
+  if(liadmin.style.display=="none")
+	{
+	liadmin.style.display = "block";
+	}
+	else
+	{
+	liadmin.style.display = "none";
+	}
+
+}
+  $(document).ready(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+      $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+      });
+    });
+function submitcommit(){
+    //console();
+    if($('#content')[0].value == ''){
+      alert('评论内容不能为空');
+      }else if($('#verify')[0].value == ''){
+      alert('验证码不能为空');
+      }else{
+      var p = $('#content')[0].value;
+      var m = $('#verify')[0].value;
+      var s = $('#score')[0].value
+      $.ajax({
+	type: "POST",
+	url: "__URL__/commit",
+	datatype: "json",
+	data: "content=" + p + "&score=" + s + "&code=" + m + "&cid=<!--{$Think.get.id}--!>",
+	success: function(msg){
+	  msg = jQuery.parseJSON(msg);
+	  if(msg.status == 0){
+	    alert('错误提示：' + msg.message);
+	    }else{
+	    alert('成功提示：' + msg.message);
+	    location.reload();
+	    }
+	}
+      });
+    }
+  }
 </script>
 </head>
 <body id="body_index">
@@ -157,69 +203,66 @@
                 </div>
                 <div class="clear"></div>
                 <h3 class="h3_line">网友评论</h3>
-                <ul class="ul_taolun">
+		<ul class="ul_taolun">
+		  <volist name="result_comment" id="rc">
                 	<li>
                     	<dl>
-                        	<dt>用了你们的产品，真的感觉很不错！</dt>
-                            <dd>用户ID：10001010</dd>
-                            <dd>留言者：乌云龙</dd>
-                            <dd>留言日期：2013-02-03</dd>
-                            <dd>评分：10</dd>
+			  <dt><!--{$rc.content|nl2br}--!></dt>
+			  <dd>留言者：<!--{$rc.name|default='游客'}--!></dd>
+			  <dd style="width:300px;">留言日期：<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></dd>
+			  <dd>评分：<!--{$rc.score}--!></dd>
                         </dl>
-                    </li>
-                    <li>
-                    	<dl>
-                        	<dt>用了你们的产品，真的感觉很不错！</dt>
-                            <dd>用户ID：10001010</dd>
-                            <dd>留言者：乌云龙</dd>
-                            <dd>留言日期：2013-02-03</dd>
-                            <dd>评分：10</dd>
-                        </dl>
-                    </li>
-                    <li>
-                    	<dl>
-                        	<dt>用了你们的产品，真的感觉很不错！</dt>
-                            <dd>用户ID：10001010</dd>
-                            <dd>留言者：乌云龙</dd>
-                            <dd>留言日期：2013-02-03</dd>
-                            <dd>评分：10</dd>
-                        </dl>
-                    </li>
+			</li>
+			</volist>
                 </ul>
                 <div class="clear"></div>
 				<div class="page" style="padding-right:10px;">
-					<span>共72条数据</span>
-					<a href="#">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页</a>
+				  <!--{$show}--!>
 				</div>
                 <h3 class="h3_line">我要评论</h3>
                 <div class="div_pinglun">
                 	<h4 class="h4_zhuyi">注：所有评论审核后才能被公开</h4>
-                  <ul class="ul_pinglun">
+			<ul class="ul_pinglun">
                     	<li>
                         	<div class="div_left">内&nbsp;&nbsp;容</div>
-                            <div class="div_right"><textarea class="txt_pl"></textarea></div>
+                            <div class="div_right"><textarea class="txt_pl" id="content"></textarea></div>
                         </li>
                         <li>
                             <div class="div_left">评&nbsp;&nbsp;分</div>
                             <div class="div_right">
-                            	<select>
-                                	<option>请选择评分</option>
+                            	<select name="score" id="score">
+                                	<option value="10">10</option>
+                                	<option value="9">9</option>
+                                	<option value="8">8</option>
+                                	<option value="7">7</option>
+                                	<option value="6">6</option>
+                                	<option value="5">5</option>
+                                	<option value="4">4</option>
+                                	<option value="3">3</option>
+                                	<option value="2">2</option>
+                                	<option value="1">1</option>
+                                	<option value="0">0</option>
+                                	<option value="-1">-1</option>
+                                	<option value="-2">-2</option>
+                                	<option value="-3">-3</option>
+                                	<option value="-4">-4</option>
+                                	<option value="-5">-5</option>
+                                	<option value="-6">-6</option>
+                                	<option value="-7">-7</option>
+                                	<option value="-8">-8</option>
+                                	<option value="-9">-9</option>
+                                	<option value="-10">-10</option>
                                 </select><span>&nbsp;*&nbsp;请投出你公平的一票</span>
                             </div>
                         </li>
                         <li>
                             <div class="div_left">验证码</div>
                             <div class="div_right">
-                            	<div class="fl"><input type="text" class="div_input4" name="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div>
+                            	<div class="fl"><input type="text" class="div_input4" id="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div>
                             </div>
                         </li>
                         <li>
-                           <a href="" class="btn_fbpl">发表评论</a> <h5 class="h5_text">发表评论表示同意<a onclick="showLi()">[用户协议]</a></h5>
+                           <a onclick="submitcommit();" class="btn_fbpl">发表评论</a> <h5 class="h5_text">发表评论表示同意<a onclick="showLi()">[用户协议]</a></h5>
                         </li>
                         <li id="liadmin" style="display:none">
                         	<h6>用户协议</h6>
