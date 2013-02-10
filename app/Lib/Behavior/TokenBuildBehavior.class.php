@@ -29,7 +29,10 @@ class TokenBuildBehavior extends Behavior {
             if(strpos($content,'{__TOKEN__}')) {
                 // 指定表单令牌隐藏域位置
                 $content = str_replace('{__TOKEN__}',$this->buildToken(),$content);
-            }elseif(preg_match('/<\/form(\s*)>/is',$content,$match)) {
+	    }elseif(strpos($content,'{__NOTOKEN__}')){
+	        //不需要表单令牌验证
+	        $content = str_replace('{__NOTOKEN__}','',$content);   
+	    }elseif(preg_match('/<\/form(\s*)>/is',$content,$match)) {
                 // 智能生成表单令牌隐藏域
                 $content = str_replace($match[0],$this->buildToken().$match[0],$content);
             }

@@ -319,6 +319,7 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .huang_ui_r{padding-right:10px; background-position:100% -60px;}
 .huang_ui_c{ background-repeat: repeat-x; background-position:0 -30px; }
 .huang_ui_c h3{background:url(images/qudao.gif) no-repeat 0 -90px; width:100px; text-align:center; height:30px; line-height:30px; font-size:12px;}
+.huang_ui_c h2{ text-align:center; height:30px; line-height:30px; font-size:18px; color:#fff;}
 .main08_c_tab .huang_ui_c{width:340px;}
 
 .huang_ui .tab_btn{ float:left; }
@@ -595,9 +596,9 @@ ul.saledetail_btn li.btn_download a{background:url(images/detailbtn.gif) no-repe
 ul.ul_qq li{ float:left; margin-left:10px;}
 .div_about{ padding:0 10px;}
 .div_about p{ line-height:20px; text-align:left; text-indent:2em; color:#666666}
-
+.clear30{ clear:both; height:30px;}
 .clear10{ clear:both; height:10px;}
-
+.clear5{ clear:both; height:5px;}
 .cat_bod h3.h3_text{ width:80px; height:30px; line-height:30px; text-align:left; color:#F60; margin:10px;}
 .cat_bod h3.h3_line{ width:625px; height:30px; line-height:30px; text-align:left; color:#F60; margin:10px; border-bottom:#e64616 3px solid;}
 
@@ -637,6 +638,46 @@ ul.ul_baocuo li p{ line-height:25px;}
 
 input.btn_tjbc{ background:url(images/addedit_btn.gif) bottom center no-repeat;font-size:14px; font-weight:bold; display:block;width:90px; height:30px; line-height:30px; text-align:center; color:#fff; border:none; margin:30px 0 10px 220px;}
 
+ul.ul_adimg{ width:950px;}
+ul.ul_adimg li{ float:left; width:186px; height:75px; margin-right:5px;}
+ul.ul_adimg li.last{ margin-right:0;}
+
+#mid_search{ position:relative; width:615px; height:34px; overflow:hidden; background:url(images/top_search.gif) no-repeat 0 -38px; margin:0 auto;}
+#mid_search #go{width:90px; height:34px; position:absolute; top:0; right:0; background:transparent;border:0; font-size:12px; font-weight:bold; cursor:pointer;}
+#mid_search #s{ border:0; color:#666; width:490px; height:18px; line-height:18px; padding:0; position:absolute; top:9px; left:35px; font-size:14px;}
+
+ul.ul_search{ width:615px; margin:0 auto;}
+ul.ul_search li{ float:left; width:615px;}
+ul.ul_search li div.div_left{ float:left; width:75px; text-align:left; font-size:14px; font-weight:bold; color:#010101;}
+ul.ul_search li div.div_right{ float:left; width:540px;}
+ul.ul_search li div.div_right a{ color:#576cf9;}
+ul.ul_search li.li_text{ margin-bottom:10px;}
+ul.ul_search li.li_text span.f_color{ font-size:12px; font-weight:bold; color:#F00; padding:0 10px;}
+
+ul.choosetype li{ float:left; width:auto; margin:0 10px 10px 0;}
+ul.choosetype li input{ vertical-align:middle;}
+
+ul.choosearea li{ float:left; width:auto; margin:0 10px 10px 0;}
+ul.choosearea li input{ vertical-align:middle;}
+div.btn_download input{ float:right;}
+input.btn_jgsyxz{ background:url(images/btn_download.gif) top left no-repeat;font-size:12px; font-weight:bold; display:block;width:97px; height:28px; line-height:28px; text-align:center; color:#fff; border:none; margin-right:10px; cursor:pointer;}
+input.btn_qbxz{ background:url(images/btn_download.gif) bottom left no-repeat;font-size:12px; font-weight:bold; display:block;width:73px; height:28px; line-height:28px; text-align:center; color:#fff; border:none;cursor:pointer;}
 
 
+ul.ul_mytable{padding-top:10px;width:100%;border-collapse:collapse;}
+ul.ul_mytable li {padding-top:5px;text-indent:1em;list-style:none;font-family: "Verdana,宋体";font-size: 12px;color:#008000;text-align:left; line-height:25px;}
+ul.ul_mytable li a{ color:#333; text-decoration:none;}
+ul.ul_mytable li h2 a.a_title{ color:#0003ce; font-size:16px; text-decoration:underline;}
+ul.ul_mytable li h2 a.a_weizhi{ color:#F00; font-weight:bold; margin-left:10px; font-size:14px; text-decoration:none;}
+ul.ul_mytable li p.one{ color:#8d8d8d; font-size:12px; text-align:left; height:50px; line-height:20px;}
+ul.ul_mytable li p.two{ color:#038104; font-weight:bold;}
+ul.ul_mytable li p.two span{ margin-right:20px;}
+ul.ul_mytable li p.two a{ color:#8d8d8d; font-weight:normal;}
+ul.ul_mytable li p.two a:hover{ color:#f00;}
 
+ul.top_list{ background:#fefefe; border:#FF6600 1px solid; border-top:none; padding:5px;}
+ul.top_list li{ border-bottom:#ccc 1px dashed; padding:5px 0;}
+ul.top_list li h3 a.a_title{ color:#0003ce; font-size:14px; font-weight:normal;}
+ul.top_list li h3 a.a_weizhi{ color:#F00; font-weight:bold; margin-left:10px; font-size:12px; text-decoration:none;}
+
+.div_adbox{ width:290px; height:120px; background:#ddd;}

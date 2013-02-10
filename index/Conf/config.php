@@ -15,6 +15,7 @@ $app_config = array(
     'company/:id\d' => 'company/info',//速查详情页
     'report/:id\d' => 'company/report',//速查报错页
     'change/:id\d' => 'company/change',//速查改错页
+    'search' => 'company/search',//搜索
   ),
 );
 

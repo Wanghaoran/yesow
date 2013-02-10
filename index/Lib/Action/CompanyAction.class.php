@@ -245,4 +245,11 @@ class CompanyAction extends CommonAction {
       $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
     }
   }
+
+  //搜索
+  public function search(){
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
 }

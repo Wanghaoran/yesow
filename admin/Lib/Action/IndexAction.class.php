@@ -30,22 +30,26 @@ class IndexAction extends CommonAction {
     if(!empty($_POST['content'])){
       $where_notice['nc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
       $where_info['iac.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+      $where_company['cc.content'] = array('LIKE', '&' . $this -> _post('content') . '%');
     }
     if(!empty($_POST['author'])){
       $member = M('Member');
       $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
       $where_notice['nc.mid'] = intval($authorid);
       $where_info['iac.mid'] = intval($authorid);
+      $where_company['cc.mid'] = intval($authorid);
     }
     if(!empty($_POST['starttime'])){
       $addtime = $this -> _post('starttime', 'strtotime');
       $where_notice['nc.addtime'] = array(array('gt', $addtime));
       $where_info['iac.addtime'] = array(array('gt', $addtime));
+      $where_company['cc.addtime'] = array(array('gt', $addtime));
     }
     if(!empty($_POST['endtime'])){
       $endtime = $this -> _post('endtime', 'strtotime');
       $where_notice['nc.addtime'][] = array('lt', $endtime);
       $where_info['iac.addtime'][] = array('lt', $endtime);
+      $where_company['cc.addtime'][] = array('lt', $endtime);
     }
 
     //资讯评论  type = 1 代表资讯
@@ -56,9 +60,13 @@ class IndexAction extends CommonAction {
     $notice = M('NoticeComment');
     $sql_notice = $notice -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.nid as fid,nc.floor,nc.content,m.name,nc.addtime,nc.status,1+1 as type') -> where($where_notice) -> order('status ASC,nc.addtime DESC') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> buildSql();
 
+    //速查评论 type = 3 代表速查
+    $company = M('CompanyComment');
+    $sql_company = $company -> table('yesow_company_comment as cc') -> field('cc.id,c.name as title,cc.cid as fid,cc.floor,cc.content,m.name,cc.addtime,cc.status,2+1 as type') -> where($where_company) -> order('status ASC,nc.addtime DESC') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> buildSql();
+
     //合并查询语句
     if(empty($_POST['type'])){
-      $sql = '(' . $sql_notice . ' UNION ALL ' . $sql_info . ')';
+      $sql = '(' . $sql_notice . ' UNION ALL ' . $sql_info . ' UNION ALL ' . $sql_company . ')';
     }else if($_POST['type'] == 'info'){
       $sql = '(' . $sql_info . ')';
     }else if($_POST['type'] == 'notice'){
@@ -98,6 +106,8 @@ class IndexAction extends CommonAction {
 	$model = D('index://InfoArticleComment');
       }else if($type == 2){
 	$model = D('index://NoticeComment');
+      }else if($type == 3){
+	$model = D('index://CompanyComment');
       }
       $_POST['id'] = $id;
       if(!$a = $model -> create()){
@@ -111,7 +121,7 @@ class IndexAction extends CommonAction {
     }
 
     list($id, $type) = explode('@@@', $_GET['id']);
-    //1代表资讯  2代表公告
+    //1代表资讯  2代表公告  3代表速查
     if($type == 1){
       $model = D('index://InfoArticle');
       $result = $model -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.floor,iac.content,m.name') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> where(array('iac.id' => $this -> _get('id', 'intval'))) -> find();
@@ -119,8 +129,10 @@ class IndexAction extends CommonAction {
     }else if($type == 2){
       $model = D('index://NoticeComment');
       $result = $model -> table('yesow_notice_comment as nc') -> field('nc.id,n.title,nc.floor,nc.content,m.name') -> join('yesow_notice as n ON nc.nid = n.id') -> join('yesow_member as m ON nc.mid = m.id') -> where(array('nc.id' => $this -> _get('id', 'intval'))) -> find();
+    }else if($type == 3){
+      $model = D('index://CompanyComment');
+      $result = $model -> table('yesow_company_comment as cc') -> field('cc.id,c.name as title,cc.floor,cc.content,m.name') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> where(array('cc.id' => $this -> _get('id', 'intval'))) -> find();
     }
-    
     $this -> assign('result', $result);
     $this -> display();
   }
@@ -135,12 +147,15 @@ class IndexAction extends CommonAction {
 	$info_del[] = $id;
       }else if($type == 2){
 	$notice_del[] = $id;
+      }else if($type == 3){
+	$company_del[] = $id;
       }
     }
     $num = 0;
-    //分别删除两站表
+    //分别删除三张表
     $num += M('InfoArticleComment') -> where(array('id' => array('in', $info_del))) -> delete();
     $num += M('NoticeComment') -> where(array('id' => array('in', $notice_del))) -> delete();
+    $num += M('CompanyComment') -> where(array('id' => array('in', $company_del))) -> delete();
     if($num != 0){
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
@@ -158,13 +173,16 @@ class IndexAction extends CommonAction {
 	$info_pass[] = $id;
       }else if($type == 2){
 	$notice_pass[] = $id;
+      }else if($type == 3){
+	$company_pass[] = $id;
       }
     }
     $data = array('status' => 2);
     $num = 0;
-    //分别更新两张表
+    //分别更新三张表
     $num += M('InfoArticleComment') -> where(array('id' => array('in', $info_pass))) -> save($data);
     $num += M('NoticeComment') -> where(array('id' => array('in', $notice_pass))) -> save($data);
+    $num += M('CompanyComment') -> where(array('id' => array('in', $company_pass))) -> save($data);
     if($num != 0){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
@@ -182,13 +200,16 @@ class IndexAction extends CommonAction {
 	$info_pass[] = $id;
       }else if($type == 2){
 	$notice_pass[] = $id;
+      }else if($type == 3){
+	$company_pass[] = $id;
       }
     }
     $data = array('status' => 1);
     $num = 0;
-    //分别更新两张表
+    //分别更新三张表
     $num += M('InfoArticleComment') -> where(array('id' => array('in', $info_pass))) -> save($data);
     $num += M('NoticeComment') -> where(array('id' => array('in', $notice_pass))) -> save($data);
+    $num += M('CompanyComment') -> where(array('id' => array('in', $company_pass))) -> save($data);
     if($num != 0){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{

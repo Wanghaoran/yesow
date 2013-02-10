@@ -79,7 +79,7 @@
 		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 		    <th width="30">编号</th>
 		    <th width="30">类型</th>
-		    <th width="240">文章标题</th>
+		    <th width="240">标题</th>
 		    <th width="20">楼层</th>
 		    <th width="200">评论内容</th>
 		    <th width="30">评论者</th>
@@ -99,7 +99,11 @@
 		  <eq name="r.type" value="2">
 		  <td style="color:blue;">公告</td>
 		  <td><a href="__ROOT__/notice/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
-		  </eq>			 
+		  </eq>
+		  <eq name="r.type" value="3">
+		  <td style="color:red;">速查</td>
+		  <td><a href="__ROOT__/company/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
+		  </eq>		  
 			  <td><!--{$r.floor}--!></td>			 
 			  <td><!--{$r.content}--!></td>			 			 
 			  <td><!--{$r.name|default="游客"}--!></td>			 

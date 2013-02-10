@@ -778,4 +778,93 @@ class CompanyAction extends CommonAction {
     }
   }
   /* --------------- 速查数据管理 ---------------- */
+
+
+  /* --------------- 速查搜索管理 ---------------- */
+
+  //热门搜索管理
+  public function hotsearch(){
+    $searchhot = M('SearchHot');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $searchhot -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $searchhot -> field('id,name,sort,addtime,remark') -> order('sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加热门搜索词
+  public function addhotsearch(){
+    //处理添加
+    if(!empty($_POST['name'])){
+      $searchhot = D('SearchHot');
+      if(!$searchhot -> create()){
+	$this -> error($searchhot -> getError());
+      }
+      if($searchhot -> add()){
+	//删除缓存
+	S('index_search_hot', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除热门搜索词
+  public function delhotsearch(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $searchhot = M('SearchHot');
+    if($searchhot -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_search_hot', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑热门搜索词
+  public function edithotsearch(){
+    $searchhot = D('SearchHot');
+    if(!empty($_POST['name'])){
+      if(!$searchhot -> create()){
+	$this -> error($searchhot -> getError());
+      }
+      if($searchhot -> save()){
+	//删除缓存
+	S('index_search_hot', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $searchhot -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();  
+  }
+
+  /* --------------- 速查搜索管理 ---------------- */
 }

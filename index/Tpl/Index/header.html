@@ -28,22 +28,21 @@
         </div>
     	<div id="top_c">
         	<div id="top_search">
-            	<form action="" method="get" >
-            		<input type="text" name="s" id="s" class="input" value="请输入您要搜索的内容" />
-                	<button id="go" name="go" >搜索</button>
+		  <form action="__ROOT__/search" method="get" >
+		  <input type="text" name="keyword" id="s" class="input" value="请输入您要搜索的内容" />
+		  {__NOTOKEN__}
+                	<button id="go" >搜索</button>
                 </form>
             </div>
             <div id="top_search_tool">
-            	<a href="#">高级搜索</a>
+            	<a href="__ROOT__/search">高级搜索</a>
             	<a href="#">帮助中心</a>
             </div>
             <p class="clear" id="hot_search">
-            		<b>热门搜索:</b>
-                    <a href="#">搜索关键词</a>&nbsp;
-                    <a href="#">搜索关键词</a>&nbsp;
-                    <a href="#">搜索关键词</a>&nbsp;
-                    <a href="#">搜索关键词</a>&nbsp;
-                    <a href="#">搜索关键词</a>&nbsp;
+	    <b>热门搜索:</b>
+	    <volist name="index_search_hot" id="ish">
+	    <a href="__ROOT__/search/keyword/<!--{$ish.name}--!>" target="_blank"><!--{$ish.name}--!></a>&nbsp;
+	    </volist>
             </p>
         </div>
     	<div id="top_r">
