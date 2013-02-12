@@ -248,6 +248,57 @@ class CompanyAction extends CommonAction {
 
   //搜索
   public function search(){
+    $auditkeyword = M('AuditSearchKeyword');
+    $company = M('Company');
+    $keyword = $this -> _get('keyword');
+    //引入dede分词类库，进行搜索词分词操作
+    Vendor('lib_splitword_full');
+    $sp = new SplitWord();
+    $keyword_arr = explode(' ', $sp->SplitRMM($keyword));
+    $sp->Clear();
+    //删除关键字数组最后一个无效空元素
+    unset($keyword_arr[count($keyword_arr) - 1]);
+    //关键词过滤，剔除没有的关键词
+    foreach($keyword_arr as $key => $value){
+      if(!$auditkeyword -> getFieldByname($value, 'id')){
+	unset($keyword_arr[$key]);      
+      }    
+    }
+    //进行分词后关键词的SQL组装
+    $keyword_sql = array();
+    foreach($keyword_arr as $value){
+      $keyword_sql[] = "SELECT id,name,manproducts,addtime,updatetime FROM yesow_company WHERE name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%'";
+    }
+
+    //根据组装好的各SQL语句，结合主SQL语句，进行查询
+    $where_select = array();
+    $where_select['name'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['address'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['manproducts'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['mobilephone'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['email'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['linkman'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['companyphone'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['qqcode'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['website'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['_logic'] = 'OR';
+
+    //构建查询SQL
+    $sql = $company -> field('id,name,manproducts,addtime,updatetime') -> where($where_select) -> union($keyword_sql) -> buildSql();
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $company -> table($sql . ' a') -> count('id');
+    $page = new Page($count, 10);//每页10条
+    $page->setConfig('header','条数据');
+    $show = $page -> show();
+    $this -> assign('count', $count);
+    $this -> assign('show', $show);
+
+    //查询结果
+    $result = $company -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+
+    //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();

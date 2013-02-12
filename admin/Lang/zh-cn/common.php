@@ -13,6 +13,7 @@ $app_lang = array(
   'NODE_TITLE_EMPTY' => '节点显示名称不能为空',
   'CREATE_TIME_EMPTY' => '发生时间不能为空',
   'COMPANY_EMPTY' => '消费单位不能为空',
+  'AUDITKEYWORD_UNIQUE' => '关键词已存在，请勿重复添加',
 );
 
 return array_merge($common_lang, $app_lang);

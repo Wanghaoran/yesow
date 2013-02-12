@@ -5,7 +5,7 @@
 	<div class="searchBar">
 		<ul class="searchContent">
 			<li>
-				<label>热门搜索词：</label>
+				<label>已审关键词：</label>
 				<input type="text" name="name" />
 			</li>
 		</ul>
@@ -22,18 +22,18 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addhotsearch" target="dialog" mask="true"><span>新增</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delhotsearch/navTabId/hotsearch" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/edithotsearch/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
+	    <li><a class="add" href="__URL__/addpasskeyword" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delpasskeyword/navTabId/passkeyword" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editpasskeyword/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addhotsearch'])">
-	    <li><a class="add" href="__URL__/addhotsearch" target="dialog" mask="true"><span>新增</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['system']['addpasskeyword'])">
+	    <li><a class="add" href="__URL__/addpasskeyword" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delhotsearch'])">	    
-	    <li class=""><a class="delete" href="__URL__/delhotsearch/navTabId/hotsearch" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['system']['delpasskeyword'])">	    
+	    <li class=""><a class="delete" href="__URL__/delpasskeyword/navTabId/passkeyword" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['edithotsearch'])">
-	    <li><a class="edit" href="__URL__/edithotsearch/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['system']['editpasskeyword'])">
+	    <li><a class="edit" href="__URL__/editpasskeyword/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
 	    </if>
 	    </if>
 	    
@@ -44,11 +44,10 @@
 		<thead>
 		  <tr>
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
-			<th width="20">编号</th>
-			<th width="60">名称</th>
-			<th width="60">排序</th>
-			<th width="120">添加时间</th>
-			<th width="120">备注</th>
+			<th width="60">编号</th>
+			<th width="100">名称</th>
+			<th width="200">添加时间</th>
+
 
 		</tr>
 		</thead>
@@ -58,9 +57,7 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.sort}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
-			  <td><!--{$r.remark}--!></td>
 			</tr>
 		</volist>
 		</tbody>

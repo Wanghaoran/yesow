@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title><!--{$Think.get.keyword}--!>_搜索结果_易搜速查中心</title>
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
@@ -51,9 +51,9 @@
 		<div id="main13_l">
 			<div class="comment_list">
             	<div id="mid_search">
-                    <form action="" method="get" >
-                        <input type="text" name="s" id="s" class="input" value="请输入类别名称或关键词" />
-                        <button id="go" name="go" >搜索一下</button>
+                    <form action="__ACTION__" method="get" >
+		      <input type="text" name="keyword" id="s" class="input" value="<!--{$Think.get.keyword}--!>" />
+                        <button id="go" >搜索一下</button>
                     </form>
                 </div>
                 <div class="clear30"></div>			  
@@ -97,7 +97,7 @@
                             </div><!--areabox end-->
                         </div>
                     </li>
-                    <li class="li_text">共有<span class="f_color">4016</span>个结果符合<span class="f_color">关键搜索字</span>用时7.5s&nbsp;&nbsp;最后检测&nbsp;&nbsp;2013-02-07</li>
+		    <li class="li_text">共有<span class="f_color"><!--{$count}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时7.5s&nbsp;&nbsp;最后检测&nbsp;&nbsp;2013-02-07</li>
                     <li>
                     	<div class="div_left">搜索说明</div>
                         <div class="div_right">
@@ -111,57 +111,22 @@
                 <div class="clear30"></div>
                 <div class="btn_download"><input type="button" value="全部下载" class="btn_qbxz"/><input type="button" value="结果首页下载" class="btn_jgsyxz"/></div>
                 <div class="clear"></div>	
-                <ul id="ul_mytable" class="ul_mytable">
+		<ul id="ul_mytable" class="ul_mytable">
+		  <volist name="result" id="r">
                     <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[等候此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[抢排此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[等候此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[抢排此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[等候此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[抢排此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[等候此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
-                    <li>
-                            <h2><a href="#" class="a_title">百度<font color="#FF0000">电脑</font>专卖店科技发展有限责任公司</a><a href="#" class="a_weizhi">[抢排此位]</a></h2>
-                            <p class="one">主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品主营产品</p>
-                            <p class="two"><span>录入时间2013-02-07</span><span>最后更新时间2013-02-07</span><a href="#">进入详细页</a></p>
-                    </li>
+		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a><a href="#" class="a_weizhi">[等候此位]</a></h2>
+		    <p class="one"><!--{$r.manproducts}--!></p>
+		    <p class="two"><span>录入时间 <!--{$r.addtime|date="Y-m-d", ###}--!></span><span>最后更新时间 <!--{$r.updatetime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank">进入详细页</a></p>
+			    </li>
+			    </volist>
+                    
+                   
+                  
+                 
                 </ul>
                 <div class="clear10"></div>
 				<div class="page">
-					<span>共72条数据</span>
-					<a href="#">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页</a>
+				  <!--{$show}--!>
 				</div>			
 			</div>
 		</div>
@@ -279,7 +244,7 @@
 	</div>
 	<!--咨询文章详情页-->
 	<div class="index_gg01">
-		<a href="#"><img src="image/gg1.jpg" width="950" height="90"></a>
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
 	</div>
 	<include file="Index:footer" />
 </div>

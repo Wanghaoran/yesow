@@ -1481,8 +1481,12 @@ class Model {
         if(is_string($union) ) {
             $options =  $union;
         }elseif(is_array($union)){
-            if(isset($union[0])) {
-                $this->options['union']  =  array_merge($this->options['union'],$union);
+	  if(isset($union[0])) {
+	    if(is_null($this->options['union'])){
+	      $this->options['union'] = $union;
+	    }else{
+	      $this->options['union']  =  array_merge($this->options['union'],$union);
+	    }
                 return $this;
             }else{
                 $options =  $union;

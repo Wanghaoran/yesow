@@ -866,5 +866,84 @@ class CompanyAction extends CommonAction {
     $this -> display();  
   }
 
+  //已审关键词管理
+  public function passkeyword(){
+    $passkeyword = M('AuditSearchKeyword');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $passkeyword -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $passkeyword -> field('id,name,addtime') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+    $this -> display();  
+  }
+
+  //添加已审关键词
+  public function addpasskeyword(){
+    //处理添加
+    if(!empty($_POST['name'])){
+      $passkeyword = D('AuditSearchKeyword');
+      if(!$passkeyword -> create()){
+	$this -> error($passkeyword -> getError());
+      }
+      if($passkeyword -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();  
+  }
+
+  //删除已审关键词
+  public function delpasskeyword(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $passkeyword = M('AuditSearchKeyword');
+    if($passkeyword -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑已审关键词
+  public function editpasskeyword(){
+    $passkeyword = D('AuditSearchKeyword');
+    if(!empty($_POST['name'])){
+      if(!$passkeyword -> create()){
+	$this -> error($passkeyword -> getError());
+      }
+      if($passkeyword -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $passkeyword -> field('name') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   /* --------------- 速查搜索管理 ---------------- */
 }
