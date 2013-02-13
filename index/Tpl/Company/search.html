@@ -49,20 +49,21 @@
 	<!--咨询文章详情页-->
 	<div id="main13">
 		<div id="main13_l">
-			<div class="comment_list">
+		  <div class="comment_list">
+		    <form action="__ACTION__" method="get" >
             	<div id="mid_search">
-                    <form action="__ACTION__" method="get" >
+                    
 		      <input type="text" name="keyword" id="s" class="input" value="<!--{$Think.get.keyword}--!>" />
-                        <button id="go" >搜索一下</button>
-                    </form>
+                        <input type="submit" value="搜索一下" id="go" />
                 </div>
                 <div class="clear30"></div>			  
 				<ul class="ul_search">
                 	<li>
                     	<div class="div_left">选择类别</div>
                         <div class="div_right">
-                        	<ul class="choosetype">
-				  <li><input type="radio" name="type" id="name" value="name" class="radiobtn" checked="checked" /><label for="name" />公司名称</label></li>
+			  <ul class="choosetype">
+			    <li><input type="radio" name="type" id="empty" value="" class="radiobtn" checked="checked" /><label for="name" />全部</label></li>
+				  <li><input type="radio" name="type" id="name" value="name" class="radiobtn" /><label for="name" />公司名称</label></li>
 				  <li><input type="radio" name="type" id="manproducts" value="manproducts" class="radiobtn" /><label for="manproducts">主营产品</label></li>
 				  <li><input type="radio" name="type" id="address" value="address" class="radiobtn" /><label for="address">公司地址</label></li>
 				  <li><input type="radio" name="type" id="companyphone" value="companyphone" class="radiobtn" /><label for="companyphone">公司电话</label></li>
@@ -95,9 +96,10 @@
                                     <div class="clear"></div>
                                 </div><!--areacon end-->                       
                             </div><!--areabox end-->
-                        </div>
-                    </li>
-		    <li class="li_text">共有<span class="f_color"><!--{$count}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时7.5s&nbsp;&nbsp;最后检测&nbsp;&nbsp;2013-02-07</li>
+			  </div>
+			  </li>
+		</form>
+		    <li class="li_text">共有<span class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
                     <li>
                     	<div class="div_left">搜索说明</div>
                         <div class="div_right">
@@ -114,15 +116,11 @@
 		<ul id="ul_mytable" class="ul_mytable">
 		  <volist name="result" id="r">
                     <li>
-		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a><a href="#" class="a_weizhi">[等候此位]</a></h2>
+		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a> <a href="#" class="a_weizhi">[等候此位]</a> </h2>
 		    <p class="one"><!--{$r.manproducts}--!></p>
 		    <p class="two"><span>录入时间 <!--{$r.addtime|date="Y-m-d", ###}--!></span><span>最后更新时间 <!--{$r.updatetime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank">进入详细页</a></p>
 			    </li>
 			    </volist>
-                    
-                   
-                  
-                 
                 </ul>
                 <div class="clear10"></div>
 				<div class="page">

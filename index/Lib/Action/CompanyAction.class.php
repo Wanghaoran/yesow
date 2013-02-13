@@ -248,6 +248,11 @@ class CompanyAction extends CommonAction {
 
   //搜索
   public function search(){
+    //高级搜索
+    if(empty($_GET['keyword'])){
+      $this -> display();
+      exit();
+    }
     $auditkeyword = M('AuditSearchKeyword');
     $company = M('Company');
     $keyword = $this -> _get('keyword');
@@ -267,7 +272,7 @@ class CompanyAction extends CommonAction {
     //进行分词后关键词的SQL组装
     $keyword_sql = array();
     foreach($keyword_arr as $value){
-      $keyword_sql[] = "SELECT id,name,manproducts,addtime,updatetime FROM yesow_company WHERE name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%'";
+      $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime FROM yesow_company WHERE name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%'";
     }
 
     //根据组装好的各SQL语句，结合主SQL语句，进行查询
@@ -284,20 +289,48 @@ class CompanyAction extends CommonAction {
     $where_select['_logic'] = 'OR';
 
     //构建查询SQL
-    $sql = $company -> field('id,name,manproducts,addtime,updatetime') -> where($where_select) -> union($keyword_sql) -> buildSql();
+    $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where($where_select) -> union($keyword_sql) -> buildSql();
+
+    //高级查询条件
+    $senior_where = array();
+    if(!empty($_GET['type'])){
+      $senior_where[$this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
+    }
+    if(!empty($_GET['csid'])){
+      $senior_where['csid'] = $this -> _get('csid', 'intval');
+    }
+    if(!empty($_GET['csaid'])){
+      $senior_where['csaid'] = $this -> _get('csaid', 'intval');
+    }
 
     import("ORG.Util.Page");// 导入分页类
-    $count = $company -> table($sql . ' a') -> count('id');
+    $count = $company -> table($sql . ' a') -> where($senior_where) -> count('id');
     $page = new Page($count, 10);//每页10条
     $page->setConfig('header','条数据');
     $show = $page -> show();
     $this -> assign('count', $count);
     $this -> assign('show', $show);
 
-    //查询结果
-    $result = $company -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
-    $this -> assign('result', $result);
+    //记录查询时间
+    G('start');
 
+    //查询结果
+    $result = $company -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
+    //获得查询时间
+    $this -> assign('time', G('start', 'end'));
+
+    //将主查询词，写入关键词数组头部
+    array_unshift($keyword_arr, $keyword);
+    //制作复制替换数组
+    $replace_arr = array();
+    foreach($keyword_arr as $value){
+      $replace_arr[] = '<font color="#FF0000"><b>' . $value . '</b></font>';
+    }
+    //执行关键字高亮替换
+    foreach($result as $key => $value){
+      $result[$key] = str_replace($keyword_arr, $replace_arr, $result[$key]);
+    }
+    $this -> assign('result', $result);
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
