@@ -255,14 +255,19 @@ class CompanyAction extends CommonAction {
     }
     $auditkeyword = M('AuditSearchKeyword');
     $company = M('Company');
-    $keyword = $this -> _get('keyword');
+    $keyword = $this -> _get('keyword', 'trim');
+    $keyword = iconv('UTF-8', 'GB2312', $keyword);//转化编码
     //引入dede分词类库，进行搜索词分词操作
     Vendor('lib_splitword_full');
     $sp = new SplitWord();
-    $keyword_arr = explode(' ', $sp->SplitRMM($keyword));
+    $keyword_str = $sp->SplitRMM($keyword);
+    $keyword_str = iconv('GB2312', 'UTF-8', $keyword_str);//再转回来
+    $keyword_arr = explode(' ', $keyword_str);
     $sp->Clear();
     //删除关键字数组最后一个无效空元素
     unset($keyword_arr[count($keyword_arr) - 1]);
+    //复制分词数组，用于后面记录搜索关键词
+    $search_keyword_arr = $keyword_arr;
     //关键词过滤，剔除没有的关键词
     foreach($keyword_arr as $key => $value){
       if(!$auditkeyword -> getFieldByname($value, 'id')){
@@ -331,6 +336,22 @@ class CompanyAction extends CommonAction {
       $result[$key] = str_replace($keyword_arr, $replace_arr, $result[$key]);
     }
     $this -> assign('result', $result);
+
+    //记录搜索词及搜索信息
+    $search_keyword = D('SearchKeyword');
+    $search_data = array();
+    if(isset($_SESSION[C('USER_AUTH_KEY')])){
+      $search_data['mid'] = session(C('USER_AUTH_KEY'));
+    }
+    $search_data['sourceaddress'] = $_SERVER["HTTP_REFERER"];
+    $search_data['keyword'] = $keyword_str;
+    //如果这个词已经存在，直接设置为已审核
+    if(M('AuditSearchKeyword') -> getFieldByname($keyword_str, 'id')){
+      $search_data['status'] = 1;    
+    }
+    $search_keyword -> create($search_data);
+    $search_keyword -> add(); 
+
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);

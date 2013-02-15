@@ -894,7 +894,6 @@ class CompanyAction extends CommonAction {
     //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
-    $this -> display();
     $this -> display();  
   }
 
@@ -944,6 +943,82 @@ class CompanyAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  //搜索关键词管理
+  public function searchkeyword(){
+    $search_keyword = M('SearchKeyword');
+    //处理搜索
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['sk.keyword'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['sk.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['sk.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $search_keyword -> table('yesow_search_keyword as sk') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $search_keyword -> table('yesow_search_keyword as sk') -> field('sk.id,m.name as mname,sk.ipaddress,sk.sourceaddress,sk.keyword,tmp.count,sk.addtime,sk.status') -> where($where) -> join('yesow_member as m ON sk.mid = m.id') -> join('(SELECT keyword,count(id) as count FROM yesow_search_keyword GROUP BY keyword) as tmp ON sk.keyword = tmp.keyword') -> order('sk.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();  
+  }
+
+  //删除搜索关键词
+  public function delsearchkeyword(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $search_keyword = M('SearchKeyword');
+    if($search_keyword -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //审核搜索关键词
+  public function auditsearchkeyword(){
+    $where_save = array();
+    $where_save['id'] = array('in', $_POST['ids']);
+    $search_keyword = M('SearchKeyword');
+    $data['status'] = 1;
+    $search_keyword -> where($where_save) -> save($data);
+    //获取id数组
+    $id_arr = explode(',', $_POST['ids']);
+    //更新已审关键词表
+    foreach($id_arr as $value){
+      $audit_keyword = D('AuditSearchKeyword');
+      $keyword = '';
+      $keyword = $search_keyword -> getFieldByid($value, 'keyword');
+      $audit_data = array();
+      $audit_data['name'] = $keyword;
+      if($a = $audit_keyword -> create($audit_data)){
+	$audit_keyword -> add();
+      }    
+    }
+    $this -> success(L('DATA_UPDATE_SUCCESS'));
+  }
+
 
   /* --------------- 速查搜索管理 ---------------- */
 }
