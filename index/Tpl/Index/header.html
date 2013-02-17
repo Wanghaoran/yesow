@@ -71,14 +71,12 @@
             <span id="web_desc">中国最专业和权威的it渠道平台</span>
         </div>
     	<div id="top_c">
-        	<div id="top_search">
+        	<div id="top_search" style="position:relative;z-index:999;">
 		  <form action="__ROOT__/search" method="get" >
-		    <div style="position:relative">
 		      <input type="text" name="keyword" id="inputString" class="input" value="请输入您要搜索的内容" onkeyup="lookup(this.value);" onblur="fill();" />
 		      		  {__NOTOKEN__}
                 	<button id="go" >搜索</button>
-                	<div id="result_id" class="suggestionsBox"></div>
-                    </div>
+                	<div id="result_id" class="suggestionsBox" style="display:none;"></div>
                 </form>
             </div>
             <div id="top_search_tool">

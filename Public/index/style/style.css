@@ -686,3 +686,5 @@ ul.top_list li h3 a.a_title{ color:#0003ce; font-size:14px; font-weight:normal;}
 ul.top_list li h3 a.a_weizhi{ color:#F00; font-weight:bold; margin-left:10px; font-size:12px; text-decoration:none;}
 
 .div_adbox{ width:290px; height:120px; background:#ddd;}
+.suggestionsBox table td{ width:500px;}
+.suggestionsBox table td:hover{ background:#ebebeb;}

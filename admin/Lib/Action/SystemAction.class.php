@@ -1219,6 +1219,16 @@ class SystemAction extends CommonAction {
     }
   }
 
+  //支付接口管理
+  public function payport(){
+    $this -> display();
+  }
+
+  //配置支付接口信息
+  public function editport(){
+    echo $_GET['mod'];
+  }
+
   /* ------------  系统设置   -------------- */
 
 }

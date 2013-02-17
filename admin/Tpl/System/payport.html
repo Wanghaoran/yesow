@@ -1,0 +1,65 @@
+<include file="Public:pagerForm" />
+<style>
+.grid .gridTbody td div {
+  height:auto;
+}
+
+  </style>
+
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				集成各支付方式
+			</li>
+		</ul>
+		<div class="subBar">
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="edit" href="__URL__/editport/mod/{sid_role}" target="dialog" mask="true" warn="请选择支付程序"><span>配置</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['system']['editport'])">
+	    <li><a class="edit" href="__URL__/editport/mod/{sid_role}" target="dialog" mask="true" warn="请选择支付程序"><span>配置</span></a></li>
+	    </if>
+	    </if>
+	    
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+			<th width="25">服务提供商</th>
+			<th width="60">名称</th>
+			<th width="120">接口可用性</th>
+			<th width="450">备注</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<tr target="sid_role" rel="alipay">
+		  <td style="height:50px;"><img src="__PUBLIC__/index/image/alipay.png" /></td>
+			  <td>支付宝担保交易</td>
+			  <td><img src="__PUBLIC__/index/image/true.png" />接口状态正常</td>
+			  <td><!--{$r.remark}--!></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		
+	</div>
+
+</div>
+
+
