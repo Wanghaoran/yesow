@@ -1,0 +1,43 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberlevel" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label style="width:95%">添加一条<font color="blue"> 速查信息 </font>并<font color="green">通过审核</font>后，获得： <input type="text" class="required" size="10" name="eb_one" value="<!--{$result.eb_one}--!>" style="float:none;"/> E币 (默认20E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">添加一条<font color="blue"> 速查信息 </font><font color="red">未通过审核</font>后，扣除： <input type="text" class="required" size="10" name="eb_two" value="<!--{$result.eb_two}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">发布一条<font color="blue"> 评论 </font>并<font color="green">通过审核</font>后，获得： <input type="text" class="required" size="10" name="eb_three" value="<!--{$result.eb_three}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">发布一条<font color="blue"> 评论 </font><font color="red">未通过审核</font>后，扣除： <input type="text" class="required" size="10" name="eb_four" value="<!--{$result.eb_four}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">添加一条<font color="blue"> 改错信息 </font>并<font color="green">通过审核</font>后，获得： <input type="text" class="required" size="10" name="eb_five" value="<!--{$result.eb_five}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">添加一条<font color="blue"> 改错信息 </font><font color="red">未通过审核</font>后，扣除： <input type="text" class="required" size="10" name="eb_six" value="<!--{$result.eb_six}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">添加一条<font color="blue"> 报错信息 </font>并<font color="green">通过审核</font>后，获得： <input type="text" class="required" size="10" name="eb_seven" value="<!--{$result.eb_seven}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	<div class="unit">
+	  <label style="width:95%">添加一条<font color="blue"> 报错信息 </font><font color="red">未通过审核</font>后，扣除： <input type="text" class="required" size="10" name="eb_eight" value="<!--{$result.eb_eight}--!>" style="float:none;"/> E币 (默认10E币)</label>
+	</div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

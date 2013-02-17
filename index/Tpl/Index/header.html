@@ -1,3 +1,47 @@
+<script>
+  var close = true;
+  var lookup = function(val){
+    var nkey = $.trim(val);
+    if("" == nkey || null == nkey){
+      $("#result_id").hide() ;
+    }else{
+      $.ajax({
+	url:'__APP__/public/ajaxkeyword/keyword/' + val,
+	success: function(ress){
+	  var _nstr = '<table width="100%">';
+	  $.each(ress, function(i, res){
+	    _nstr += '<tr><td>' + ress[i] + '</td></tr>'
+	  });
+	  _nstr += '</table>';
+	$("#result_id").show();
+	
+	  $("#result_id").html(_nstr);
+	  $("#result_id table tr td").click(function(){
+	    $("#inputString").val($(this).html());
+	    $("#result_id").hide();
+	  });
+	  $("#result_id table tr td").hover(
+	  function () {
+       close = false ;
+      },
+      function () {
+       close = true ;
+      }
+	  
+	  );
+	},
+	dataType:'json'
+      });
+    }     
+  }
+
+  var fill = function(){
+    if(close){
+      $("#result_id").hide();
+    }
+  }
+</script>
+
 <div id="minitop"><div id="minitop_l"></div>
    		<div id="minitop_c">
 		  <p id="welcome">
@@ -29,9 +73,12 @@
     	<div id="top_c">
         	<div id="top_search">
 		  <form action="__ROOT__/search" method="get" >
-		  <input type="text" name="keyword" id="s" class="input" value="请输入您要搜索的内容" />
-		  {__NOTOKEN__}
+		    <div style="position:relative">
+		      <input type="text" name="keyword" id="inputString" class="input" value="请输入您要搜索的内容" onkeyup="lookup(this.value);" onblur="fill();" />
+		      		  {__NOTOKEN__}
                 	<button id="go" >搜索</button>
+                	<div id="result_id" class="suggestionsBox"></div>
+                    </div>
                 </form>
             </div>
             <div id="top_search_tool">
@@ -90,9 +137,9 @@
 	    <li class="none"><a href="" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a href="" >帮助中心</a><a href="" >关于我们</a></li>
 	    </if>
 	    <if condition="MODULE_NAME eq 'Company'">
-	    <li><a href="" >渠道黄页01</a><a href="" >渠道黄页02</a><a href="" >渠道黄页03</a><a href="" >渠道黄页04</a></li>
+	    <li><a href="" >点击排名</a><a href="" >渠道黄页02</a><a href="" >渠道黄页03</a><a href="" >渠道黄页04</a></li>
 	    <else/>
-	    <li class="none"><a href="" >渠道黄页01</a><a href="" >渠道黄页02</a><a href="" >渠道黄页03</a><a href="" >渠道黄页04</a></li>
+	    <li class="none"><a href="" >点击排名</a><a href="" >渠道黄页02</a><a href="" >渠道黄页03</a><a href="" >渠道黄页04</a></li>
 	    </if>
 
 				<li class="none"><a href="" >第三个01</a><a href="" >第三个02</a><a href="" >第三个03</a><a href="" >第三个04</a></li>

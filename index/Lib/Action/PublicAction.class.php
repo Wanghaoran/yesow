@@ -231,4 +231,19 @@ class PublicAction extends Action {
       echo 0;
     }
   }
+
+  //ajax获取搜索关键词返回
+  public function ajaxkeyword(){
+    $keyword = $this -> _get('keyword');
+    $audit_serach = M('AuditSearchKeyword');
+    $where = array();
+    $where['name'] = array('LIKE', '%' . $keyword . '%');
+    $temp_result = $audit_serach -> field('name') -> where($where) -> limit(10) -> order('length(name)') -> select();
+    //整理结果数组
+    $result = array();
+    foreach($temp_result as $value){
+      $result[] = $value['name'];
+    }
+    echo json_encode($result);
+  }
 }

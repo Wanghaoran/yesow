@@ -22,9 +22,9 @@ span#resige_link a{color:#F00;}
 a#logo{display:block; text-indent:-9999em; width:230px; height:90px; background:url(images/logo.gif) no-repeat center center;}
 span#web_desc{width:230px; height:20px;font-size:14px; display:block; overflow:hidden; text-align:center;}
 #top_c{width:560px;}
-#top_search{ position:relative; width:460px; height:36px; overflow:hidden; margin-top:30px; background:url(images/top_search.gif) no-repeat 0 0; float:left;}
+#top_search{ position:relative; width:460px; height:36px; margin-top:30px; background:url(images/top_search.gif) no-repeat 0 0; float:left;}
 #top_search #go{width:80px; height:36px; position:absolute; top:0; right:0; background:transparent;border:0; font-size:12px; font-weight:bold; cursor:pointer;}
-#top_search #s{ border:0; color:#666; width:340px; height:18px; line-height:18px; padding:0; position:absolute; top:9px; left:35px; font-size:14px;}
+#top_search #inputString{ border:0; color:#666; width:340px; height:18px; line-height:18px; padding:0; position:absolute; top:9px; left:35px; font-size:14px;}
 #top_search_tool{height:36px; overflow:hidden; margin-top:30px; width:100px; float:left;}
 #top_search_tool a{ display:block; width:90px; height:18px; line-height:18px; padding-left:10px;}
 p#hot_search{padding-top:10px;}
@@ -642,6 +642,11 @@ ul.ul_adimg{ width:950px;}
 ul.ul_adimg li{ float:left; width:186px; height:75px; margin-right:5px;}
 ul.ul_adimg li.last{ margin-right:0;}
 
+.suggestionsBox { position: absolute; left: 0; top:33px; margin: 0; width:376px; background: #fff; border: 3px solid #B10000; border-top:none; color: #666; z-index:9999;} 
+.suggestionList { margin: 0px; padding: 0px; } 
+.suggestionList li { margin: 0px 0px 3px 0px; padding: 3px; cursor: pointer; } 
+.suggestionList li:hover { background: #ccc; } 
+
 #mid_search{ position:relative; width:615px; height:34px; overflow:hidden; background:url(images/top_search.gif) no-repeat 0 -38px; margin:0 auto;}
 #mid_search #go{width:90px; height:34px; position:absolute; top:0; right:0; background:transparent;border:0; font-size:12px; font-weight:bold; cursor:pointer;}
 #mid_search #s{ border:0; color:#666; width:490px; height:18px; line-height:18px; padding:0; position:absolute; top:9px; left:35px; font-size:14px;}
@@ -654,10 +659,10 @@ ul.ul_search li div.div_right a{ color:#576cf9;}
 ul.ul_search li.li_text{ margin-bottom:10px;}
 ul.ul_search li.li_text span.f_color{ font-size:12px; font-weight:bold; color:#F00; padding:0 10px;}
 
-ul.choosetype li{ float:left; width:auto; margin:0 10px 10px 0;}
+ul.choosetype li{ float:left; width:75px; margin:0 0 3px 0;}
 ul.choosetype li input{ vertical-align:middle;}
 
-ul.choosearea li{ float:left; width:auto; margin:0 10px 10px 0;}
+ul.choosearea li{ float:left; width:75px; margin:0 0 3px 0;}
 ul.choosearea li input{ vertical-align:middle;}
 div.btn_download input{ float:right;}
 input.btn_jgsyxz{ background:url(images/btn_download.gif) top left no-repeat;font-size:12px; font-weight:bold; display:block;width:97px; height:28px; line-height:28px; text-align:center; color:#fff; border:none; margin-right:10px; cursor:pointer;}
@@ -667,7 +672,7 @@ input.btn_qbxz{ background:url(images/btn_download.gif) bottom left no-repeat;fo
 ul.ul_mytable{padding-top:10px;width:100%;border-collapse:collapse;}
 ul.ul_mytable li {padding-top:5px;text-indent:1em;list-style:none;font-family: "Verdana,宋体";font-size: 12px;color:#008000;text-align:left; line-height:25px;}
 ul.ul_mytable li a{ color:#333; text-decoration:none;}
-ul.ul_mytable li h2 a.a_title{ color:#0003ce; font-size:16px; text-decoration:underline;}
+ul.ul_mytable li h2 a.a_title{ color:#0003ce; font-size:16px; text-decoration:underline; font-weight:normal;}
 ul.ul_mytable li h2 a.a_weizhi{ color:#F00; font-weight:bold; margin-left:10px; font-size:14px; text-decoration:none;}
 ul.ul_mytable li p.one{ color:#8d8d8d; font-size:12px; text-align:left; height:50px; line-height:20px;}
 ul.ul_mytable li p.two{ color:#038104; font-weight:bold;}

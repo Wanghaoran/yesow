@@ -248,6 +248,9 @@ class CompanyAction extends CommonAction {
 
   //搜索
   public function search(){
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
     //高级搜索
     if(empty($_GET['keyword'])){
       $this -> display();
@@ -352,9 +355,6 @@ class CompanyAction extends CommonAction {
     $search_keyword -> create($search_data);
     $search_keyword -> add(); 
 
-    //查询分站
-    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
-    $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
 }

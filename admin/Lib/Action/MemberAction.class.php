@@ -35,7 +35,7 @@ class MemberAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //会员数据
-    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> order('id DESC') -> where($where) -> select();
+    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -119,7 +119,7 @@ class MemberAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //结果
-    $result = $member_edu -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $result = $member_edu -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -196,7 +196,7 @@ class MemberAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //结果
-    $result = $member_career -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $result = $member_career -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -273,7 +273,7 @@ class MemberAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //结果
-    $result = $member_income -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $result = $member_income -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -330,6 +330,128 @@ class MemberAction extends CommonAction {
   }
 
   /* ----------- 会员管理 ------------ */
+
+
+  /* ----------- 会员级别管理 ------------ */
+
+  //会员等级管理
+  public function memberlevel(){
+    $level = M('MemberLevel');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $level -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //结果
+    $result = $level -> field('id,name,updatemoney,freecompany,addtime,remark') -> where($where) -> order('updatemoney ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加会员等级
+  public function addmemberlevel(){
+    //添加
+    if(!empty($_POST['name'])){
+      $level = D('MemberLevel');
+      if(!$level -> create()){
+	$this -> error($level -> getError());
+      }
+      if($level -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除会员等级
+  public function delmemberlevel(){
+    $level = M('MemberLevel');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($level -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑会员等级
+  public function editmemberlevel(){
+    $level = D('MemberLevel');
+    //处理更新
+    if(!empty($_POST['name'])){
+      if(!$level -> create()){
+	$this -> error($level -> getError());
+      }
+      if($level -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $level -> field('name,updatemoney,freecompany,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //会员等级RMB设置
+  public function editlevelrmb(){
+    $level = D('MemberLevel');
+    //更新
+    if(!empty($_POST['id'])){
+      if(!$level -> create()){
+	$this -> error($level -> getError());
+      }
+      if($level -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $level -> field('rmb_one') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //会员等级EB设置
+  public function editleveleb(){
+    $level = D('MemberLevel');
+    //更新
+    if(!empty($_POST['id'])){
+      if(!$level -> create()){
+	$this -> error($level -> getError());
+      }
+      if($level -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $level -> field('eb_one,eb_two,eb_three,eb_four,eb_five,eb_six,eb_seven,eb_eight') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();  
+  }
+
+  /* ----------- 会员级别管理 ------------ */
 
 
   /* ----------- 统计管理 ------------ */

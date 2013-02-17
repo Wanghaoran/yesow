@@ -14,7 +14,6 @@
       success: function(ress){
       var _nstr = '';
       ress[0] = ['', '全部'];
-      console.log(ress);
       $.each(ress, function(i, res){
 	if(i == 0){
 	_nstr += '<li><input type="radio" name="csaid" id="csaid' + res[0] + '" value="' + res[0] + '" class="radiobtn" checked="checked" /><label for="csaid' + res[0] + '">' + res[1] + '</label></li>';
@@ -27,6 +26,10 @@
       dataType:'json'
     });
   }
+
+  var showsenior = function(){
+    $("#panel").slideToggle("slow");
+  } 
 </script>
 </head>
 <body id="body_index">
@@ -56,7 +59,12 @@
 		      <input type="text" name="keyword" id="s" class="input" value="<!--{$Think.get.keyword}--!>" />
                         <input type="submit" value="搜索一下" id="go" />
                 </div>
-                <div class="clear30"></div>			  
+		<div class="clear30"></div>
+		<empty name="Think.get.keyword">
+		<div id="panel">
+  		<else/>
+		<div id="panel" style="display:none;">
+		</empty>		
 				<ul class="ul_search">
                 	<li>
                     	<div class="div_left">选择类别</div>
@@ -98,13 +106,21 @@
                             </div><!--areabox end-->
 			  </div>
 			  </li>
-		</form>
-		    <li class="li_text">共有<span class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
+			</ul>
+			</div>
+		      </form>
+		      <ul class="ul_search">
+			<empty name="Think.get.keyword">
+			<li class="li_text">请输入搜索关键词</li>
+			<else/>
+			<li class="li_text">共有<span class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
+			</empty>
+		    
                     <li>
                     	<div class="div_left">搜索说明</div>
                         <div class="div_right">
                         	<p>1、使用关键词查询时减少查询字词的数量，获取更多的查询结果。</p>
-                            <p>2、如果你想精确查找你的结果请点击[<a href="__ROOT__/search">高级搜索</a>]。</p>
+                            <p>2、如果你想精确查找你的结果请点击[<a onclick="showsenior();">高级搜索</a>]。</p>
                             <p>3、如果贵单位的信息尚未登记入本站，请点击[<a href="__ROOT__/company/add" target="_blank">我要添加</a>]。</p>
                             <p>4、如果搜索结果对您有用您可以点击[<a href="#">结果首页下载</a>]或[<a href="#">全部下载</a>]。</p>
                         </div>
