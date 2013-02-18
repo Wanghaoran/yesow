@@ -50,6 +50,14 @@ p#hot_search{padding-top:10px;}
 #nav02 ul{ width:930px; float:left; height:20px; padding:6px 0; overflow:hidden;}
 #nav02 ul li{width:930px; height:20px; overflow:hidden; float:left;}
 #nav02 ul li a{display:block; padding:0 10px; color:#FFF; float:left;}
+#nav02 ul li.li_weizhi1{padding-left:120px;}
+#nav02 ul li.li_weizhi2{padding-left:220px;}
+#nav02 ul li.li_weizhi3{padding-left:320px;}
+#nav02 ul li.li_weizhi4{padding-left:400px;}
+#nav02 ul li.li_weizhi5{padding-left:470px;}
+#nav02 ul li.li_weizhi6{padding-left:560px;}
+#nav02 ul li.li_weizhi7{padding-left:650px;}
+#nav02 ul li.li_weizhi8{padding-left:650px;}
 #nav03{width:950px; height:30px; padding-top:5px;}
 #nav03_l,
 #nav03_c,
@@ -557,7 +565,7 @@ a.btn_scjs{ float:right; margin-top:5px; background:url(images/addedit_btn.gif) 
 a.ishave{ width:90px; height:21px; line-height:21px; font-size:12px; color:#fff; background:url(images/addedit_btn.gif) top left no-repeat; display:block; text-align:center; float:left;}
 input.tijiao{ width:90px; height:30px; line-height:30px; font-size:14px; font-weight:bold; color:#fff; background:url(images/addedit_btn.gif) bottom left no-repeat; border:none;}
 
-input.upfile_btn{ width:70px; height:24px; line-height:24px; vertical-align:middle; _margin-bottom:10px; color:#fff; background:#fe9e0b;}
+input.upfile_btn{ width:70px; height:24px; line-height:20px; padding-bottom:4px; vertical-align:middle;*margin-bottom:10px; _margin-bottom:10px; color:#fff; background:#fe9e0b;}
 
 /* tipsy */
 .tipsy{padding:5px;font-size:11px;line-height:13px;background:url(images/tipsy.gif) no-repeat left center;opacity:0.9; position:absolute; right:0; top:0; z-index:999;}
@@ -646,6 +654,8 @@ ul.ul_adimg li.last{ margin-right:0;}
 .suggestionList { margin: 0px; padding: 0px; } 
 .suggestionList li { margin: 0px 0px 3px 0px; padding: 3px; cursor: pointer; } 
 .suggestionList li:hover { background: #ccc; } 
+.suggestionsBox table td{ width:500px;}
+.suggestionsBox table td:hover{ background:#ebebeb;}
 
 #mid_search{ position:relative; width:615px; height:34px; overflow:hidden; background:url(images/top_search.gif) no-repeat 0 -38px; margin:0 auto;}
 #mid_search #go{width:90px; height:34px; position:absolute; top:0; right:0; background:transparent;border:0; font-size:12px; font-weight:bold; cursor:pointer;}
@@ -686,5 +696,21 @@ ul.top_list li h3 a.a_title{ color:#0003ce; font-size:14px; font-weight:normal;}
 ul.top_list li h3 a.a_weizhi{ color:#F00; font-weight:bold; margin-left:10px; font-size:12px; text-decoration:none;}
 
 .div_adbox{ width:290px; height:120px; background:#ddd;}
-.suggestionsBox table td{ width:500px;}
-.suggestionsBox table td:hover{ background:#ebebeb;}
+
+#main13_m{ width:470px; float:left;}
+.huang_ui_c h1{ background:url(images/clicktitlebg.gif) no-repeat; width:140px;  height:30px; line-height:30px; font-size:12px; overflow:hidden; text-align:center; font-size:14px;}
+.huang_ui_c h1 span{ color:#F00; margin-left:10px;}
+ul.click_list{ width:450px; border:1px solid #f60; border-top:0; padding:9px;}
+ul.click_list li{ float:left; width:450px; height:22px; margin-top:5px;}
+ul.click_list li img{ float:left; margin-top:5px;}
+ul.click_list li em{ margin:0 10px; float:left; font-style: normal;font-size:14px;font-family: Arial;width:20px; height:21px; text-align:center;}
+ul.click_list li.click_top3 em{background:url(images/numberbg.gif) top center no-repeat; color:#fff;}
+ul.click_list li.click_last3 em{background:url(images/numberbg.gif) bottom center no-repeat; color:#fff;}
+ul.click_list li a{ float:left; font-size:14px; font-weight:bold; max-width:200px;width:auto!important; _width:200px;  height:22px; line-height:22px; display:block; word-break:break-all; overflow:hidden;}
+ul.click_list li span.click_area{ color:#F00;font-size:14px; font-weight:bold; float:left; margin-left:5px;}
+ul.click_list li span.clicknum{ float:right; margin-right:5px; color:#F00; font-size:14px; font-weight:bold;}
+
+.boxzhengfu{ width:936px; border:#ff9900 2px solid; padding:5px;}
+.boxzhengfu span.span_zf1{ color:#000; font-weight:bold; background:url(images/icon_book.jpg) left center no-repeat; padding-left:20px;}
+.boxzhengfu span.span_zf2{ color:#f00; font-weight:bold;}
+

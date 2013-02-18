@@ -329,6 +329,11 @@ class MemberAction extends CommonAction {
     }
   }
 
+  //会员基本设置
+  public function memberbasic(){
+  
+  }
+
   /* ----------- 会员管理 ------------ */
 
 

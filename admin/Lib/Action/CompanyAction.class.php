@@ -558,11 +558,11 @@ class CompanyAction extends CommonAction {
     }
     if(!empty($_POST['search_starttime'])){
       $addtime = $this -> _post('search_starttime', 'strtotime');
-      $where['addtime'] = array(array('gt', $addtime));
+      $where['updatetime'] = array(array('gt', $addtime));
     }
     if(!empty($_POST['search_endtime'])){
       $endtime = $this -> _post('search_endtime', 'strtotime');
-      $where['addtime'][] = array('lt', $endtime);
+      $where['updatetime'][] = array('lt', $endtime);
     }
     if(!empty($_POST['search_csid'])){
       $where['csid'] = $this -> _post('search_csid', 'intval');
@@ -588,7 +588,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $company -> field('id,delaid,name') -> where($where) -> order('delaid DESC,addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $company -> field('id,delaid,name') -> where($where) -> order('delaid DESC,updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);

@@ -16,6 +16,8 @@ $app_config = array(
     'report/:id\d' => 'company/report',//速查报错页
     'change/:id\d' => 'company/change',//速查改错页
     'search' => 'company/search',//搜索
+    'clickrank' => 'company/clickrank',//点击排名
+    'scorerank' => 'company/scorerank',//正负排名
   ),
 );
 

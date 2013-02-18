@@ -1,0 +1,16 @@
+<div id="main_l">
+  <div id="main_l_tit"><h3>资金管理</h3></div>
+  <ul>
+    <if condition="(ACTION_NAME eq 'index')">
+    <li class="hover"><a href="__URL__">RMB管理</a></li>
+    <else/>
+    <li><a href="__URL__">RMB管理</a></li>
+    </if>
+    <if condition="(ACTION_NAME eq 'eb')">
+    <li class="hover"><a href="__URL__/eb">E币管理</a></li>
+    <else/>
+    <li><a href="__URL__/eb">EB管理</a></li>
+    </if>
+    <li><a href="#">提现申请管理</a></li>
+  </ul>
+</div>

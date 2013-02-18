@@ -56,7 +56,7 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_company_category_one', $result_company_category_one);
     //如果会员已登录，则查出此会员的个人信息
     if(isset($_SESSION[C('USER_AUTH_KEY')])){
-      $add_info = M('Member') -> field('fullname,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
+      $add_info = M('Member') -> field('name,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
       $this -> assign('add_info', $add_info);
     }
     $this -> display();
@@ -355,6 +355,30 @@ class CompanyAction extends CommonAction {
     $search_keyword -> create($search_data);
     $search_keyword -> add(); 
 
+    $this -> display();
+  }
+
+  //点击排名
+  public function clickrank(){
+    $company = M('Company');
+    //TOP100
+    $result_top100 = $company -> table('yesow_company as c') -> field('c.id,c.name,cs.name as csname,c.clickcount') -> join('yesow_child_site as cs ON c.csid = cs.id') -> order('c.clickcount DESC') -> limit(100) -> select();
+    $this -> assign('result_top100', $result_top100);
+    //LAST100
+    $result_last100 = $company -> table('yesow_company as c') -> field('c.id,c.name,cs.name as csname,c.clickcount') -> join('yesow_child_site as cs ON c.csid = cs.id') -> order('c.clickcount ASC') -> limit(100) -> select();
+    $this -> assign('result_last100', $result_last100);
+    $this -> display();
+  }
+
+  //正负排名
+  public function scorerank(){
+    $companycomment = M('CompanyComment');
+    //TOP100
+    $result_top100 = $companycomment -> table('yesow_company_comment as cc') -> field('c.name as cname,cs.name as csname,cc.cid,SUM(cc.score) as count') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> group('cc.cid') -> where('cc.status = 2') -> order('count DESC') -> limit(100) -> select();
+    $this -> assign('result_top100', $result_top100);
+    //LAST100
+    $result_last100 = $companycomment -> table('yesow_company_comment as cc') -> field('c.name as cname,cs.name as csname,cc.cid,SUM(cc.score) as count') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> group('cc.cid') -> where('cc.status = 2') -> order('count ASC') -> limit(100) -> select();
+    $this -> assign('result_last100', $result_last100);
     $this -> display();
   }
 }

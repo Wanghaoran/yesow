@@ -19,12 +19,16 @@
             </div>
             <div id="nav">
 	      <ul>
-		<if condition="MODULE_NAME eq 'Member'">
+		<if condition="MODULE_NAME eq 'Index'">
 		<li class="hover"><a href="__APP__">我的易搜</a></li>
 		<else/>
 		<li><a href="__APP__">我的易搜</a></li>
 		</if>
-                	<li><a href="#">资金管理</a></li>
+		<if condition="MODULE_NAME eq 'Money'">
+		<li class="hover"><a href="__APP__/money">资金管理</a></li>
+		<else/>
+		<li><a href="__APP__/money">资金管理</a></li>
+		</if>
 			<li><a href="#">网上购物</a></li>
 		<if condition="MODULE_NAME eq 'Business'">
 		<li class="hover"><a href="__APP__/business">商家服务</a></li>

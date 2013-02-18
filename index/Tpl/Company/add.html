@@ -65,7 +65,7 @@
     var patrn=/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/;
     var RegCellPhone = /^([0-9]{11})?$/;
     var qqcode = /[1-9][0-9]{4,}/;
-    var website = /[a-zA-z]+:\/\/[^\s]*/;
+    //var website = /[a-zA-z]+:\/\/[^\s]*/;
     var addtel = /^[0-9]\d*$/;
     if($('#companyname')[0].value == ''){
       $('#companyname').focus();
@@ -107,11 +107,13 @@
       alert('联系QQ格式不正确');
       return false;
     }
+    /*
     if(!website.exec($('#companywebsite')[0].value)){
       $('#companywebsite').focus();
       alert('商家网址格式不正确');
       return false;
     }
+    */
     if($('#companykeyword')[0].value == ''){
       $('#companykeyword').focus();
       alert('关键字不能为空');
@@ -157,6 +159,22 @@
     var website = $('#companywebsite')[0].value;
     content += '    ' + name + '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' + name + '这里在此我们全体成员祝你网上浏缆愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国' + csid + csaid + '地区,公司地址在' + address + '，公司主要经营' + manproducts + '，欢迎来人来电咨询和联系我们，公司联系人是' + linkman + '，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    ' + name + '将会为你提供优质的售前、售中和售后服务，我们作为' + typeid + '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' + csid + '地区IT行业争光！为' + csaid + '的经济发展争光！！欢迎访问我公司网站：' + website + '也许会给你带来意外的收获！';
     $('#companycontent')[0].value = content;
+  }
+
+  var checkmobilephone = function(data){
+    var RegCellPhone = /^([0-9]{11})?$/;
+    if(!RegCellPhone.exec(data)){
+      $('#mobilephone').focus();
+      alert('移动电话格式不正确');
+    }
+  }
+
+  var checkemail = function(data){
+    var patrn=/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/;
+    if(!patrn.exec(data)){
+      $('#email').focus();
+      alert('电子邮件格式不正确');
+    }
   }
 
 </script>
@@ -240,7 +258,7 @@
                     <div class="div_left">联系电话</div>
                     <div class="div_mid1"><input type="text" class="div_input1" id="companyphone" name="companyphone" /></div>
                     <div class="div_left">移动电话</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" id="mobilephone" name="mobilephone" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="mobilephone" name="mobilephone" onblur="checkmobilephone(this.value);" /></div>
                     <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
@@ -248,7 +266,7 @@
                 	<div class="div_left">联系QQ</div>
                     <div class="div_mid1"><input type="text" class="div_input1" id="qqcode" name="qqcode" /></div>
                     <div class="div_left">电子邮件</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" id="email" name="email" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="email" name="email" onblur="checkemail(this.value);" /></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -300,7 +318,7 @@
             <ul class="info_table">
             	<li>
                 	<div class="div_left">您的姓名</div>
-                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addname" name="addname" value="<!--{$add_info.fullname}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addname" name="addname" value="<!--{$add_info.name}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                     <div class="div_left">您的电话</div>
                     <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                 </li>

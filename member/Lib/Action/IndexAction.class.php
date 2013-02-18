@@ -1,6 +1,18 @@
 <?php
 class IndexAction extends CommonAction {
 
+  //首页前置操作
+  public function _before_index(){
+    //获取公告
+    if(S('index_yesow_notice')){
+      $this -> assign('index_yesow_notice', S('index_yesow_notice'));
+    }else{
+      $result = M('Notice') -> field('id,title,titleattribute,addtime') -> order('addtime DESC') -> limit(10) -> select();
+      S('index_yesow_notice', $result);
+      $this -> assign('index_yesow_notice', $result);
+    }
+  }
+
   //会员中心首页
   public function index(){
     $this -> display();
@@ -72,6 +84,11 @@ class IndexAction extends CommonAction {
   //用户升级管理
   public function userupdeta(){
     $this -> display();
+  }
+
+  //安全设置前置操作
+  public function _before_safe(){
+    $this -> _before_index();
   }
 
   //安全设置首页
@@ -169,46 +186,24 @@ class IndexAction extends CommonAction {
     $this -> display();
   }
 
+  //特权设置前置操作
+  public function _before_privilege(){
+    $this -> _before_index();
+  }
+
   //特权设置管理
   public function privilege(){
     $this -> display();
+  }
+
+  //组织管理前置操作
+  public function _before_organization(){
+    $this -> _before_index();
   }
 
   //组织管理
   public function organization(){
     $this -> display();
   }
-
-  //公告列表
-  public function noticelist(){
-    $notice = M('MemberBackgroundNotice');
-    import("ORG.Util.Page");// 导入分页类
-    $count = $notice -> count('id');
-    $page = new Page($count, 15);//每页15条
-    $page->setConfig('header','条公告');
-    $show = $page -> show();
-    $result = $notice -> field('id,title,addtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
-    $this -> assign('result', $result);
-    $this -> assign('show', $show);
-    $this -> display();
-  }
-
-  //公告详情页
-  public function notice(){
-    $notice = M('MemberBackgroundNotice');
-    $id = $this -> _get('id', 'intval');
-
-    //本条记录
-    $result = $notice -> field('title,content,addtime') -> find($id);
-    $this -> assign('result', $result);
-    //上条记录
-    $before = $notice -> field('id,title') -> where(array('id' => array('lt', $id))) -> order('addtime DESC') -> find();
-    $this -> assign('before', $before);
-    //下条记录
-    $after = $notice -> field('id,title') -> where(array('id' => array('gt', $id))) -> order('addtime ASC') -> find();
-    $this -> assign('after', $after);
-    $this -> display();
-  }
-
   
 }

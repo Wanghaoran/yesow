@@ -26,8 +26,8 @@ a:hover{color:#ff9900; text-decoration:underline;}
 #main_l_tit{width:155px; height:30px; background:url(images/user/mian.gif) no-repeat 0 -40px;}
 #main_l_tit h3{ font-size:14px; font-weight:bold; width:155px; text-align:center; line-height:30px;}
 #main_l ul{width:105px; padding:10px 24px; border:1px solid #BDBDBD; border-top:0;}
-#main_l ul li{height:30px; width:90px; border-bottom:1px dashed #696969; padding-left:15px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
-#main_l ul li a{display:block; widows:90px; text-align:center; height:30px; line-height:30px;}
+#main_l ul li{height:30px; width:85px; border-bottom:1px dashed #696969; padding-left:20px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
+#main_l ul li a{display:block; widows:90px; text-align:left; height:30px; line-height:30px;}
 #main_l ul li a:hover, #main_l ul li.hover a{ font-weight:bold; text-decoration:none;}
 #main_r{width:690px; float:left;}
 #main_rm{ float:left; width:298px; padding-right:5px;}
@@ -48,6 +48,8 @@ ul.user_set li.btn_img2{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img2 a img{ margin:0 20px 0 10px; }
 ul.user_set li.btn_img3{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img3 a img{ margin:0 20px 0 10px;; }
+ul.user_set li.btn_img4{ padding-bottom:0; width:270px; text-align:center;}
+ul.user_set li.btn_img4 a img{ margin:0 0 0 10px; }
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}

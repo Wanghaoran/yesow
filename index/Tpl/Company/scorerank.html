@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>正负排名_易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/company">渠道黄页</a> &gt;
+		<span>点击排名</span> 
+	</div>
+    <div class="clear5"></div>
+    <ul class="ul_adimg">
+    	<li><a href="#"><img src="__PUBLIC__/index/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li><a href="#"><img src="__PUBLIC__/index/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li><a href="#"><img src="__PUBLIC__/index/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li><a href="#"><img src="__PUBLIC__/index/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li class="last"><a href="#"><img src="__PUBLIC__/index/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+    </ul>
+    <div class="clear5"></div>
+    <div class="boxzhengfu">
+        	<span class="span_zf1">正负排名公告说明：</span>以下正负排名是根据易搜网友和登陆会员给各公司的评价和打分构成，每个人每条评论可以评分一次，评分的标准是正10分和负10分，所有网友的评分之和为您的企业总分，总分为正的前100名排在正分榜，为负的最低100名排在负分榜。如果您想将您的企业排在一个最好的位置，您可以将您的企业名片找到后发给您的客户和网友去评分即可！感谢合作！！<span class="span_zf2">(注：此排名并不代表企业信誉！)</span>
+        </div>
+        <div class="clear5"></div>
+	<!--咨询文章详情页-->
+	<div id="main13">
+		<div id="main13_m" style="padding-right:10px;">
+			<div class="main13_r_item">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h1>正分榜<span>TOP100</span></h1>
+						</div>
+					</div>
+				</div>
+				<ul class="click_list">
+				  <volist name="result_top100" id="rt100">
+				  <elt name="i" value="3">
+				  <li class="click_top3">
+				  <else/>
+				  <li>
+				  </elt>
+				  <em><!--{$i}--!></em>
+				  <a href="__ROOT__/company/<!--{$rt100.cid}--!>" target="_blank" ><!--{$rt100.cname}--!></a><span class="click_area"> [<!--{$rt100.csname}--!>]</span>
+				  <span class="clicknum"> [<!--{$rt100.count}--!>] </span>
+				  </li>
+				  </volist>
+				  <div class="clear"></div>	
+				</ul>			
+			</div>
+		</div>
+        <div id="main13_m">
+			<div class="main13_r_item">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h1>负分榜<span style="color:#0123C2;">LAST100</span></h1>
+						</div>
+					</div>
+				</div>
+				<ul class="click_list">
+				<volist name="result_last100" id="rl100">
+				  <elt name="i" value="3">
+				  <li class="click_last3">
+				  <else/>
+				  <li>
+				  </elt>
+				  <em><!--{$i}--!></em>
+				  <a href="__ROOT__/company/<!--{$rl100.cid}--!>" target="_blank" ><!--{$rl100.cname}--!></a><span class="click_area"> [<!--{$rl100.csname}--!>]</span>
+				  <span class="clicknum"> [<!--{$rl100.count}--!>] </span>
+				  </li>
+				  </volist>
+                    <div class="clear"></div>	
+				</ul>				
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--咨询文章详情页-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	<include file="Index:footer" />
+</div>
+</body>
+<script type="text/javascript">
+    debugger;
+    $("#ul_mytable li").css("background","#fff");
+    $("#ul_mytable li:even").css("background","#ebebeb");
+    </script>
+</html>
