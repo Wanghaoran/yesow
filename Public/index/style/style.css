@@ -550,12 +550,13 @@ p.comment_notic{font-weight:bold; color:#C00; padding-bottom:5px;}
 #main14 ul.info_table li div.div_left{float:left; width:65px; height:22px; line-height:22px; font-weight:bold; text-align:right; padding-right:5px; color:#656565;}
 #main14 ul.info_table li div.div_mid1{ float:left; width:265px;}
 #main14 ul.info_table li div.div_mid2{float:left; width:600px;}
+#main14 ul.info_table li div.div_mid3{ float:left; width:272px;}
 #main14 ul.info_table li div input.div_input1{ width:263px;height:20px; line-height:20px;}
 #main14 ul.info_table li div input.div_input2{ width:598px;height:20px; line-height:20px;}
 #main14 ul.info_table li div input.div_input3{ width:348px;height:20px; line-height:20px;}
 #main14 ul.info_table li div input.div_input4{ width:58px;height:20px; line-height:20px;}
-#main14 ul.info_table li div input.div_input5{ width:248px;height:20px; line-height:20px;}
-#main14 ul.info_table li div input.div_input6{ width:583px;height:20px; line-height:20px;}
+#main14 ul.info_table li div input.div_input5{ width:255px;height:20px; line-height:20px;}
+#main14 ul.info_table li div input.div_input6{ width:597px;height:20px; line-height:20px;}
 #main14 ul.info_table li div.div_right{ color:#ff5500; line-height:22px; text-align:left; width:220px; float:left; padding:0 0 0 10px;}
 #main14 ul.info_table li div select.div_select1{ width:80px; height:22px; line-height:22px; margin-right:10px;}
 #main14 ul.info_table li div select.div_select2{ width:170px; height:22px; line-height:22px; margin-right:10px;}
@@ -662,17 +663,17 @@ ul.ul_adimg li.last{ margin-right:0;}
 #mid_search #s{ border:0; color:#666; width:490px; height:18px; line-height:18px; padding:0; position:absolute; top:9px; left:35px; font-size:14px;}
 
 ul.ul_search{ width:615px; margin:0 auto;}
-ul.ul_search li{ float:left; width:615px;}
+ul.ul_search li{ float:left;}
 ul.ul_search li div.div_left{ float:left; width:75px; text-align:left; font-size:14px; font-weight:bold; color:#010101;}
 ul.ul_search li div.div_right{ float:left; width:540px;}
 ul.ul_search li div.div_right a{ color:#576cf9;}
-ul.ul_search li.li_text{ margin-bottom:10px;}
+ul.ul_search li.li_text{ margin-bottom:10px; width:615px;}
 ul.ul_search li.li_text span.f_color{ font-size:12px; font-weight:bold; color:#F00; padding:0 10px;}
 
-ul.choosetype li{ float:left; width:75px; margin:0 0 3px 0;}
+ul.choosetype li{ float:left; margin:0 10px 3px 0;}
 ul.choosetype li input{ vertical-align:middle;}
 
-ul.choosearea li{ float:left; width:75px; margin:0 0 3px 0;}
+ul.choosearea li{ float:left; margin:0 10px 3px 0;}
 ul.choosearea li input{ vertical-align:middle;}
 div.btn_download input{ float:right;}
 input.btn_jgsyxz{ background:url(images/btn_download.gif) top left no-repeat;font-size:12px; font-weight:bold; display:block;width:97px; height:28px; line-height:28px; text-align:center; color:#fff; border:none; margin-right:10px; cursor:pointer;}

@@ -1,0 +1,20 @@
+<div id="main_l">
+  <div id="main_l_tit"><h3>商家服务</h3></div>
+  <ul>
+    <if condition="(ACTION_NAME eq 'index')">
+    <li class="hover"><a href="__URL__">产品分类管理</a></li>
+    <else/>
+    <li><a href="__URL__">产品分类管理</a></li>
+    </if>
+    <if condition="(ACTION_NAME eq 'businessneeds')">
+    <li class="hover"><a href="__URL__/businessneeds">商家需求管理</a></li>
+    <else/>
+    <li><a href="__URL__/businessneeds">商家需求管理</a></li>
+    </if>
+    <if condition="(ACTION_NAME eq 'articlemange') OR (ACTION_NAME eq 'article') OR (ACTION_NAME eq 'addarticle') OR (ACTION_NAME eq 'editarticle')">
+    <li class="hover"><a href="__URL__/articlemange">咨询文章管理</a></li>
+    <else/>
+    <li><a href="__URL__/articlemange">咨询文章管理</a></li>
+    </if>
+  </ul>
+</div>

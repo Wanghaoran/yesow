@@ -251,8 +251,10 @@ class CompanyAction extends CommonAction {
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //高级搜索
+    //高级搜索,只检索出按更新时间排序的一页数据
     if(empty($_GET['keyword'])){
+      $result = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> order('updatetime DESC') -> limit(10) -> select();
+      $this -> assign('result', $result);
       $this -> display();
       exit();
     }

@@ -50,6 +50,8 @@ ul.user_set li.btn_img3{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img3 a img{ margin:0 20px 0 10px;; }
 ul.user_set li.btn_img4{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img4 a img{ margin:0 0 0 10px; }
+ul.user_set li.btn_img5{ padding-bottom:0; width:270px; text-align:center;}
+ul.user_set li.btn_img5 a img{ margin:0 0 0 5px; }
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
@@ -279,3 +281,20 @@ table.table_sms td{ border-bottom:#666 1px dotted; border-collapse:collapse; hei
 font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 }
 .page2 span{ border:0; height:18px; line-height:18px;}
+
+/* singleBox */
+.singleBox{width:750px; margin: 10px auto;}
+.singleBox dt{height:31px; border-bottom:#ff8b01 1px solid;}
+.singleBox dt a{ border:#e4e3e3 1px solid; border-bottom:none; text-decoration: none; background:#f3f3f3;color:#7c7c7c;float:left;font-size:14px;height:30px;line-height:30px;text-align:center;text-decoration:none;width:100px; font-weight:bold; margin-right:10px;}
+.singleBox dt a.on{ background:url(images/user/btn_regbg.gif) left bottom no-repeat; text-decoration: none; color:#fff;}
+.singleBox dd{clear:both;height:auto;line-height:20px;padding:10px;font-family:"宋体";}
+.singleBox dd h2{ color:#7c7c7c; font-weight:bold; text-align:center; margin:30px auto;}
+.singleBox dd h2 span{ margin:0 10px;}
+span.col_blue{ color:#0006ff}
+span.col_red{ color:#ff0000}
+span.col_grey{ color:#0006ff}
+p.p_btn{ width:160px; margin:20px auto;}
+input.wydh_btn{ margin:10px;width:160px; height:30px; line-height:30px; background:url(images/user/RightColumn_Btn.gif) 0 -60px no-repeat; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center; cursor:pointer;}
+p.p_title{ font-size:14px; height:25px; line-height:25px;}
+p.p_con{ height:40px; line-height:40px;}
+p.p_bot{ color:#ff0000; height:25px; line-height:25px;}

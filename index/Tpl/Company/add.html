@@ -82,6 +82,11 @@
       alert('所在地区不能为空');
       return false;
     }
+    if($('#companyphone')[0].value.substr(($('#companyphone')[0].value.length) - 1) == '-'){
+      $('#companyphone').focus();
+      alert('联系电话不能为空');
+      return false;
+    }
     if($('#manproducts')[0].value == ''){
       $('#manproducts').focus();
       alert('主营产品不能为空');
@@ -163,7 +168,7 @@
 
   var checkmobilephone = function(data){
     var RegCellPhone = /^([0-9]{11})?$/;
-    if(!RegCellPhone.exec(data)){
+    if(!RegCellPhone.exec(data) || data == ''){
       $('#mobilephone').focus();
       alert('移动电话格式不正确');
     }
@@ -174,6 +179,13 @@
     if(!patrn.exec(data)){
       $('#email').focus();
       alert('电子邮件格式不正确');
+    }
+  }
+
+  var checkcompanyphone = function(){
+    if($('#companyphone')[0].value.substr(($('#companyphone')[0].value.length) - 1) == '-' || $('#companyphone')[0].value == ''){
+      $('#companyphone').focus();
+      alert('联系电话不能为空');
     }
   }
 
@@ -226,7 +238,7 @@
 			    </volist>
 			</select></div>
                     <div class="div_left">形象上传</div>
-                    <div class="fl">
+                    <div class="fl" style="height:25px; overflow:hidden;">
 
 <input name="pic" type="file" size="33" style="width:270px; height:22px; position:absolute;opacity:0;filter:alpha(opacity=0);"  onchange="this.form.inputs.value=this.value.substr(this.value.lastIndexOf('\\')+1);"/>
 <input name="inputs" type="input" style="width:190px; height:20px;" /> <input name="" type="button" value="浏览..." class="upfile_btn"/>
@@ -256,7 +268,7 @@
                 <div class="clear"></div>
                 <li>
                     <div class="div_left">联系电话</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" id="companyphone" name="companyphone" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="companyphone" name="companyphone" onblur="checkcompanyphone(this.value);" /></div>
                     <div class="div_left">移动电话</div>
                     <div class="div_mid1"><input type="text" class="div_input1" id="mobilephone" name="mobilephone" onblur="checkmobilephone(this.value);" /></div>
                     <div class="div_right"></div>
@@ -318,9 +330,9 @@
             <ul class="info_table">
             	<li>
                 	<div class="div_left">您的姓名</div>
-                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addname" name="addname" value="<!--{$add_info.name}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+                    <div class="div_mid3" style="position:relative;"><input type="text" class="div_input5" id="addname" name="addname" value="<!--{$add_info.name}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                     <div class="div_left">您的电话</div>
-                    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
+                    <div class="div_mid3" style="position:relative;"><input type="text" class="div_input5" id="addtel" name="addtel" value="<!--{$add_info.tel}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                 </li>
                 <div class="clear"></div>
                 <li>
@@ -337,15 +349,14 @@
                 <div class="clear"></div>
                 <li>
                 	<div class="div_left">电子邮件</div>
-			<div class="div_mid1"><input type="text" class="div_input5" name="addemail" value="<!--{$add_info.email}--!>" /></div>
+			<div class="div_mid3"><input type="text" class="div_input5" name="addemail" value="<!--{$add_info.email}--!>" /></div>
                     <div class="div_left">身份证号</div>
-		    <div class="div_mid1" style="position:relative;"><input type="text" class="div_input5" id="addnumberid" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
-		    <div class="div_right"></div>
+		    <div class="div_mid3" style="position:relative;"><input type="text" class="div_input5" id="addnumberid" name="addnumberid" value="<!--{$add_info.idnumber}--!>" /><strong><font color="#ff5500">&nbsp;*</font></strong></div>
                 </li>
                 <div class="clear"></div>
 <li>
                 	<div class="div_left">验证码</div>
-					<div class="div_mid2"><div class="fl"><input type="text" class="div_input4" name="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div></div>
+					<div class="div_mid2"><div class="fl" style=" padding-top:2px;"><input type="text" class="div_input4" name="verify" /></div><div class="fl" style="padding:3px 0 0 5px;"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div></div>
                     <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>

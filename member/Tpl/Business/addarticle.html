@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title>发布资讯文章-易搜会员中心</title>
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
@@ -68,6 +68,39 @@
       dataType:'json'
     });
   }
+
+  var cheakform = function(){
+    if($('#twocolumn')[0].value == ''){
+      $('#twocolumn').focus();
+      alert('所属栏目不能为空');
+      return false;
+    }
+    if($('#titleattribute')[0].value == ''){
+      $('#titleattribute').focus();
+      alert('标题属性不能为空');
+      return false;
+    }
+    if($('#title')[0].value == ''){
+      $('#title').focus();
+      alert('标题不能为空');
+      return false;
+    }
+    if($('#source')[0].value == ''){
+      $('#source').focus();
+      alert('文章来源不能为空');
+      return false;
+    }
+    if($('#keyword')[0].value == ''){
+      $('#keyword').focus();
+      alert('文章关键字不能为空');
+      return false;
+    }
+    if($('#contentattribute')[0].value == ''){
+      $('#contentattribute').focus();
+      alert('内容属性不能为空');
+      return false;
+    }
+  }
 </script>
 </head>
 <body id="body_user">
@@ -75,21 +108,9 @@
 	<div id="user_m">
     	<div class="warp_850">
         	<div id="main">
-            	<div id="main_l">
-                	<div id="main_l_tit"><h3>商家服务</h3></div>
-                    <ul>
-                    	<li><a href="#">产品报价管理</a></li>
-                    	<li><a href="#">特惠商家管理</a></li>
-                    	<li><a href="#">人才交流管理</a></li>
-                    	<li><a href="#">求职信息管理</a></li>
-                    	<li><a href="#">二手市场管理</a></li>
-                    	<li><a href="#">旺铺转租管理</a></li>
-                    	<li><a href="#">申请连接管理</a></li>
-                    	<li class="hover"><a href="__URL__/article">咨询文章管理</a></li>
-                    </ul>
-                </div>
+            	<include file="sidebar" />
 				<div id="main_r">
-					<form action="__ACTION__" method="post" id="article">
+					<form action="__ACTION__" method="post" id="article" onSubmit="return cheakform();">
 					<table class="table_list">
 						<tbody>
 							<tr class="top_tools">
@@ -113,17 +134,17 @@
 								<td>
 									文章标题：<select class="" name="tid" id="titleattribute" >
 										<option value="" >请选择</option>
-									</select><input name="title" class="" style="width:247px; margin-left:5px;" />
+									</select><input id="title" name="title" class="" style="width:247px; margin-left:5px;" />
 									<strong><font color="#ff5500">*</font></strong>
 								</td>
 								<td style="white-space:nowrap">
-									文章来源：<input class="" name="source" /><strong>
+									文章来源：<input id="source" class="" name="source" /><strong>
                                     <font color="#ff5500">*</font></strong>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									关&nbsp;键&nbsp;字&nbsp;：<input name="keyword" class="" style="width:332px" />
+									关&nbsp;键&nbsp;字&nbsp;：<input id="keyword" name="keyword" class="" style="width:332px" />
 									<strong><font color="#ff5500">*</font></strong>
 								</td>
 								<td>
@@ -161,7 +182,7 @@
 							</tr>
 							<tr>
 								<td colspan="2" style="text-align:center">
-									<button class="add_article_btn" name="" id="" onClick="document.getElementById('article').onsubmit();" >发布文章</button>
+									<button class="add_article_btn" name="" id="" onClick="$('#article').submit();" >发布文章</button>
 									<button class="add_article_btn" name="" id="" >取消发布</button>
 									<button class="add_article_btn" name="" id="" >清空内容</button>
 								</td>

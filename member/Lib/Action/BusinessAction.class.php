@@ -1,8 +1,31 @@
 <?php
 class BusinessAction extends CommonAction {
+
+  //首页前置操作
+  public function _before_index(){
+    //获取公告
+    if(S('index_yesow_notice')){
+      $this -> assign('index_yesow_notice', S('index_yesow_notice'));
+    }else{
+      $result = M('Notice') -> field('id,title,titleattribute,addtime') -> order('addtime DESC') -> limit(10) -> select();
+      S('index_yesow_notice', $result);
+      $this -> assign('index_yesow_notice', $result);
+    }
+  }
+
   //首页
   public function index(){
-    echo '商家服务'; 
+    $this -> display(); 
+  }
+
+  //资讯文章前置管理
+  public function _before_articlemange(){
+    $this -> _before_index();
+  }
+
+  //资讯文章管理
+  public function articlemange(){
+    $this -> display();
   }
 
   //添加文章
@@ -176,6 +199,16 @@ class BusinessAction extends CommonAction {
       $result_childsite_infoarticle[] = $value['csid'];
     }
     $this -> assign('result_childsite_infoarticle', $result_childsite_infoarticle);
+    $this -> display();
+  }
+
+  //商家需求管理前置需求
+  public function _before_businessneeds(){
+    $this -> _before_index();
+  }
+
+  //商家需求管理
+  public function businessneeds(){
     $this -> display();
   }
 }

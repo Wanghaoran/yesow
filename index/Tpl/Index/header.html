@@ -72,10 +72,10 @@
         </div>
     	<div id="top_c">
         	<div id="top_search" style="position:relative;z-index:999;">
-		  <form action="__ROOT__/search" method="get" >
+		  <form id="form1" action="__ROOT__/search" method="get" >
 		      <input type="text" name="keyword" id="inputString" class="input" value="请输入您要搜索的内容" onkeyup="lookup(this.value);" onblur="fill();" />
 		      		  {__NOTOKEN__}
-                	<button id="go" >搜索</button>
+                	<button id="go" onclick="$('#form1').submit();" >搜索</button>
                 	<div id="result_id" class="suggestionsBox" style="display:none;"></div>
                 </form>
             </div>
