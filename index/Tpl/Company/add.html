@@ -97,21 +97,25 @@
       alert('主营类别不能为空');
       return false;
     }
+    /*
     if(!patrn.exec($('#email')[0].value)){
       $('#email').focus();
       alert('电子邮件格式不正确');
       return false;
     }
+    */
     if(!RegCellPhone.exec($('#mobilephone')[0].value)){
       $('#mobilephone').focus();
       alert('移动电话格式不正确');
       return false;
     }
+    /*
     if(!qqcode.exec($('#qqcode')[0].value)){
       $('#qqcode').focus();
       alert('联系QQ格式不正确');
       return false;
     }
+    */
     /*
     if(!website.exec($('#companywebsite')[0].value)){
       $('#companywebsite').focus();
@@ -167,16 +171,16 @@
   }
 
   var checkmobilephone = function(data){
-    var RegCellPhone = /^([0-9]{11})?$/;
-    if(!RegCellPhone.exec(data) || data == ''){
+    var RegCellPhone = /^([0-9]{11}.*?)?$/;
+    if(!RegCellPhone.exec(data) && data != ''){
       $('#mobilephone').focus();
-      alert('移动电话格式不正确');
+      alert('手机号码必须是11位数字');
     }
   }
 
   var checkemail = function(data){
     var patrn=/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/;
-    if(!patrn.exec(data)){
+    if(!patrn.exec(data) && data != ''){
       $('#email').focus();
       alert('电子邮件格式不正确');
     }

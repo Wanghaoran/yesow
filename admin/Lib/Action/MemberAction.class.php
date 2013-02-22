@@ -456,6 +456,43 @@ class MemberAction extends CommonAction {
     $this -> display();  
   }
 
+  //会员等级权限设置
+  public function editlevelauthor(){
+    $level = D('MemberLevel');
+    //更新
+    if(!empty($_POST['id'])){
+      $id = $this -> _post('id', 'intval');
+      //先将所有权限设置项归零
+      $data = array();
+      $data['author_one'] = 0;
+      $data['author_two'] = 0;
+      $data['author_three'] = 0;
+      $data['author_four'] = 0;
+      $data['author_five'] = 0;
+      $data['author_six'] = 0;
+      $data['author_seven'] = 0;
+      $data['author_eight'] = 0;
+      $data['author_nine'] = 0;
+      $data['id'] = $id;
+      $level -> save($data);
+      //再将有权限的设置为1
+      $data = array();
+      foreach($_POST['author'] as $value){
+	$data[$value] = 1;
+      }
+      $data['id'] = $id;
+      if($level -> save($data)){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+
+    }
+    $result = $level -> field('author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   /* ----------- 会员级别管理 ------------ */
 
 

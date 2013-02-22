@@ -1,0 +1,66 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberlevel" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		  <div class="unit">
+		    <eq name="result.author_one" value="1">
+		    <input type="checkbox" name="author[]" value="author_one" checked="checked" /> 查看电话
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_one" /> 查看电话
+		    </eq>
+		    <eq name="result.author_two" value="1">
+		    <input type="checkbox" name="author[]" value="author_two" checked="checked" /> 查看手机
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_two" /> 查看手机
+		    </eq>
+		    <eq name="result.author_three" value="1">
+		    <input type="checkbox" name="author[]" value="author_three" checked="checked" /> 查看QQ
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_three" /> 查看QQ
+		    </eq>
+		    <eq name="result.author_four" value="1">
+		    <input type="checkbox" name="author[]" value="author_four" checked="checked" /> 查看邮件
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_four" /> 查看邮件
+		    </eq>
+		    <eq name="result.author_five" value="1">
+		    <input type="checkbox" name="author[]" value="author_five" checked="checked" /> 查看网址
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_five" /> 查看网址
+		    </eq>
+		    <eq name="result.author_six" value="1">
+		    <input type="checkbox" name="author[]" value="author_six" checked="checked" /> 单条复制
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_six" /> 单条复制
+		    </eq>
+		    <eq name="result.author_seven" value="1">
+		    <input type="checkbox" name="author[]" value="author_seven" checked="checked" /> 单条下载
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_seven" /> 单条下载
+		    </eq>
+		    <br /><br />
+		    <eq name="result.author_eight" value="1">
+		    <input type="checkbox" name="author[]" value="author_eight" checked="checked" /> 首页结果下载
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_eight" /> 首页结果下载
+		    </eq>
+		    <eq name="result.author_nine" value="1">
+		    <input type="checkbox" name="author[]" value="author_nine" checked="checked" /> 全部下载
+		    <else/>
+		    <input type="checkbox" name="author[]" value="author_nine" /> 全部下载
+		    </eq>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

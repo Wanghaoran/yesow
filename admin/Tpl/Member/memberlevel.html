@@ -28,6 +28,7 @@
 	    <li class="line">line</li>
 	    <li><a class="icon" href="__URL__/editlevelrmb/id/{sid_role}" target="dialog" mask="true" warn="请选择会员等级"><span>RMB设置</span></a></li>
 	    <li><a class="icon" href="__URL__/editleveleb/id/{sid_role}" target="dialog" mask="true" warn="请选择会员等级"><span>E币设置</span></a></li>
+	    <li><a class="icon" href="__URL__/editlevelauthor/id/{sid_role}" target="dialog" mask="true" warn="请选择会员等级"><span>权限设置</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['member']['addmemberlevel'])">
 	    <li><a class="add" href="__URL__/addmemberlevel" target="dialog" mask="true"><span>新增</span></a></li>
@@ -44,6 +45,9 @@
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['member']['editleveleb'])">
 	    <li><a class="icon" href="__URL__/editleveleb/id/{sid_role}" target="dialog" mask="true" warn="请选择会员等级"><span>E币设置</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['member']['editlevelauthor'])">
+	    <li><a class="icon" href="__URL__/editlevelauthor/id/{sid_role}" target="dialog" mask="true" warn="请选择会员等级"><span>权限设置</span></a></li>
 	    </if>
 	    </if>
 		</ul>

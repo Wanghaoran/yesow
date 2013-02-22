@@ -70,7 +70,7 @@ class CompanyAction extends CommonAction {
     //点击量加一
     $company -> where(array('id' => $id)) -> setInc('clickcount');
     //结果
-    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.qqcode,c.email,c.website') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
+    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.companyphone,c.qqcode,c.email,c.website') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
     //是否有查看权
     $member_company = M('MemberCompany');
     $where = array();
@@ -82,6 +82,7 @@ class CompanyAction extends CommonAction {
     //如果未查询到数据，则隐藏数据内容
     if(!$member_company -> where($where) -> find()){
       $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
+      $result['companyphone'] = substr_replace($result['companyphone'], '********', 5);
       $result['qqcode'] = '********';
       $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
       $result['website'] = substr_replace($result['website'], '*******', 7);
