@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>充值金额-RMB充值-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script>
+  $(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+       $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+     });
+   });
+</script>
+
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+                <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">RMB充值</div>
+                   <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="rmb">
+                	<div class="rmb_title">
+                        <ul class="ul_rmb">
+                            <li class="choice">充值金额</li>
+                            <li class="li_img"></li>
+                            <li>支付方式</li>
+                            <li class="li_img"></li>
+                            <li>我要支付</li>
+                            <li class="li_img"></li>
+                            <li>支付完成</li>
+                        </ul>
+                        <div class="clear"></div>
+		      </div>
+		      <form action="__ACTION__" method="get">
+                    <div class="rmb_con">
+                          <div class="rmb_con1">
+                              <label>充值金额：</label>
+                              <input type="text" class="input_long" name="money" /><span class="zhushi_red">*填写想要充值的金额，金额为正数。</span>  
+                          </div>
+                          <div class="rmb_con1">
+                              <label>验&nbsp;&nbsp;证&nbsp;码：</label>
+			      <input type="text" class="input_short" name="verify" />&nbsp;&nbsp;&nbsp;<img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" />
+                          </div>
+			  <div class="rmb_btn">
+			    {__NOTOKEN__}
+                              <input id="submit" value="下一步" class="BtnA" type="submit">    
+                          </div>
+			</div>
+			</form>
+                </div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

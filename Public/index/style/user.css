@@ -183,7 +183,7 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .pop-ico .ico-list a:hover img, .pop-ico .ico-list .cur img {border: 1px dashed #F60;}
 
 #main_rlong{float:left; width:788px; border:#BDBDBD 1px solid;}
-.main_rlong_tit{ width:778px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
+.main_rlong_tit{ width:758px; height:24px; line-height:24px; background:#ececec url(images/user/mian.gif) -1px -130px no-repeat;; padding:3px 0 0 30px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
 .main_rlong_con{ width:768px; padding:10px;}
 .main_rlong_c1{ float:left; width:84px; margin:10px;}
 .main_rlong_c1 img{ padding:1px;border:#e3e3e3 1px solid; vertical-align:middle;}
@@ -298,3 +298,33 @@ input.wydh_btn{ margin:10px;width:160px; height:30px; line-height:30px; backgrou
 p.p_title{ font-size:14px; height:25px; line-height:25px;}
 p.p_con{ height:40px; line-height:40px;}
 p.p_bot{ color:#ff0000; height:25px; line-height:25px;}
+
+/**RMB管理**/
+.rmb{ width:687px; height:auto; margin:0 auto;}
+.rmb_title{ height:31px; line-height:31px; width:687px; border-bottom:#ff8b01 1px solid; text-align:center; margin-top:20px;}
+	ul.ul_rmb li{ float:left; width:141px; height:25px; line-height:25px; padding-top:5px; border:#e4e3e3 1px solid; border-bottom:none; background:#f3f3f3; color:#8b8b8b; font-size:14px; font-weight:bold;}
+	ul.ul_rmb li.choice{ width:141px; height:26px; line-height:26px; padding-top:5px; background:url(images/user/btn_buzhou.gif) top center no-repeat; border:none; color:#fff;}
+	ul.ul_rmb li.li_img{ width:39px; height:31px; background:url(images/user/icon_buzhou.gif) no-repeat; border:none;}
+.rmb_con{ width:687px;  margin:10px auto; padding-top:30px;}
+.rmb_con1{ width:420px; margin:10px auto 0; height:30px; line-height:30px;}
+.rmb_con1 input.input_long{ width:120px; height:20px; line-height:20px; border:#aaa 1px solid;}
+.rmb_con1 input.input_short{ width:80px; height:20px; line-height:20px; border:#aaa 1px solid;}
+.rmb_btn{ width:100px; margin:30px auto;}
+.zhushi_red{ color:#F00; margin-left:10px;}
+.rmb_img{ width:600px; height:200px; margin:10px auto;}
+.rmb_fanhui{ width:120px; height:30px; line-height:30px; background:url(images/user/btn_fanhui.gif) no-repeat; font-size:14px; color:#fff; text-align:center; border:none; cursor:pointer;}
+.table_rmb{ border:#ddd 1px solid; border-collapse:collapse; width:680px; margin:0px auto 30px;}
+.table_rmb td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px;}
+.table_rmb td.td_left{ text-align:right;}
+.table_rmb td.td_right{ text-align:left; padding-left:5px;}
+.table_rmb td.td_right a{ color:#ff0000; text-decoration:underline;}
+.table_rmb td.td_mid{ text-align:center;}
+
+.table_chongzhi{ border:#ddd 1px solid; border-collapse:collapse; width:680px; margin:0px auto 30px;}
+.table_chongzhi td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px;}
+.table_chongzhi td.td_left{ text-align:right; width:180px;}
+.table_chongzhi td.td_right{ text-align:left; padding-left:5px;}
+.table_chongzhi td.td_right a{ color:#ff0000; text-decoration:underline;}
+.table_chongzhi td.td_mid{ text-align:center; height:50px; line-height:50px;}
+textarea.textarea_rmb{ width:400px; height:80px; border:#ccc 1px solid; margin:5px 0;}
+input.radio_rmb{ vertical-align:middle; padding:0 3px 2px 0;}

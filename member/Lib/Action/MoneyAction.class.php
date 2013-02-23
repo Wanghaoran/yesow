@@ -28,5 +28,23 @@ class MoneyAction extends CommonAction {
     $this -> display();
   }
 
+  //rmb充值
+  public function rmbrecharge(){
+    //RMB充值第二步
+    if(!empty($_GET['money'])){
+      if($_SESSION['verify'] != $this -> _get('verify', 'md5')){
+	R('Register/errorjump',array(L('VERIFY_ERROR')));
+      }
+      $this -> display('rmbrecharge_two');
+      exit();
+    }
+    //RMB充值第三步
+    if(!empty($_POST['paytype'])){
+      $this -> display('rmbrecharge_three');
+      exit();
+    }
+    $this -> display('rmbrecharge_one');
+  }
+
 
 }

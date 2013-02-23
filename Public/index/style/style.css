@@ -715,3 +715,44 @@ ul.click_list li span.clicknum{ float:right; margin-right:5px; color:#F00; font-
 .boxzhengfu span.span_zf1{ color:#000; font-weight:bold; background:url(images/icon_book.jpg) left center no-repeat; padding-left:20px;}
 .boxzhengfu span.span_zf2{ color:#f00; font-weight:bold;}
 
+.main12_r_item2{ padding-top:5px;}
+ul.businessonline{}
+ul.businessonline li{ float:left; border-bottom:#d9d9d9 1px solid; padding-top:5px;}
+ul.businessonline li div.div_left{ float:left; width:380px;}
+ul.businessonline li div.div_left h2{ color:#ea4414; font-size:16px; font-weight:bold;}
+ul.businessonline li div.div_left h2 span{ color:#0095fc;}
+ul.businessonline li div.div_left h3{ font-size:12px; font-weight:normal; color:#333;}
+ul.businessonline li div.div_left h4{font-size:12px; font-weight:normal; color:#333; }
+ul.businessonline li div.div_left h4 span{color:#fd5e02; margin-left:20px;}
+ul.businessonline li div.div_left h5{font-size:12px; font-weight:normal; color:#333; }
+ul.businessonline li div.div_left h5 span{ margin-left:20px;}
+ul.businessonline li div.div_left h5 span a{color:#0096ff;margin-left:20px;}
+ul.businessonline li div.div_right{ float:left; width:240px; padding-left:5px;}
+ul.businessonline li div.div_right p a{ float:right; margin:10px 0 10px 5px;}
+ul.businessonline li div.div_right p input{float:right;}
+input.btn_wyxf{ background:url(images/btn_download.gif) bottom left no-repeat;font-size:12px; font-weight:bold; display:block;width:73px; height:28px; line-height:24px; text-align:center; color:#fff; border:none;cursor:pointer;}
+
+.main_12_c_bod{width:640px; min-height:500px; height:auto!important; height:500px; padding:4px; border:1px solid #F60; border-top:0;}
+ul.tuijianpaiming li{ float:left; border-bottom:#d9d9d9 1px solid; padding-top:5px; height:84px;}
+ul.tuijianpaiming li div.div_num{ float:left; width:100px; height:84px; line-height:84px; font-size:18px; font-weight:bold; color:#cdcdcd; text-align:center;}
+ul.tuijianpaiming li div.div_left{ float:left; width:380px;}
+ul.tuijianpaiming li div.div_left h2 div.h2_left{float:left;font-weight:bold; color:#ea4414; font-size:16px; margin-right:10px; width:240px; white-space:nowrap; word-break:break-all; overflow: hidden;}
+ul.tuijianpaiming li div.div_left h2 div.h2_right{float:left;font-weight:bold;color:#0095fc; font-size:14px; }
+ul.tuijianpaiming li div.div_left h3{ font-size:12px; font-weight:normal; color:#333;}
+ul.tuijianpaiming li div.div_left h4{font-size:12px; font-weight:normal; color:#333; }
+ul.tuijianpaiming li div.div_left h4 span{color:#fd5e02; margin-left:20px;}
+ul.tuijianpaiming li div.div_left h5{font-size:12px; font-weight:normal; color:#333; }
+ul.tuijianpaiming li div.div_left h5 span{ margin-left:20px;}
+ul.tuijianpaiming li div.div_left h5 span a{color:#0096ff;margin-left:20px;}
+ul.tuijianpaiming li div.div_right{ float:left; width:140px; padding:40px 0 0 5px;}
+ul.tuijianpaiming li div.div_right p input{float:right;}
+ul.tuijianpaiming li div.li_one{background:url(images/tuijianbg.gif) 0 0 no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_two{background:url(images/tuijianbg.gif) 0 -85px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_three{background:url(images/tuijianbg.gif) 0 -170px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_four{background:url(images/tuijianbg.gif) 0 -255px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_five{background:url(images/tuijianbg.gif) 0 -340px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_six{background:url(images/tuijianbg.gif) 0 -425px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_seven{background:url(images/tuijianbg.gif) 0 -510px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_eight{background:url(images/tuijianbg.gif) 0 -595px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_nine{background:url(images/tuijianbg.gif) 0 -680px no-repeat; text-indent:-9999em;}
+ul.tuijianpaiming li div.li_ten{background:url(images/tuijianbg.gif) 0 -765px no-repeat; text-indent:-9999em;}

@@ -15,21 +15,10 @@
         	<div id="main">
             <include file="sidebar" />
 				<div id="main_rm">
-					<div class="main_rm_tit">个人信息</div>
+					<div class="main_rm_tit">E币管理</div>
                     <div class="main_rm_con">
                     	<ul class="user_set">
-                        	<li class="admin_img"><a href="#"><img src="__PUBLIC__/index/style/images/user/<!--{$Think.session.headico}--!>" /></a><h2>信息认证</h2></li>
-                            <li><div class="div_span">会员帐号：</div><div><!--{$Think.session.username}--!></div></li>
-                            <li><div class="div_span">会员余额：</div><div>RMB:XXX元[<a href="#">充值</a>]<br />E币:XXX</div></li>
-                            <li><div class="div_span">当前等级：</div><div>普通会员</div></li>
-                            <div class="clear"></div>
-                            <li class="long_text"><div class="div_span">最近登录IP：</div><div><!--{$Think.session.last_login_ip}--!></div></li>
-			    <li  class="long_text"><div class="div_span">上次登录时间：</div>
-			    <div>
-			      <if condition="isset($_SESSION['last_login_time'])">
-			      <!--{$Think.session.last_login_time|date="Y-m-d H:i:s", ###}--!>
-			      </if>
-			    </div></li>
+                        	<include file="Index:info" />
                             <li class="btn_img2"><a href="#"><img src="__PUBLIC__/index/style/images/user/img_eb.jpg" /></a><a href="#"><img src="__PUBLIC__/index/style/images/user/img_detail.jpg" /></a></li>
                         </ul>
                         <div class="clear"></div>

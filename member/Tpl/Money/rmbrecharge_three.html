@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我要支付-RMB充值-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+</head>
+<body id="body_user">
+	<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+                <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">RMB充值</div>
+                   <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="rmb">
+                	<div class="rmb_title">
+                        <ul class="ul_rmb">
+                            <li>充值金额</li>
+                            <li class="li_img"></li>
+                            <li>支付方式</li>
+                            <li class="li_img"></li>
+                            <li class="choice">我要支付</li>
+                            <li class="li_img"></li>
+                            <li>支付完成</li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="rmb_con">
+                          <table class="table_rmb">
+                          	<tr>
+				  <td class="td_left">您的充值金额为：</td><td class="td_right">￥<!--{$Think.post.money}--!>元</td>
+                            </tr>
+                            <tr>
+                            	<td class="td_left">您选择的支付方式为：</td><td class="td_right">支付宝</td>
+                            </tr>
+                            <tr>
+                            	<td class="td_left">支付手续费用为：</td><td class="td_right">￥1.5元</td>
+                            </tr>
+                            <tr>
+			      <td class="td_left">会员备注：</td><td class="td_right"><!--{$Think.post.remark}--!></td>
+                            </tr>
+                            <tr>
+                            	<td colspan="2" class="td_mid"><input type="button" value="立即使用支付宝支付" class="wydh_btn"/> </td>
+                            </tr>
+                          </table>
+                    </div>
+                </div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>
