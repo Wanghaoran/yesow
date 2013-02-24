@@ -154,6 +154,8 @@ class PublicAction extends Action {
       session('last_login_time', $result['last_login_time']);
       session('headico', $result['headico']);
       session('login_count', $result['login_count']);
+      //缓存RMB余额
+      D('MemberRmb') -> rmbtotal();
       //更新登录信息
       $data['id'] = $result['id'];
       $data['last_login_ip'] = get_client_ip();

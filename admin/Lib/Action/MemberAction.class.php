@@ -418,25 +418,6 @@ class MemberAction extends CommonAction {
     $this -> display();
   }
 
-  //会员等级RMB设置
-  public function editlevelrmb(){
-    $level = D('MemberLevel');
-    //更新
-    if(!empty($_POST['id'])){
-      if(!$level -> create()){
-	$this -> error($level -> getError());
-      }
-      if($level -> save()){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
-      }
-    }
-    $result = $level -> field('rmb_one') -> find($this -> _get('id', 'intval'));
-    $this -> assign('result', $result);
-    $this -> display();
-  }
-
   //会员等级EB设置
   public function editleveleb(){
     $level = D('MemberLevel');
@@ -481,6 +462,9 @@ class MemberAction extends CommonAction {
 	$data[$value] = 1;
       }
       $data['id'] = $id;
+      $data['rmb_one'] = $this -> _post('rmb_one');
+      $data['rmb_two'] = $this -> _post('rmb_two');
+      $data['rmb_three'] = $this -> _post('rmb_three');
       if($level -> save($data)){
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
@@ -488,7 +472,7 @@ class MemberAction extends CommonAction {
       }
 
     }
-    $result = $level -> field('author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine') -> find($this -> _get('id', 'intval'));
+    $result = $level -> field('rmb_one,rmb_two,rmb_three,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }

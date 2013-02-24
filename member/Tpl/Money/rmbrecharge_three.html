@@ -35,19 +35,31 @@
                           <table class="table_rmb">
                           	<tr>
 				  <td class="td_left">您的充值金额为：</td><td class="td_right">￥<!--{$Think.post.money}--!>元</td>
-                            </tr>
+				</tr>
+				<tr>
+				  <td class="td_left">支付手续费用为：</td><td class="td_right">￥ <!--{$rate_pay}--!> 元(四舍五入保留一位小数)</td>
+			      </tr>
+			      <tr>
+				<td class="td_left">您的实际应支付金额为：</td><td class="td_right">￥ <b><!--{$money_pay}--!> 元</td>
+				</tr>
                             <tr>
-                            	<td class="td_left">您选择的支付方式为：</td><td class="td_right">支付宝</td>
+                            	<td class="td_left">您选择的支付方式为：</td><td class="td_right"><!--{$paytype_name}--!></td>
+			      </tr>
+			      <tr>
+				<td class="td_left">订单号：</td><td class="td_right"><!--{$orderid}--!></td>
                             </tr>
-                            <tr>
-                            	<td class="td_left">支付手续费用为：</td><td class="td_right">￥1.5元</td>
-                            </tr>
+                            
                             <tr>
 			      <td class="td_left">会员备注：</td><td class="td_right"><!--{$Think.post.remark}--!></td>
-                            </tr>
+			    </tr>
+			    <form action="__URL__/alipayapi" method="post">
                             <tr>
-                            	<td colspan="2" class="td_mid"><input type="button" value="立即使用支付宝支付" class="wydh_btn"/> </td>
-                            </tr>
+			      <td colspan="2" class="td_mid">
+				<input type="hidden" name="oid" value="<!--{$orderid}--!>" />
+				<input type="hidden" name="price" value="<!--{$money_pay}--!>" />
+				<input type="submit" value="立即使用<!--{$paytype_name}--!>支付" class="wydh_btn" /> </td>
+			    </tr>
+			    </form>
                           </table>
                     </div>
                 </div>

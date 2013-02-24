@@ -1,0 +1,59 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/payport" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>接口名称：</label>
+		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(255个字符以内)</label>
+	      </div>
+	      <div class="unit">
+		<label>英文识别名称：</label>
+		<input type="text" class="required" name="enname" value="<!--{$result.enname}--!>" /><label>重要数据请勿更改！</label>
+	      </div>
+	      <div class="unit">
+		<label>支付宝账户：</label>
+		<input type="text" class="required" name="account" size="40" value="<!--{$result.account}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>合作者身份ID：</label>
+		<input type="text" class="required" name="key1" size="40" value="<!--{$result.key1}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>交易安全校验码：</label>
+		<input type="text" class="required" name="key2" size="40" value="<!--{$result.key2}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>费率：</label>
+		<input type="text" class="required" name="rate" value="<!--{$result.rate}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>状态：</label>
+		<select class="combox" name="status">
+		  <eq name="result.status" value="1">
+		  <option value="1" selected="selected">启用</option>
+		  <option value="0">禁用</option>
+		  <else/>
+		  <option value="1">启用</option>
+		  <option value="0" selected="selected">禁用</option>
+		  </eq>
+		</select>
+	      </div>
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$result.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -1221,12 +1221,29 @@ class SystemAction extends CommonAction {
 
   //支付接口管理
   public function payport(){
+    $payport = M('payport');
+    $result = $payport -> field('name,enname,rate,remark,status') -> select();
+    $this -> assign('result', $result);
     $this -> display();
   }
 
   //配置支付接口信息
   public function editport(){
-    echo $_GET['mod'];
+    $payport = M('payport');
+    if(!empty($_POST['id'])){
+      if(!$payport -> create()){
+	$this -> error($payport -> getError());
+      }
+      if($payport -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $mod = $this -> _get('mod');
+    $result = $payport -> where(array('enname' => $mod)) -> find();
+    $this -> assign('result', $result);
+    $this -> display('editport_' . $mod);
   }
 
   /* ------------  系统设置   -------------- */

@@ -38,20 +38,30 @@
 	<table class="table" width="100%" layoutH="138">
 		<thead>
 		  <tr>
-			<th width="25">服务提供商</th>
-			<th width="60">名称</th>
+			<th width="60">接口名称</th>
+			<th width="60">英文识别码</th>
 			<th width="120">接口可用性</th>
+			<th width="60">费率</th>	
+			<th width="60">状态</th>	
 			<th width="450">备注</th>
 
 		</tr>
 		</thead>
 		<tbody>
-		<tr target="sid_role" rel="alipay">
-		  <td style="height:50px;"><img src="__PUBLIC__/index/image/alipay.png" /></td>
-			  <td>支付宝担保交易</td>
-			  <td><img src="__PUBLIC__/index/image/true.png" />接口状态正常</td>
-			  <td><!--{$r.remark}--!></td>
-			</tr>
+		  <volist name="result" id="r">
+		  <tr target="sid_role" rel="<!--{$r.enname}--!>">
+		    <td><!--{$r.name}--!></td>
+		    <td><!--{$r.enname}--!></td>
+		    <td><img src="__PUBLIC__/index/image/true.png" />接口状态正常</td>
+		    <td><!--{$r.rate}--!></td>
+		    <eq name="r.status" value="1">
+		    <td style="color:green">启用</td>
+		    <else/>
+		    <td style="color:red">禁用</td>
+		    </eq>
+		    <td><!--{$r.remark}--!></td>
+		  </tr>
+		  </volist>
 		</tbody>
 	</table>
 	<div class="panelBar">

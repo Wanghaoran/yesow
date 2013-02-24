@@ -33,7 +33,10 @@ class RegisterAction extends Action {
       if(!$member -> create()){
 	$this -> errorjump($member -> getError());
       }
-      if($member -> add()){
+      if($mid = $member -> add()){
+	//向会员reb表插入此会员信息
+	$member_rmb = M('MemberRmb');
+	$member_rmb -> add(array('mid' => $mid));
 	$this -> successjump(L('USER_REGISTER_SUCCESS'), U('register/three'));
       }else{
 	$this -> errorjump(L('USER_REGISTER_ERROR'));

@@ -314,14 +314,14 @@ p.p_bot{ color:#ff0000; height:25px; line-height:25px;}
 .rmb_img{ width:600px; height:200px; margin:10px auto;}
 .rmb_fanhui{ width:120px; height:30px; line-height:30px; background:url(images/user/btn_fanhui.gif) no-repeat; font-size:14px; color:#fff; text-align:center; border:none; cursor:pointer;}
 .table_rmb{ border:#ddd 1px solid; border-collapse:collapse; width:680px; margin:0px auto 30px;}
-.table_rmb td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px;}
-.table_rmb td.td_left{ text-align:right;}
+.table_rmb td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px; word-break: break-all; word-wrap:break-word;}
+.table_rmb td.td_left{ text-align:right; width:180px;}
 .table_rmb td.td_right{ text-align:left; padding-left:5px;}
 .table_rmb td.td_right a{ color:#ff0000; text-decoration:underline;}
 .table_rmb td.td_mid{ text-align:center;}
 
 .table_chongzhi{ border:#ddd 1px solid; border-collapse:collapse; width:680px; margin:0px auto 30px;}
-.table_chongzhi td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px;}
+.table_chongzhi td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px; word-break: break-all; word-wrap:break-word;}
 .table_chongzhi td.td_left{ text-align:right; width:180px;}
 .table_chongzhi td.td_right{ text-align:left; padding-left:5px;}
 .table_chongzhi td.td_right a{ color:#ff0000; text-decoration:underline;}
