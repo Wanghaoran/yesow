@@ -17,7 +17,7 @@ class PayAction extends Action {
     $alipay_config['input_charset'] = strtolower('utf-8');
     //ca证书路径地址，用于curl中ssl校验
     ////请保证cacert.pem文件在当前文件夹目录中
-    $alipay_config['cacert'] = __ROOT__ . 'Public/cacert.pem';
+    $alipay_config['cacert'] = __ROOT__ . '/Public/cacert.pem';
     //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
     $alipay_config['transport'] = 'http';
 
@@ -94,15 +94,16 @@ class PayAction extends Action {
     $alipay_config['input_charset'] = strtolower('utf-8');
     //ca证书路径地址，用于curl中ssl校验
     ////请保证cacert.pem文件在当前文件夹目录中
-    $alipay_config['cacert'] = __ROOT__ . 'Public/cacert.pem';
+    $alipay_config['cacert'] = __ROOT__ . '/Public/cacert.pem';
     //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
     $alipay_config['transport'] = 'http';
+
+    //删除多余数组，避免验证错误
+    unset($_GET['_URL_']);
 
     //计算得出通知验证结果
     $alipayNotify = new AlipayNotify($alipay_config);
     $verify_result = $alipayNotify->verifyReturn();
-    dump($alipayNotify);
-    dump($verify_result);
     //验证成功
     if($verify_result){
       //商户订单号

@@ -105,7 +105,7 @@ class MoneyAction extends CommonAction {
     //商户订单号
     $out_trade_no = $this -> _post('oid');
     //订单名称
-    $subject = '易搜网站充值系统';
+    $subject = '易搜会员中心人民币充值';
     //付款金额
     $price = $this -> _post('price');
     //商品数量,必填，建议默认为1
@@ -116,8 +116,6 @@ class MoneyAction extends CommonAction {
     $logistics_type = "EXPRESS";
     //物流支付方式,必填，两个值可选：SELLER_PAY（卖家承担运费）、BUYER_PAY（买家承担运费）
     $logistics_payment = "SELLER_PAY";
-    //订单描述
-    $body = '易搜网站充值系统';
     /************************************************************/
 
     //构造要请求的参数数组，无需改动

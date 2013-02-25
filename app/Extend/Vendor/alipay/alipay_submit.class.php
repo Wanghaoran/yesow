@@ -121,7 +121,7 @@ class AlipaySubmit {
 		while (list ($key, $val) = each ($para)) {
             $sHtml.= "<input type='hidden' name='".$key."' value='".$val."'/>";
         }		
-		$sHtml = $sHtml."<script>document.forms['alipaysubmit'].submit();</script>";
+		$sHtml = $sHtml."</form><script>document.forms['alipaysubmit'].submit();</script>";
 		$sHtml .= '</body></html>';
 		
 		return $sHtml;
