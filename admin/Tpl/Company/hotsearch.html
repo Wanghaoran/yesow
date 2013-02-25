@@ -26,13 +26,13 @@
 	    <li class=""><a class="delete" href="__URL__/delhotsearch/navTabId/hotsearch" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/edithotsearch/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addhotsearch'])">
+	    <if condition="isset($_SESSION['acc_arr']['company']['addhotsearch'])">
 	    <li><a class="add" href="__URL__/addhotsearch" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delhotsearch'])">	    
+	    <if condition="isset($_SESSION['acc_arr']['company']['delhotsearch'])">	    
 	    <li class=""><a class="delete" href="__URL__/delhotsearch/navTabId/hotsearch" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['edithotsearch'])">
+	    <if condition="isset($_SESSION['acc_arr']['company']['edithotsearch'])">
 	    <li><a class="edit" href="__URL__/edithotsearch/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
 	    </if>
 	    </if>

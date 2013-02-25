@@ -67,5 +67,6 @@ return array(
   'COMPANY_LINKMAN_EMPTY' => '联系人不能为空',
   'COMPANY_MANPRODUCTS_EMPTY' => '主营产品不能为空',
   'COMPANY_KEYWORD_EMPTY' => '关键字不能为空',
+  'MONEY_ERROR' => '充值金额错误',
 
 );

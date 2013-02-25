@@ -82,7 +82,7 @@
       alert('所在地区不能为空');
       return false;
     }
-    if($('#companyphone')[0].value.substr(($('#companyphone')[0].value.length) - 1) == '-'){
+    if($('#companyphone')[0].value == ''){
       $('#companyphone').focus();
       alert('联系电话不能为空');
       return false;
@@ -104,11 +104,13 @@
       return false;
     }
     */
+    /*
     if(!RegCellPhone.exec($('#mobilephone')[0].value)){
       $('#mobilephone').focus();
       alert('移动电话格式不正确');
       return false;
     }
+    */
     /*
     if(!qqcode.exec($('#qqcode')[0].value)){
       $('#qqcode').focus();
@@ -187,7 +189,7 @@
   }
 
   var checkcompanyphone = function(){
-    if($('#companyphone')[0].value.substr(($('#companyphone')[0].value.length) - 1) == '-' || $('#companyphone')[0].value == ''){
+    if($('#companyphone')[0].value == ''){
       $('#companyphone').focus();
       alert('联系电话不能为空');
     }

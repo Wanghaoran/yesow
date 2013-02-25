@@ -1222,7 +1222,7 @@ class SystemAction extends CommonAction {
   //支付接口管理
   public function payport(){
     $payport = M('payport');
-    $result = $payport -> field('name,enname,rate,remark,status') -> select();
+    $result = $payport -> field('name,enname,remark,status') -> select();
     $this -> assign('result', $result);
     $this -> display();
   }

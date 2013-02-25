@@ -35,29 +35,37 @@ class MoneyAction extends CommonAction {
       if($_SESSION['verify'] != $this -> _get('verify', 'md5')){
 	R('Register/errorjump',array(L('VERIFY_ERROR')));
       }
+      if($_GET['money'] <= 0){
+	R('Register/errorjump',array(L('MONEY_ERROR')));
+      }
       //查询接口信息
       $payport = M('Payport');
-      $result_pay = $payport -> field('name,enname,rate') -> where(array('status' => 1)) -> select();
+      $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
       $this -> assign('result_pay', $result_pay);
       $this -> display('rmbrecharge_two');
       exit();
     }
     //RMB充值第三步
     if(!empty($_POST['paytype'])){
-      //查询费率
-      $rate = M('Payport') -> getFieldByenname($this -> _post('paytype'), 'rate');
-      //计算费率费用
-      $rate_pay = round($_POST['money'] * $rate / 100, 1);
-      $this -> assign('rate_pay', $rate_pay);
-      //实际支付金额
-      $money_pay = $_POST['money'] + $rate_pay;
-      $this -> assign('money_pay', $money_pay);
       //查询支付方式中文名称
       $paytype_name = M('Payport') -> getFieldByenname($this -> _post('paytype'), 'name');
       $this -> assign('paytype_name', $paytype_name);
+      //根据不同的支付方式，提交到不同的处理方法中
+      $this -> assign('payapi', $_POST['paytype'] . 'api');
       //生成订单号
       $orderid = 'new' . time() . mt_rand(1000000,9999999);
       $this -> assign('orderid', $orderid);
+      //记录订单信息
+      $rmb_order = D('RmbOrder');
+      $data = array();
+      $data['ordernum'] = $orderid;
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['price'] = $this -> _post('money');
+      $data['paytype'] = $this -> _post('paytype');
+      $data['remark'] = $this -> _post('remark');
+      $rmb_order -> create($data);
+      $rmb_order -> add();
+
       $this -> display('rmbrecharge_three');
       exit();
     }
@@ -66,19 +74,22 @@ class MoneyAction extends CommonAction {
 
   //处理支付宝充值
   public function alipayapi(){
+    $payport = M('Payport');
+    //查询认证信息
+    $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
     Vendor('alipay.alipay_submit','','.class.php');
     $alipay_config = array();
     //合作身份者id，以2088开头的16位纯数字
-    $alipay_config['partner'] = '2088002940776441';
+    $alipay_config['partner'] = $author['key1'];
     //安全检验码，以数字和字母组成的32位字符
-    $alipay_config['key'] = 'rdpptcgabjlr1kyl0gqapwooy2hp73ey';
+    $alipay_config['key'] = $author['key2'];
     //签名方式 不需修改
     $alipay_config['sign_type'] = strtoupper('MD5');
     //字符编码格式 目前支持 gbk 或 utf-8
     $alipay_config['input_charset'] = strtolower('utf-8');
     //ca证书路径地址，用于curl中ssl校验
     ////请保证cacert.pem文件在当前文件夹目录中
-    $alipay_config['cacert'] = '__PUBLIC__/cacert.pem';
+    $alipay_config['cacert'] = __ROOT__ . 'Public/cacert.pem';
     //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
     $alipay_config['transport'] = 'http';
 
@@ -86,11 +97,11 @@ class MoneyAction extends CommonAction {
     //支付类型
     $payment_type = "1";
     //服务器异步通知页面路径,需http://格式的完整路径，不能加?id=123这类自定义参数
-    $notify_url = "";
+    $notify_url = C('WEBSITE') . "member.php/pay/alipaynotify";
     //页面跳转同步通知页面路径,需http://格式的完整路径，不能加?id=123这类自定义参
-    $return_url = "http://42.121.116.205/alipay/return_url.php";
+    $return_url = C('WEBSITE') . "member.php/pay/alipayreturn";
     //卖家支付宝帐户
-    $seller_email = '39352580@qq.com';
+    $seller_email = $author['account'];
     //商户订单号
     $out_trade_no = $this -> _post('oid');
     //订单名称

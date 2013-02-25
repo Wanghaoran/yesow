@@ -110,11 +110,11 @@
 			</div>
 		      </form>
 		      <ul class="ul_search">
-			<empty name="Think.get.keyword">
+			<if condition="(empty($_GET['keyword'])) OR ($_GET['keyword'] == '请输入您要搜索的内容')">
 			<li class="li_text">请输入搜索关键词</li>
 			<else/>
 			<li class="li_text">共有<span class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
-			</empty>
+			</if>
 		    
                     <li>
                     	<div class="div_left">搜索说明</div>

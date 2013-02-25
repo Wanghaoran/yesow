@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>我要支付-RMB充值-易搜会员中心</title>
+<title>支付结果-RMB充值-易搜会员中心</title>
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
@@ -13,7 +13,7 @@
 	<div id="user_m">
     	<div class="warp_900">
         	<div id="main">
-                <include file="sidebar" />
+                <include file="Money:sidebar" />
                 <div id="main_rlong">
                 	<div class="main_rlong_tit">RMB充值</div>
                    <div class="clear30"></div>
@@ -25,36 +25,17 @@
                             <li class="li_img"></li>
                             <li>支付方式</li>
                             <li class="li_img"></li>
-                            <li class="choice">我要支付</li>
+                            <li>我要支付</li>
                             <li class="li_img"></li>
-                            <li>支付完成</li>
+                            <li class="choice">支付完成</li>
                         </ul>
                         <div class="clear"></div>
                     </div>
                     <div class="rmb_con">
-                          <table class="table_rmb">
-                          	<tr>
-				  <td class="td_left">您的充值金额为：</td><td class="td_right">￥<!--{$Think.post.money}--!>元</td>
-				</tr>
-                            <tr>
-			      <td class="td_left">您选择的支付方式为：</td><td class="td_right"><!--{$paytype_name}--!></td>
-			      </tr>
-			      <tr>
-				<td class="td_left">订单号：</td><td class="td_right"><!--{$orderid}--!></td>
-                            </tr>
-                            
-                            <tr>
-			      <td class="td_left">会员备注：</td><td class="td_right"><!--{$Think.post.remark}--!></td>
-			    </tr>
-			    <form action="__URL__/<!--{$payapi}--!>" method="post">
-                            <tr>
-			      <td colspan="2" class="td_mid">
-				<input type="hidden" name="oid" value="<!--{$orderid}--!>" />
-				<input type="hidden" name="price" value="<!--{$Think.post.money}--!>" />
-				<input type="submit" value="立即使用<!--{$paytype_name}--!>支付" class="wydh_btn" /> </td>
-			    </tr>
-			    </form>
-                          </table>
+		      <div class="rmb_img"><img src="__PUBLIC__/index/style/images/user/<!--{$pic_name}--!>" width="597" height="194" border="0" /></div>
+                          <div class="rmb_btn">
+                              <input type="button" value="返回首页" onclick="location.href='__APP__/money';" class="rmb_fanhui" />    
+                          </div>
                     </div>
                 </div>
                     <!--內容 結束-->
@@ -64,6 +45,6 @@
             </div>
         </div>
     </div>
-    <include file="Index:footer" />
+	<include file="Index:footer" />
 </body>
 </html>

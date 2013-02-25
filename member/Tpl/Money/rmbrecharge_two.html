@@ -7,6 +7,31 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript">
+  /*
+ function showRadio(index){
+	 var zhifu=document.getElementById("zhifu"+index);
+	 var zhifu0=document.getElementById("zhifu0");
+	 var zhifu1=document.getElementById("zhifu1");
+	 var zhifu2=document.getElementById("zhifu2");
+	 if(index==0){	
+	 zhifu.style.display="block";
+	 zhifu1.style.display="none";
+	 zhifu2.style.display="none";
+	 } 
+	 else if(index==1){	
+	 zhifu0.style.display="none";
+	 zhifu.style.display="block";
+	 zhifu2.style.display="none";
+	 }  
+	 else if(index==2){	
+	 zhifu0.style.display="none";
+	 zhifu1.style.display="none";
+	 zhifu.style.display="block";
+	 }  
+	 }
+	 */
+</script>
 </head>
 <body id="body_user">
   <include file="Index:header" />
@@ -36,8 +61,8 @@
                           <table class="table_chongzhi">
                           	<tr>
                             	<td class="td_left">充值金额：</td>
-				<td class="td_right"><!--{$Think.get.money|intval}--!></td>
-				<input type="hidden" name="money" value="<!--{$Think.get.money}--!>" />
+				<td class="td_right"><!--{$Think.get.money|round=###,2}--!></td>
+				<input type="hidden" name="money" value="<!--{$Think.get.money|round=###,2}--!>" />
                             </tr>
                             <tr>
                                 <td class="td_left">会员备注：</td>
@@ -46,16 +71,19 @@
                             <tr>
                                 <td class="td_left">支付方式：</td>
                                 <td class="td_right">
-				  <ul>
-				    <volist name="result_pay" id="rp">
-				    <eq name="i" value="1">
-				    <li><input type="radio" name="paytype" value="<!--{$rp.enname}--!>" class="radio_rmb" checked="checked" /><!--{$rp.name}--!>（手续费：<!--{$rp.rate}--!> %）</li>
-				    <else/>
-				    <li><input type="radio" name="paytype" value="<!--{$rp.enname}--!>" class="radio_rmb" /><!--{$rp.name}--!>（手续费：<!--{$rp.rate}--!> %）</li>
-				    </eq>
-				    </volist>
-                                    
+                                <ul class="zhifu_text">
+                                	<li id="zhifu0"><input type="radio" name="paytype" class="radio_rmb" value="alipay"  checked="checked"/>支付宝</li>
                                 </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td colspan="2">
+				  <ul class="zhifu_img">
+				    <volist name="result_pay" id="rp">
+				    <li class="zhifu_kqwg"><a title="<!--{$rp.name}--!>"><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50" border="0" /></a></li>
+				    </volist>
+                                    </ul>
+                                    <div class="clear"></div>
                                 </td>
                             </tr>
                             <tr>

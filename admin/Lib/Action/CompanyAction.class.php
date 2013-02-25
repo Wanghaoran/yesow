@@ -1021,4 +1021,54 @@ class CompanyAction extends CommonAction {
 
 
   /* --------------- 速查搜索管理 ---------------- */
+
+  /* --------------- 速查业务管理 ---------------- */
+
+  //人民币充值订单
+  public function rmborder(){
+    $rmb_order = M('RmbOrder');
+    $where = array();
+    $result = $rmb_order -> table('yesow_rmb_order as ro') -> field('ro.id,ro.ordernum,m.name as mname,ro.price,ro.status,ro.ischeck,p.name as pname,ro.addtime,ro.remark') -> join('yesow_member as m ON ro.mid = m.id') -> join('yesow_payport as p ON ro.paytype = p.enname') -> where($where) -> order('ro.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除人民币充值订单
+  public function delrmborder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $rmb_order = M('RmbOrder');
+    if($rmb_order -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核人民币充值订单
+  public function passauditrmborder(){
+    $rmb_order = M('RmbOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($rmb_order -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核人民币充值订单
+  public function nopassauditrmborder(){
+    $rmb_order = M('RmbOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($rmb_order -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+  /* --------------- 速查业务管理 ---------------- */
 }

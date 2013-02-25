@@ -328,3 +328,15 @@ p.p_bot{ color:#ff0000; height:25px; line-height:25px;}
 .table_chongzhi td.td_mid{ text-align:center; height:50px; line-height:50px;}
 textarea.textarea_rmb{ width:400px; height:80px; border:#ccc 1px solid; margin:5px 0;}
 input.radio_rmb{ vertical-align:middle; padding:0 3px 2px 0;}
+
+ul.zhifu_text li{ float:left; margin-right:10px;}
+ul.zhifu_img{ margin:10px;}
+ul.zhifu_img li{ float:left; width:155px; height:100px; margin:10px 0 20px 50px;}
+ul.zhifu_img li a{width:153px; height:98px; border:#8bb5c4 1px solid;display:block;
+		/*圆角*/
+	   -webkit-border-radius: 5px; 
+	   -moz-border-radius: 5px;
+	   border-radius: 5px; 
+	   behavior: url(style/PIE.htc);/*IE6、7、8下支持一些 CSS3 html5 属性*/}
+ul.zhifu_img li a:hover{ border:#fe9426 1px solid;}
+ul.zhifu_img li a img{ padding:24px 0; vertical-align:middle;}
