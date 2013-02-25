@@ -55,7 +55,7 @@ class PayAction extends Action {
 	  //获取此订单的用户id
 	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
 	  //更新用户RMB余额
-	  M('MemberRmb') -> where(array('id' => $mid)) -> setInc('rmb_pay', $total_pee);
+	  M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
 	}
 	echo "success";
       }
@@ -101,7 +101,8 @@ class PayAction extends Action {
     //计算得出通知验证结果
     $alipayNotify = new AlipayNotify($alipay_config);
     $verify_result = $alipayNotify->verifyReturn();
-
+    dump($alipayNotify);
+    dump($verify_result);
     //验证成功
     if($verify_result){
       //商户订单号
@@ -125,7 +126,7 @@ class PayAction extends Action {
 	  //获取此订单的用户id
 	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
 	  //更新用户RMB余额
-	  $member_rmb -> where(array('id' => $mid)) -> setInc('rmb_pay', $total_pee);
+	  $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
 	}
       }
       //重新缓存用户rmb余额
@@ -138,4 +139,5 @@ class PayAction extends Action {
     }
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html'); 
   }
+
 }
