@@ -1,8 +1,12 @@
+
 <div class="page">
+
 	<div class="pageContent">
 	
 	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberlevel" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
-		<div class="pageFormContent" layoutH="58">
+	  <div class="pageFormContent" layoutH="58">
+	    <h1><!--{$name}--!></h1>
+	    <div class="divider"></div>
 		  <div class="unit">
 		    <eq name="result.author_one" value="1">
 		    <input type="checkbox" name="author[]" value="author_one" checked="checked" /> 查看电话

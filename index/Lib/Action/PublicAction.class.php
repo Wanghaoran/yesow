@@ -71,6 +71,8 @@ class PublicAction extends Action {
       session('last_login_time', $result['last_login_time']);
       session('headico', $result['headico']);
       session('login_count', $result['login_count']);
+      //缓存RMB余额 和 会员等级
+      D('Member://MemberRmb') -> rmbtotal();
       //更新登录信息
       $data['id'] = $result['id'];
       $data['last_login_ip'] = get_client_ip();
@@ -86,11 +88,78 @@ class PublicAction extends Action {
 
   //ajax获取会员查看速查资料所需信息
   public function ajaxmembercompany(){
-    echo '您的会员等级为[普通会员]，今天可以查看两条免费信息。目前剩余0条，本 页面将消费0.1元请确认。 <br /><a onclick="quitview();">【取消】</a><a onclick="confirmview();">【确认查看】</a>';
+    $level = M('MemberLevel');
+    //查询会员等级免费查看条数 和 查看一条速查信息，扣款数
+    $level_info = $level -> field('freecompany,rmb_one') -> find(session('member_level_id'));
+    //查询此会员今日免费剩余条数
+    $where = array();
+    $where['mid'] = session(C('USER_AUTH_KEY'));
+    $where['time'] = date('Ymd');
+    $free_company = M('MemberFreeCompany') -> where($where) -> count();
+
+    //如果还未达到免费册数，则此次不收费
+    if($free_company < $level_info['freecompany']){
+      $number = $level_info['freecompany'] - $free_company;
+      $const = 0.00;
+    }else{
+      $number = 0;
+      $const = $level_info['rmb_one'];
+    }
+    echo '您的会员等级为[' . $_SESSION['member_level_name'] . ']，今天可以查看 ' . $level_info['freecompany'] . ' 条免费信息。目前剩余 ' . $number . ' 条，本 页面将消费 ' . $const . ' 元请确认。 <br /><a onclick="quitview();">【取消】</a><a onclick="confirmview();">【确认查看】</a>';
   }
 
   //ajax确认查看速查资料
   public function ajaxconfirmview(){
+    $level = M('MemberLevel');
+    $freecompany = M('MemberFreeCompany');
+    //查询会员等级免费查看条数 和 查看一条速查信息，扣款数
+    $level_info = $level -> field('freecompany,rmb_one') -> find(session('member_level_id'));
+    //查询此会员今日免费剩余条数
+    $where = array();
+    $where['mid'] = session(C('USER_AUTH_KEY'));
+    $where['time'] = date('Ymd');
+    $free_company = $freecompany -> where($where) -> count();
+
+    //如果还未达到免费册数，则此次不收费
+    if($free_company < $level_info['freecompany']){
+      //记录这次免费信息
+      $data = array();
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['cid'] = $this -> _get('cid', 'intval');
+      $data['time'] = date('Ymd');
+      $freecompany -> add($data);
+    }else{
+      //否则在会员RMB表中扣除相应余额
+      $const = $level_info['rmb_one'];
+      //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
+      $rmb = D('Member://MemberRmb');
+      $price = $rmb -> field('rmb_pay,rmb_exchange') -> find(session(C('USER_AUTH_KEY')));
+      //如果 兑换RMB余额足够支付 此次费用
+      if($price['rmb_exchange'] - $const >= 0){
+	$data_rmb = array();
+	$data_rmb['mid'] = session(C('USER_AUTH_KEY'));
+	$data_rmb['rmb_pay'] = $price['rmb_pay'];
+	$data_rmb['rmb_exchange'] = $price['rmb_exchange'] - $const;
+	$rmb -> save($data_rmb);
+      }else{
+	//如果兑换RMB不足够支付此次信息，则用充值RMB支付
+	//计算差值
+	$fee = abs($price['rmb_exchange'] - $const);
+	//如果差值不够支付，则退出执行
+	if($price['rmb_pay'] < $fee){
+	  echo 0;
+	  exit();
+	}
+	$data_rmb = array();
+	$data_rmb['mid'] = session(C('USER_AUTH_KEY'));
+	$data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
+	$data_rmb['rmb_exchange'] = 0;
+	$rmb -> save($data_rmb);
+	//更新会员余额和等级
+	$rmb -> rmbtotal(session(C('USER_AUTH_KEY')));
+      }
+    }
+
     //写会员-速查对应表
     $member_company = M('MemberCompany');
     $data = array();

@@ -81,11 +81,36 @@ class CompanyAction extends CommonAction {
     $where['time'] = array('EGT', $time);
     //如果未查询到数据，则隐藏数据内容
     if(!$member_company -> where($where) -> find()){
-      $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
-      $result['companyphone'] = substr_replace($result['companyphone'], '********', 5);
+      $result['mobilephone'] = substr_replace($result['mobilephone'], '****', 3,4);
+      $result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
       $result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
       $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
-      $result['website'] = substr_replace($result['website'], '*******', 7);
+      $result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
+    //否则 根据会员等级 将没有权限的信息隐藏
+    }else{
+      $level = M('MemberLevel');
+      //获取权限位
+      $author = $level -> field('author_one,author_two,author_three,author_four,author_five') -> find(session('member_level_id'));
+      //公司电话
+      if($author['author_one'] == 0){
+	$result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
+      }
+      //手机
+      if($author['author_two'] == 0){
+	$result['mobilephone'] = substr_replace($result['mobilephone'], '****', 3,4);
+      }
+      //QQ
+      if($author['author_three'] == 0){
+	$result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
+      }
+      //邮件
+      if($author['author_four'] == 0){
+	$result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
+      }
+      //网址
+      if($author['author_five'] == 0){
+	$result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
+      }
     }
     $this -> assign('result', $result);
     //最新更新同行

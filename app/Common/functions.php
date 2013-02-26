@@ -832,3 +832,27 @@ function charsetDecode($input,$_input_charset ,$_output_charset) {
 	return $output;
 }
 /* **************** 支付宝相关函数 ********************** */
+
+
+/* **************** 快钱相关函数 ********************** */
+
+//功能函数。将变量值不为空的参数组成字符串
+	Function appendParam($returnStr,$paramId,$paramValue){
+
+		if($returnStr!=""){
+			
+				if($paramValue!=""){
+					
+					$returnStr.="&".$paramId."=".$paramValue;
+				}
+			
+		}else{
+		
+			If($paramValue!=""){
+				$returnStr=$paramId."=".$paramValue;
+			}
+		}
+		
+		return $returnStr;
+	}
+/* **************** 快钱相关函数 ********************** */

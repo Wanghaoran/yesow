@@ -70,12 +70,12 @@
 			  <td><!--{$r.mname}--!></td>
 			  <switch name="r.status">
 			  <case value="0"><td style="color:red;">未付款</td></case>
-			  <case value="1"><td style="color:blue;">已付款未发货</td></case>
-			  <case value="2"><td style="color:orange;">已发货未收货</td></case>
+			  <case value="1"><td style="color:blue;">已付款 未发货</td></case>
+			  <case value="2"><td style="color:blue;">已发货 未收货</td></case>
 			  <case value="3"><td style="color:green;">交易完成</td></case>
 			  </switch>
 			  <eq name="r.ischeck" value="1">
-			  <td style="color:green">已确认</td>
+			  <td style="color:blue">已确认</td>
 			  <else/>
 			  <td style="color:red">未确认</td>
 			  </eq>

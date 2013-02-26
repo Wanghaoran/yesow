@@ -8,29 +8,10 @@
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
 <script type="text/javascript">
-  /*
- function showRadio(index){
-	 var zhifu=document.getElementById("zhifu"+index);
-	 var zhifu0=document.getElementById("zhifu0");
-	 var zhifu1=document.getElementById("zhifu1");
-	 var zhifu2=document.getElementById("zhifu2");
-	 if(index==0){	
-	 zhifu.style.display="block";
-	 zhifu1.style.display="none";
-	 zhifu2.style.display="none";
-	 } 
-	 else if(index==1){	
-	 zhifu0.style.display="none";
-	 zhifu.style.display="block";
-	 zhifu2.style.display="none";
-	 }  
-	 else if(index==2){	
-	 zhifu0.style.display="none";
-	 zhifu1.style.display="none";
-	 zhifu.style.display="block";
-	 }  
-	 }
-	 */
+  var changepaytype = function(endata,zhdata){
+    $('#zhpaytype').html(zhdata);
+    $('#enpaytype')[0].value = endata;
+  }
 </script>
 </head>
 <body id="body_user">
@@ -72,7 +53,7 @@
                                 <td class="td_left">支付方式：</td>
                                 <td class="td_right">
                                 <ul class="zhifu_text">
-                                	<li id="zhifu0"><input type="radio" name="paytype" class="radio_rmb" value="alipay"  checked="checked"/>支付宝</li>
+				  <li id="zhifu0"><input type="radio" id="enpaytype" name="paytype" class="radio_rmb" value="alipay"  checked="checked"/><span id="zhpaytype">支付宝</span></li>
                                 </ul>
                                 </td>
                             </tr>
@@ -80,7 +61,7 @@
                             	<td colspan="2">
 				  <ul class="zhifu_img">
 				    <volist name="result_pay" id="rp">
-				    <li class="zhifu_kqwg"><a title="<!--{$rp.name}--!>"><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50" border="0" /></a></li>
+				    <li class="zhifu_kqwg"><a onclick="changepaytype('<!--{$rp.enname}--!>','<!--{$rp.name}--!>')" title="<!--{$rp.name}--!>"><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50" border="0" /></a></li>
 				    </volist>
                                     </ul>
                                     <div class="clear"></div>

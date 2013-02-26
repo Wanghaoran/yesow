@@ -127,12 +127,12 @@ function submitcommit(){
 			  <span class="span_left">公司地址：</span><!--{$result.address}--!>
 			</h2>
 			<div class="div_info">
-			  <p>联系电话：<!--{$result.companyphone}--!></p>
-			  <p>移动电话：<!--{$result.mobilephone}--!></p>
+			  <p>公司电话：<!--{$result.companyphone}--!></p>
+			  <p>手机：<!--{$result.mobilephone}--!></p>
 			  <p>联系Q Q：<!--{$result.qqcode}--!></p>
 			  <p>电子邮件：<!--{$result.email}--!></p>
 			  <p>公司网址：<!--{$result.website}--!></p>
-			  <div style="position:relative;">
+			  <div style="position:relative; background:#E7EBEE; padding:5px 0; margin-bottom:10px;">
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 			    <a onclick="clickview()">点击查看</a><a href="" class="btn_tuijian"></a>
 			    <else/>

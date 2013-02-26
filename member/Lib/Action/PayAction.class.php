@@ -141,4 +141,122 @@ class PayAction extends Action {
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html'); 
   }
 
+  //快钱异步通知页面
+  public function k99billnotify(){
+    $payport = M('Payport');
+    //查询认证信息
+    $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();
+    //获取人民币网关账户号
+    $merchantAcctId=trim($_REQUEST['merchantAcctId']);
+    //设置人民币网关密钥
+    $key=$author['key1'];
+    //获取网关版本.固定值
+    $version=trim($_REQUEST['version']);
+    //获取语言种类.固定选择值。
+    $language=trim($_REQUEST['language']);
+    //签名类型.固定值
+    $signType=trim($_REQUEST['signType']);
+    //获取支付方式
+    $payType=trim($_REQUEST['payType']);
+    //获取银行代码
+    $bankId=trim($_REQUEST['bankId']);
+    //获取商户订单号
+    $orderId=trim($_REQUEST['orderId']);
+    //获取订单提交时间
+    $orderTime=trim($_REQUEST['orderTime']);
+    //获取原始订单金额
+    $orderAmount=trim($_REQUEST['orderAmount']);
+    //获取快钱交易号
+    $dealId=trim($_REQUEST['dealId']);
+    //获取银行交易号   
+    //如果使用银行卡支付时，在银行的交易号。如不是通过银行支付，则为空
+    $bankDealId=trim($_REQUEST['bankDealId']);
+    //获取在快钱交易时间
+    $dealTime=trim($_REQUEST['dealTime']);
+    //获取实际支付金额
+    $payAmount=trim($_REQUEST['payAmount']);
+    //获取交易手续费
+    $fee=trim($_REQUEST['fee']);
+    //获取扩展字段1
+    $ext1=trim($_REQUEST['ext1']);
+    //获取扩展字段2
+    $ext2=trim($_REQUEST['ext2']);
+    //获取处理结果
+    ///10代表 成功; 11代表 失败
+    /////00代表 下订单成功（仅对电话银行支付订单返回）;01代表 下订单失败（仅对电话银行支付订单返回）
+    $payResult=trim($_REQUEST['payResult']);
+    //获取错误代码
+    /////详细见文档错误代码列表
+    $errCode=trim($_REQUEST['errCode']);
+    //获取加密签名串
+    $signMsg=trim($_REQUEST['signMsg']);
+
+    //生成加密串。必须保持如下顺序。 
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"merchantAcctId",$merchantAcctId);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"version",$version);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"language",$language);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"signType",$signType);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"payType",$payType);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"bankId",$bankId);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"orderId",$orderId);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"orderTime",$orderTime);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"orderAmount",$orderAmount);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"dealId",$dealId);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"bankDealId",$bankDealId);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"dealTime",$dealTime);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"payAmount",$payAmount);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"fee",$fee);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"ext1",$ext1);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"ext2",$ext2);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"payResult",$payResult);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"errCode",$errCode);
+    $merchantSignMsgVal=appendParam($merchantSignMsgVal,"key",$key);
+    $merchantSignMsg= md5($merchantSignMsgVal);
+
+    //初始化结果及地址
+    $rtnOk=0;
+    $rtnUrl="";
+    //商家进行数据处理，并跳转会商家显示支付结果的页面
+    $rmb_order = M('RmbOrder');
+    $where = array();
+    $where['ordernum'] = $orderId;
+    $data = array();
+    /////首先进行签名字符串验证
+    if(strtoupper($signMsg)==strtoupper($merchantSignMsg)){
+      switch($payResult){
+	//支付成功
+	case "10":
+	  $data['status'] = 3;
+	  //如果更新成功，则写RMB表
+	  if($rmb_order -> where($where) -> save($data)){
+	    //获取支付总额
+	    $total_pee = $payAmount；
+	    //获取此订单的用户id
+	    $mid = $rmb_order -> getFieldByordernum($orderId, 'mid');
+	    //更新用户RMB余额
+	    M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	  }
+	  $rtnOk=1;
+	  $rtnUrl="http://www.yoursite.com/show.php?msg=success!";
+	  break;
+	default:
+	  $data['status'] = 0;
+	  $rmb_order -> where($where) -> save($data);
+	  $rtnOk=1;
+	  $rtnUrl="http://www.yoursite.com/show.php?msg=false!";
+	  break;
+      }
+    }else{
+      $rtnOk=1;
+      $rtnUrl="http://www.yoursite.com/show.php?msg=error!";
+    }
+    echo '<result>' . $rtnOk . '</result><redirecturl>' . $rtnUrl . '</redirecturl>';
+  }
+
+  public function k99billreturn(){
+    //充值成功的图片
+    $this -> assign('pic_name', 'success_tishi.gif');
+    $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
+  }
+
 }

@@ -465,13 +465,14 @@ class MemberAction extends CommonAction {
       $data['rmb_one'] = $this -> _post('rmb_one');
       $data['rmb_two'] = $this -> _post('rmb_two');
       $data['rmb_three'] = $this -> _post('rmb_three');
-      if($level -> save($data)){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
-      }
+      $level -> save($data);
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
 
     }
+    //等级名称
+    $name = $level -> getFieldByid($this -> _get('id', 'intval'), 'name');
+    $this -> assign('name', $name);
+    //结果
     $result = $level -> field('rmb_one,rmb_two,rmb_three,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();

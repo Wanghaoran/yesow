@@ -53,7 +53,7 @@ class MoneyAction extends CommonAction {
       //根据不同的支付方式，提交到不同的处理方法中
       $this -> assign('payapi', $_POST['paytype'] . 'api');
       //生成订单号
-      $orderid = 'new' . time() . mt_rand(1000000,9999999);
+      $orderid = date('YmdHis') . mt_rand(100000,999999);
       $this -> assign('orderid', $orderid);
       //记录订单信息
       $rmb_order = D('RmbOrder');
@@ -146,6 +146,188 @@ class MoneyAction extends CommonAction {
     $alipaySubmit = new AlipaySubmit($alipay_config);
     $html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
     echo $html_text;
+
+  }
+
+  //处理 财付通 充值
+  public function tenpayapi(){
+    $payport = M('Payport');
+    //查询认证信息
+    $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
+    Vendor('tenpay.PayRequest','','.class.php');
+    //设置财付通App-id: 财付通App注册时，由财付通分配
+    $appid = 1213147901;
+    //签名密钥: 开发者注册时，由财付通分配    
+    $key = $author['key1']; 
+    //异步通知URL
+    $notify_url = "http://localhost/tenpay/examples/PayResponeExample.php";  
+    //同步返回URL
+    $return_url = "http://localhost/tenpay/examples/PayReturn_url.php";
+    /* 创建支付请求对象 */
+    $reqHandler = new PayRequest($key);
+    //正式环境设置为 false
+    $reqHandler->setInSandBox(false);
+    //设置财付通appid: 财付通app注册时，由财付通分配
+    $reqHandler->setAppid($appid);
+    //设置商户系统订单号
+    $reqHandler->setParameter("out_trade_no", $this -> _post('oid')); 
+    //设置订单总金额，单位为分
+    $reqHandler->setParameter("total_fee", $this -> _post('price'));
+    //设置异步通知URL
+    $reqHandler->setParameter("notify_url", $notify_url);
+    //设置同步通知URL
+    $reqHandler->setParameter("return_url", $return_url);
+    //设置商品名称:商品描述，会显示在财付通支付页面上
+    $reqHandler->setParameter("body", "易搜会员中心人民币充值");
+    //设置用户客户端ip:用户IP，指用户浏览器端IP，不是财付通APP服务器IP
+    $reqHandler->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
+    //字符编码utf8
+    $reqHandler->setParameter("input_charset", 'UTF-8');
+
+    //生成支付请求的URL
+    $reqUrl = $reqHandler->getURL();
+
+    $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>支付跳转页面-易搜</title>
+<style>
+  .zhifu_tz{ width:320px; height:150px; border:#e78c55 3px solid; margin:0 auto 50px; position:absolute; top:50%; left:50%; margin-top:-75px; margin-left:-160px;
+    /*圆角*/
+    -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+    behavior: url(style/PIE.htc);/*IE6、7、8下支持一些 CSS3 html5 属性*/}
+  .zhifu_tz p{ padding:40px 0 0 60px; font-size:14px; line-height:30px; font-weight:bold;}
+  .zhifu_tz p img{ vertical-align:middle; margin:0 10px 5px 0;}
+  .zhifu_tz p.jishi{padding:20px 0 0 100px; font-size:12px; line-height:30px; font-weight:normal;}
+</style>
+</head>
+<body id="body_user">
+      <div class="zhifu_tz">
+        <p><img src="' . __ROOT__ .'/Public/index/style/images/user/loading.gif" width="25" height="25" border="0" />正在跳转至支付页面...</p>
+	</div>';
+
+
+    $sHtml .= '<script>location.href="'.$reqUrl.'"</script>';
+    $sHtml .= '</body></html>';
+    echo $sHtml;
+  }
+
+  //处理 快钱 充值
+  public function k99billapi(){
+    $payport = M('Payport');
+    //查询认证信息
+    $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();
+    //人民币网关账户号
+    $merchantAcctId = $author['account'];
+    //人民币网关密钥
+    $key = $author['key1'];
+    //字符集.固定选择值。可为空。
+    /////1代表UTF-8; 2代表GBK; 3代表gb2312
+    $inputCharset = "1";
+    //同步返回地址
+    $pageUrl = C('WEBSITE') . "member.php/pay/k99billreturn";
+    //异步通知地址
+    $bgUrl = C('WEBSITE') . "member.php/pay/k99billnotify";
+    //网关版本.固定值
+    $version = "v2.0";
+    //语言种类.固定选择值。
+    $language = "1";
+    //签名类型.固定值
+    $signType = "1";
+    //商户订单号
+    $orderId = $this -> _post('oid');
+    //订单金额
+    $orderAmount = $_POST['price'] * 100;
+    //订单提交时间
+    $orderTime = date('YmdHis');
+    //商品名称
+    $productName = "易搜会员中心人民币充值";
+    //支付方式.固定选择值
+    $payType = "00";
+    //同一订单禁止重复提交标志
+    $redoFlag = "1";
+
+    //生成加密签名串
+    $signMsgVal=appendParam($signMsgVal,"inputCharset",$inputCharset);
+	$signMsgVal=appendParam($signMsgVal,"pageUrl",$pageUrl);
+	$signMsgVal=appendParam($signMsgVal,"bgUrl",$bgUrl);
+	$signMsgVal=appendParam($signMsgVal,"version",$version);
+	$signMsgVal=appendParam($signMsgVal,"language",$language);
+	$signMsgVal=appendParam($signMsgVal,"signType",$signType);
+	$signMsgVal=appendParam($signMsgVal,"merchantAcctId",$merchantAcctId);
+	$signMsgVal=appendParam($signMsgVal,"payerName",$payerName);
+	$signMsgVal=appendParam($signMsgVal,"payerContactType",$payerContactType);
+	$signMsgVal=appendParam($signMsgVal,"payerContact",$payerContact);
+	$signMsgVal=appendParam($signMsgVal,"orderId",$orderId);
+	$signMsgVal=appendParam($signMsgVal,"orderAmount",$orderAmount);
+	$signMsgVal=appendParam($signMsgVal,"orderTime",$orderTime);
+	$signMsgVal=appendParam($signMsgVal,"productName",$productName);
+	$signMsgVal=appendParam($signMsgVal,"productNum",$productNum);
+	$signMsgVal=appendParam($signMsgVal,"productId",$productId);
+	$signMsgVal=appendParam($signMsgVal,"productDesc",$productDesc);
+	$signMsgVal=appendParam($signMsgVal,"ext1",$ext1);
+	$signMsgVal=appendParam($signMsgVal,"ext2",$ext2);
+	$signMsgVal=appendParam($signMsgVal,"payType",$payType);	
+	$signMsgVal=appendParam($signMsgVal,"bankId",$bankId);
+	$signMsgVal=appendParam($signMsgVal,"redoFlag",$redoFlag);
+	$signMsgVal=appendParam($signMsgVal,"pid",$pid);
+	$signMsgVal=appendParam($signMsgVal,"key",$key);
+$signMsg= strtoupper(md5($signMsgVal));
+
+    $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>支付跳转页面-易搜</title>
+<style>
+  .zhifu_tz{ width:320px; height:150px; border:#e78c55 3px solid; margin:0 auto 50px; position:absolute; top:50%; left:50%; margin-top:-75px; margin-left:-160px;
+    /*圆角*/
+    -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+    behavior: url(style/PIE.htc);/*IE6、7、8下支持一些 CSS3 html5 属性*/}
+  .zhifu_tz p{ padding:40px 0 0 60px; font-size:14px; line-height:30px; font-weight:bold;}
+  .zhifu_tz p img{ vertical-align:middle; margin:0 10px 5px 0;}
+  .zhifu_tz p.jishi{padding:20px 0 0 100px; font-size:12px; line-height:30px; font-weight:normal;}
+</style>
+</head>
+<body id="body_user">
+      <div class="zhifu_tz">
+        <p><img src="' . __ROOT__ .'/Public/index/style/images/user/loading.gif" width="25" height="25" border="0" />正在跳转至支付页面...</p>
+	</div>';
+    $sHtml .= '<form name="frm" id="k99billsubmit" method="post" action="https://www.99bill.com/gateway/recvMerchantInfoAction.htm">';
+    $sHtml .= '<input type="hidden" name="inputCharset" value="' . $inputCharset . '"/>
+			<input type="hidden" name="bgUrl" value="' . $bgUrl . '"/>
+			<input type="hidden" name="pageUrl" value="' . $pageUrl . '"/>
+			<input type="hidden" name="version" value="' . $version . '"/>
+			<input type="hidden" name="language" value="' . $language . '"/>
+			<input type="hidden" name="signType" value="' . $signType . '"/>
+			<input type="hidden" name="signMsg" value="' . $signMsg . '"/>
+			<input type="hidden" name="merchantAcctId" value="' . $merchantAcctId . '"/>
+			<input type="hidden" name="payerName" value="' . $payerName . '"/>
+			<input type="hidden" name="payerContactType" value="' . $payerContactType . '"/>
+			<input type="hidden" name="payerContact" value="' . $payerContact . '"/>
+			<input type="hidden" name="orderId" value="' . $orderId . '"/>
+			<input type="hidden" name="orderAmount" value="' . $orderAmount . '"/>
+			<input type="hidden" name="orderTime" value="' . $orderTime . '"/>
+			<input type="hidden" name="productName" value="' . $productName . '"/>
+			<input type="hidden" name="productNum" value="' . $productNum . '"/>
+			<input type="hidden" name="productId" value="' . $productId . '"/>
+			<input type="hidden" name="productDesc" value="' . $productDesc . '"/>
+			<input type="hidden" name="ext1" value="' . $ext1 . '"/>
+			<input type="hidden" name="ext2" value="' . $ext2 . '"/>
+			<input type="hidden" name="payType" value="' . $payType . '"/>
+			<input type="hidden" name="bankId" value="' . $bankId . '"/>
+			<input type="hidden" name="redoFlag" value="' . $redoFlag . '"/>
+			<input type="hidden" name="pid" value="' . $pid . '"/>';
+    $sHtml .= '</form>';
+    $sHtml .= "<script>document.forms['k99billsubmit'].submit();</script>";
+    $sHtml .= "</body></html>";
+
+    echo $sHtml;
 
   }
 
