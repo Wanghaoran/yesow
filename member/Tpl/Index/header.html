@@ -6,7 +6,7 @@
                 </div>
 		<div id="tools">
 		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
-		  <p>欢迎会员 <!--{$Think.session.username}--!> <a href="__APP__/Public/logout">退出</a> 您的会员级别是: <!--{$Think.session.member_level_name}--!> </p>
+		  <p>欢迎会员 <!--{$Think.session.name}--!> <a href="__APP__/Public/logout">退出</a> 您的会员级别是: <!--{$Think.session.member_level_name}--!> </p>
 		  <p>您还有E币:XXXX，你还有RMB: <!--{$Think.session.rmb_total}--!> 元</p>
                     <p class="tel_num">咨询电话:0571-88396114 88396195</p>
 		  <else/>

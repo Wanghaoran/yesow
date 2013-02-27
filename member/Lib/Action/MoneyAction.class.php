@@ -154,38 +154,64 @@ class MoneyAction extends CommonAction {
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
-    Vendor('tenpay.PayRequest','','.class.php');
-    //设置财付通App-id: 财付通App注册时，由财付通分配
-    $appid = 1213147901;
-    //签名密钥: 开发者注册时，由财付通分配    
-    $key = $author['key1']; 
-    //异步通知URL
-    $notify_url = "http://localhost/tenpay/examples/PayResponeExample.php";  
-    //同步返回URL
-    $return_url = "http://localhost/tenpay/examples/PayReturn_url.php";
-    /* 创建支付请求对象 */
-    $reqHandler = new PayRequest($key);
-    //正式环境设置为 false
-    $reqHandler->setInSandBox(false);
-    //设置财付通appid: 财付通app注册时，由财付通分配
-    $reqHandler->setAppid($appid);
-    //设置商户系统订单号
-    $reqHandler->setParameter("out_trade_no", $this -> _post('oid')); 
-    //设置订单总金额，单位为分
-    $reqHandler->setParameter("total_fee", $this -> _post('price'));
-    //设置异步通知URL
-    $reqHandler->setParameter("notify_url", $notify_url);
-    //设置同步通知URL
-    $reqHandler->setParameter("return_url", $return_url);
-    //设置商品名称:商品描述，会显示在财付通支付页面上
-    $reqHandler->setParameter("body", "易搜会员中心人民币充值");
-    //设置用户客户端ip:用户IP，指用户浏览器端IP，不是财付通APP服务器IP
-    $reqHandler->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
-    //字符编码utf8
-    $reqHandler->setParameter("input_charset", 'UTF-8');
+    Vendor('tenpay.RequestHandler','','.class.php');
 
-    //生成支付请求的URL
-    $reqUrl = $reqHandler->getURL();
+    $partner = $author['account'];  //财付通商户号
+    $key = $author['key1'];  //财付通密钥
+    $return_url = C('WEBSITE') . "member.php/pay/tenpayreturn";	//同步返回地址
+    $notify_url = C('WEBSITE') . "member.php/pay/tenpaynotify";  //异步通知地址
+    $out_trade_no = $this -> _post('oid'); //订单号
+    $desc = '易搜会员中心人民币充值';  //商品名称
+    $order_price = $this -> _post('price');  //商品价格
+    $trade_mode = 1;  //支付方式 1：及时到帐
+    $total_fee = $_POST['price'] * 100;  //商品价格 以分为单位
+
+    /* 创建支付请求对象 */
+    $reqHandler = new RequestHandler();
+    $reqHandler->init();
+    $reqHandler->setKey($key);
+    $reqHandler->setGateUrl("https://gw.tenpay.com/gateway/pay.htm");
+
+    //----------------------------------------
+    ////设置支付参数 
+    ////----------------------------------------
+    $reqHandler->setParameter("partner", $partner);//商户号
+    $reqHandler->setParameter("out_trade_no", $out_trade_no); //订单号
+    $reqHandler->setParameter("total_fee", $total_fee);  //总金额
+    $reqHandler->setParameter("return_url", $return_url);
+    $reqHandler->setParameter("notify_url", $notify_url);
+    $reqHandler->setParameter("body", $desc);
+    $reqHandler->setParameter("bank_type", "DEFAULT");  	  //银行类型，默认为财付通
+    //用户ip
+    $reqHandler->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);//客户端IP
+    $reqHandler->setParameter("fee_type", "1");               //币种
+    $reqHandler->setParameter("subject",$desc);          //商品名称，（中介交易时必填）
+
+    //系统可选参数
+    $reqHandler->setParameter("sign_type", "MD5");  	 	  //签名方式，默认为MD5，可选RSA
+    $reqHandler->setParameter("service_version", "1.0"); 	  //接口版本号
+    $reqHandler->setParameter("input_charset", "utf-8");   	  //字符集
+    $reqHandler->setParameter("sign_key_index", "1");    	  //密钥序号
+
+    //业务可选参数
+    $reqHandler->setParameter("attach", "");             	  //附件数据，原样返回就可以了
+    $reqHandler->setParameter("product_fee", "");        	  //商品费用
+    $reqHandler->setParameter("transport_fee", "0");      	  //物流费用
+    $reqHandler->setParameter("time_start", date("YmdHis"));  //订单生成时间
+    $reqHandler->setParameter("time_expire", "");             //订单失效时间
+    $reqHandler->setParameter("buyer_id", "");                //买方财付通帐号
+    $reqHandler->setParameter("goods_tag", "");               //商品标记
+    $reqHandler->setParameter("trade_mode",$trade_mode);              //交易模式（1.即时到帐模式，2.中介担保模式，3.后台选择（卖家进入支付中心列表选择））
+    $reqHandler->setParameter("transport_desc","");              //物流说明
+    $reqHandler->setParameter("trans_type","1");              //交易类型
+    $reqHandler->setParameter("agentid","");                  //平台ID
+    $reqHandler->setParameter("agent_type","");               //代理模式（0.无代理，1.表示卡易售模式，2.表示网店模式）
+    $reqHandler->setParameter("seller_id","");                //卖家的商户号
+
+    //请求的URL
+    $reqUrl = $reqHandler->getRequestURL();
+    //提交URL
+    //$actionUrl = $reqHandler->getGateUrl();
 
     $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -208,11 +234,12 @@ class MoneyAction extends CommonAction {
       <div class="zhifu_tz">
         <p><img src="' . __ROOT__ .'/Public/index/style/images/user/loading.gif" width="25" height="25" border="0" />正在跳转至支付页面...</p>
 	</div>';
+    $sHtml .= "<script>location.href='{$reqUrl}'</script>";
+    $sHtml .= "</body></html>";
 
-
-    $sHtml .= '<script>location.href="'.$reqUrl.'"</script>';
-    $sHtml .= '</body></html>';
     echo $sHtml;
+
+
   }
 
   //处理 快钱 充值
@@ -275,7 +302,7 @@ class MoneyAction extends CommonAction {
 	$signMsgVal=appendParam($signMsgVal,"redoFlag",$redoFlag);
 	$signMsgVal=appendParam($signMsgVal,"pid",$pid);
 	$signMsgVal=appendParam($signMsgVal,"key",$key);
-$signMsg= strtoupper(md5($signMsgVal));
+	$signMsg= strtoupper(md5($signMsgVal));
 
     $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

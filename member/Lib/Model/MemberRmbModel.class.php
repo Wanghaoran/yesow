@@ -4,6 +4,6 @@ class MemberRmbModel extends Model {
   public function rmbtotal($mid){
     $total = $this -> field('rmb_pay+rmb_exchange as total') -> find($mid);
     session('rmb_total', $total['total']);
-    D('Member://MemberLevel') -> level($total['total']);
+    D('member://MemberLevel') -> level($total['total']);
   }
 }

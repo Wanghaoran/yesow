@@ -1028,8 +1028,35 @@ class CompanyAction extends CommonAction {
   public function rmborder(){
     $rmb_order = M('RmbOrder');
     $where = array();
-    $result = $rmb_order -> table('yesow_rmb_order as ro') -> field('ro.id,ro.ordernum,m.name as mname,ro.price,ro.status,ro.ischeck,p.name as pname,ro.addtime,ro.remark') -> join('yesow_member as m ON ro.mid = m.id') -> join('yesow_payport as p ON ro.paytype = p.enname') -> where($where) -> order('ro.addtime DESC') -> select();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['ro.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['ro.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $rmb_order -> table('yesow_rmb_order as ro') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $rmb_order -> table('yesow_rmb_order as ro') -> field('ro.id,ro.ordernum,m.name as mname,ro.price,ro.status,ro.ischeck,p.name as pname,ro.addtime,ro.remark') -> join('yesow_member as m ON ro.mid = m.id') -> join('yesow_payport as p ON ro.paytype = p.enname') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('ro.addtime DESC') -> select();
     $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
   }
 
@@ -1069,6 +1096,40 @@ class CompanyAction extends CommonAction {
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
+  }
+
+  //会员人民币管理
+  public function memberrmb(){
+    $member_rmb_detail = M('MemberRmbDetail');
+    $result = $member_rmb_detail -> table('yesow_member_rmb_detail as mrd') -> field('mrd.mid,m.name as mname,m.join_time as mjoin_time,cs.name as csname,csa.name as csaname,ttt.name as tname,ttt.count as tcount') -> join('yesow_member as m ON mrd.mid = m.id') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON mrd.mid = ttt.mid') -> group('mrd.mid') -> order('m.join_time DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+    
+    
+  }
+
+  //新增会员人民币
+  public function addmemberrmb(){
+  
+  }
+
+  //编辑会员人民币
+  public function editmemberrmb(){
+  
+  }
+
+  //删除会员人民币
+  public function delmemberrmb(){ 
+  }
+
+  //查看会员人民币
+  public function auditmemberrmb(){
+    $member_rmb_detail = M('MemberRmbDetail');
+    $mid = $this -> _get('id', 'intval');
+    $result = $member_rmb_detail -> field('id,addtime,content,type,money') -> where(array('mid' => $mid)) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  
   }
   /* --------------- 速查业务管理 ---------------- */
 }

@@ -1,0 +1,58 @@
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addmemberrmb" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editmemberrmb/id/{sid_role}" target="dialog" mask="true" warn="请选择消费明细"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['company']['addmemberrmb'])">
+	    <li><a class="add" href="__URL__/addmemberrmb" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['delmemberrmb'])">	    
+	    <li class=""><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['editmemberrmb'])">
+	    <li><a class="edit" href="__URL__/editmemberrmb/id/{sid_role}" target="dialog" mask="true" warn="请选择消费明细"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+	    
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="80">
+		<thead>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+			<th width="30">时间</th>
+			<th width="140">事件</th>
+			<th width="50">类型</th>
+			<th width="60">金额</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$r.content}--!></td>
+			  <td><!--{$r.type}--!></td>
+			  <td><!--{$r.money}--!></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

@@ -70,14 +70,10 @@ class PublicAction extends Action {
    * 退出登录
    */
   public function logout(){
-    if(isset($_SESSION[C('USER_AUTH_KEY')])){
-      session(C('USER_AUTH_KEY'), null);
-      session(null);
-      session('[destroy]');
-      $this -> success(L('LOGOUT_SUCCESS'), U(C('USER_AUTH_GATEWAY')));
-    }else{
-      $this -> error(L('LOGOUT_ERROR'));
-    }
+    session(C('USER_AUTH_KEY'), null);
+    session(null);
+    session('[destroy]');
+    $this -> success(L('LOGOUT_SUCCESS'), U(C('USER_AUTH_GATEWAY')));
   }
 
   /*

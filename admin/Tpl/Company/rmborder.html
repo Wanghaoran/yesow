@@ -1,4 +1,8 @@
-<include file="Public:pagerForm" />
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
+  <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+</form>
 
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">

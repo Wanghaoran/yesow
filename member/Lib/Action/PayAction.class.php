@@ -230,7 +230,7 @@ class PayAction extends Action {
 	  //如果更新成功，则写RMB表
 	  if($rmb_order -> where($where) -> save($data)){
 	    //获取支付总额
-	    $total_pee = $payAmount；
+	    $total_pee = $payAmount;
 	    //获取此订单的用户id
 	    $mid = $rmb_order -> getFieldByordernum($orderId, 'mid');
 	    //更新用户RMB余额
@@ -253,10 +253,130 @@ class PayAction extends Action {
     echo '<result>' . $rtnOk . '</result><redirecturl>' . $rtnUrl . '</redirecturl>';
   }
 
+  //快钱同步返回页面
   public function k99billreturn(){
     //充值成功的图片
     $this -> assign('pic_name', 'success_tishi.gif');
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
+  }
+
+  //财付通异步页面
+  public function tenpaynotify(){
+    $payport = M('Payport');
+    //查询认证信息
+    $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
+    $partner = $author['account'];  //财付通商户号
+    $key = $author['key1'];  //财付通密钥
+
+    Vendor('tenpay.ResponseHandler','','.class.php');
+    Vendor('tenpay.RequestHandler','','.class.php');
+    Vendor('tenpay.client.TenpayHttpClient','','.class.php');
+    Vendor('tenpay.client.ClientResponseHandler','','.class.php');
+    /* 创建支付应答对象 */
+    $resHandler = new ResponseHandler();
+    $resHandler->setKey($key);
+
+    //判断签名
+    if($resHandler->isTenpaySign()){
+      //通知id
+      $notify_id = $resHandler->getParameter("notify_id");
+      //通过通知ID查询，确保通知来至财付通
+      //创建查询请求
+      $queryReq = new RequestHandler();
+      $queryReq->init();
+      $queryReq->setKey($key);
+      $queryReq->setGateUrl("https://gw.tenpay.com/gateway/simpleverifynotifyid.xml");
+      $queryReq->setParameter("partner", $partner);
+      $queryReq->setParameter("notify_id", $notify_id);
+      //通信对象
+      $httpClient = new TenpayHttpClient();
+      $httpClient->setTimeOut(5);
+      //设置请求内容
+      $httpClient->setReqContent($queryReq->getRequestURL());
+
+      //后台调用
+      if($httpClient->call()){
+
+	//设置结果参数
+	$queryRes = new ClientResponseHandler();
+	$queryRes->setContent($httpClient->getResContent());
+	$queryRes->setKey($key);
+
+	if($resHandler->getParameter("trade_mode") == "1"){
+	  //判断签名及结果（即时到帐）
+	  //只有签名正确,retcode为0，trade_state为0才是支付成功
+	  if($queryRes->isTenpaySign() && $queryRes->getParameter("retcode") == "0" && $resHandler->getParameter("trade_state") == "0"){
+	    //取得订单号
+	    $out_trade_no = $resHandler->getParameter("out_trade_no");
+	    //财付通订单号
+	    $transaction_id = $resHandler->getParameter("transaction_id");
+	    //金额,以分为单位
+	    $total_fee = $resHandler->getParameter("total_fee");
+
+	    //商家业务逻辑
+	    $rmb_order = M('RmbOrder');
+	    $where = array();
+	    $where['ordernum'] = $out_trade_no;
+	    $data = array();
+	    $data['status'] = 3;
+	    if($rmb_order -> where($where) -> save($data)){
+	      //获取支付总额
+	      $total_pee = $total_fee / 100;
+	      //获取此订单的用户id
+	      $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
+	      //更新用户RMB余额
+	      M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	    }
+	    echo "success";
+	  }else{
+	    echo "fail";
+	  }
+	}else{
+	 echo "fail"; 
+	}
+      }else{
+	echo "fail";
+      }
+    }else{
+      echo "<br/>" . "认证签名失败" . "<br/>";
+      echo $resHandler->getDebugInfo() . "<br>";
+    }
+  }
+
+  //财付通同步返回页面
+  public function tenpayreturn(){
+    $payport = M('Payport');
+    //查询认证信息
+    $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
+    $partner = $author['account'];  //财付通商户号
+    $key = $author['key1'];  //财付通密钥
+
+    Vendor('tenpay.ResponseHandler','','.class.php');
+
+    /* 创建支付应答对象 */
+    $resHandler = new ResponseHandler();
+    $resHandler->setKey($key);
+
+    //判断签名
+    if($resHandler->isTenpaySign()){
+	//支付结果
+	$trade_state = $resHandler->getParameter("trade_state");
+	//交易模式,1即时到账
+	$trade_mode = $resHandler->getParameter("trade_mode");
+
+	if("1" == $trade_mode ) {
+	  if( "0" == $trade_state){ 
+	    $this -> assign('pic_name', 'success_tishi.gif');
+	  } else {
+	    //当做不成功处理
+	    $this -> assign('pic_name', 'fail_tishi.gif');
+	  }
+	}
+    }else{
+      $this -> assign('pic_name', 'fail_tishi.gif');
+    }
+    $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
+  
   }
 
 }

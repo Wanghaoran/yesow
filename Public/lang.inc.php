@@ -16,7 +16,6 @@ return array(
   'VERIFY_ERROR' => '验证码错误',
   'LOGIN_SUCCESS' => '登录成功,欢迎光临',
   'LOGOUT_SUCCESS' => '退出成功',
-  'LOGOUT_ERROR' => '退出失败，您已经退出',
   'LOGIN_NOT' => '您还未登录',
   'OLDPASSWORD_EMPTY' => '旧密码不能为空',
   'NEWPASSWORD_EMPTY' => '新密码不能为空',

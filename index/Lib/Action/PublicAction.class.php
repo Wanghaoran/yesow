@@ -72,7 +72,7 @@ class PublicAction extends Action {
       session('headico', $result['headico']);
       session('login_count', $result['login_count']);
       //缓存RMB余额 和 会员等级
-      D('Member://MemberRmb') -> rmbtotal();
+      D('member://MemberRmb') -> rmbtotal();
       //更新登录信息
       $data['id'] = $result['id'];
       $data['last_login_ip'] = get_client_ip();
@@ -132,7 +132,7 @@ class PublicAction extends Action {
       //否则在会员RMB表中扣除相应余额
       $const = $level_info['rmb_one'];
       //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
-      $rmb = D('Member://MemberRmb');
+      $rmb = D('member://MemberRmb');
       $price = $rmb -> field('rmb_pay,rmb_exchange') -> find(session(C('USER_AUTH_KEY')));
       //如果 兑换RMB余额足够支付 此次费用
       if($price['rmb_exchange'] - $const >= 0){

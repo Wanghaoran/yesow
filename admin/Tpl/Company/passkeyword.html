@@ -26,13 +26,13 @@
 	    <li class=""><a class="delete" href="__URL__/delpasskeyword/navTabId/passkeyword" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/editpasskeyword/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addpasskeyword'])">
+	    <if condition="isset($_SESSION['acc_arr']['company']['addpasskeyword'])">
 	    <li><a class="add" href="__URL__/addpasskeyword" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delpasskeyword'])">	    
+	    <if condition="isset($_SESSION['acc_arr']['company']['delpasskeyword'])">	    
 	    <li class=""><a class="delete" href="__URL__/delpasskeyword/navTabId/passkeyword" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择搜索词"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['editpasskeyword'])">
+	    <if condition="isset($_SESSION['acc_arr']['company']['editpasskeyword'])">
 	    <li><a class="edit" href="__URL__/editpasskeyword/id/{sid_role}" target="dialog" mask="true" warn="请选择搜索词"><span>编辑</span></a></li>
 	    </if>
 	    </if>
