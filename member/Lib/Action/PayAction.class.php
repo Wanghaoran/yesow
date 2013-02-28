@@ -268,6 +268,9 @@ class PayAction extends Action {
     $partner = $author['account'];  //财付通商户号
     $key = $author['key1'];  //财付通密钥
 
+    //删除多余数组，避免验证错误
+    unset($_GET['_URL_']);
+
     Vendor('tenpay.ResponseHandler','','.class.php');
     Vendor('tenpay.RequestHandler','','.class.php');
     Vendor('tenpay.client.TenpayHttpClient','','.class.php');
@@ -350,6 +353,9 @@ class PayAction extends Action {
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
     $partner = $author['account'];  //财付通商户号
     $key = $author['key1'];  //财付通密钥
+
+    //删除多余数组，避免验证错误
+    unset($_GET['_URL_']);
 
     Vendor('tenpay.ResponseHandler','','.class.php');
 

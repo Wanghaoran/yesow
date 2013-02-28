@@ -1,0 +1,37 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/auditmemberrmb" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>事件：</label>
+		<input type="text" class="required" name="content" size="40" /><label>(255个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>类型：</label>
+		<select class="combox" name="type">
+		  <option value="消费">消费</option>
+		  <option value="获取">获取</option>
+		  <option value="扣除">扣除</option>
+		  <option value="充值">充值</option>
+		</select>
+	</div>
+	
+	<div class="unit">
+		<label>金额：</label>
+		<input type="text" class="required" name="money"/>
+	      </div>
+	      <input type="hidden" name="mid" value="<!--{$Think.get.mid}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

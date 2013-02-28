@@ -3,7 +3,7 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addmemberrmb" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li><a class="add" href="__URL__/addmemberrmb/mid/<!--{$Think.get.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
 	    <li class=""><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/editmemberrmb/id/{sid_role}" target="dialog" mask="true" warn="请选择消费明细"><span>编辑</span></a></li>
 	    <else/>
@@ -26,7 +26,7 @@
 		  <tr>
 		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="30">时间</th>
-			<th width="140">事件</th>
+			<th width="200">事件</th>
 			<th width="50">类型</th>
 			<th width="60">金额</th>
 
@@ -39,7 +39,11 @@
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.content}--!></td>
 			  <td><!--{$r.type}--!></td>
-			  <td><!--{$r.money}--!></td>
+			  <egt name="r.money" value="0">
+			  <td style="color:green"><!--{$r.money}--!></td>
+			  <else/>
+			  <td style="color:red"><!--{$r.money}--!></td>
+			  </egt>
 			</tr>
 		</volist>
 		</tbody>

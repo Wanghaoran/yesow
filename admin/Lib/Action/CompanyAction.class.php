@@ -1101,8 +1101,27 @@ class CompanyAction extends CommonAction {
   //会员人民币管理
   public function memberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
-    $result = $member_rmb_detail -> table('yesow_member_rmb_detail as mrd') -> field('mrd.mid,m.name as mname,m.join_time as mjoin_time,cs.name as csname,csa.name as csaname,ttt.name as tname,ttt.count as tcount') -> join('yesow_member as m ON mrd.mid = m.id') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON mrd.mid = ttt.mid') -> group('mrd.mid') -> order('m.join_time DESC') -> select();
+
+    //记录总数
+    $count = $member_rmb_detail -> table('(SELECT id FROM yesow_member_rmb_detail GROUP BY mid) as tmp') -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $member_rmb_detail -> table('yesow_member_rmb_detail as mrd') -> field('mrd.mid,m.name as mname,m.join_time as mjoin_time,m.last_login_time as mltime,cs.name as csname,csa.name as csaname,ttt.name as tname,ttt.count as tcount') -> join('yesow_member as m ON mrd.mid = m.id') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON mrd.mid = ttt.mid') -> group('mrd.mid') -> order('m.join_time DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
     
     
@@ -1110,7 +1129,27 @@ class CompanyAction extends CommonAction {
 
   //新增会员人民币
   public function addmemberrmb(){
-  
+    //处理新增
+    if(!empty($_POST['mid'])){
+      $member_rmb_detail = D('MemberRmbDetail');
+      if(!$member_rmb_detail -> create()){
+	$this -> error($member_rmb_detail -> getError());
+      }
+      if($member_rmb_detail -> add()){
+	//如果增加成功，则在此会员RMB余额中做相应变化
+	$mid = $this -> _post('mid');
+	$money = $this -> _post('money');
+	if(M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $money)){
+	  $this -> success(L('DATA_UPDATE_SUCCESS'));
+	}else{
+	  $this -> error(L('DATA_UPDATE_ERROR'));
+	}
+      }else{
+	echo $member_rmb_detail -> getLastSql();
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $this -> display();
   }
 
   //编辑会员人民币
@@ -1119,15 +1158,33 @@ class CompanyAction extends CommonAction {
   }
 
   //删除会员人民币
-  public function delmemberrmb(){ 
+  public function delmemberrmb(){
   }
 
   //查看会员人民币
   public function auditmemberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
     $mid = $this -> _get('id', 'intval');
-    $result = $member_rmb_detail -> field('id,addtime,content,type,money') -> where(array('mid' => $mid)) -> order('addtime DESC') -> select();
+    //记录总数
+    $count = $member_rmb_detail -> where(array('mid' => $mid)) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $member_rmb_detail -> field('id,addtime,content,type,money') -> where(array('mid' => $mid)) -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
   
   }

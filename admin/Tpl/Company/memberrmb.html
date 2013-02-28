@@ -18,10 +18,10 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="icon" href="__URL__/auditmemberrmb/id/{sid_role}" target="dialog" rel="auditmemberrmb" height="400" width="700" mask="true" warn="请选择会员"><span>查看</span></a></li>
+	    <li><a class="icon" href="__URL__/auditmemberrmb/id/{sid_role}" target="navTab" rel="auditmemberrmb" warn="请选择会员"><span>查看</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['company']['auditmemberrmb'])">	    
-	    <li><a class="icon" href="__URL__/auditmemberrmb/id/{sid_role}" target="dialog" rel="auditmemberrmb" height="400" width="700" mask="true" warn="请选择会员"><span>查看</span></a></li>
+	    <li><a class="icon" href="__URL__/auditmemberrmb/id/{sid_role}" target="navTab" rel="auditmemberrmb" warn="请选择会员"><span>查看</span></a></li>
 	    </if>
 
 	    </if>
@@ -38,6 +38,7 @@
 			<th width="50">所在地区</th>
 			<th width="60">会员级别</th>
 			<th width="70">注册时间</th>
+			<th width="70">最后登录时间</th>
 			<th width="40">总余额</th>
 
 		</tr>
@@ -50,6 +51,7 @@
 			  <td><!--{$r.csname}--!> - <!--{$r.csaname}--!></td>
 			  <td><!--{$r.tname}--!></td>
 			  <td><!--{$r.mjoin_time|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$r.mltime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.tcount}--!></td>
 			</tr>
 		</volist>
