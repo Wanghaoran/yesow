@@ -1154,16 +1154,66 @@ class CompanyAction extends CommonAction {
 
   //编辑会员人民币
   public function editmemberrmb(){
+    $member_rmb_detail = D('MemberRmbDetail');
+    if(!empty($_POST['id'])){
+      $member_rmb = M('MemberRmb');
+      $mid = $this -> _post('mid', 'intval');
+      //启用事务
+      $member_rmb -> startTrans();
+      //先从RMB表中扣除原订单的金额
+      $member_rmb -> where(array('mid' => $mid)) -> setDec('rmb_exchange', $this -> _post('oldmoney'));
+      //在增加新的金额
+      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $this -> _post('money'));
+      //最后更新订单表
+      if(!$member_rmb_detail -> create()){
+	$this -> error($member_rmb_detail -> getError());
+      }
+      if($member_rmb_detail -> save()){
+	// 提交事务
+	$member_rmb->commit();
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	// 事务回滚
+	$member_rmb->rollback(); 
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $member_rmb_detail -> field('mid,content,type,money') -> find($this -> _get('id'));
+    $this -> assign('result', $result);
+    $this -> display();
   
   }
 
   //删除会员人民币
   public function delmemberrmb(){
+    $member_rmb_detail = M('MemberRmbDetail');
+    $member_rmb = M('MemberRmb');
+    //启用事务
+    $member_rmb -> startTrans();
+    //先查询要删除记录的金额
+    $del_money_arr = $member_rmb_detail -> field('mid,money') -> where(array('id' => array('in', $_POST['ids']))) -> select();
+    //循环从RMB表中删除这些金额
+    foreach($del_money_arr as $value){
+      $member_rmb -> where(array('mid' => $value['mid'])) -> setDec('rmb_exchange', $value['money']);
+    }
+    //再删除明细表
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($member_rmb_detail -> where($where_del) -> delete()){
+      // 提交事务
+      $member_rmb->commit();
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      // 事务回滚
+      $member_rmb->rollback();
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //查看会员人民币
   public function auditmemberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
+    $member_rmb = M('MemberRmb');
     $mid = $this -> _get('id', 'intval');
     //记录总数
     $count = $member_rmb_detail -> where(array('mid' => $mid)) -> count('id');
@@ -1177,7 +1227,10 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-
+    //会员信息
+    $info = $member_rmb -> table('yesow_member_rmb as mr') -> Field('mr.rmb_pay+mr.rmb_exchange as count,m.name as mname') -> join('yesow_member as m ON mr.mid = m.id') -> where(array('mr.mid' => $mid)) -> find();
+    $this -> assign('info', $info);
+    //人民币明细结果
     $result = $member_rmb_detail -> field('id,addtime,content,type,money') -> where(array('mid' => $mid)) -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数

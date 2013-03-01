@@ -4,14 +4,15 @@
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li><a class="add" href="__URL__/addmemberrmb/mid/<!--{$Think.get.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
+	    <li><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/editmemberrmb/id/{sid_role}" target="dialog" mask="true" warn="请选择消费明细"><span>编辑</span></a></li>
+	    <span>会员帐号：<!--{$info.mname}--!>，会员余额：<!--{$info.count}--!><span>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['company']['addmemberrmb'])">
 	    <li><a class="add" href="__URL__/addmemberrmb" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['company']['delmemberrmb'])">	    
-	    <li class=""><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
+	    <li><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['company']['editmemberrmb'])">
 	    <li><a class="edit" href="__URL__/editmemberrmb/id/{sid_role}" target="dialog" mask="true" warn="请选择消费明细"><span>编辑</span></a></li>
@@ -40,7 +41,7 @@
 			  <td><!--{$r.content}--!></td>
 			  <td><!--{$r.type}--!></td>
 			  <egt name="r.money" value="0">
-			  <td style="color:green"><!--{$r.money}--!></td>
+			  <td style="color:green">+<!--{$r.money}--!></td>
 			  <else/>
 			  <td style="color:red"><!--{$r.money}--!></td>
 			  </egt>

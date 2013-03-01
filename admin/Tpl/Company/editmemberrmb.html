@@ -1,0 +1,72 @@
+<script>
+  var selectsign = function(data){
+    if(data == '消费' || data == '扣除'){
+      $('#money')[0].value = '-';
+    }else if(data == '获取' || data == '充值'){
+      $('#money')[0].value = '+';
+    }
+  }
+</script>
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/auditmemberrmb" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>事件：</label>
+		<input type="text" class="required" name="content" size="40" value="<!--{$result.content}--!>" /><label>(255个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>类型：</label>
+		<select class="combox" name="type" onchange="selectsign(this.value)">
+		  <eq name="result.type" value="消费">
+		  <option value="消费" selected="selected">消费</option>
+		  <option value="获取">获取</option>
+		  <option value="扣除">扣除</option>
+		  <option value="充值">充值</option>
+		  </eq>
+		  <eq name="result.type" value="获取">
+		  <option value="消费">消费</option>
+		  <option value="获取" selected="selected">获取</option>
+		  <option value="扣除">扣除</option>
+		  <option value="充值">充值</option>
+		  </eq>
+		  <eq name="result.type" value="扣除">
+		  <option value="消费">消费</option>
+		  <option value="获取">获取</option>
+		  <option value="扣除" selected="selected">扣除</option>
+		  <option value="充值">充值</option>
+		  </eq>
+		  <eq name="result.type" value="充值">
+		  <option value="消费">消费</option>
+		  <option value="获取">获取</option>
+		  <option value="扣除">扣除</option>
+		  <option value="充值" selected="selected">充值</option>
+		  </eq>
+		</select>
+	</div>
+	
+	<div class="unit">
+	  <label>金额：</label>
+	  <gt name="result.money" value="0">
+	  <input type="text" class="required" id="money" name="money" value="+<!--{$result.money}--!>"/>
+	  <else/>
+	  <input type="text" class="required" id="money" name="money" value="<!--{$result.money}--!>"/>
+	  </gt>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+	      <input type="hidden" name="oldmoney" value="<!--{$result.money}--!>" />
+	      <input type="hidden" name="mid" value="<!--{$result.mid}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

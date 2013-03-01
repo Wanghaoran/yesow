@@ -1,3 +1,13 @@
+<script>
+  var selectsign = function(data){
+    if(data == '消费' || data == '扣除'){
+      $('#money')[0].value = '-';
+    }else if(data == '获取' || data == '充值'){
+      $('#money')[0].value = '+';
+    }
+  }
+</script>
+
 <div class="page">
 	<div class="pageContent">
 	
@@ -10,7 +20,7 @@
 	</div>
 	<div class="unit">
 		<label>类型：</label>
-		<select class="combox" name="type">
+		<select class="combox" name="type" onchange="selectsign(this.value)">
 		  <option value="消费">消费</option>
 		  <option value="获取">获取</option>
 		  <option value="扣除">扣除</option>
@@ -20,7 +30,7 @@
 	
 	<div class="unit">
 		<label>金额：</label>
-		<input type="text" class="required" name="money"/>
+		<input type="text" id="money" class="required" name="money" value="-"/>
 	      </div>
 	      <input type="hidden" name="mid" value="<!--{$Think.get.mid}--!>" />
 
