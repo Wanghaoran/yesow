@@ -355,8 +355,38 @@ class MoneyAction extends CommonAction {
     $sHtml .= "</body></html>";
 
     echo $sHtml;
-
   }
+
+  //充值订单管理
+  public function payorder(){
+    $rmb_order = M('RmbOrder');
+    $where = array();
+    $where['ro.mid'] = session(C('USER_AUTH_KEY'));
+    import("ORG.Util.Page");// 导入分页类
+    $count = $rmb_order -> table('yesow_rmb_order as ro') -> where($where) -> count('id');
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $rmb_order -> table('yesow_rmb_order as ro') -> field('ro.ordernum,ro.price,ro.status,ro.ischeck,p.name as pname,ro.addtime') -> join('yesow_payport as p ON ro.paytype = p.enname') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //消费明细查询
+  public function rmbdetail(){
+    $rmb_detail = M('MemberRmbDetail');
+    $where = array();
+    $where['mid'] = session(C('USER_AUTH_KEY'));
+    import("ORG.Util.Page");// 导入分页类
+    $count = $rmb_detail -> where($where) -> count('id');
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $rmb_detail -> field('addtime,content,type,money') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+  
 
 
 }

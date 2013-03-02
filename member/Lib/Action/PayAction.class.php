@@ -130,8 +130,11 @@ class PayAction extends Action {
 	  $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
 	}
       }
+      $session_uid = session(C('USER_AUTH_KEY'));
       //重新缓存用户rmb余额
-      $member_rmb -> rmbtotal();
+      $member_rmb -> rmbtotal($session_uid);
+      //写RMB消费日志
+      D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
       //充值成功的图片
       $this -> assign('pic_name', 'success_tishi.gif');
     }else{
@@ -237,24 +240,31 @@ class PayAction extends Action {
 	    M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
 	  }
 	  $rtnOk=1;
-	  $rtnUrl="http://www.yoursite.com/show.php?msg=success!";
+	  $rtnUrl= C('WEBSITE') . "member.php/pay/k99billreturn/money/" . $total_pee;
 	  break;
 	default:
 	  $data['status'] = 0;
 	  $rmb_order -> where($where) -> save($data);
 	  $rtnOk=1;
-	  $rtnUrl="http://www.yoursite.com/show.php?msg=false!";
+	  $rtnUrl= C('WEBSITE') . "member.php/pay/k99billreturn";
 	  break;
       }
     }else{
       $rtnOk=1;
-      $rtnUrl="http://www.yoursite.com/show.php?msg=error!";
+      $rtnUrl= C('WEBSITE') . "member.php/pay/k99billreturn";
     }
     echo '<result>' . $rtnOk . '</result><redirecturl>' . $rtnUrl . '</redirecturl>';
   }
 
   //快钱同步返回页面
   public function k99billreturn(){
+    $member_rmb = D('MemberRmb');
+    $money = $this -> _get('money');
+    $session_uid = session(C('USER_AUTH_KEY'));
+    //重新缓存用户rmb余额
+    $member_rmb -> rmbtotal($session_uid);
+    //写RMB消费日志
+    D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $money);
     //充值成功的图片
     $this -> assign('pic_name', 'success_tishi.gif');
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
@@ -369,9 +379,18 @@ class PayAction extends Action {
 	$trade_state = $resHandler->getParameter("trade_state");
 	//交易模式,1即时到账
 	$trade_mode = $resHandler->getParameter("trade_mode");
+	//金额,以分为单位
+	$total_fee = $resHandler->getParameter("total_fee");
 
 	if("1" == $trade_mode ) {
-	  if( "0" == $trade_state){ 
+	  if( "0" == $trade_state){
+	    $member_rmb = D('MemberRmb');
+	    $session_uid = session(C('USER_AUTH_KEY'));
+	    $money = $total_fee / 100;
+	    //重新缓存用户rmb余额
+	    $member_rmb -> rmbtotal($session_uid);
+	    //写RMB消费日志
+	    D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">财付通</span>成功在线充值RMB', '充值', $money);
 	    $this -> assign('pic_name', 'success_tishi.gif');
 	  } else {
 	    //当做不成功处理

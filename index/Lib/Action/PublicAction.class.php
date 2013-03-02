@@ -72,7 +72,7 @@ class PublicAction extends Action {
       session('headico', $result['headico']);
       session('login_count', $result['login_count']);
       //缓存RMB余额 和 会员等级
-      D('member://MemberRmb') -> rmbtotal();
+      D('member://MemberRmb') -> rmbtotal(session(C('USER_AUTH_KEY')));
       //更新登录信息
       $data['id'] = $result['id'];
       $data['last_login_ip'] = get_client_ip();
@@ -155,9 +155,16 @@ class PublicAction extends Action {
 	$data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
 	$data_rmb['rmb_exchange'] = 0;
 	$rmb -> save($data_rmb);
-	//更新会员余额和等级
-	$rmb -> rmbtotal(session(C('USER_AUTH_KEY')));
       }
+      $session_uid = session(C('USER_AUTH_KEY'));
+      //更新会员余额和等级
+      $rmb -> rmbtotal($session_uid);
+      //查询此条速查信息的地域信息，用于记录日志
+      $cid = $this -> _get('cid', 'intval');
+      $logo_info = M('Company') -> table('yesow_company as c') -> field('cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+      //写RMB消费日志
+      $log_content = "查看速查名片详细内容一次性扣除 [<span style='color:blue'>{$logo_info['csname']}</span>省<span style='color:blue'>{$logo_info['csaname']}</span>地区]";
+      D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
     }
 
     //写会员-速查对应表
@@ -187,4 +194,62 @@ class PublicAction extends Action {
     }
     echo json_encode($result);
   }
+
+  //ajax获取单个下载扣费信息
+  public function ajaxonedownload(){
+    $member_level = M('MemberLevel');
+    $result = $member_level -> field('rmb_three,author_seven') -> find(session('member_level_id'));
+    //查帐户余额
+    $money = D('member://MemberRmb') -> getrmbtotal(session(C('USER_AUTH_KEY')));
+    $result['money'] = $money['total'];
+    echo json_encode($result);
+  }
+
+  //ajax单个下载
+  public function doonedownload(){
+    //查出资料
+    $result = M('Company') -> field('name') -> find($this -> _get('cid', 'intval'));
+    //扣费
+    $const = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'rmb_three');
+    //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
+    $rmb = D('member://MemberRmb');
+    $price = $rmb -> field('rmb_pay,rmb_exchange') -> find(session(C('USER_AUTH_KEY')));
+    //如果 兑换RMB余额足够支付 此次费用
+    if($price['rmb_exchange'] - $const >= 0){
+      $data_rmb = array();
+      $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
+      $data_rmb['rmb_pay'] = $price['rmb_pay'];
+      $data_rmb['rmb_exchange'] = $price['rmb_exchange'] - $const;
+      $rmb -> save($data_rmb);
+    }else{
+      //如果兑换RMB不足够支付此次信息，则用充值RMB支付
+      //计算差值
+      $fee = abs($price['rmb_exchange'] - $const);
+      //如果差值不够支付，则退出执行
+      if($price['rmb_pay'] < $fee){
+	exit();
+      }
+      $data_rmb = array();
+      $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
+      $data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
+      $data_rmb['rmb_exchange'] = 0;
+      $rmb -> save($data_rmb);
+    }
+    $session_uid = session(C('USER_AUTH_KEY'));
+    //更新会员余额和等级
+    $rmb -> rmbtotal($session_uid);
+    //查询此条速查信息的地域信息，用于记录日志
+    $cid = $this -> _get('cid', 'intval');
+    $logo_info = M('Company') -> table('yesow_company as c') -> field('cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+    //写RMB消费日志
+    $log_content = "在详细页下载一条名片详细内容 [<span style='color:blue'>{$logo_info['csname']}</span>省<span style='color:blue'>{$logo_info['csaname']}</span>地区]";
+      D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
+    
+    //生成下载信息
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=易搜速查详情.txt");
+    echo $result['name'];
+    
+  }
+
 }

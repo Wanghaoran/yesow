@@ -153,7 +153,7 @@ $(function(){
         <div class="right"> 
 	 <p><!--{$Think.now}--!></p> 
         </div> 
-	<p><span>尊敬的 <!--{$Think.session.name}--!> 欢迎回来！</span></p> 
+	<p><span>尊敬的 <!--{$Think.session.admin_name}--!> 欢迎回来！</span></p> 
 	<p>您已登录本系统 <span><!--{$Think.session.loginCount}--!></span> 次  &nbsp;&nbsp;&nbsp;&nbsp;本次登录IP为：<span style="color:red"><!--{:get_client_ip()}--!></span> &nbsp;&nbsp;&nbsp;&nbsp;上次登录IP为：<span style="color:red"><!--{$Think.session.last_login_ip}--!></span>  &nbsp;&nbsp;&nbsp;&nbsp;上次登录时间为： <span style="color:red"><!--{$Think.session.lastLoginTime|date="Y-m-d H:i:s",###}--!></span> </p> 
        </div> 
        <div class="pageFormContent" layouth="80"> 

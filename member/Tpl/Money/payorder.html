@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>充值订单管理-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/ks-switch.pack.js"></script>
+<script type="text/javascript">
+$(function($){
+	$("#switchBox2").switchTab({titCell: "dt a", trigger: "mouseover", delayTime: 0});
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+   $("#switchBox2 .input_txt").each(function(){
+     var thisVal=$(this).val();
+     //判断文本框的值是否为空，有值的情况就隐藏提示语，没有值就显示
+     if(thisVal!=""){
+       $(this).siblings("span").hide();
+      }else{
+       $(this).siblings("span").show();
+      }
+     //聚焦型输入框验证 
+     $(this).focus(function(){
+       $(this).siblings("span").hide();
+      }).blur(function(){
+        var val=$(this).val();
+        if(val!=""){
+         $(this).siblings("span").hide();
+        }else{
+         $(this).siblings("span").show();
+        } 
+      });
+    })
+ })
+
+// --全选1---
+function ChkAllClick1(){
+ var arrSon = document.getElementsByName("sonName1");
+ for(i=0;i<arrSon.length;i++) {
+  arrSon[i].checked=true;
+ }
+}
+// --全选2---
+function ChkAllClick2(){
+ var arrSon = document.getElementsByName("sonName2");
+ for(i=0;i<arrSon.length;i++) {
+  arrSon[i].checked=true;
+ }
+}
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">RMB管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">充值订单</a>
+                            </dt>
+                            <dd>
+                                <div class="main_con3">
+                                    <div style="min-height:250px;">
+                                    	<table class="table_sms">
+                                    	<tr>
+                                        	<th width="100">订单编号</th>
+                                            <th width="80">充值金额</th>
+                                            <th width="100">充值用户</th>
+                                            <th width="100">充值状态</th>
+                                            <th width="100">是否确认</th>
+                                            <th width="100">支付方式</th>
+                                            <th>充值时间</th>
+					  </tr>
+					  <volist name="result" id="r">
+                                        <tr>
+					  <td><!--{$r.ordernum}--!></td>
+					  <td><!--{$r.price}--!>元</td>
+					  <td><!--{$Think.session.name}--!></td>
+                                          <switch name="r.status">
+			  <case value="0"><td style="color:red;">未付款</td></case>
+			  <case value="1"><td style="color:blue;">已付款 <span style="color:red">未发货</span></td></case>
+			  <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
+			  <case value="3"><td style="color:green;">交易完成</td></case>
+			  </switch>
+                                            <eq name="r.ischeck" value="1">
+			  <td style="color:blue">已确认</td>
+			  <else/>
+			  <td style="color:red">未确认</td>
+			  </eq>
+			  <td><!--{$r.pname}--!></td>
+			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+					  </tr>
+					  </volist>
+                                    </table>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="page">
+				      <!--{$show}--!>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="clear30"></div>                      
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

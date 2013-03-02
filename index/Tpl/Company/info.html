@@ -86,9 +86,31 @@ function submitcommit(){
       });
     }
   }
+  
+var onedownload = function(){
+  $.ajax({
+	type: "POST",
+	url: "__APP__/public/ajaxonedownload",
+	datatype: "json",
+	success: function(msg){
+	  msg = jQuery.parseJSON(msg);
+	  if(msg.author_seven == 0){
+	    alert('您所在的会员等级暂无此权限！');
+	    }else{
+	  //确认
+	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
+	  location.href="__APP__/public/doonedownload/cid/<!--{$Think.get.id}--!>";
+
+	  }
+	  }
+	}
+      });
+
+  }
 </script>
+
 </head>
-<body id="body_index">
+<body id="body_index" ondragstart='return false' onselectstart ='return false' onselect='document.selection.empty()' oncopy='document.selection.empty()' onbeforecopy='return false' onmouseup='document.selection.empty()'>
 <div id="warp_body">
   <include file="Index:header" />
 	<div id="mbx">
@@ -163,7 +185,7 @@ function submitcommit(){
 			<li class="btn_gaicuo"><a href="__ROOT__/change/<!--{$Think.get.id}--!>" target="_blank">我要改错</a></li>
 		    <li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank">我要报错</a></li>
                     <li class="btn_copy"><a href="#">单条复制</a></li>
-                    <li class="btn_download"><a href="#">单个下载</a></li>
+                    <li class="btn_download"><a onclick="onedownload();">单个下载</a></li>
                 </ul>
                 <div class="clear10"></div>
                 <h3 class="h3_text">企业在线</h3>

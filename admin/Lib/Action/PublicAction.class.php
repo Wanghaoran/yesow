@@ -45,7 +45,7 @@ class PublicAction extends Action {
     }
     //生成登录信息
     session(C('USER_AUTH_KEY'), $authInfo['id']);
-    session('name', $authInfo['name']);
+    session('admin_name', $authInfo['name']);
     session('lastLoginTime', $authInfo['last_login_time']);
     session('loginCount', $authInfo['login_count']);
     session('last_login_ip', $authInfo['last_login_ip']);
