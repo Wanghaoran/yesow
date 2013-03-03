@@ -156,7 +156,10 @@ var onedownload = function(){
 			  <p>公司网址：<!--{$result.website}--!></p>
 			  <div style="position:relative; background:#E7EBEE; padding:5px 0; margin-bottom:10px;">
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
-			    <a onclick="clickview()">点击查看</a><a href="" class="btn_tuijian"></a>
+			    <eq name="isview" value="0">
+			    <a onclick="clickview()">点击查看</a>
+			    </eq>
+			    <a href="" class="btn_tuijian"></a>
 			    <else/>
 			    <script type="text/javascript">
 			       function poplogin(){
@@ -181,11 +184,11 @@ var onedownload = function(){
                 </ul>
 				<div class="clear10"></div>
                 <ul class="saledetail_btn">
-                	<li class="btn_add"><a href="__URL__/add" target="_blank">我要添加</a></li>
-			<li class="btn_gaicuo"><a href="__ROOT__/change/<!--{$Think.get.id}--!>" target="_blank">我要改错</a></li>
-		    <li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank">我要报错</a></li>
-                    <li class="btn_copy"><a href="#">单条复制</a></li>
-                    <li class="btn_download"><a onclick="onedownload();">单个下载</a></li>
+                	<li class="btn_add"><a href="__URL__/add" target="_blank"></a></li>
+			<li class="btn_gaicuo"><a href="__ROOT__/change/<!--{$Think.get.id}--!>" target="_blank"></a></li>
+		    <li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank"></a></li>
+                    <li class="btn_copy"><a href="#"></a></li>
+                    <li class="btn_download"><a href="javascript:onedownload();"></a></li>
                 </ul>
                 <div class="clear10"></div>
                 <h3 class="h3_text">企业在线</h3>

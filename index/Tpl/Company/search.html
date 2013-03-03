@@ -31,6 +31,77 @@
     $("#panel").slideToggle("slow");
   } 
 </script>
+<script>
+  //首页结果下载
+  var downindexresult = function(){
+    var id_arr = $('#ul_mytable .a_title');
+    var id_str = '';
+    //构造id数组
+    $.each(id_arr, function(i, res){
+      if(i == 0){
+	id_str += res.href.substring(res.href.lastIndexOf('/') + 1);
+	}else{
+	id_str += ',' + res.href.substring(res.href.lastIndexOf('/') + 1);
+      }
+    });
+    $.ajax({
+      url:'__APP__/public/ajaxindexdownload',
+      data:'id_str=' + id_str,
+      success: function(msg){
+	if(msg.author_eight == 0){
+	  alert('您所在的会员等级暂无此权限！');
+	  }else{
+	    //会员余额足够扣费
+	    if(msg.enough == 1){
+	      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.const + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
+		//执行下载并扣费
+		location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
+	      }
+	    //会员余额不足够扣费
+	    }else{
+	    if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.const + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
+	      //执行下载并扣费
+	      location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
+	    }
+	  }
+	  
+	}
+      },
+      type:'POST',
+      dataType:'json'
+    });
+  }
+
+  //全部结果下载
+  var downallresult = function(){
+    var sum = $('#result_num').html();
+    $.ajax({
+      url:'__APP__/public/ajaxalldownload/num/' + sum,
+      success: function(msg){
+	if(msg.author_nine == 0){
+	  alert('您所在的会员等级暂无此权限！');
+	  }else{
+	  //会员余额足够扣费
+	    if(msg.enough == 1){
+	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.num + '条,您本次下载所需的费用为:' + msg.const + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+		//执行下载并扣费
+		location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+	      }
+	    //会员余额不足够扣费
+	    }else{
+	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.const + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+	      //执行下载并扣费
+	      location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+	    }
+	  }
+	}
+      },
+      dataType:'json'
+    });
+
+  }
+</script>
+
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -70,7 +141,7 @@
                     	<div class="div_left">选择类别</div>
                         <div class="div_right">
 			  <ul class="choosetype">
-			    <li><input type="radio" name="type" id="empty" value="" class="radiobtn" checked="checked" /><label for="name" />全部</label></li>
+			    <li><input type="radio" name="type" id="empty" value="" class="radiobtn" checked="checked" /><label for="empty" />全部</label></li>
 				  <li><input type="radio" name="type" id="name" value="name" class="radiobtn" /><label for="name" />公司名称</label></li>
 				  <li><input type="radio" name="type" id="manproducts" value="manproducts" class="radiobtn" /><label for="manproducts">主营产品</label></li>
 				  <li><input type="radio" name="type" id="address" value="address" class="radiobtn" /><label for="address">公司地址</label></li>
@@ -113,7 +184,7 @@
 			<if condition="(empty($_GET['keyword'])) OR ($_GET['keyword'] == '请输入您要搜索的内容')">
 			<li class="li_text">请输入搜索关键词</li>
 			<else/>
-			<li class="li_text">共有<span class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
+			<li class="li_text">共有<span id="result_num" class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
 			</if>
 		    
                     <li>
@@ -122,12 +193,12 @@
                         	<p>1、使用关键词查询时减少查询字词的数量，获取更多的查询结果。</p>
                             <p>2、如果你想精确查找你的结果请点击[<a onclick="showsenior();">高级搜索</a>]。</p>
                             <p>3、如果贵单位的信息尚未登记入本站，请点击[<a href="__ROOT__/company/add" target="_blank">我要添加</a>]。</p>
-                            <p>4、如果搜索结果对您有用您可以点击[<a href="#">结果首页下载</a>]或[<a href="#">全部下载</a>]。</p>
+                            <p>4、如果搜索结果对您有用您可以点击[<a href="javascript:downindexresult();">结果首页下载</a>]或[<a href="javascript:downallresult();">全部下载</a>]。</p>
                         </div>
                     </li>
                 </ul>
                 <div class="clear30"></div>
-                <div class="btn_download"><input type="button" value="全部下载" class="btn_qbxz"/><input type="button" value="结果首页下载" class="btn_jgsyxz"/></div>
+                <div class="btn_download"><input type="button" value="全部下载" class="btn_qbxz" onclick="downallresult();" /><input type="button" value="结果首页下载" class="btn_jgsyxz" onclick="downindexresult();" /></div>
                 <div class="clear"></div>	
 		<ul id="ul_mytable" class="ul_mytable">
 		  <volist name="result" id="r">

@@ -22,18 +22,19 @@
                             <dt>
                                 <a href="#" class="on">消费明细</a>
                             </dt>
-                            <dd>
-                                <table class="table_sms">
+			    <dd>
+			    <div style="min-height:250px;">
+                                <table class="table_mingxi">
                                 	<tr>
                                     	<th>时间</th>
                                         <th>事件</th>
                                         <th>类型</th>
-                                        <th>金额</th>
+                                        <th class="thright">金额</th>
 				      </tr>
 				      <volist name="result" id="r">
                                     <tr>
 				      <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
-				      <td><!--{$r.content}--!></td>
+				      <td class="tdleft"><!--{$r.content}--!></td>
 				      <td><!--{$r.type}--!></td>
 				      <elt name="r.money" value="0">
 				      <td><span class="iconrmb"><!--{$r.money}--!></span></td>
@@ -42,7 +43,9 @@
 				      </elt>
                                     </tr>
 				    </volist>
-                                </table>
+				  </table>
+				</div>
+				<div class="clear"></div>
                                 <div class="page">
 				  <!--{$show}--!>
                                 </div>

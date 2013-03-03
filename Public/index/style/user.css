@@ -341,7 +341,10 @@ ul.zhifu_img li a{width:153px; height:98px; border:#8bb5c4 1px solid;display:blo
 ul.zhifu_img li a:hover{ border:#fe9426 1px solid;}
 ul.zhifu_img li a img{ padding:24px 0; vertical-align:middle;}
 
-table.table_mingxi{ float:left;width:720px; border:none; border-collapse:collapse;}
-table.table_mingxi th{border:none; border-bottom:#676767 1px solid; text-align:left;}
-table.table_mingxi td{border:none; border-bottom:#676767 1px dashed;}
-.iconrmb{ background:url(images/user/iconrmb.gif) right center no-repeat; padding-right:15px;}
+table.table_mingxi{ float:left;width:720px; border:none; border-collapse:collapse; margin:10px auto;}
+table.table_mingxi th{border:none; font-size:12px; font-weight:bold; border-bottom:#666 1px dotted; border-collapse:collapse; height:30px; line-height:30px; text-align:center;}
+table.table_mingxi td{border:none; border-bottom:#666 1px dotted; border-collapse:collapse; height:25px; line-height:25px; text-align:center;}
+.iconrmb{ background:url(images/user/iconrmb.gif) right center no-repeat; padding-right:15px;text-align:right; display:block;}
+table.table_mingxi th.thright{ text-align:right;}
+table.table_mingxi td.tdleft{ text-align:left;}
+

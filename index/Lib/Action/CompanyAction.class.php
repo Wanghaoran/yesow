@@ -86,6 +86,8 @@ class CompanyAction extends CommonAction {
       $result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
       $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
       $result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
+      //是否有查看权
+      $this -> assign('isview', 0);
     //否则 根据会员等级 将没有权限的信息隐藏
     }else{
       $level = M('MemberLevel');
@@ -111,6 +113,8 @@ class CompanyAction extends CommonAction {
       if($author['author_five'] == 0){
 	$result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
       }
+      //是否有查看权
+      $this -> assign('isview', 1);
     }
     $this -> assign('result', $result);
     //最新更新同行
@@ -341,7 +345,7 @@ class CompanyAction extends CommonAction {
 
     import("ORG.Util.Page");// 导入分页类
     $count = $company -> table($sql . ' a') -> where($senior_where) -> count('id');
-    $page = new Page($count, 10);//每页10条
+    $page = new Page($count, 20);//每页10条
     $page->setConfig('header','条数据');
     $show = $page -> show();
     $this -> assign('count', $count);

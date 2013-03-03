@@ -233,7 +233,7 @@ class PayAction extends Action {
 	  //如果更新成功，则写RMB表
 	  if($rmb_order -> where($where) -> save($data)){
 	    //获取支付总额
-	    $total_pee = $payAmount;
+	    $total_pee = $payAmount / 100;
 	    //获取此订单的用户id
 	    $mid = $rmb_order -> getFieldByordernum($orderId, 'mid');
 	    //更新用户RMB余额

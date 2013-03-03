@@ -1214,7 +1214,7 @@ class CompanyAction extends CommonAction {
   public function auditmemberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
     $member_rmb = M('MemberRmb');
-    $mid = $this -> _get('id', 'intval');
+    $mid = $this -> _request('id', 'intval');
     //记录总数
     $count = $member_rmb_detail -> where(array('mid' => $mid)) -> count('id');
     import('ORG.Util.Page');

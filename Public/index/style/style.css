@@ -595,7 +595,7 @@ ul.saledetail li div.div_info div.isblock a{ font-size:12px;}
 
 ul.saledetail_btn{width:530px; height:26px; border:#ccc 1px solid;  margin:0px auto; padding:5px 48px;_padding:5px 40px;}
 ul.saledetail_btn li{ float:left; width:90px; height:24px;margin:0 8px;}
-ul.saledetail_btn li a{display:block; text-indent:-9999em; cursor:pointer; margin-top:4px;}
+ul.saledetail_btn li a{display:block; width:90px; height:24px; cursor:pointer; margin-top:4px;}
 ul.saledetail_btn li.btn_add a{background:url(images/detailbtn.gif) no-repeat; background-position:0 -3px;}
 ul.saledetail_btn li.btn_gaicuo a{background:url(images/detailbtn.gif) no-repeat; background-position:-105px -3px;}
 ul.saledetail_btn li.btn_baocuo a{background:url(images/detailbtn.gif) no-repeat; background-position:-210px -3px;}
