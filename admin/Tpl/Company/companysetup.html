@@ -1,0 +1,58 @@
+<script>
+  var childsitetab = function(cscid){
+    if(document.getElementById('csc' + cscid).style.display == 'block'){
+      $('.childsitelist').hide();
+      document.getElementById('csc' + cscid).style.display='none';
+    }else{
+      $('.childsitelist').hide();
+      document.getElementById('csc' + cscid).style.display='block';
+    }
+    
+  }
+</script>
+
+<div class="panel">
+  <h1>速查基本设置</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/navTabId/companysetup" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:95%;">
+      <label style="width:100%;">填写说明：</label>
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label style="width:170px;">用户成功扣费查看名片详细页后</label><input type="text" class="required" name="cs_viewtime" size="5" value="<!--{$viewtime}--!>" /><label style="width:180px;">小时内可以继续免费查看该信息</label>
+      </p>
+      <p style="width:90%;">
+      <label style="width:170px;">E币转成人民币的比例为：</label><input type="text" class="required" name="cs_ebtormb" size="5" value="<!--{$ebtormb}--!>" />
+      </p>
+      <p style="width:90%;">
+      <label style="width:250px;">会员登录后不需要付费即可查看的分站：</label>
+      </p>
+      <p style="width:90%;">
+
+      <volist name="childsite" id="cs">
+      <a class="button" href="javascript:childsitetab(<!--{$cs.id}--!>);"><span><!--{$cs.name}--!></span></a>
+      </volist>
+
+      </p>
+      
+      <volist name="childsite" id="cs">
+      <p style="width:90%;height:100%;display:none;" id="csc<!--{$cs.id}--!>" class="childsitelist">
+      <volist name="cs.childsite" id="csc">
+      <label style="width:60px;"><input type="checkbox" name="childsite[]" <?php echo in_array($csc['id'], $freesite_arr) ? "checked" : "" ?> value="<!--{$csc.id}--!>" /><!--{$csc.name}--!></label>
+      </volist>
+      </p>
+      </volist>
+
+      
+      
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

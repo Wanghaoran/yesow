@@ -131,10 +131,20 @@ class PayAction extends Action {
 	}
       }
       $session_uid = session(C('USER_AUTH_KEY'));
-      //重新缓存用户rmb余额
-      $member_rmb -> rmbtotal($session_uid);
       //写RMB消费日志
       D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
+      //计算返送金额
+      $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
+      $gaving_pee = $gaving_ratio['ratio'] * $total_pee;
+      //如果存在返送金额，则更新用户余额
+      if($gaving_pee > 0){
+	//更新用户RMB余额
+	$member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+	//写RMB消费日志
+	D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+      }
+      //重新缓存用户rmb余额
+      $member_rmb -> rmbtotal($session_uid);
       //充值成功的图片
       $this -> assign('pic_name', 'success_tishi.gif');
     }else{
@@ -259,12 +269,22 @@ class PayAction extends Action {
   //快钱同步返回页面
   public function k99billreturn(){
     $member_rmb = D('MemberRmb');
-    $money = $this -> _get('money');
+    $money = $this -> _request('orderAmount');
     $session_uid = session(C('USER_AUTH_KEY'));
-    //重新缓存用户rmb余额
-    $member_rmb -> rmbtotal($session_uid);
     //写RMB消费日志
     D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $money);
+    //计算返送金额
+    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $money))) -> order('money DESC') -> find();
+    $gaving_pee = $gaving_ratio['ratio'] * $money;
+    //如果存在返送金额，则更新用户余额
+    if($gaving_pee > 0){
+      //更新用户RMB余额
+      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+      //写RMB消费日志
+      D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$money}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+    }
+    //重新缓存用户rmb余额
+    $member_rmb -> rmbtotal($session_uid);
     //充值成功的图片
     $this -> assign('pic_name', 'success_tishi.gif');
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
@@ -387,10 +407,22 @@ class PayAction extends Action {
 	    $member_rmb = D('MemberRmb');
 	    $session_uid = session(C('USER_AUTH_KEY'));
 	    $money = $total_fee / 100;
-	    //重新缓存用户rmb余额
-	    $member_rmb -> rmbtotal($session_uid);
+	    
 	    //写RMB消费日志
 	    D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">财付通</span>成功在线充值RMB', '充值', $money);
+	    //计算返送金额
+	    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $money))) -> order('money DESC') -> find();
+	    $gaving_pee = $gaving_ratio['ratio'] * $money;
+	    //如果存在返送金额，则更新用户余额
+	    if($gaving_pee > 0){
+	    //更新用户RMB余额
+	    $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+	    //写RMB消费日志
+	    D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$money}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+	    }
+
+	    //重新缓存用户rmb余额
+	    $member_rmb -> rmbtotal($session_uid);
 	    $this -> assign('pic_name', 'success_tishi.gif');
 	  } else {
 	    //当做不成功处理

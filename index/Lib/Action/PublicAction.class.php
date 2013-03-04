@@ -208,7 +208,7 @@ class PublicAction extends Action {
   //ajax单个下载
   public function doonedownload(){
     //查出资料
-    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $this -> _get('cid', 'intval'))) -> find();
+    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $this -> _get('cid', 'intval'))) -> find();
     //扣费
     $const = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'rmb_three');
     //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
@@ -247,8 +247,10 @@ class PublicAction extends Action {
     
     //生成下载信息
     header("Content-Type: application/force-download");
-    header("Content-Disposition: attachment; filename=易搜速查详情.txt");
-    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['emial']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n";
+    $filename = date('YmdHis');
+    header("Content-Disposition: attachment; filename={$filename}.txt");
+    $updatetime = date('Y-m-d H:i:s', $result['updatetime']);
+    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['emial']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
     echo $content_download;
     
   }
@@ -341,18 +343,20 @@ class PublicAction extends Action {
     D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
 
     //查出资料
-    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => array('IN', $_GET['id_str']))) -> select();
+    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => array('IN', $_GET['id_str']))) -> select();
 
     //生成下载信息
     $content_download = '';
     $i = 1;
     foreach($result as $value){
-      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n\r\n";
+      $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
+      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     
     header("Content-Type: application/force-download");
-    header("Content-Disposition: attachment; filename=易搜速查搜索首页结果详情.txt");
+    $filename = date('YmdHis');
+    header("Content-Disposition: attachment; filename={$filename}.txt");
     echo $content_download;
     
   }
@@ -506,12 +510,14 @@ class PublicAction extends Action {
     $content_download = '';
     $i = 1;
     foreach($result as $value){
-      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n\r\n";
+      $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
+      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     
     header("Content-Type: application/force-download");
-    header("Content-Disposition: attachment; filename=易搜速查搜索全部结果详情.txt");
+    $filename = date('YmdHis');
+    header("Content-Disposition: attachment; filename={$filename}.txt");
     echo $content_download;
   }
 

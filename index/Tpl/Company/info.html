@@ -32,7 +32,7 @@
       url:'__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>',
       success: function(ress){
         if(ress == 1){
-	  alert('扣款成功！您在购买此信息起的24小时内可免费浏览！');
+	alert('扣款成功！您在购买此信息起的<!--{$viewtime}--!>小时内可免费浏览！');
 	  location.reload();
 	  }else{
 	  alert('扣款失败！账户余额不足或网络错误！');
@@ -137,7 +137,7 @@ var onedownload = function(){
 			  <span class="span_left">所在地区：</span><!--{$result.csname}--!> <!--{$result.csaname}--!>
                         </h2>
                         <h2>
-			  <span class="span_left">主营类别：</span><!--{$result.ccname}--!>
+			  <span class="span_left">主营类别：</span><!--{$result.one_ccname}--!> - <!--{$result.ccname}--!>
                         </h2>
                         <h2>
 			  <span class="span_left">主营产品：</span><!--{$result.manproducts}--!>

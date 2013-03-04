@@ -1022,7 +1022,7 @@ class CompanyAction extends CommonAction {
 
   /* --------------- 速查搜索管理 ---------------- */
 
-  /* --------------- 速查业务管理 ---------------- */
+  /* --------------- 业务订单管理 ---------------- */
 
   //人民币充值订单
   public function rmborder(){
@@ -1096,6 +1096,65 @@ class CompanyAction extends CommonAction {
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
+  }
+
+  /* --------------- 业务订单管理 ---------------- */
+
+  /* --------------- 速查业务管理 ---------------- */
+
+  //速查基本设置
+  public function companysetup(){
+    $company_setup = M('CompanySetup');
+    //更新
+    if(!empty($_POST['cs_viewtime'])){
+      $mun = 0;
+      foreach($_POST as $key => $value){
+	if(substr($key, 0, 3) == 'cs_'){
+	  $data = array();
+	  $where = array();
+	  $where['name'] = substr($key, 3);
+	  $data['value'] = $value;
+	  $num += $company_setup -> where($where) -> save($data);
+	}
+      }
+      //更新免费分站数据
+      $freechildsite = '';
+      foreach($_POST['childsite'] as $key => $value){
+	if($key == 0){
+	  $freechildsite .= $value;
+	}else{
+	  $freechildsite .= ',' . $value;
+	}
+      }
+      $data = array();
+      $where = array();
+      $data['value'] = $freechildsite;
+      $where['name'] = 'freechildsite';
+      $num += $company_setup -> where($where) -> save($data);
+
+      if($num != 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //读取辖区
+    $result_area = M('Area') -> field('id,name') -> select();
+    $child_site = M('ChildSite');
+    //读取辖区下分站
+    foreach($result_area as $key => $value){
+      $result_area[$key]['childsite'] = $child_site -> field('id,name') -> where(array('aid' => $value['id'])) -> select();
+    }
+    $this -> assign('childsite', $result_area);
+    //读取免费分站
+    $freesite = $company_setup -> getFieldByname('freechildsite', 'value');
+    $freesite_arr = explode(',', $freesite);
+    $this -> assign('freesite_arr', $freesite_arr);
+    //读取设置项
+    $this -> assign('viewtime', $company_setup -> getFieldByname('viewtime', 'value'));
+    $this -> assign('ebtormb', $company_setup -> getFieldByname('ebtormb', 'value'));
+    $this -> display();
+  
   }
 
   //会员人民币管理
@@ -1240,6 +1299,82 @@ class CompanyAction extends CommonAction {
     $this -> assign('count', $count);
     $this -> display();
   
+  }
+
+  //充值返送管理
+  public function paygiving(){
+    $pay_gaving = M('PayGaving');
+    //记录总数
+    $count = $pay_gaving -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $pay_gaving -> field('id,money,ratio*100 as ratio,remark') -> order('money') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //增加充值返送
+  public function addpaygiving(){
+    //处理增加
+    if(!empty($_POST['money'])){
+      $pay_gaving = M('PayGaving');
+      $_POST['ratio'] = $_POST['ratio'] / 100;
+      if(!$pay_gaving -> create()){
+	$this -> error($pay_gaving -> getError());
+      }
+      if($pay_gaving -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除充值返送
+  public function delpaygiving(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $pay_gaving = M('PayGaving');
+    if($pay_gaving -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑充值返送
+  public function editpaygiving(){
+    $pay_gaving = M('PayGaving');
+    //处理更新
+    if(!empty($_POST['money'])){
+      $_POST['ratio'] = $_POST['ratio'] / 100;
+      if(!$pay_gaving -> create()){
+	$this -> error($pay_gaving -> getError());
+      }
+      if($pay_gaving -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $pay_gaving -> field('id,money,ratio*100 as ratio,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   }
   /* --------------- 速查业务管理 ---------------- */
 }
