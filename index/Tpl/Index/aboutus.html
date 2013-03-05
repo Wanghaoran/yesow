@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>关于我们 - 易搜 - 易搜相关介绍</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	<include file="header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<span>相关介绍</span> 
+	</div>
+	<!--支付流程开始-->
+	<div id="main15">
+    	<div id="main15_l">
+            <div class="cat_header">
+                <h3>相关介绍</h3>
+            </div>
+            <div class="cat_bod">
+	      <ul class="ul_xgjs">
+		<volist name="result_title" id="rt">
+		<eq name="id" value="$rt.id">
+		<li class="xgjs_on"><a href="__ROOT__/aboutus/<!--{$rt.id}--!>"><!--{$rt.title}--!></a></li>
+		<else/>
+		<li><a href="__ROOT__/aboutus/<!--{$rt.id}--!>"><!--{$rt.title}--!></a></li>
+		</eq>
+	       </volist>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="main15_r">
+            <div class="cat_header">
+	      <h3><!--{$result_content.title}--!></h3>
+            </div>
+            <div class="cat_bod">
+	      <!--{$result_content.content|stripslashes}--!>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+	</div>
+	<!--支付流程结束-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	<include file="footer" />
+</div>
+</body>
+</html>

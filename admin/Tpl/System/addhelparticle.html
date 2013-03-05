@@ -1,0 +1,38 @@
+<div class="panel">
+  <h1>新增帮助文章</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/helparticle" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+
+      <p style="width:600px;">
+      <label>文章标题：</label>
+      <input type="text" class="textInput required" name="title" size="60" />
+      </p>
+      <p>
+      <label>排序：</label>
+      <input type="text" class="textInput" name="sort" />
+      </p>
+      <p style="width:95%;">
+      <label>所属分类：</label>
+      <select class="combox" name="cid">
+	<volist name="result_class" id="rc">
+	<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+	</volist>
+      </select>
+      </p>
+      
+      
+      <div class="divider"></div>
+      <p style="width:100%;height:350px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="18"></textarea>
+      </p>
+	
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

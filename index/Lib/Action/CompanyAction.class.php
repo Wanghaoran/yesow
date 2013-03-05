@@ -127,9 +127,13 @@ class CompanyAction extends CommonAction {
     $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where(array('c.ccid' => $result['ccid'])) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site as cs ON c.csid = cs.id') -> select();
     $this -> assign('result_counterparts', $result_counterparts);
     //读取评论
-    $comment_where = array();
-    $comment_where['cc.cid'] = $id;
-    $comment_where['cc.status'] = 2;
+    $comment_where = "cc.cid={$id} AND cc.status=2";
+    //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
+    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
+      $sid = session(C('USER_AUTH_KEY'));
+      $where_setup = "cc.cid={$id} AND cc.mid={$sid}";
+      $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
+    }
     import("ORG.Util.Page");// 导入分页类
     $count = $comment -> table('yesow_company_comment as cc') -> where($comment_where) -> count('id');
     $page = new Page($count, 10);//每页10条

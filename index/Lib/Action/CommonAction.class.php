@@ -18,6 +18,14 @@ class CommonAction extends Action {
       $this -> assign('index_search_hot', $index_search_hot);
       S('index_search_hot', $index_search_hot);
     }
+    //底部关于我们
+    if(S('index_footer_nav')){
+      $this -> assign('index_footer_nav', S('index_footer_nav'));
+    }else{
+      $index_footer_nav = $this -> getfooternav();
+      $this -> assign('index_footer_nav', $index_footer_nav);
+      S('index_footer_nav', $index_footer_nav);
+    }
   }
 
   //获得一级资讯分类
@@ -30,5 +38,11 @@ class CommonAction extends Action {
   private function getsearchhot(){
     $searchhot = M('SearchHot');
     return $searchhot -> field('name') -> order('sort ASC') -> select();
+  }
+
+  //获得底部关于我们
+  private function getfooternav(){
+    $aboutus =  M('Aboutus');
+    return $aboutus -> field('id,title') -> order('sort ASC') -> select();
   }
 }

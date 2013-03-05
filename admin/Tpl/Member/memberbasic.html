@@ -1,0 +1,34 @@
+
+<div class="panel">
+  <h1>会员基本设置</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/navTabId/memberbasic" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:95%;">
+      <label style="width:100%;">填写说明：</label>
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label style="width:370px;">用户登录后发布的评论未通过审核时，是否可立即看见自己的评论</label>
+
+      <eq name="viewcomment" value="1">
+      <input type="radio" name="ms_viewcomment" value="1" checked="checked" /> 是
+      <input type="radio" name="ms_viewcomment" value="0" /> 否
+      </eq>
+      <eq name="viewcomment" value="0">
+      <input type="radio" name="ms_viewcomment" value="1" /> 是
+      <input type="radio" name="ms_viewcomment" value="0" checked="checked" /> 否
+      </eq>
+      </p>
+
+      
+      
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

@@ -83,7 +83,7 @@ class IndexAction extends CommonAction {
     $this -> assign('new_company', $new_company);
   }
 
-  //提交评论
+  //提交公告评论
   public function commit(){
     if($this -> _post('code', 'md5') != $_SESSION['verify']){
       $this -> error(L('VERIFY_ERROR'));
@@ -100,6 +100,21 @@ class IndexAction extends CommonAction {
     }else{
       $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
     }
+  }
+
+  //关于我们
+  public function aboutus(){
+    $aboutus = M('Aboutus');
+    //查询所有标题
+    $result_title = $aboutus -> field('id,title') -> order('sort ASC') -> select();
+    $this -> assign('result_title', $result_title);
+    //如果没传入id,默认取第一个
+    $id = isset($_GET['id']) ? $_GET['id'] : $result_title[0]['id'];
+    $this -> assign('id', $id);
+    //读取该id对应的内容
+    $result_content = $aboutus -> field('title,content') -> find($id);
+    $this -> assign('result_content', $result_content);
+    $this -> display();
   }
   
 }

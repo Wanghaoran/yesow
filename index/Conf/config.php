@@ -18,6 +18,8 @@ $app_config = array(
     'search' => 'company/search',//搜索
     'clickrank' => 'company/clickrank',//点击排名
     'scorerank' => 'company/scorerank',//正负排名
+    'aboutus/:id\d' => 'index/aboutus',//关于我们
+    'aboutus' => 'index/aboutus',//关于我们
   ),
 );
 

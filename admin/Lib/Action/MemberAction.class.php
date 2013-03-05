@@ -331,6 +331,28 @@ class MemberAction extends CommonAction {
 
   //会员基本设置
   public function memberbasic(){
+    $member_setup = M('MemberSetup');
+    //处理更新
+    if(isset($_POST['ms_viewcomment'])){
+      $mun = 0;
+      foreach($_POST as $key => $value){
+	if(substr($key, 0, 3) == 'ms_'){
+	  $data = array();
+	  $where = array();
+	  $where['name'] = substr($key, 3);
+	  $data['value'] = $value;
+	  $num += $member_setup -> where($where) -> save($data);
+	}
+      }
+      if($num != 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //查询设置项
+    $this -> assign('viewcomment', $member_setup -> getFieldByname('viewcomment', 'value'));
+    $this -> display();
   
   }
 

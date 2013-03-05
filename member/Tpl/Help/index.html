@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>帮助中心 —易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+</head>
+<body id="body_user">
+	<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_850">
+        	<div class="user_help_tip">欢迎来到易搜帮助中心，解决您遇到的问题。</div>
+            <div class="clear"></div>
+            <div class="user_help_tab">
+	      <ul>
+		<volist name="result_class" id="rc">
+		<eq name="cid" value="$rc.id">
+		<li class="li_choose"><a href="__ACTION__/cid/<!--{$rc.id}--!>"><!--{$rc.name}--!></a></li>
+		<else/>
+		<li><a href="__ACTION__/cid/<!--{$rc.id}--!>"><!--{$rc.name}--!></a></li>
+		</eq>
+		</volist>
+                </ul>
+            </div>
+        	<div id="main">
+            	<div id="main_l">
+                	<div id="main_l_tit"><h3>帮助中心</h3></div>
+                    <ul class="help_left">
+		      <volist name="result_arcitle" id="rq">
+		      <eq name="aid" value="$rq.id">
+		      <li class="hover"><a href="__ACTION__/cid/<!--{$cid}--!>/aid/<!--{$rq.id}--!>"><!--{$rq.title}--!></a></li>
+		      <else/>
+		      <li><a href="__ACTION__/cid/<!--{$cid}--!>/aid/<!--{$rq.id}--!>"><!--{$rq.title}--!></a></li>
+		      </eq>
+		      </volist>
+
+                    </ul>
+                </div>
+				<div id="main_rhelp">
+				  <div class="main_rhelp_tit">>&nbsp;<!--{$result_content.title}--!></div>
+                    <div class="clear"></div>
+                    <div class="main_rhelp_con">
+		      <!--{$result_content.content|stripslashes}--!>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+      </div>
+      <include file="Index:footer" />
+
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>

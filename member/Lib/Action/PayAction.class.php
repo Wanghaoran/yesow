@@ -132,9 +132,14 @@ class PayAction extends Action {
       }
       $session_uid = session(C('USER_AUTH_KEY'));
       //写RMB消费日志
-      D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
+      $detail = D('MemberRmbDetail');
+      $detail -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
+      /* 调试信息 */
+      echo $detail -> getLastSql();
+      /* 调试信息 */
       //计算返送金额
       $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
+      $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
       $gaving_pee = $gaving_ratio['ratio'] * $total_pee;
       //如果存在返送金额，则更新用户余额
       if($gaving_pee > 0){
@@ -268,13 +273,18 @@ class PayAction extends Action {
 
   //快钱同步返回页面
   public function k99billreturn(){
+    /* 调试信息 */
+    dump(time());
+    /* 调试信息 */
     $member_rmb = D('MemberRmb');
     $money = $this -> _request('orderAmount');
+    $money = $money / 100;
     $session_uid = session(C('USER_AUTH_KEY'));
     //写RMB消费日志
     D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $money);
     //计算返送金额
     $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $money))) -> order('money DESC') -> find();
+    $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
     $gaving_pee = $gaving_ratio['ratio'] * $money;
     //如果存在返送金额，则更新用户余额
     if($gaving_pee > 0){
@@ -412,6 +422,7 @@ class PayAction extends Action {
 	    D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">财付通</span>成功在线充值RMB', '充值', $money);
 	    //计算返送金额
 	    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $money))) -> order('money DESC') -> find();
+	    $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
 	    $gaving_pee = $gaving_ratio['ratio'] * $money;
 	    //如果存在返送金额，则更新用户余额
 	    if($gaving_pee > 0){
@@ -435,5 +446,6 @@ class PayAction extends Action {
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
   
   }
+
 
 }

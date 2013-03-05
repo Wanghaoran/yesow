@@ -1248,4 +1248,269 @@ class SystemAction extends CommonAction {
 
   /* ------------  系统设置   -------------- */
 
+  /* ----------- 关于我们 ------------ */
+
+  //关于我们管理
+  public function aboutus(){
+    $aboutus = M('Aboutus');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['title'])){
+      $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+
+    //记录总数
+    $count = $aboutus -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $aboutus -> field('id,title,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //增加关于我们
+  public function addaboutus(){
+    //处理增加
+    if(!empty($_POST['title'])){
+      $aboutus = M('Aboutus');
+      if(!$aboutus -> create()){
+	$this -> error($aboutus -> getError());
+      }
+      if($aboutus -> add()){
+	//删除缓存
+	S('index_footer_nav', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除关于我们
+  public function delaboutus(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $aboutus = M('Aboutus');
+    if($aboutus -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_footer_nav', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑关于我们
+  public function editaboutus(){
+    $aboutus = M('Aboutus');
+    if(!empty($_POST['title'])){
+      if(!$aboutus -> create()){
+	$this -> error($aboutus -> getError());
+      }
+      if($aboutus -> save()){
+	//删除缓存
+	S('index_footer_nav', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $aboutus -> field('title,sort,remark,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  
+  }
+
+  //帮助分类管理
+  public function helpclass(){
+    $helpclass = M('HelpClass');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $helpclass -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $helpclass -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加帮助分类
+  public function addhelpclass(){
+    //处理添加
+    if(!empty($_POST['name'])){
+      $helpclass = M('HelpClass');
+      if(!$helpclass -> create()){
+	$this -> error($helpclass -> getError());
+      }
+      if($helpclass -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除帮助分类
+  public function delhelpclass(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $helpclass = M('HelpClass');
+    if($helpclass -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑帮助分类
+  public function edithelpclass(){
+    $helpclass = M('HelpClass');
+    if(!empty($_POST['name'])){
+      if(!$helpclass -> create()){
+	$this -> error($helpclass -> getError());
+      }
+      if($helpclass -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $helpclass -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  
+  }
+
+  //帮助文章管理
+  public function helparticle(){
+    $helparticle = M('HelpArticle');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['title'])){
+      $where['ha.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    if(!empty($_POST['cid'])){
+      $where['ha.cid'] = $this -> _post('cid');
+    }
+
+    //记录总数
+    $count = $helparticle -> table('yesow_help_article as ha') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $helparticle -> table('yesow_help_article as ha') -> field('ha.id,hc.name as cname,ha.title,ha.sort,ha.addtime') -> join('yesow_help_class as hc ON ha.cid = hc.id') -> order('ha.addtime DESC') -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //查询分站
+    $result_class = M('HelpClass') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_class', $result_class);
+    $this -> display();
+  }
+
+  //添加帮助文章
+  public function addhelparticle(){
+    //处理添加
+    if(!empty($_POST['title'])){
+      $helparticle = D('HelpArticle');
+      if(!$helparticle -> create()){
+	$this -> error($helparticle -> getError());
+      }
+      if($helparticle -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询分类
+    $result_class = M('HelpClass') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_class', $result_class);
+    $this -> display();
+  
+  }
+
+  //删除帮助文章
+  public function delhelparticle(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $helparticle = M('HelpArticle');
+    if($helparticle -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑帮助文章
+  public function edithelparticle(){
+    $helparticle = D('HelpArticle');
+    if(!empty($_POST['title'])){
+      if(!$helparticle -> create()){
+	$this -> error($helparticle -> getError());
+      }
+      if($helparticle -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $helparticle -> field('cid,title,sort,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询分类
+    $result_class = M('HelpClass') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_class', $result_class);
+    $this -> display();
+  }
+
+  /* ----------- 关于我们 ------------ */
+
 }

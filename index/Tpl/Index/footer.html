@@ -1,16 +1,14 @@
 	<div id="footer">
 <div id="footer_nav">
-			<p>
-				<a href="">关于易搜</a> -
-				<a href="">易搜发展</a> - 
-				<a href="">服务声明</a> - 
-				<a href="">业务介绍</a> - 
-				<a href="">优势介绍</a> - 
-				<a href="">站点地图</a> - 
-				<a href="">人才招聘</a> - 
-				<a href="">付款方式</a> - 
-				<a href="">联系方式</a> - 
-				<a href="">广告服务</a> 
+  <p>
+  <volist name="index_footer_nav" id="ifn">
+  <if condition="$i eq count($index_footer_nav)">
+  <a href="__ROOT__/aboutus/<!--{$ifn.id}--!>"> <!--{$ifn.title}--!></a>
+  <else/>
+  <a href="__ROOT__/aboutus/<!--{$ifn.id}--!>"> <!--{$ifn.title}--!></a> -
+  </if>
+  </volist>
+
 			</p>
 		      </div>
 		      <div class="footer_list">
