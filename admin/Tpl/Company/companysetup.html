@@ -20,13 +20,13 @@
       </p>
       <div class="divider"></div>
       <p style="width:90%;">
-      <label style="width:170px;">用户成功扣费查看名片详细页后</label><input type="text" class="required" name="cs_viewtime" size="5" value="<!--{$viewtime}--!>" /><label style="width:180px;">小时内可以继续免费查看该信息</label>
+      <label style="width:180px;">1.用户成功扣费查看名片详细页后</label><input type="text" class="required" name="cs_viewtime" size="5" value="<!--{$viewtime}--!>" /><label style="width:180px;">小时内可以继续免费查看该信息</label>
       </p>
       <p style="width:90%;">
-      <label style="width:170px;">E币转成人民币的比例为：</label><input type="text" class="required" name="cs_ebtormb" size="5" value="<!--{$ebtormb}--!>" />
+      <label style="width:170px;">2.E币转成人民币的比例为：</label><input type="text" class="required" name="cs_ebtormb" size="5" value="<!--{$ebtormb}--!>" />
       </p>
       <p style="width:90%;">
-      <label style="width:250px;">会员登录后不需要付费即可查看的分站：</label>
+      <label style="width:250px;">3.会员登录后不需要付费即可查看的分站：</label>
       </p>
       <p style="width:90%;">
 
@@ -43,6 +43,25 @@
       </volist>
       </p>
       </volist>
+
+      <p style="width:90%;">
+      <label style="width:240px;">4.添加一条<font color="blue"> 速查信息 </font>并<font color="green">通过审核</font>后，获得： </label><input type="text" class="required" name="cs_addsuccess" size="5" value="<!--{$addsuccess}--!>" /><label style="width:180px;">元RMB</label>
+      </p>
+      <p style="width:90%;">
+      <label style="width:240px;">5.添加一条<font color="blue"> 速查信息 </font><font color="red">未通过审核</font>后，扣除：  </label><input type="text" class="required" name="cs_adderror" size="5" value="<!--{$adderror}--!>" /><label style="width:180px;">元RMB</label>
+      </p>
+      <p style="width:90%;">
+      <label style="width:240px;">6.添加一条<font color="blue"> 改错信息 </font>并<font color="green">通过审核</font>后，获得： </label><input type="text" class="required" name="cs_reportsuccess" size="5" value="<!--{$reportsuccess}--!>" /><label style="width:180px;">元RMB</label>
+      </p>
+      <p style="width:90%;">
+      <label style="width:240px;">7.添加一条<font color="blue"> 改错信息 </font><font color="red">未通过审核</font>后，扣除： </label><input type="text" class="required" name="cs_reporterror" size="5" value="<!--{$reporterror}--!>" /><label style="width:180px;">元RMB</label>
+      </p>
+      <p style="width:90%;">
+      <label style="width:240px;">8.添加一条<font color="blue"> 报错信息 </font>并<font color="green">通过审核</font>后，获得： </label><input type="text" class="required" name="cs_changesuccess" size="5" value="<!--{$changesuccess}--!>" /><label style="width:180px;">元RMB</label>
+      </p>
+      <p style="width:90%;">
+      <label style="width:240px;">9.添加一条<font color="blue"> 报错信息 </font><font color="red">未通过审核</font>后，扣除： </label><input type="text" class="required" name="cs_changeerror" size="5" value="<!--{$changeerror}--!>" /><label style="width:180px;">元RMB</label>
+      </p>
 
       
       

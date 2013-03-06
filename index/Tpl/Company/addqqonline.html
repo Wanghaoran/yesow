@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>在线QQ自助申请 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<link type="text/css" href="__PUBLIC__/index/datepicker/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="__PUBLIC__/index/datepicker/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#sdate").datepicker();
+	$("#edate").datepicker()
+})
+</script>
+<script type="text/javascript">
+function appendli()
+{
+	
+	if($("#chens li").length>7){
+		alert("最多添加8个在线QQ");
+        return false;
+		}
+	else{
+    jQuery("#chens").append("<li>添加QQ：<input type='text' class='inputclass1' />&nbsp;&nbsp;昵称：<input type='text' class='inputclass1'/> (4个字符之内) &nbsp;&nbsp;<a onclick='return RemoveLi(this);'  title='删除'><img src='__PUBLIC__/index/style/images/reduce.gif' style='vertical-align:middle'/></a></li>");
+	}
+}
+//删除
+function RemoveLi(obj){
+ var onthis = $(obj).parents("li");
+ $(obj).parent().remove();
+}
+
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	<include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/company">渠道黄页</a> &gt;
+		<span>申请在线QQ</span> 
+	</div>
+	<!--支付流程开始-->
+	<div id="main14">
+        <div class="cat_header">
+            <h3>在线QQ添加</h3>
+        </div>
+        <div class="cat_bod">
+        	<div class="qiye_info">
+            	<div class="qiye_title">企业信息</div>
+                <div class="qiye_con">
+                    <ul>
+		      <li><b>商家名称：</b><!--{$company_info.name}--!></li>
+		      <li><b>公司地址：</b><!--{$company_info.address}--!></li>
+		      <li><b>联系人：</b><!--{$company_info.linkman}--!></li>
+		      <li><b>所属站点：</b><!--{$company_info.csname}--!><!--{$company_info.csaname}--!></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <hr class="hrstyle"/>
+            <div class="qiye_info">
+	      <input type="button" id="chen" class="que_add" title="添加QQ" value="添加QQ" onclick="appendli();"/>(还能添加 <span id="qqnum">8</span> 个QQ)
+                <ul id="chens" class="addli">
+                    <li>添加QQ：<input type="text" class="inputclass1" />&nbsp;&nbsp;昵称：<input type="text" class="inputclass1" maxlength="4"/> (4个字符之内) </li>
+                </ul>
+                <div class="clear"></div>
+                <div class="kssj_jssj">开始日期：<input type="text" id="sdate" name="datetime" class="inputclass1 Wdate" value="">&nbsp;&nbsp;结束日期：<input type="text" id="edate" name="datetime" class="inputclass1 Wdate" value=""></div>
+                <div class="hjfybox">合计费用&nbsp;&nbsp;N个QQ × N月=N元<span>（费用自动计算，数量乘以时间）</span></div>
+            </div>
+            <hr class="hrstyle"/>
+            <div class="qiye_info">
+            	<div class="qiye_title">改错人信息</div>
+                <div class="qiye_con">
+                    <ul>
+                        <li>用户名：myesow</li>
+                        <li>用户昵称：广东汕头</li>
+                        <li>验证码：</li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="div_btn"><input type="button" value="确认提交" class="btn_jgsyxz"/></div>
+        </div>
+		<div class="clear"></div>
+	</div>
+	<!--支付流程结束-->
+	<div class="index_gg01">
+	</div>
+	<include file="Index:footer" />
+
+</div>
+</body>
+</html>

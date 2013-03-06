@@ -123,7 +123,7 @@ class PayAction extends Action {
 	//如果更新成功，并且订单状态是从未付款到已付款，则更新会员RMB表
 	if($rmb_order -> where($where) -> save($data) && $now_status == 0){
 	  //获取支付总额
-	  $total_pee = $this -> _get('total_fee');
+	  $total_pee = $this -> _get('price');
 	  //获取此订单的用户id
 	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
 	  //更新用户RMB余额
@@ -134,9 +134,6 @@ class PayAction extends Action {
       //写RMB消费日志
       $detail = D('MemberRmbDetail');
       $detail -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
-      /* 调试信息 */
-      echo $detail -> getLastSql();
-      /* 调试信息 */
       //计算返送金额
       $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
       $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
@@ -159,8 +156,8 @@ class PayAction extends Action {
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html'); 
   }
 
-  //快钱异步通知页面
-  public function k99billnotify(){
+  //快钱同步返回页面
+  public function k99billreturn(){
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();
@@ -253,50 +250,33 @@ class PayAction extends Action {
 	    $mid = $rmb_order -> getFieldByordernum($orderId, 'mid');
 	    //更新用户RMB余额
 	    M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	    //写RMB消费日志
+	    D('MemberRmbDetail') -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $total_pee);
+	    //计算返送金额
+	    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
+	    $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
+	    $gaving_pee = $gaving_ratio['ratio'] * $total_pee;
+	    //如果存在返送金额，则更新用户余额
+	    if($gaving_pee > 0){
+	      //更新用户RMB余额
+	      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+	      //写RMB消费日志
+	      D('MemberRmbDetail') -> writelog($mid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+	    }
+	    //重新缓存用户rmb余额
+	    $member_rmb -> rmbtotal($mid);
 	  }
-	  $rtnOk=1;
-	  $rtnUrl= C('WEBSITE') . "member.php/pay/k99billreturn/money/" . $total_pee;
+	  $this -> assign('pic_name', 'success_tishi.gif');
 	  break;
 	default:
 	  $data['status'] = 0;
 	  $rmb_order -> where($where) -> save($data);
-	  $rtnOk=1;
-	  $rtnUrl= C('WEBSITE') . "member.php/pay/k99billreturn";
+	  $this -> assign('pic_name', 'fail_tishi.gif');
 	  break;
       }
     }else{
-      $rtnOk=1;
-      $rtnUrl= C('WEBSITE') . "member.php/pay/k99billreturn";
+      $this -> assign('pic_name', 'fail_tishi.gif');
     }
-    echo '<result>' . $rtnOk . '</result><redirecturl>' . $rtnUrl . '</redirecturl>';
-  }
-
-  //快钱同步返回页面
-  public function k99billreturn(){
-    /* 调试信息 */
-    dump(time());
-    /* 调试信息 */
-    $member_rmb = D('MemberRmb');
-    $money = $this -> _request('orderAmount');
-    $money = $money / 100;
-    $session_uid = session(C('USER_AUTH_KEY'));
-    //写RMB消费日志
-    D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $money);
-    //计算返送金额
-    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $money))) -> order('money DESC') -> find();
-    $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
-    $gaving_pee = $gaving_ratio['ratio'] * $money;
-    //如果存在返送金额，则更新用户余额
-    if($gaving_pee > 0){
-      //更新用户RMB余额
-      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
-      //写RMB消费日志
-      D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$money}元</span>后易搜返还的RMB", '获取', $gaving_pee);
-    }
-    //重新缓存用户rmb余额
-    $member_rmb -> rmbtotal($session_uid);
-    //充值成功的图片
-    $this -> assign('pic_name', 'success_tishi.gif');
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
   }
 
@@ -427,7 +407,7 @@ class PayAction extends Action {
 	    //如果存在返送金额，则更新用户余额
 	    if($gaving_pee > 0){
 	    //更新用户RMB余额
-	    $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+	    $member_rmb -> where(array('mid' => $session_uid)) -> setInc('rmb_pay', $gaving_pee);
 	    //写RMB消费日志
 	    D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$money}元</span>后易搜返还的RMB", '获取', $gaving_pee);
 	    }

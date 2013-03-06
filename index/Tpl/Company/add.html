@@ -188,11 +188,15 @@
     }
   }
 
+  var check = false;
   var checkcompanyphone = function(){
+    if(check == false){
     if($('#companyphone')[0].value == ''){
       $('#companyphone').focus();
+      check = true;
       alert('联系电话不能为空');
     }
+  }
   }
 
 </script>

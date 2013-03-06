@@ -256,8 +256,6 @@ class MoneyAction extends CommonAction {
     $inputCharset = "1";
     //同步返回地址
     $pageUrl = C('WEBSITE') . "member.php/pay/k99billreturn";
-    //异步通知地址
-    $bgUrl = C('WEBSITE') . "member.php/pay/k99billnotify";
     //网关版本.固定值
     $version = "v2.0";
     //语言种类.固定选择值。
@@ -327,7 +325,6 @@ class MoneyAction extends CommonAction {
 	</div>';
     $sHtml .= '<form name="frm" id="k99billsubmit" method="post" action="https://www.99bill.com/gateway/recvMerchantInfoAction.htm">';
     $sHtml .= '<input type="hidden" name="inputCharset" value="' . $inputCharset . '"/>
-			<input type="hidden" name="bgUrl" value="' . $bgUrl . '"/>
 			<input type="hidden" name="pageUrl" value="' . $pageUrl . '"/>
 			<input type="hidden" name="version" value="' . $version . '"/>
 			<input type="hidden" name="language" value="' . $language . '"/>

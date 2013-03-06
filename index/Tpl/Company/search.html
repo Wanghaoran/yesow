@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
-<script type="text/javascript">
+<script>
   var changearea = function(p){
     $.ajax({
       url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + p,
@@ -25,15 +25,18 @@
       },
       dataType:'json'
     });
+
   }
 
   var showsenior = function(){
     $("#panel").slideToggle("slow");
+
   } 
 </script>
 <script>
   //首页结果下载
   var downindexresult = function(){
+
     var id_arr = $('#ul_mytable .a_title');
     var id_str = '';
     //构造id数组
@@ -48,23 +51,23 @@
       url:'__APP__/public/ajaxindexdownload',
       data:'id_str=' + id_str,
       success: function(msg){
+
 	if(msg.author_eight == 0){
 	  alert('您所在的会员等级暂无此权限！');
 	  }else{
 	    //会员余额足够扣费
 	    if(msg.enough == 1){
-	      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.const + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
+	      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
 		//执行下载并扣费
 		location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
 	      }
 	    //会员余额不足够扣费
 	    }else{
-	    if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.const + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
+	    if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
 	      //执行下载并扣费
 	      location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
 	    }
 	  }
-	  
 	}
       },
       type:'POST',
@@ -83,13 +86,13 @@
 	  }else{
 	  //会员余额足够扣费
 	    if(msg.enough == 1){
-	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.num + '条,您本次下载所需的费用为:' + msg.const + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.num + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 		//执行下载并扣费
 		location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
 	      }
 	    //会员余额不足够扣费
 	    }else{
-	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.const + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 	      //执行下载并扣费
 	      location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
 	    }
@@ -335,7 +338,6 @@
 </div>
 </body>
 <script type="text/javascript">
-    debugger;
     $("#ul_mytable li").css("background","#fff");
     $("#ul_mytable li:even").css("background","#ebebeb");
     </script>

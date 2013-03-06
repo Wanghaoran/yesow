@@ -269,7 +269,7 @@ class PublicAction extends Action {
     $result['money'] = $money['total'];
     //计算本次所需费用
     $const = $num * $result['rmb_three'];
-    $result['const'] = $const;
+    $result['consts'] = $const;
     //如果账户余额足够本次扣费
     if($const <= $result['money']){
       //计算扣费后余额
@@ -373,7 +373,7 @@ class PublicAction extends Action {
     $result['money'] = $money['total'];
     //计算本次所需费用
     $const = $num * $result['rmb_three'];
-    $result['const'] = $const;
+    $result['consts'] = $const;
     //结果数量
     $result['num'] = $num;
     //如果账户余额足够本次扣费

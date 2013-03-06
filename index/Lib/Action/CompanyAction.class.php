@@ -70,7 +70,7 @@ class CompanyAction extends CommonAction {
     //点击量加一
     $company -> where(array('id' => $id)) -> setInc('clickcount');
     //结果
-    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.companyphone,c.qqcode,c.email,c.website') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
+    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.companyphone,c.qqcode,c.email,c.website,c.updatetime') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
     //单独读取一下主营类别的一级分类，因为数据库中没有记录
     $one_pid = M('CompanyCategory') -> getFieldByid($result['ccid'], 'pid');
     $result['one_ccname'] = M('CompanyCategory') -> getFieldByid($one_pid, 'name');
@@ -307,6 +307,7 @@ class CompanyAction extends CommonAction {
     $sp = new SplitWord();
     $keyword_str = $sp->SplitRMM($keyword);
     $keyword_str = iconv('GB2312', 'UTF-8', $keyword_str);//再转回来
+    $keyword = iconv('GB2312', 'UTF-8', $keyword);//再转回来
     $keyword_arr = explode(' ', $keyword_str);
     $sp->Clear();
     //删除关键字数组最后一个无效空元素
@@ -421,6 +422,15 @@ class CompanyAction extends CommonAction {
     //LAST100
     $result_last100 = $companycomment -> table('yesow_company_comment as cc') -> field('c.name as cname,cs.name as csname,cc.cid,SUM(cc.score) as count') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> group('cc.cid') -> where('cc.status = 2') -> order('count ASC') -> limit(100) -> select();
     $this -> assign('result_last100', $result_last100);
+    $this -> display();
+  }
+
+  //添加在线QQ
+  public function addqqonline(){
+    $cid = $this -> _get('cid', 'intval');
+    //公司信息
+    $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+    $this -> assign('company_info', $company_info);
     $this -> display();
   }
 }

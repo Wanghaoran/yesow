@@ -92,7 +92,7 @@ $(document).ready(function(){
 
 	$('#email').blur(function(){ 
 		var p=$("#email")[0].value;
-		var patrn=/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/;
+		var patrn=/^[_.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z]+.)+[a-zA-Z]{2,3}$/;
 		if(!patrn.exec(p)){
 			$('#chkEmail').remove();
 			$('#email').after('<span id="chkEmail" class="errdiv">电子邮件格式不正确，请输入正确的电子邮件</span>');

@@ -83,7 +83,7 @@ class RegisterAction extends Action {
   //检测用户邮箱
   public function checkuseremail(){
     $email = M('Member') -> getFieldByname($this -> _post('name'), 'email');
-    if($email == $_POST['email']){
+    if(strtolower($email) == strtolower($_POST['email'])){
       echo 1;
     }else{
       echo 0;

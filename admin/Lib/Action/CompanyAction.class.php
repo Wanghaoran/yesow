@@ -190,7 +190,20 @@ class CompanyAction extends CommonAction {
       if(!empty($_FILES['image']['name'])){
 	$company -> pic = $data['pic'];
       }
-      if($company -> add()){
+      if($cid = $company -> add()){
+	//审核成功,则用户增加相应的RMB金额
+	  //先查询应增加的金额
+	$add_rmb = M('CompanySetup') -> getFieldByname('addsuccess', 'value');
+	if($add_rmb > 0){
+	  //查询公司名称
+	  $cname = $company -> getFieldByid($cid, 'name');
+	  //查询报错用户id
+	  $mid = $companyaudit -> getFieldByid($data['id'], 'mid');
+	  //再向用户表中增加相应金额	  
+	  D('member://MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $add_rmb);
+	  //写RMB消费日志
+	  D('member://MemberRmbDetail') -> writelog($mid, "报错一条信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
+	}	
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
         $this -> error(L('DATA_ADD_ERROR'));
@@ -323,6 +336,19 @@ class CompanyAction extends CommonAction {
 	$company -> pic = $data['pic'];
       }
       if($company -> save()){
+	//审核成功,则用户增加相应的RMB金额
+	  //先查询应增加的金额
+	$add_rmb = M('CompanySetup') -> getFieldByname('changesuccess', 'value');
+	if($add_rmb > 0){
+	  //查询公司名称
+	  $cname = $company -> getFieldByid($_POST['id'], 'name');
+	  //查询改错用户id
+	  $mid = $companyaudit -> getFieldByid($data['id'], 'mid');
+	  //再向用户表中增加相应金额	  
+	  D('member://MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $add_rmb);
+	  //写RMB消费日志
+	  D('member://MemberRmbDetail') -> writelog($mid, "改错一条信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
+	}
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
@@ -505,6 +531,22 @@ class CompanyAction extends CommonAction {
     $data_audit['auditid'] = session(C('USER_AUTH_KEY'));
     $data_audit['audittime'] = time();
     if($companyreport -> where($where_audit) -> save($data_audit)){
+      //审核成功,则用户增加相应的RMB金额
+	  //先查询应增加的金额
+	$add_rmb = M('CompanySetup') -> getFieldByname('reportsuccess', 'value');
+	if($add_rmb > 0){
+	  $id_arr = explode(',', $_POST['ids']);
+	  foreach($id_arr as $value){
+	    //查询cid , mid
+	    $info = $companyreport -> field('cid,mid') -> find($value);
+	    //查询公司名称
+	    $cname = M('Company') -> getFieldByid($info['cid'], 'name');
+	    //再向用户表中增加相应金额	  
+	    D('member://MemberRmb') -> where(array('mid' => $info['mid'])) -> setInc('rmb_exchange', $add_rmb);
+	    //写RMB消费日志
+	    D('member://MemberRmbDetail') -> writelog($info['mid'], "报错一条信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
+	  }
+	}
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
@@ -522,6 +564,22 @@ class CompanyAction extends CommonAction {
     $data_audit['auditid'] = session(C('USER_AUTH_KEY'));
     $data_audit['audittime'] = time();
     if($companyreport -> where($where_audit) -> save($data_audit)){
+      //不通过审核,则用户扣除相应的RMB金额
+	  //先查询应增加的金额
+	$del_rmb = M('CompanySetup') -> getFieldByname('reporterror', 'value');
+	if($del_rmb > 0){
+	  $id_arr = explode(',', $_POST['ids']);
+	  foreach($id_arr as $value){
+	    //查询cid , mid
+	    $info = $companyreport -> field('cid,mid') -> find($value);
+	    //查询公司名称
+	    $cname = M('Company') -> getFieldByid($info['cid'], 'name');
+	    //再向用户表中扣除相应金额	  
+	    D('member://MemberRmb') -> where(array('mid' => $info['mid'])) -> setDec('rmb_exchange', $del_rmb);
+	    //写RMB消费日志
+	    D('member://MemberRmbDetail') -> writelog($info['mid'], "报错一条信息未审核通过[<span style='color:blue;'>{$cname}</span>]", '扣除', '-' . $del_rmb);
+	  }
+	}
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
@@ -1153,8 +1211,40 @@ class CompanyAction extends CommonAction {
     //读取设置项
     $this -> assign('viewtime', $company_setup -> getFieldByname('viewtime', 'value'));
     $this -> assign('ebtormb', $company_setup -> getFieldByname('ebtormb', 'value'));
+    $this -> assign('addsuccess', $company_setup -> getFieldByname('addsuccess', 'value'));
+    $this -> assign('adderror', $company_setup -> getFieldByname('adderror', 'value'));
+    $this -> assign('reportsuccess', $company_setup -> getFieldByname('reportsuccess', 'value'));
+    $this -> assign('reporterror', $company_setup -> getFieldByname('reporterror', 'value'));
+    $this -> assign('changesuccess', $company_setup -> getFieldByname('changesuccess', 'value'));
+    $this -> assign('changeerror', $company_setup -> getFieldByname('changeerror', 'value'));
     $this -> display();
   
+  }
+  
+  //速查业务设置
+  public function companybusinesssetup(){
+    $business = M('CompanyBusinessSetup');
+    //处理编辑
+    if(!empty($_POST['cbs_qq'])){
+      $mun = 0;
+      foreach($_POST as $key => $value){
+	if(substr($key, 0, 4) == 'cbs_'){
+	  $data = array();
+	  $where = array();
+	  $where['name'] = substr($key, 4);
+	  $data['value'] = $value;
+	  $num += $business -> where($where) -> save($data);
+	}
+      }
+      if($num != 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //名片qq
+    $this -> assign('qq', $business -> getFieldByname('qq', 'value'));
+    $this -> display();
   }
 
   //会员人民币管理
