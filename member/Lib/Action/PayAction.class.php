@@ -123,7 +123,7 @@ class PayAction extends Action {
 	//如果更新成功，并且订单状态是从未付款到已付款，则更新会员RMB表
 	if($rmb_order -> where($where) -> save($data) && $now_status == 0){
 	  //获取支付总额
-	  $total_pee = $this -> _get('price');
+	  $total_pee = $_GET['price'];
 	  //获取此订单的用户id
 	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
 	  //更新用户RMB余额
@@ -134,6 +134,7 @@ class PayAction extends Action {
       //写RMB消费日志
       $detail = D('MemberRmbDetail');
       $detail -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
+      echo $detail -> getLastSql();
       //计算返送金额
       $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
       $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
@@ -368,7 +369,6 @@ class PayAction extends Action {
 
   //财付通同步返回页面
   public function tenpayreturn(){
-    dump($_REQUEST);
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
