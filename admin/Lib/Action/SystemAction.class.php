@@ -1162,7 +1162,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $illegalword -> field('id,name,addtime,remark') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $illegalword -> field('id,name,replace,addtime,remark') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -1202,7 +1202,7 @@ class SystemAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $illegalword -> field('name,remark') -> find($this -> _get('id', 'intval'));
+    $result = $illegalword -> field('name,replace,remark') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }

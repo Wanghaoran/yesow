@@ -368,6 +368,7 @@ class PayAction extends Action {
 
   //财付通同步返回页面
   public function tenpayreturn(){
+    dump($_REQUEST);
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();

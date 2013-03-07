@@ -7,8 +7,11 @@
 	<div class="unit">
 		<label>非法词名称：</label>
 		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(50个字符以内)</label>
+	      </div>	
+	      <div class="unit">
+		<label>替换词：</label>
+		<input type="text" class="required" name="replace" value="<!--{$result.replace}--!>" /><label>(255个字符以内)</label>
 	</div>
-	
 	<div class="unit">
 		<label>备注：</label>
 		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>

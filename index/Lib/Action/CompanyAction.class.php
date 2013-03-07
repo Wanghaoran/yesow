@@ -40,7 +40,7 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	R('Public/infojump',array(L('COMPANY_ADD_SUCCESS'), U('Company/add')));
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");</script>';
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
       }
@@ -51,9 +51,10 @@ class CompanyAction extends CommonAction {
     //查询公司类型
     $result_company_type = M('CompanyType') -> field('id,name') -> select();
     $this -> assign('result_company_type', $result_company_type);
-    //查询主营类别 - 一级
-    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
-    $this -> assign('result_company_category_one', $result_company_category_one);
+    //查询主营类别 - 二级
+    $result_company_category_two = M('CompanyCategory') -> table('yesow_company_category as cc') -> field('cc.id,cc.name,cct.name as cctname') -> where(array('cc.pid' => array('neq', 0))) -> join('yesow_company_category as cct ON cc.pid = cct.id') -> order('cct.sort ASC,cc.sort ASC') -> select();
+
+    $this -> assign('result_company_category_two', $result_company_category_two);
     //如果会员已登录，则查出此会员的个人信息
     if(isset($_SESSION[C('USER_AUTH_KEY')])){
       $add_info = M('Member') -> field('name,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
@@ -323,7 +324,7 @@ class CompanyAction extends CommonAction {
     //进行分词后关键词的SQL组装
     $keyword_sql = array();
     foreach($keyword_arr as $value){
-      $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime FROM yesow_company WHERE name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%'";
+      $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
     }
 
     //根据组装好的各SQL语句，结合主SQL语句，进行查询
@@ -338,9 +339,12 @@ class CompanyAction extends CommonAction {
     $where_select['qqcode'] = array('LIKE', '%' . $keyword . '%');
     $where_select['website'] = array('LIKE', '%' . $keyword . '%');
     $where_select['_logic'] = 'OR';
+    $map['_complex'] = $where_select;
+    $map['delaid']  = array('exp','is NULL');
+    
 
     //构建查询SQL
-    $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where($where_select) -> union($keyword_sql) -> buildSql();
+    $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where($map) -> union($keyword_sql) -> buildSql();
 
     //高级查询条件
     $senior_where = array();

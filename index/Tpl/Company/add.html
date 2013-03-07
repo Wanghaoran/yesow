@@ -34,24 +34,6 @@
     });
   }
 
-  var getcompanycategorytwo = function(val){
-    $.ajax({
-      url:'__ROOT__/admin.php/public/ajaxgetcompanycategorytwo/id/' + val,
-      success:function(ress){
-	var _nstr = '<option value="">请选择</option>';
-	if(ress != null){
-	  $.each(ress, function(i, res){
-	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
-	  });
-	  $('#companyccid').html(_nstr).show();
-	  }else{
-	  $('#companyccid').html(_nstr).hide();
-	}
-      },
-      dataType:'json'
-    });
-  }
-
   var getchildsitecode = function(val){
     $.ajax({
       url: '__ROOT__/index.php/public/getchildsitecode/id/' + val,
@@ -95,6 +77,10 @@
     if($('#companyccid')[0].value == ''){
       $('#companyccid').focus();
       alert('主营类别不能为空');
+      return false;
+    }
+    if($('#companylinkman')[0].value == ''){
+      alert('联系人不能为空');
       return false;
     }
     /*
@@ -197,7 +183,19 @@
       alert('联系电话不能为空');
     }
   }
+}
+
+var checklinkman = false;
+var checkcompanylinkman = function(){
+  if(check == false){
+    if($('#companylinkman')[0].value == ''){
+      $('#companylinkman').focus();
+      check = true;
+      alert('联系人不能为空');
+    }
   }
+}
+
 
 </script>
 
@@ -272,7 +270,7 @@
 		      </select>
                     </div>
                     <div class="div_left">联系人</div>
-                    <div class="div_mid1"><input type="text" class="div_input1" id="companylinkman" name="companylinkman" /></div>
+                    <div class="div_mid1"><input type="text" class="div_input1" id="companylinkman" name="companylinkman" onblur="checkcompanylinkman(this.value);" /></div>
                     <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>
@@ -305,14 +303,11 @@
                 <li>
                 	<div class="div_left">主营类别</div>
                     <div class="div_mid1" style="position:relative">
-		      <select class="div_select1" onchange="getcompanycategorytwo($(this).val());">
-			    <option value="">请选择</option>
-			    <volist name="result_company_category_one" id="rcco">
-			    <option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
-			    </volist>
-			  </select>
-			  <select class="div_select1" id="companyccid" name="companyccid" >
-			  <option value="">请选择</option>
+		      <select id="companyccid" name="companyccid" >
+			<option value="">请选择</option>
+			<volist name="result_company_category_two" id="rcct">
+			<option value="<!--{$rcct.id}--!>"><!--{$rcct.cctname}--!>-<!--{$rcct.name}--!></option>
+			</volist>
 		      </select>
                     </div>
                     <div class="div_left">关键词</div>

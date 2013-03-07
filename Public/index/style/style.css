@@ -579,7 +579,7 @@ input.upfile_btn{ width:70px; height:24px; line-height:20px; padding-bottom:4px;
 
 ul.saledetail{ width:628px; margin:0 auto;}
 ul.saledetail li{ float:left;}
-ul.saledetail li.li_h1{width:628px; height:40px; line-height:40px; font-size:16px; font-weight:800; color:#010101; text-align:center; position:relative;}
+ul.saledetail li.li_h1{width:628px; height:40px; line-height:40px; font-size:18px; font-weight:800; color:#010101; text-align:center; position:relative;}
 ul.saledetail li.li_h1 span{ position:absolute; top:0; right:0; padding-right:20px; font-size:12px; font-weight:bold; color:#fe0201;}
 ul.saledetail li.li_img{ width:343px; height:275px; border:#ffaf02 1px solid; margin:0 10px 30px 0;}
 ul.saledetail li.li_img a img{width:343px; height:275px; border:none;}

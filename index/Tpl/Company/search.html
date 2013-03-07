@@ -86,13 +86,13 @@
 	  }else{
 	  //会员余额足够扣费
 	    if(msg.enough == 1){
-	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.num + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.num + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 		//执行下载并扣费
 		location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
 	      }
 	    //会员余额不足够扣费
 	    }else{
-	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,最多能下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 	      //执行下载并扣费
 	      location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
 	    }
@@ -208,7 +208,9 @@
                     <li>
 		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a> <a href="#" class="a_weizhi">[等候此位]</a> </h2>
 		    <p class="one"><!--{$r.manproducts}--!></p>
-		    <p class="two"><span>录入时间 <!--{$r.addtime|date="Y-m-d", ###}--!></span><span>最后更新时间 <!--{$r.updatetime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank">进入详细页</a></p>
+		    <p class="two" style="color:red;"><span>电话: <!--{$r.companyphone|substr_replace="******",8}--!></span></p>
+		    <p class="two" style="color:red;"><span><span>地址: <!--{$r.address}--!></span></p>
+		    <p class="two"><span>最后更新时间 <!--{$r.updatetime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank">进入详细页</a></p>
 			    </li>
 			    </volist>
                 </ul>

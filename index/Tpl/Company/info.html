@@ -9,9 +9,45 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+
+
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/dialog.js"></script>
+<script>
+  //单个复制
+  var onecopy = function(res){
+    $.ajax({
+      url: "__APP__/public/ajaxonecopy",
+      dataType: "json",
+      success: function(msg){
+	if(msg.author_six == 0){
+	  alert('您所在的会员等级暂无此权限！');
+	}else{
+	  //确认
+	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认')){
+	    //请求内容
+	    $.ajax({
+	      url: "__APP__/public/doajaxonecopy/cid/<!--{$Think.get.id}--!>",
+	      success: function(ress){
+		if(window.clipboardData){
+		  window.clipboardData.setData("text",ress);
+		  alert('信息已被复制到剪贴板，请粘贴到文档中！');
+		}else{
+		  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+		}
+	      }
+	    });
+
+	}
+      }
+    }
+  });
+}
+</script>
+
+
+
 <script type="text/javascript">
   var clickview = function(){
     $.ajax({
@@ -33,6 +69,9 @@
       success: function(ress){
         if(ress == 1){
 	alert('扣款成功！您在购买此信息起的<!--{$viewtime}--!>小时内可免费浏览！');
+	  location.reload();
+	  }else if(ress == 2){
+	  alert('免费信息查看成功！仅对当前页面有效!');
 	  location.reload();
 	  }else{
 	  alert('扣款失败！账户余额不足或网络错误！');
@@ -109,8 +148,12 @@ var onedownload = function(){
   }
 </script>
 
+
+
+
 </head>
-<body id="body_index" ondragstart='return false' onselectstart ='return false' onselect='document.selection.empty()' oncopy='document.selection.empty()' onbeforecopy='return false' onmouseup='document.selection.empty()'>
+<body id="body_index">
+ 
 <div id="warp_body">
   <include file="Index:header" />
 	<div id="mbx">
@@ -190,7 +233,7 @@ var onedownload = function(){
                 	<li class="btn_add"><a href="__URL__/add" target="_blank"></a></li>
 			<li class="btn_gaicuo"><a href="__ROOT__/change/<!--{$Think.get.id}--!>" target="_blank"></a></li>
 		    <li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank"></a></li>
-                    <li class="btn_copy"><a href="#"></a></li>
+                    <li class="btn_copy"><a id="onecopy" onclick="onecopy(this);" ></a></li>
                     <li class="btn_download"><a href="javascript:onedownload();"></a></li>
                 </ul>
                 <div class="clear10"></div>
@@ -332,4 +375,5 @@ var onedownload = function(){
 	<include file="Index:footer" />
 </div>
 </body>
+
 </html>

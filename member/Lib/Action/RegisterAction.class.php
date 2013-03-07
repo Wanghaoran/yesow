@@ -96,7 +96,7 @@ class RegisterAction extends Action {
     $email = encode_pass($_POST['email'], C('KEY'));
     $name = encode_pass($_POST['username'], C('KEY'));
     $url = C('WEBSITE') . 'member.php/register/checkmail/username/' . $name . '/email/' . $email;
-    $content = '尊敬的' . $_POST['username'] . '用户您好：恭喜您已经注册成为易搜会员！感谢您对易搜（ www.yesow.com）的关注和认可，在易搜您将找到全国33个省、市、直辖市的所有电脑、数码等IT商家信息，赶快验证您的邮箱后登陆易搜，查询和发布您的商家信息和产品信息，积累易搜币您可以通过升级来查看客户资料和信息，你也可以直接在“我要充值”处充值人民币（RMB）也可以查看你想要的信息！目前充值有很大优惠！惊喜等着您哦！海量的IT商家信息应有尽有，高品质的服务有求必应！请点此链接完成 ' . $url . '如果以上连接你无法点击进入，请将以下地址复制在地址栏上访问即可完成验证：' . $url . ' ';
+    $content = '尊敬的' . $_POST['username'] . '用户您好：恭喜您已经注册成为易搜会员！感谢您对易搜（ www.yesow.com）的关注和认可，在易搜您将找到全国33个省、市、直辖市的所有电脑、数码等IT商家信息，赶快验证您的邮箱后登陆易搜，查询和发布您的商家信息和产品信息，积累易搜币您可以通过升级来查看客户资料和信息，你也可以直接在“我要充值”处充值人民币（RMB）也可以查看你想要的信息！目前充值有很大优惠！惊喜等着您哦！海量的IT商家信息应有尽有，高品质的服务有求必应！请<a href="' . $url . '">点此链接</a>完成 ' . $url . '如果以上连接你无法点击进入，请将以下地址复制在地址栏上访问即可完成验证：' . $url . ' ';
     import('ORG.Util.Mail');
     SendMail($_POST['email'],'yesow注册用户验证邮件',$content,'yesow管理员');
     $this -> successjump(L('SEND_EMAIL_SUCCESS'), U('Public/login'));

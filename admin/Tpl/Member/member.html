@@ -68,13 +68,14 @@
 			<th width="60">昵称</th>
 			<th width="100">电子邮件</th>
 			<th width="40">性别</th>
-			<th width="60">省份</th>
-			<th width="60">地区</th>
+			<th width="40">省份</th>
+			<th width="40">地区</th>
 			<th width="60">会员等级</th>
+			<th width="60">RMB余额</th>
 			<th width="60">注册时间</th>
 			<th width="100">最近登录时间</th>
-			<th width="40">状态</th>
-			<th width="40">验证</th>
+			<th width="30">状态</th>
+			<th width="20">验证</th>
 
 		</tr>
 		</thead>
@@ -93,7 +94,8 @@
 			  </eq>			  
 			  <td><!--{$r.csname}--!></td>			  			  
 			  <td><!--{$r.csaname}--!></td>			  			  
-			  <td>×××</td>			  			  
+			  <td><!--{$r.tname}--!></td>			  			  
+			  <td><!--{$r.tcount}--!></td>			  			  
 			  <td><!--{$r.join_time|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.last_login_time|date="Y-m-d H:i:s", ###}--!></td>
 			  <eq name="r.status" value="1">

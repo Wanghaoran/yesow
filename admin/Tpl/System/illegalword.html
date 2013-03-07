@@ -46,6 +46,7 @@
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
 			<th width="60">名称</th>
+			<th width="60">替换词</th>
 			<th width="120">添加时间</th>
 			<th width="120">备注</th>
 
@@ -57,6 +58,7 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
+			  <td><!--{$r.replace}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.remark}--!></td>
 			</tr>

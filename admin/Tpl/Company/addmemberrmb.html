@@ -21,8 +21,8 @@
 	<div class="unit">
 		<label>类型：</label>
 		<select class="combox" name="type" onchange="selectsign(this.value)">
-		  <option value="消费">消费</option>
 		  <option value="获取">获取</option>
+		  <option value="消费">消费</option>
 		  <option value="扣除">扣除</option>
 		  <option value="充值">充值</option>
 		</select>
@@ -30,7 +30,7 @@
 	
 	<div class="unit">
 		<label>金额：</label>
-		<input type="text" id="money" class="required" name="money" value="-"/>
+		<input type="text" id="money" class="required" name="money" value="+" />
 	      </div>
 	      <input type="hidden" name="mid" value="<!--{$Think.get.mid}--!>" />
 

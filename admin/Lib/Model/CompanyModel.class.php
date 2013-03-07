@@ -9,6 +9,6 @@ class CompanyModel extends CommonModel {
 
   protected $_auto = array(
     array('addtime','time',1,'function'), 
-    array('updatetime','time',2,'function'), 
+    array('updatetime','time',3,'function'), 
   );
 }

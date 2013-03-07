@@ -202,7 +202,7 @@ class CompanyAction extends CommonAction {
 	  //再向用户表中增加相应金额	  
 	  D('member://MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $add_rmb);
 	  //写RMB消费日志
-	  D('member://MemberRmbDetail') -> writelog($mid, "报错一条信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
+	  D('member://MemberRmbDetail') -> writelog($mid, "添加一条完整的企业信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
 	}	
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
@@ -240,7 +240,26 @@ class CompanyAction extends CommonAction {
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
     $companyaudit = M('CompanyAudit');
+    //查询将要删除的未审数据，用来下面的会员扣费和消费日志
+    $where_del_data = $where_del;
+    $where_del_data['ischeck'] = 0;
+    $del_data = $companyaudit -> field('name,mid') -> where($where_del_data) -> select();
     if($companyaudit -> where($where_del) -> delete()){
+      //未通过审核,则用户减少相应的RMB金额
+	  //先查询应增加的金额
+	$del_rmb = M('CompanySetup') -> getFieldByname('adderror', 'value');
+	if($del_rmb > 0){
+	  foreach($del_data as $value){
+	    //公司名称
+	    $cname = $value['name'];
+	    //报错用户id
+	    $mid = $value['mid'];
+	    //再向用户表中减少相应金额
+	    D('member://MemberRmb') -> where(array('mid' => $mid)) -> setDec('rmb_exchange', $del_rmb);
+	    //写RMB消费日志
+	    D('member://MemberRmbDetail') -> writelog($mid, "添加一条完整的企业信息未通过审核[<span style='color:blue;'>{$cname}</span>]", '扣除', '-' . $del_rmb);
+	  }  
+	}
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -394,7 +413,26 @@ class CompanyAction extends CommonAction {
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
     $companyaudit = M('CompanyAudit');
+    //查询将要删除的未审数据，用来下面的会员扣费和消费日志
+    $where_del_data = $where_del;
+    $where_del_data['ischeck'] = 0;
+    $del_data = $companyaudit -> field('name,mid') -> where($where_del_data) -> select();
     if($companyaudit -> where($where_del) -> delete()){
+      //未通过审核,则用户减少相应的RMB金额
+	  //先查询应增加的金额
+	$del_rmb = M('CompanySetup') -> getFieldByname('changeerror', 'value');
+	if($del_rmb > 0){
+	  foreach($del_data as $value){
+	    //公司名称
+	    $cname = $value['name'];
+	    //报错用户id
+	    $mid = $value['mid'];
+	    //再向用户表中减少相应金额
+	    D('member://MemberRmb') -> where(array('mid' => $mid)) -> setDec('rmb_exchange', $del_rmb);
+	    //写RMB消费日志
+	    D('member://MemberRmbDetail') -> writelog($mid, "改错一条信息未审核通过[<span style='color:blue;'>{$cname}</span>]", '扣除', '-' . $del_rmb);
+	  }  
+	}
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -544,7 +582,7 @@ class CompanyAction extends CommonAction {
 	    //再向用户表中增加相应金额	  
 	    D('member://MemberRmb') -> where(array('mid' => $info['mid'])) -> setInc('rmb_exchange', $add_rmb);
 	    //写RMB消费日志
-	    D('member://MemberRmbDetail') -> writelog($info['mid'], "报错一条信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
+	    D('member://MemberRmbDetail') -> writelog($info['mid'], "报错一条企业信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
 	  }
 	}
       $this -> success(L('DATA_UPDATE_SUCCESS'));
@@ -577,7 +615,7 @@ class CompanyAction extends CommonAction {
 	    //再向用户表中扣除相应金额	  
 	    D('member://MemberRmb') -> where(array('mid' => $info['mid'])) -> setDec('rmb_exchange', $del_rmb);
 	    //写RMB消费日志
-	    D('member://MemberRmbDetail') -> writelog($info['mid'], "报错一条信息未审核通过[<span style='color:blue;'>{$cname}</span>]", '扣除', '-' . $del_rmb);
+	    D('member://MemberRmbDetail') -> writelog($info['mid'], "报错一条企业信息未审核通过[<span style='color:blue;'>{$cname}</span>]", '扣除', '-' . $del_rmb);
 	  }
 	}
       $this -> success(L('DATA_UPDATE_SUCCESS'));

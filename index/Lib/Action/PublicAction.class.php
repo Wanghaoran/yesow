@@ -111,6 +111,7 @@ class PublicAction extends Action {
   //ajax确认查看速查资料
   public function ajaxconfirmview(){
     $level = M('MemberLevel');
+    $isfree = false;//是否是免费查看
     $freecompany = M('MemberFreeCompany');
     //查询会员等级免费查看条数 和 查看一条速查信息，扣款数
     $level_info = $level -> field('freecompany,rmb_one') -> find(session('member_level_id'));
@@ -128,6 +129,7 @@ class PublicAction extends Action {
       $data['cid'] = $this -> _get('cid', 'intval');
       $data['time'] = date('Ymd');
       $freecompany -> add($data);
+      $isfree = true;
     }else{
       //否则在会员RMB表中扣除相应余额
       $const = $level_info['rmb_one'];
@@ -172,9 +174,20 @@ class PublicAction extends Action {
     $data = array();
     $data['cid'] = $this -> _get('cid', 'intval');
     $data['mid'] = session(C('USER_AUTH_KEY'));
-    $data['time'] = time();
+    //如果是免费信息，则让时间立刻失效
+    if($isfree){
+      //查询设置的有效时间
+      $viewtime = M('CompanySetup') -> getFieldByname('viewtime', 'value');
+      $data['time'] = time() - ($viewtime*60*60 - 4);
+    }else{
+      $data['time'] = time();
+    }
     if($member_company -> add($data)){
-      echo 1;
+      if($isfree){
+	echo 2;
+      }else{
+	echo 1;
+      }
     }else{
       echo 0;
     }
@@ -519,6 +532,63 @@ class PublicAction extends Action {
     $filename = date('YmdHis');
     header("Content-Disposition: attachment; filename={$filename}.txt");
     echo $content_download;
+  }
+
+  //ajax获取单个复制扣费信息
+  public function ajaxonecopy(){
+    $member_level = M('MemberLevel');
+    $result = $member_level -> field('rmb_two,author_six') -> find(session('member_level_id'));
+    //查帐户余额
+    $money = D('member://MemberRmb') -> getrmbtotal(session(C('USER_AUTH_KEY')));
+    $result['money'] = $money['total'];
+    echo json_encode($result);
+  }
+
+  //ajax单个复制
+  public function doajaxonecopy(){
+    //查出资料
+    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $this -> _get('cid', 'intval'))) -> find();
+    //扣费
+    $const = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'rmb_two');
+    //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
+    $rmb = D('member://MemberRmb');
+    $price = $rmb -> field('rmb_pay,rmb_exchange') -> find(session(C('USER_AUTH_KEY')));
+    //如果 兑换RMB余额足够支付 此次费用
+    if($price['rmb_exchange'] - $const >= 0){
+      $data_rmb = array();
+      $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
+      $data_rmb['rmb_pay'] = $price['rmb_pay'];
+      $data_rmb['rmb_exchange'] = $price['rmb_exchange'] - $const;
+      $rmb -> save($data_rmb);
+    }else{
+      //如果兑换RMB不足够支付此次信息，则用充值RMB支付
+      //计算差值
+      $fee = abs($price['rmb_exchange'] - $const);
+      //如果差值不够支付，则退出执行
+      if($price['rmb_pay'] < $fee){
+	exit();
+      }
+      $data_rmb = array();
+      $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
+      $data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
+      $data_rmb['rmb_exchange'] = 0;
+      $rmb -> save($data_rmb);
+    }
+    $session_uid = session(C('USER_AUTH_KEY'));
+    //更新会员余额和等级
+    $rmb -> rmbtotal($session_uid);
+    //查询此条速查信息的地域信息，用于记录日志
+    $cid = $this -> _get('cid', 'intval');
+    $logo_info = M('Company') -> table('yesow_company as c') -> field('cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+    //写RMB消费日志
+    $log_content = "在详细页复制一条名片详细内容 [<span style='color:blue'>{$logo_info['csname']} {$logo_info['csaname']}</span>]";
+      D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
+    
+    //生成下载信息
+    $updatetime = date('Y-m-d H:i:s', $result['updatetime']);
+    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['emial']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
+    echo $content_download;
+  
   }
 
 }
