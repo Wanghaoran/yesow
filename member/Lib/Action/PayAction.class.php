@@ -142,7 +142,7 @@ class PayAction extends Action {
       //如果存在返送金额，则更新用户余额
       if($gaving_pee > 0){
 	//更新用户RMB余额
-	$member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+	$member_rmb -> where(array('mid' => $session_uid)) -> setInc('rmb_pay', $gaving_pee);
 	//写RMB消费日志
 	D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
       }
