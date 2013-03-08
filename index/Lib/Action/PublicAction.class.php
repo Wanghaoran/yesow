@@ -163,9 +163,10 @@ class PublicAction extends Action {
       $rmb -> rmbtotal($session_uid);
       //查询此条速查信息的地域信息，用于记录日志
       $cid = $this -> _get('cid', 'intval');
-      $logo_info = M('Company') -> table('yesow_company as c') -> field('cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+      $companyname = M('Company') -> getFieldByid($cid, 'name');
+      $companyname = msubstr($companyname, 0, 6);
       //写RMB消费日志
-      $log_content = "查看速查名片详细内容一次性扣除 [<span style='color:blue'>{$logo_info['csname']} {$logo_info['csaname']}</span>]";
+      $log_content = "查看速查名片详细内容一次性扣除 [<span style='color:blue'>{$companyname}</span>]";
       D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
     }
 
@@ -251,13 +252,11 @@ class PublicAction extends Action {
     $session_uid = session(C('USER_AUTH_KEY'));
     //更新会员余额和等级
     $rmb -> rmbtotal($session_uid);
-    //查询此条速查信息的地域信息，用于记录日志
-    $cid = $this -> _get('cid', 'intval');
-    $logo_info = M('Company') -> table('yesow_company as c') -> field('cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+    //公司名称，用于记录日志
+    $companyname = msubstr($result['name'], 0, 6);
     //写RMB消费日志
-    $log_content = "在详细页下载一条名片详细内容 [<span style='color:blue'>{$logo_info['csname']} {$logo_info['csaname']}</span>]";
-      D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
-    
+    $log_content = "在详细页下载一条名片详细内容 [<span style='color:blue'>{$companyname}</span>]";
+    D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
     //生成下载信息
     header("Content-Type: application/force-download");
     $filename = date('YmdHis');
@@ -577,12 +576,11 @@ class PublicAction extends Action {
     $session_uid = session(C('USER_AUTH_KEY'));
     //更新会员余额和等级
     $rmb -> rmbtotal($session_uid);
-    //查询此条速查信息的地域信息，用于记录日志
-    $cid = $this -> _get('cid', 'intval');
-    $logo_info = M('Company') -> table('yesow_company as c') -> field('cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+    //公司名，用于记录消费日志
+    $companyname = msubstr($result['name'], 0, 6);
     //写RMB消费日志
-    $log_content = "在详细页复制一条名片详细内容 [<span style='color:blue'>{$logo_info['csname']} {$logo_info['csaname']}</span>]";
-      D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
+    $log_content = "在详细页复制一条名片详细内容 [<span style='color:blue'>{$companyname}</span>]";
+    D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
     
     //生成下载信息
     $updatetime = date('Y-m-d H:i:s', $result['updatetime']);

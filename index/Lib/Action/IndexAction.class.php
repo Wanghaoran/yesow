@@ -9,6 +9,8 @@ class IndexAction extends CommonAction {
     $this -> getyesownotice();
     //最新IT商家
     $this -> newcompany();
+    //分站信息
+    $this -> childsite();
 
     $this -> display();
   }
@@ -115,6 +117,17 @@ class IndexAction extends CommonAction {
     $result_content = $aboutus -> field('title,content') -> find($id);
     $this -> assign('result_content', $result_content);
     $this -> display();
+  }
+
+  //分站信息
+  public function childsite(){
+    if(S('index_child_site')){
+      $this -> assign('index_child_site', S('index_child_site'));
+    }else{
+      $result = M('ChildSite') -> field('id,domain,name') -> where('isshow=1') -> select();
+      S('index_child_site', $result);
+      $this -> assign('index_child_site', $result);
+    }
   }
   
 }

@@ -743,6 +743,8 @@ class SystemAction extends CommonAction {
 	$this -> error($childsite -> getError());
       }
       if($childsite -> add()){
+	//删除缓存
+	S('index_child_site', NULL, NULL, '', NULL, 'index');
       	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -766,6 +768,8 @@ class SystemAction extends CommonAction {
   public function delchildsite(){
     $childsite = M('ChildSite');
     if($childsite -> delete($this -> _get('id', 'intval'))){
+      //删除缓存
+      S('index_child_site', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -780,6 +784,8 @@ class SystemAction extends CommonAction {
 	$this -> error($childsite -> getError());
       }
       if($childsite -> save()){
+	//删除缓存
+	S('index_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));

@@ -249,8 +249,9 @@ class PayAction extends Action {
 	    $total_pee = $payAmount / 100;
 	    //获取此订单的用户id
 	    $mid = $rmb_order -> getFieldByordernum($orderId, 'mid');
+	    $member_rmb = D('MemberRmb');
 	    //更新用户RMB余额
-	    M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	    $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
 	    //写RMB消费日志
 	    D('MemberRmbDetail') -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $total_pee);
 	    //计算返送金额
@@ -336,7 +337,6 @@ class PayAction extends Action {
 	    $transaction_id = $resHandler->getParameter("transaction_id");
 	    //金额,以分为单位
 	    $total_fee = $resHandler->getParameter("total_fee");
-
 	    //商家业务逻辑
 	    $rmb_order = M('RmbOrder');
 	    $where = array();
@@ -344,26 +344,51 @@ class PayAction extends Action {
 	    $data = array();
 	    $data['status'] = 3;
 	    if($rmb_order -> where($where) -> save($data)){
+	      /****
+	       * 调试信息
+	       *
+	       *
+	       *****/
+	      $fp = fopen("log.txt","a");
+	      flock($fp, LOCK_EX) ;
+	      $word = $where['ordernum'] . '---------' . $data['status'];
+	      fwrite($fp,"执行日期：".strftime("%Y%m%d%H%M%S",time())."\n".$word."\n");
+	      flock($fp, LOCK_UN);
+	      fclose($fp);
 	      //获取支付总额
 	      $total_pee = $total_fee / 100;
 	      //获取此订单的用户id
 	      $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
 	      //更新用户RMB余额
-	      M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	      $member_rmb = M('MemberRmb');
+	      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	      //写RMB消费日志
+	      D('MemberRmbDetail') -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">财付通</span>成功在线充值RMB', '充值', $total_pee);
+	      //计算返送金额
+	      $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
+	      $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
+	      $gaving_pee = $gaving_ratio['ratio'] * $total_pee;
+	      //如果存在返送金额，则更新用户余额
+	      if($gaving_pee > 0){
+	      //更新用户RMB余额
+	      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $gaving_pee);
+	      //写RMB消费日志
+	      D('MemberRmbDetail') -> writelog($mid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+	      }
+	      echo "success";
+	    }else{
+	      echo "fail";
 	    }
-	    echo "success";
 	  }else{
-	    echo "fail";
+	    echo "fail"; 
 	  }
 	}else{
-	 echo "fail"; 
+	echo "fail";
 	}
       }else{
-	echo "fail";
+	echo "<br/>" . "认证签名失败" . "<br/>";
+	echo $resHandler->getDebugInfo() . "<br>";
       }
-    }else{
-      echo "<br/>" . "认证签名失败" . "<br/>";
-      echo $resHandler->getDebugInfo() . "<br>";
     }
   }
 
@@ -397,36 +422,20 @@ class PayAction extends Action {
 	  if( "0" == $trade_state){
 	    $member_rmb = D('MemberRmb');
 	    $session_uid = session(C('USER_AUTH_KEY'));
-	    $money = $total_fee / 100;
-	    
-	    //写RMB消费日志
-	    D('MemberRmbDetail') -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">财付通</span>成功在线充值RMB', '充值', $money);
-	    //计算返送金额
-	    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $money))) -> order('money DESC') -> find();
-	    $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
-	    $gaving_pee = $gaving_ratio['ratio'] * $money;
-	    //如果存在返送金额，则更新用户余额
-	    if($gaving_pee > 0){
-	    //更新用户RMB余额
-	    $member_rmb -> where(array('mid' => $session_uid)) -> setInc('rmb_pay', $gaving_pee);
-	    //写RMB消费日志
-	    D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$money}元</span>后易搜返还的RMB", '获取', $gaving_pee);
-	    }
-
 	    //重新缓存用户rmb余额
 	    $member_rmb -> rmbtotal($session_uid);
 	    $this -> assign('pic_name', 'success_tishi.gif');
-	  } else {
-	    //当做不成功处理
+	  }else{
 	    $this -> assign('pic_name', 'fail_tishi.gif');
-	  }
+	  }	    
+	}else{
+	  //当做不成功处理
+	  $this -> assign('pic_name', 'fail_tishi.gif');
 	}
     }else{
       $this -> assign('pic_name', 'fail_tishi.gif');
     }
     $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
-  
   }
-
 
 }

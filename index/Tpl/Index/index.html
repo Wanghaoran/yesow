@@ -15,18 +15,10 @@
     	<div id="nav03">
         	<div id="nav03_l"></div>
 			<div id="nav03_c">
-				<ul id="nav03_ul">
-					<li><a href="#">北京</a></li>
-					<li><a href="#">天津</a></li>
-					<li><a href="#">上海</a></li>
-					<li><a href="#">广州</a></li>
-					<li><a href="#">深圳</a></li>
-					<li><a href="#">台湾</a></li>
-					<li><a href="#">香港</a></li>
-					<li><a href="#">澳门</a></li>
-					<li><a href="#">湖北</a></li>
-					<li><a href="#">湖南</a></li>
-					<li><a href="#">江苏</a></li>
+			  <ul id="nav03_ul">
+			    <volist name="index_child_site" id="ics">
+			    <li><a href="http://<!--{$ics.domain}--!>"><!--{$ics.name}--!></a></li>
+			    </volist>
 				</ul>
 			</div>
         	<div id="nav03_r"></div>

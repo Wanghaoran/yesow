@@ -197,6 +197,7 @@ class CompanyAction extends CommonAction {
 	if($add_rmb > 0){
 	  //查询公司名称
 	  $cname = $company -> getFieldByid($cid, 'name');
+	  $cname = msubstr($cname, 0, 6);
 	  //查询报错用户id
 	  $mid = $companyaudit -> getFieldByid($data['id'], 'mid');
 	  //再向用户表中增加相应金额	  
@@ -252,6 +253,7 @@ class CompanyAction extends CommonAction {
 	  foreach($del_data as $value){
 	    //公司名称
 	    $cname = $value['name'];
+	    $cname = msubstr($cname, 0, 6);
 	    //报错用户id
 	    $mid = $value['mid'];
 	    //再向用户表中减少相应金额
@@ -361,6 +363,7 @@ class CompanyAction extends CommonAction {
 	if($add_rmb > 0){
 	  //查询公司名称
 	  $cname = $company -> getFieldByid($_POST['id'], 'name');
+	  $cname = msubstr($cname, 0, 6);
 	  //查询改错用户id
 	  $mid = $companyaudit -> getFieldByid($data['id'], 'mid');
 	  //再向用户表中增加相应金额	  
@@ -425,6 +428,7 @@ class CompanyAction extends CommonAction {
 	  foreach($del_data as $value){
 	    //公司名称
 	    $cname = $value['name'];
+	    $cname = msubstr($cname, 0, 6);
 	    //报错用户id
 	    $mid = $value['mid'];
 	    //再向用户表中减少相应金额
@@ -579,6 +583,7 @@ class CompanyAction extends CommonAction {
 	    $info = $companyreport -> field('cid,mid') -> find($value);
 	    //查询公司名称
 	    $cname = M('Company') -> getFieldByid($info['cid'], 'name');
+	    $cname = msubstr($cname, 0, 6);
 	    //再向用户表中增加相应金额	  
 	    D('member://MemberRmb') -> where(array('mid' => $info['mid'])) -> setInc('rmb_exchange', $add_rmb);
 	    //写RMB消费日志
@@ -612,6 +617,7 @@ class CompanyAction extends CommonAction {
 	    $info = $companyreport -> field('cid,mid') -> find($value);
 	    //查询公司名称
 	    $cname = M('Company') -> getFieldByid($info['cid'], 'name');
+	    $cname = msubstr($cname, 0, 6);
 	    //再向用户表中扣除相应金额	  
 	    D('member://MemberRmb') -> where(array('mid' => $info['mid'])) -> setDec('rmb_exchange', $del_rmb);
 	    //写RMB消费日志
