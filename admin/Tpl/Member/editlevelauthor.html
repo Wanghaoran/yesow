@@ -7,7 +7,9 @@
 	  <div class="pageFormContent" layoutH="58">
 	    <h1><!--{$name}--!></h1>
 	    <div class="divider"></div>
-		  <div class="unit">
+	    <div class="unit">
+	      <label style="width:95%">查看一条速查详细信息，扣款： <input type="text" class="required" size="10" name="rmb_one" value="<!--{$result.rmb_one}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
+	      <br /><br />
 		    <eq name="result.author_one" value="1">
 		    <input type="checkbox" name="author[]" value="author_one" checked="checked" /> 查看电话
 		    <else/>
@@ -33,9 +35,9 @@
 		    <else/>
 		    <input type="checkbox" name="author[]" value="author_five" /> 查看网址
 		    </eq>
-		    <br /><br />
-		    <label style="width:95%">查看一条速查详细信息，扣款： <input type="text" class="required" size="10" name="rmb_one" value="<!--{$result.rmb_one}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
 		    <div class="divider"></div>
+		    <label style="width:95%">复制速查信息，扣款： <input type="text" class="required" size="10" name="rmb_two" value="<!--{$result.rmb_two}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
+		     <br /><br />
 		    <eq name="result.author_six" value="1">
 		    <input type="checkbox" name="author[]" value="author_six" checked="checked" /> 单条复制
 		    <else/>
@@ -46,26 +48,25 @@
 		    <else/>
 		    <input type="checkbox" name="author[]" value="author_ten" /> 批量复制
 		    </eq>
-		    <br /><br />
-		    <label style="width:95%">复制速查信息，扣款： <input type="text" class="required" size="10" name="rmb_two" value="<!--{$result.rmb_two}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
 		    <div class="divider"></div>
+		    <label style="width:95%">下载速查信息，扣款： <input type="text" class="required" size="10" name="rmb_three" value="<!--{$result.rmb_three}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
+		    <br /><br />
 		    <eq name="result.author_seven" value="1">
 		    <input type="checkbox" name="author[]" value="author_seven" checked="checked" /> 单条下载
 		    <else/>
 		    <input type="checkbox" name="author[]" value="author_seven" /> 单条下载
 		    </eq>
 		    <eq name="result.author_eight" value="1">
-		    <input type="checkbox" name="author[]" value="author_eight" checked="checked" /> 首页结果下载
+		    <input type="checkbox" name="author[]" value="author_eight" checked="checked" /> 批量下载
 		    <else/>
-		    <input type="checkbox" name="author[]" value="author_eight" /> 首页结果下载
+		    <input type="checkbox" name="author[]" value="author_eight" /> 批量下载
 		    </eq>
 		    <eq name="result.author_nine" value="1">
 		    <input type="checkbox" name="author[]" value="author_nine" checked="checked" /> 全部下载
 		    <else/>
 		    <input type="checkbox" name="author[]" value="author_nine" /> 全部下载
 		    </eq>
-		    <br /><br />
-		    <label style="width:95%">下载速查信息，扣款： <input type="text" class="required" size="10" name="rmb_three" value="<!--{$result.rmb_three}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
+		    
 	      </div>
 	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
 

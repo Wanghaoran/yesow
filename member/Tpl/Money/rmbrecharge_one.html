@@ -7,18 +7,41 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
-<script>
-  $(function(){
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('hRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('hRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("hRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("hRadio_Checked");
+                $(this).prev()[0].checked = true;
+            }
+               
+            event.stopPropagation();
+			$('#czje').val($('#radiolist :checked').val());
+
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist').hradio();
+	});
+
+$(function(){
     //点击图片更换验证码
     $("#code").click(function(){
        $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
      });
    });
 </script>
-
 </head>
 <body id="body_user">
-  <include file="Index:header" />
+	<include file="Index:header" />
 	<div id="user_m">
     	<div class="warp_900">
         	<div id="main">
@@ -39,12 +62,17 @@
                             <li>支付完成</li>
                         </ul>
                         <div class="clear"></div>
-		      </div>
-		      <form action="__ACTION__" method="get">
+                    </div>
                     <div class="rmb_con">
+		      <div id="radiolist" style=" width:600px; margin:10px auto; font-size:14px; ">
+			<volist name="pay_gaving" id="pg">
+			<input name='r' type="radio" value='<!--{$pg.money}--!>' /><label>充值：<!--{$pg.money}--!>元<br />返送：<span><!--{$pg.ratio|intval}--!>%</span></label>
+			</volist>
+			  </div>
+			  <form action="__ACTION__" method="get">
                           <div class="rmb_con1">
                               <label>充值金额：</label>
-                              <input type="text" class="input_long" name="money" /><span class="zhushi_red">*填写想要充值的金额，金额为正数。</span>  
+                              <input type="text" class="input_long" id="czje" name="money" value=""><span class="zhushi_red">*填写想要充值的金额，金额为正数。</span>  
                           </div>
                           <div class="rmb_con1">
                               <label>验&nbsp;&nbsp;证&nbsp;码：</label>
@@ -52,10 +80,21 @@
                           </div>
 			  <div class="rmb_btn">
 			    {__NOTOKEN__}
-                              <input id="submit" value="下一步" class="BtnA" type="submit">    
+                              <input id="submit" name="submit" value="下一步" class="BtnA" type="submit">    
+			    </div>
+			    </form>
+                          <div class="clear10"></div>
+                          <div class="wxtsbox">
+                          	<div class="wxts_title"><h2>温馨提示</h2></div>
+                            <div class="clear10"></div>
+                            <div class="wxts_con">
+                            	<p>1、您可以通过选择以上固定金额为您的帐号进行充值；</p>
+                                <P>2、您也可以直接填写您想要充值的金额在输入框里直接充值；</P>
+                                <P>3、不同金额返送的比例不同，充值后马上返送到您的账户里，请注意查收。</P>
+                            </div>
                           </div>
-			</div>
-			</form>
+                          <div class="clear10"></div>
+                    </div>
                 </div>
                     <!--內容 結束-->
                     <div class="clear"></div>

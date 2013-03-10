@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/dialog.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
 <script>
   var changearea = function(p){
     $.ajax({
@@ -36,42 +38,68 @@
 <script>
   //首页结果下载
   var downindexresult = function(){
-
-    var id_arr = $('#ul_mytable .a_title');
-    var id_str = '';
-    //构造id数组
-    $.each(id_arr, function(i, res){
-      if(i == 0){
-	id_str += res.href.substring(res.href.lastIndexOf('/') + 1);
-	}else{
-	id_str += ',' + res.href.substring(res.href.lastIndexOf('/') + 1);
-      }
-    });
-    $.ajax({
-      url:'__APP__/public/ajaxindexdownload',
-      data:'id_str=' + id_str,
-      success: function(msg){
-
-	if(msg.author_eight == 0){
-	  alert('您所在的会员等级暂无此权限！');
-	  }else{
-	    //会员余额足够扣费
-	    if(msg.enough == 1){
-	      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
-		//执行下载并扣费
-		location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
-	      }
-	    //会员余额不足够扣费
+    var api = $.dialog({
+      id:'piliangcopy',
+      title:'批量下载',
+      width:'460px',
+      height:'500',
+      button: [
+      { 
+	name: '下载', 
+	callback: function () {
+	  var str="";
+	  $("input[name='checkCopy']:checked").each(function(){
+	    if(str == ""){
+	      str += $(this).val();
 	    }else{
-	    if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
-	      //执行下载并扣费
-	      location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
-	    }
-	  }
-	}
+	      str += ',' + $(this).val();
+	    } 
+	  });
+	  $.ajax({
+	    url:'__APP__/public/ajaxindexdownload',
+	    data:'id_str=' + str,
+	    success:function(msg){
+	      if(msg.author_eight == 0){
+		alert('您所在的会员等级暂无此权限！');
+		}else{
+		//会员余额足够扣费
+		if(msg.enough == 1){
+		  if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
+		    if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+		       //执行下载并扣费
+		       location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
+		    }
+		   
+		  }
+		  //会员余额不足够扣费
+		  }else{
+		  if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
+		    if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+		      //执行下载并扣费
+		      location.href='__APP__/public/doindexdownload/id_str/' + msg.id_string + '/keyword/<!--{$Think.get.keyword}--!>';
+		    }
+		  }
+		}
+	      }
+	    },
+	    type:'POST',
+	    dataType:'json'
+	  }); 
+	}, 
+	focus: true 
       },
-      type:'POST',
-      dataType:'json'
+      { 
+	name: '取消'
+      }
+      ] 
+    });
+
+    $.ajax({ 
+      url:'__APP__/public/batch/keyword/<!--{$Think.get.keyword}--!>', 
+      success:function(data){ 
+	api.content(data); 
+      }, 
+      cache:false 
     });
   }
 
@@ -87,14 +115,18 @@
 	  //会员余额足够扣费
 	    if(msg.enough == 1){
 	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.num + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
-		//执行下载并扣费
-		location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+		if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+		  //执行下载并扣费
+		  location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+		}
 	      }
 	    //会员余额不足够扣费
 	    }else{
 	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
-	      //执行下载并扣费
-	      location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+	      if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+		//执行下载并扣费
+		location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+	      }
 	    }
 	  }
 	}
@@ -102,6 +134,88 @@
       dataType:'json'
     });
 
+  }
+
+  //批量复制
+  var piliangcopy = function(){
+    var api = $.dialog({
+      id:'piliangcopy',
+      title:'批量复制',
+      width:'460px',
+      height:'500',
+      button: [
+      { 
+	name: '复制', 
+	callback: function () {
+	  var str="";
+	  $("input[name='checkCopy']:checked").each(function(){
+	    if(str == ""){
+	      str += $(this).val();
+	    }else{
+	      str += ',' + $(this).val();
+	    } 
+	  });
+	  $.ajax({
+	    url:'__APP__/public/ajaxbatchcopy/cid/' + str,
+	    success:function(msg){
+	      if(msg.author_ten == 0){
+		alert('您所在的会员等级暂无此权限！');
+	      }else{
+	        //会员余额足够扣费
+		if(msg.enough == 1){
+		  if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,您共选择' + msg.num + '条,可以复制' + msg.num + '条,您本次复制所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+		    //执行下载并扣费
+		    //请求内容
+		    $.ajax({
+		      url: "__APP__/public/doajaxbatchcopy/keyword/<!--{$Think.get.keyword}--!>/cid/" + msg.id_string,
+		      success: function(ress){
+			if(window.clipboardData){
+			  window.clipboardData.setData("text",ress);
+			  alert('信息已被复制到剪贴板，请粘贴到文档中！');
+			}else{
+			  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+			}
+		      }
+		    });
+		  }
+		  //会员余额不足够扣费
+		  }else{
+		  if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,您共选择' + msg.num + '条,可以复制' + msg.listnum + '条,您本次复制所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+		    //执行下载并扣费
+		    //请求内容
+		    $.ajax({
+		      url: "__APP__/public/doajaxbatchcopy/keyword/<!--{$Think.get.keyword}--!>/cid/" + msg.id_string,
+		      success: function(ress){
+			if(window.clipboardData){
+			  window.clipboardData.setData("text",ress);
+			  alert('信息已被复制到剪贴板，请粘贴到文档中！');
+			}else{
+			  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+			}
+		      }
+		    });
+		  }
+		}
+	      }
+	    },
+	    dataType:'json'
+	  }); 
+	}, 
+	focus: true 
+      },
+      { 
+	name: '取消'
+      }
+      ] 
+    });
+
+    $.ajax({ 
+      url:'__APP__/public/batch/keyword/<!--{$Think.get.keyword}--!>', 
+      success:function(data){ 
+	api.content(data); 
+      }, 
+      cache:false 
+    });
   }
 </script>
 
@@ -201,15 +315,15 @@
                     </li>
                 </ul>
                 <div class="clear30"></div>
-                <div class="btn_download"><input type="button" value="全部下载" class="btn_qbxz" onclick="downallresult();" /><input type="button" value="结果首页下载" class="btn_jgsyxz" onclick="downindexresult();" /></div>
+                <div class="btn_download"><input type="button" value="全部下载" class="btn_qbxz" onclick="downallresult();" /><input type="button" value="批量下载" class="btn_qbxz" onclick="downindexresult();" /><input type="button" value="批量复制" class="btn_qbxz" onclick="piliangcopy();" id="piliangcopy"/></div>
                 <div class="clear"></div>	
 		<ul id="ul_mytable" class="ul_mytable">
 		  <volist name="result" id="r">
                     <li>
 		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a> <a href="#" class="a_weizhi">[等候此位]</a> </h2>
 		    <p class="one"><!--{$r.manproducts}--!></p>
-		    <p class="two" style="color:red;"><span>电话: <!--{$r.companyphone|substr_replace="******",8}--!></span></p>
-		    <p class="two" style="color:red;"><span><span>地址: <!--{$r.address}--!></span></p>
+		    <p class="two" style="color:#8d8d8d;"><span>电话: <!--{$r.companyphone|substr_replace="******",8}--!></span></p>
+		    <p class="two" style="color:#8d8d8d;"><span><span>地址: <!--{$r.address}--!></span></p>
 		    <p class="two"><span>最后更新时间 <!--{$r.updatetime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank">进入详细页</a></p>
 			    </li>
 			    </volist>

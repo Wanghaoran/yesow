@@ -211,7 +211,7 @@ p.p_class2{ float:left; text-align:left; font-size:12px; color:#F00; line-height
 .tableclass3 th{ background:#eee; height:30px; line-height:30px; border:#ccc 1px solid; border-collapse:collapse;}
 .tableclass3 td{ background:#fff; height:30px; line-height:30px; text-align:center; font-weight:bold; border:#ccc 1px solid; border-collapse:collapse;}
 ul.ul_checked{ padding:10px;}
-ul.ul_checked li{ float:left; font-size:12px; font-weight:normal;}
+ul.ul_checked li{ float:left; font-size:12px; font-weight:normal; word-break:break-all;}
 
 /* switchBox */
 .switchBox{width:750px; margin: 10px auto;}
@@ -319,6 +319,12 @@ p.p_bot{ color:#ff0000; height:25px; line-height:25px;}
 .table_rmb td.td_right{ text-align:left; padding-left:5px;}
 .table_rmb td.td_right a{ color:#ff0000; text-decoration:underline;}
 .table_rmb td.td_mid{ text-align:center;}
+#radiolist label span{ color:#F00;}
+.hRadio{display: inline-block;background: transparent url(images/user/radio_rmb.gif) no-repeat center top;width:92px; height: 44px; padding:20px; line-height:22px; margin:5px;cursor:pointer;vertical-align:middle;}
+.hRadio_Checked { background-position: center bottom;}
+.wxtsbox{ width:650px; margin:10px auto;}
+.wxts_title{ width:650px; height:30px; background: transparent url(images/user/wxtsbg.gif) bottom repeat-x;}
+.wxts_title h2{ width:60px; height:26px; line-height:26px; border-bottom:#fc9b0c 4px solid;}
 
 .table_chongzhi{ border:#ddd 1px solid; border-collapse:collapse; width:680px; margin:0px auto 30px;}
 .table_chongzhi td{border:#ddd 1px solid; border-collapse:collapse; line-height:25px; word-break: break-all; word-wrap:break-word;}
@@ -356,7 +362,7 @@ table.table_mingxi td.tdleft{ text-align:left;}
 .user_help_tab ul li.li_choose a{ color:#0100fe}
 #main_l ul.help_left{width:133px; padding:10px; border:1px solid #BDBDBD; border-top:0; }
 #main_l ul.help_left li{height:30px; width:115px; border-bottom:1px dashed #696969; padding-left:18px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
-#main_l ul.help_left li a{display:block; widows:115px; text-align:left; height:30px; line-height:30px;}
+#main_l ul.help_left li a{display: block; width:115px;overflow: hidden;/*注意不要写在最后了*/white-space:nowrap;-o-text-overflow: ellipsis;text-overflow: ellipsis;}
 #main_l ul.help_left li a:hover, #main_l ul li.hover a{ font-weight:bold; text-decoration:none;}
 
 #main_rhelp{float:left; width:688px; border:#BDBDBD 1px solid;}
@@ -365,3 +371,4 @@ table.table_mingxi td.tdleft{ text-align:left;}
 .main_rhelp_con p{padding:10px; line-height:150%; text-indent:2em; font-size:14px;}
 ul.help_list li{ height:30px; line-height:30px; padding-left:15px; text-align:left; background:url(images/user/icon_help.jpg) left center no-repeat; float:left; width:630px; margin-left:23px;}
 .h2_clss2{ font-size:14px; font-weight:normal; color:#00F; height:30px; line-height:30px; padding-left:5px;}
+

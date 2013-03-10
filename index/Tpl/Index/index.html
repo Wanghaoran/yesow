@@ -15,11 +15,15 @@
     	<div id="nav03">
         	<div id="nav03_l"></div>
 			<div id="nav03_c">
-			  <ul id="nav03_ul">
+			  <dl id="nav03_ul">
+			    <dd>主站</dd>
 			    <volist name="index_child_site" id="ics">
-			    <li><a href="http://<!--{$ics.domain}--!>"><!--{$ics.name}--!></a></li>
+			    <dt>【<!--{$ics.name}--!>】</dt>
+			    <volist name="ics.childsite" id="icsc" >
+			    <dd><a href="http://<!--{$icsc.domain}--!>"><!--{$icsc.name}--!></a></dd>
 			    </volist>
-				</ul>
+			    </volist>				
+			  </dl>
 			</div>
         	<div id="nav03_r"></div>
             <div class="clear"></div>

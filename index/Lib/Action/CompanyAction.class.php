@@ -26,7 +26,8 @@ class CompanyAction extends CommonAction {
     //处理添加
     if(!empty($_POST['companyname'])){
       if($this -> _post('verify', 'md5') != $_SESSION['verify']){
-	R('Public/errorjump',array(L('VERIFY_ERROR')));
+	echo '<script>alert("验证码错误");history.go(-1);</script>';
+	//R('Public/errorjump',array(L('VERIFY_ERROR')));
       }
       $companyaudit = D('admin://CompanyAudit');
       if(!$a = $companyaudit -> create()){
@@ -49,7 +50,7 @@ class CompanyAction extends CommonAction {
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     //查询公司类型
-    $result_company_type = M('CompanyType') -> field('id,name') -> select();
+    $result_company_type = M('CompanyType') -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_company_type', $result_company_type);
     //查询主营类别 - 二级
     $result_company_category_two = M('CompanyCategory') -> table('yesow_company_category as cc') -> field('cc.id,cc.name,cct.name as cctname') -> where(array('cc.pid' => array('neq', 0))) -> join('yesow_company_category as cct ON cc.pid = cct.id') -> order('cct.sort ASC,cc.sort ASC') -> select();
@@ -88,7 +89,7 @@ class CompanyAction extends CommonAction {
     $where['time'] = array('EGT', $time);
     //如果未查询到数据，则隐藏数据内容
     if(!$member_company -> where($where) -> find()){
-      $result['mobilephone'] = substr_replace($result['mobilephone'], '****', 3,4);
+      $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
       $result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
       $result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
       $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
@@ -106,7 +107,7 @@ class CompanyAction extends CommonAction {
       }
       //手机
       if($author['author_two'] == 0){
-	$result['mobilephone'] = substr_replace($result['mobilephone'], '****', 3,4);
+	$result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
       }
       //QQ
       if($author['author_three'] == 0){

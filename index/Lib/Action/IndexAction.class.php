@@ -124,7 +124,11 @@ class IndexAction extends CommonAction {
     if(S('index_child_site')){
       $this -> assign('index_child_site', S('index_child_site'));
     }else{
-      $result = M('ChildSite') -> field('id,domain,name') -> where('isshow=1') -> select();
+      $result = M('Area') -> field('id,name') -> where(array('name' => array('neq', '主站'))) -> select();
+      $childsite = M('ChildSite');
+      foreach($result as $key => $value){
+	$result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'])) -> select();
+      }
       S('index_child_site', $result);
       $this -> assign('index_child_site', $result);
     }

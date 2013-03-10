@@ -69,6 +69,10 @@ class MoneyAction extends CommonAction {
       $this -> display('rmbrecharge_three');
       exit();
     }
+    //第一步
+    //查返送
+    $pay_gaving = M('PayGaving') -> field('money,ratio*100 as ratio') -> order('money ASC') -> select();
+    $this -> assign('pay_gaving', $pay_gaving);
     $this -> display('rmbrecharge_one');
   }
 
