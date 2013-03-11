@@ -856,3 +856,16 @@ function charsetDecode($input,$_input_charset ,$_output_charset) {
 		return $returnStr;
 	}
 /* **************** 快钱相关函数 ********************** */
+
+//过滤文本中换行符、空格
+function DeleteHtml($str) { 
+  $str = trim($str); 
+  $str = strip_tags($str,""); 
+  $str = ereg_replace("\t","",$str); 
+  $str = ereg_replace("\r\n","",$str); 
+  $str = ereg_replace("\r","",$str); 
+  $str = ereg_replace("\n","",$str); 
+  $str = ereg_replace(" "," ",$str); 
+  return trim($str); 
+}
+

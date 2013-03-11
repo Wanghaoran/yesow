@@ -56,7 +56,7 @@ p#hot_search{padding-top:10px;}
 #nav02 ul li.li_weizhi4{padding-left:400px;}
 #nav02 ul li.li_weizhi5{padding-left:470px;}
 #nav02 ul li.li_weizhi6{padding-left:560px;}
-#nav02 ul li.li_weizhi7{padding-left:650px;}
+#nav02 ul li.li_weizhi7{padding-left:560px;}
 #nav02 ul li.li_weizhi8{padding-left:650px;}
 #nav03{width:950px; height:44px; padding-top:5px;}
 #nav03_l,
@@ -594,7 +594,8 @@ ul.saledetail li div.div_info div a{ float:right; font-size:14px; height:20px; f
 ul.saledetail li div.div_info div a.btn_tuijian{ width:88px; height:20px; display:block; background:url(images/btn_tuijian.gif) no-repeat; border:none;}
 ul.saledetail li div.div_info div.isblock{ position:absolute; top:-135px; left:0px; width:310px; height:125px; display:block; z-index:10; background:#fff url(images/isblockbg.jpg) bottom center no-repeat; color:#ca0000; padding-top:5px; line-height:18px;}
 ul.saledetail li div.div_info div.isblock a{ font-size:12px;}
-
+.info_date{float:right; color:#cd0005; font-weight:bold;}
+.info_date span{ margin:0 10px 0 90px;}
 ul.saledetail_btn{width:530px; height:26px; border:#ccc 1px solid;  margin:0px auto; padding:5px 48px;_padding:5px 40px;}
 ul.saledetail_btn li{ float:left; width:90px; height:24px;margin:0 8px;}
 ul.saledetail_btn li a{display:block; width:90px; height:24px; cursor:pointer; margin-top:4px;}
@@ -619,8 +620,8 @@ a.qq_offline{ width:60px; height:22px; line-height:22px; padding-left:24px; back
 ul.ul_taolun{padding:0 10px;}
 ul.ul_taolun li{ float:left; width:625px; text-align:left;line-height:20px; border-bottom:#e84617 1px dashed; padding-bottom:10px; margin-bottom:10px; color:#343434;}
 ul.ul_taolun li dt{ width:625px;}
-ul.ul_taolun li dd{ float:left; width:156px;}
-
+ul.ul_taolun li dd{ float:left; margin-right:20px;}
+ul.ul_taolun li dd img{ vertical-align:middle;}
 .div_pinglun{ padding:0 10px;}
 .div_pinglun h4.h4_zhuyi{ color:#cd0001; font-size:12px; font-weight:bold; text-align:left;}
 ul.ul_pinglun{ width:620px;}
@@ -632,7 +633,7 @@ ul.ul_pinglun li div.div_right span{ color:#767676;}
 ul.ul_pinglun li div.div_right input.div_input4{ width:58px; height:18px; line-height:18px; border:#ccc 1px solid;}
 ul.ul_pinglun li h5.h5_text{ float:left; width:520px; height:40px; line-height:40px; text-align:center; font-size:14px; font-weight:bold; color:#333;}
 a.btn_fbpl{ float:right; margin-top:5px; background:url(images/addedit_btn.gif) bottom center no-repeat;font-size:14px; font-weight:bold; display:block;width:90px; height:30px; line-height:30px; text-align:center; color:#fff; margin-top:0px;}
-textarea.txt_pl{ width:540px; height:80px; border:#ccc 1px solid;}
+textarea.txt_pl{ width:525px; height:80px; border:#ccc 1px solid;}
 
 .index_currect{  margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/currectbg.jpg) left center no-repeat; font-size:16px; color:#000; text-align:left;}
 .index_info{  margin:50px auto 20px; height:50px; line-height:50px; padding-top:20px; padding-left:70px; background:url(images/infobg.jpg) left center no-repeat; font-size:16px; color:#000;text-align:left;}

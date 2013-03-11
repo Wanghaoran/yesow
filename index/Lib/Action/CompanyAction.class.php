@@ -72,7 +72,7 @@ class CompanyAction extends CommonAction {
     //点击量加一
     $company -> where(array('id' => $id)) -> setInc('clickcount');
     //结果
-    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.companyphone,c.qqcode,c.email,c.website,c.updatetime') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
+    $result = $company -> table('yesow_company as c') -> field('c.name,c.clickcount,c.pic,ct.name as ctname,cs.name as csname,csa.name as csaname,c.ccid,cc.name as ccname,c.manproducts,c.linkman,c.address,c.content,c.mobilephone,c.companyphone,c.qqcode,c.email,c.website,c.updatetime,c.addtime') -> where(array('c.id' => $id)) -> join('yesow_company_type as ct ON c.typeid = ct.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> find();
     //单独读取一下主营类别的一级分类，因为数据库中没有记录
     $one_pid = M('CompanyCategory') -> getFieldByid($result['ccid'], 'pid');
     $result['one_ccname'] = M('CompanyCategory') -> getFieldByid($one_pid, 'name');
@@ -123,6 +123,15 @@ class CompanyAction extends CommonAction {
       }
       //是否有查看权
       $this -> assign('isview', 1);
+    }
+    //如果没有登录，加一张提示图片到后面
+    if(!isset($_SESSION[C('USER_AUTH_KEY')])){
+	$result['companyphone'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
+	$result['mobilephone'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
+	$result['qqcode'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
+	$result['email'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
+	$result['website'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
+
     }
     $this -> assign('result', $result);
     //最新更新同行

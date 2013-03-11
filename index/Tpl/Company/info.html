@@ -201,7 +201,7 @@ var onedownload = function(){
 			  <div style="position:relative; background:#E7EBEE; padding:5px 0; margin-bottom:10px;">
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 			    <eq name="isview" value="0">
-			    <a onclick="clickview()">点击查看</a>
+			    <a onclick="clickview()"><img src="__PUBLIC__/index/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
 			    <else/>
 			    <a style="float:left;font-size:12px;color:blue;text-indent:10px;" href="__ROOT__/member.php/index/userupdeta" target="_blank">如想查看更多信息,请点击</a>
 			    </eq>
@@ -226,8 +226,11 @@ var onedownload = function(){
                                 </div>
                             </div>
 			</div>
-                    </li>
-                </ul>
+			</li>
+			<div class="clear"></div>
+		      </ul>
+		      <div class="clear"></div>
+		      <div class="info_date"><span>录入时间：<!--{$result.addtime|date="Y-m-d", ###}--!></span><span>更新时间：<!--{$result.updatetime|date="Y-m-d", ###|default="无"}--!></span></div>
 				<div class="clear10"></div>
                 <ul class="saledetail_btn">
                 	<li class="btn_add"><a href="__URL__/add" target="_blank"></a></li>

@@ -26,6 +26,22 @@ class CommonAction extends Action {
       $this -> assign('index_footer_nav', $index_footer_nav);
       S('index_footer_nav', $index_footer_nav);
     }
+    //代理加盟
+    if(S('index_agent_join')){
+      $this -> assign('index_agent_join', S('index_agent_join'));
+    }else{
+      $index_agent_join = $this -> getagentjoin();
+      $this -> assign('index_agent_join', $index_agent_join);
+      S('index_agent_join', $index_agent_join);
+    }
+    //分站信息
+    if(S('header_child_site')){
+      $this -> assign('header_child_site', S('header_child_site'));
+    }else{
+      $header_child_site = $this -> getchildsite();
+      $this -> assign('header_child_site', $header_child_site);
+      S('header_child_site', $header_child_site);
+    }
   }
 
   //获得一级资讯分类
@@ -44,5 +60,20 @@ class CommonAction extends Action {
   private function getfooternav(){
     $aboutus =  M('Aboutus');
     return $aboutus -> field('id,title') -> order('sort ASC') -> select();
+  }
+
+  //获得代理加盟二级分类
+  private function getagentjoin(){
+    return M('AgentJoin') -> field('id,title') -> order('sort ASC') -> select();
+  }
+
+  //获得分站信息
+  private function getchildsite(){
+    $result = M('Area') -> field('id,name') -> where(array('name' => array('neq', '主站'))) -> select();
+    $childsite = M('ChildSite');
+    foreach($result as $key => $value){
+      $result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'])) -> select();
+    }
+    return $result;
   }
 }

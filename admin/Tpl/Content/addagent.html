@@ -1,0 +1,34 @@
+<div class="panel">
+  <h1>新增栏目</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/agent" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+
+      <p style="width:600px;">
+      <label>栏目名称：</label>
+      <input type="text" class="textInput required" name="title" size="60" />
+      <p>
+      <label>排序：</label>
+      <input type="text" class="textInput" name="sort" />
+      </p>
+      </p>
+      <p style="width:95%;">
+      <label>备注：</label>
+      <input type="text" class="textInput" name="remark" size="120" />
+      </p>
+      
+      
+      <div class="divider"></div>
+      <p style="width:100%;height:350px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="18"></textarea>
+      </p>
+	
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

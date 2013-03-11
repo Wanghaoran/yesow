@@ -1061,4 +1061,67 @@ class ContentAction extends CommonAction {
 
   /* ----------- 公告管理 ------------ */
 
+  /* ----------- 代理加盟 ------------ */
+  //代理加盟管理
+  public function agent(){
+    $agent = M('AgentJoin');
+    $result = $agent -> field('id,title,sort,remark') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //增加代理加盟
+  public function addagent(){
+    //处理增加
+    if(!empty($_POST['title'])){
+      $agent = M('AgentJoin');
+      if(!$agent -> create()){
+	$this -> error($agent -> getError());
+      }
+      if($agent -> add()){
+	//删除缓存
+	S('index_agent_join', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除代理加盟
+  public function delagent(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $agent = M('AgentJoin');
+    if($agent -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_agent_join', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑代理加盟
+  public function editagent(){
+    $agent = M('AgentJoin');
+    if(!empty($_POST['title'])){
+      if(!$agent -> create()){
+	$this -> error($agent -> getError());
+      }
+      if($agent -> save()){
+	//删除缓存
+	S('index_agent_join', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $agent -> field('title,remark,sort,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  
+  }
+  /* ----------- 代理加盟 ------------ */
 }

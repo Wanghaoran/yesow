@@ -118,8 +118,12 @@
 			<else/>
 			<li><a href="__ROOT__/info">资讯文章</a></li>
 			</if>
-                	<li><a href="#">招商引资</a></li>
-                	<li><a href="#">代理加盟</a></li>
+			<li><a href="#">招商引资</a></li>
+			<if condition="MODULE_NAME eq 'Agent'">
+			<li class="hover"><a href="__ROOT__/agent">代理加盟</a></li>
+			<else/>
+			<li><a href="__ROOT__/agent">代理加盟</a></li>
+			</if>
 			<li class="last"><a href="#">易搜商城</a></li>
                 </ul>
 	      </div>
@@ -148,7 +152,29 @@
 				<li class="none li_weizhi5"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
 				</if>
 				<li class="none li_weizhi6"><a href="" >第六个01</a><a href="" >第六个02</a><a href="" >第六个03</a><a href="" >第六个04</a></li>
-				<li class="none li_weizhi7"><a href="" >第七个01</a><a href="" >第七个02</a><a href="" >第七个03</a><a href="" >第七个04</a></li>
+				<if condition="MODULE_NAME eq 'Agent'">
+				<li class="li_weizhi7"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist></li>
+				<else/>
+				<li class="none li_weizhi7"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist></li>
+				</if>
 				<li class="none li_weizhi8"><a href="" >第八个01</a><a href="" >第八个02</a><a href="" >第八个03</a><a href="" >第八个04</a></li>
 			</ul>	
+		      </div>
+
+
+		      <div id="nav03">
+        	<div id="nav03_l"></div>
+			<div id="nav03_c">
+			  <dl id="nav03_ul">
+			    <dd>主站</dd>
+			    <volist name="header_child_site" id="ics">
+			    <dt>【<!--{$ics.name}--!>】</dt>
+			    <volist name="ics.childsite" id="icsc" >
+			    <dd><a href="http://<!--{$icsc.domain}--!>"><!--{$icsc.name}--!></a></dd>
+			    </volist>
+			    </volist>				
+			  </dl>
+			</div>
+        	<div id="nav03_r"></div>
+            <div class="clear"></div>
         </div>

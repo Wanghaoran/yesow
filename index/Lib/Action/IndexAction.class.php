@@ -9,8 +9,6 @@ class IndexAction extends CommonAction {
     $this -> getyesownotice();
     //最新IT商家
     $this -> newcompany();
-    //分站信息
-    $this -> childsite();
 
     $this -> display();
   }
