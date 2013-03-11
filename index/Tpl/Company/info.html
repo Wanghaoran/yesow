@@ -107,12 +107,13 @@ function submitcommit(){
       }else{
       var p = $('#content')[0].value;
       var m = $('#verify')[0].value;
-      var s = $('#score')[0].value
+      var s = $('#score')[0].value;
+      var f = $("input:checked[name='face']").val();
       $.ajax({
 	type: "POST",
 	url: "__URL__/commit",
 	datatype: "json",
-	data: "content=" + p + "&score=" + s + "&code=" + m + "&cid=<!--{$Think.get.id}--!>",
+	data: "content=" + p + "&score=" + s + "&code=" + m + "&cid=<!--{$Think.get.id}--!>&face=" + f,
 	success: function(msg){
 	  msg = jQuery.parseJSON(msg);
 	  if(msg.status == 0){
@@ -122,7 +123,7 @@ function submitcommit(){
 	    location.reload();
 	    }
 	}
-      });
+	});
     }
   }
   
@@ -260,6 +261,13 @@ var onedownload = function(){
 			  <dd>留言者：<!--{$rc.name|default='游客'}--!></dd>
 			  <dd style="width:300px;">留言日期：<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></dd>
 			  <dd>评分：<!--{$rc.score}--!></dd>
+			  <dd>表情：
+			  <notempty name="rc.face">			  
+			  <img src="__PUBLIC__/index/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+			  <else/>
+			  无
+			  </notempty>
+			  </dd>
                         </dl>
 			</li>
 			</volist>
@@ -274,7 +282,22 @@ var onedownload = function(){
 			<ul class="ul_pinglun">
                     	<li>
                         	<div class="div_left">内&nbsp;&nbsp;容</div>
-                            <div class="div_right"><textarea class="txt_pl" id="content"></textarea></div>
+				<div class="div_right">
+				  <textarea class="txt_pl" id="content"></textarea>
+				  <p>表情:
+				  <input type="radio" name="face" value=""/>无
+				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/style/images/face/1.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/style/images/face/2.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/style/images/face/3.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/style/images/face/4.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/style/images/face/5.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/style/images/face/6.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/style/images/face/7.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/style/images/face/8.gif" width="20" height="20" border="0" />
+				  </p>
+
+				
+				</div>
                         </li>
                         <li>
                             <div class="div_left">评&nbsp;&nbsp;分</div>

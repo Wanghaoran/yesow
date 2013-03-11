@@ -751,6 +751,17 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //恢复速查已审数据
+  public function restorecompany(){
+    $company = D('Company');
+    $data['delaid'] = NULL;
+    if($company -> where(array('id' => $this -> _get('cid', 'intval'))) -> save($data)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
   //删除速查已审数据
   public function delcheckcompany(){
     //功能说明：如果是总管理(id=1)则直接删除数据，否则只是将delaid设为删除人的id，实际并不删除
@@ -812,7 +823,7 @@ class CompanyAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     //结果
-    $result = $comapnycomment -> table('yesow_company_comment as cc') -> field('cc.id,cc.cid,c.name as cname,cc.floor,cc.score,cc.content,m.name as mname,cc.addtime,cc.status') -> where($where) -> order('cc.status ASC,cc.addtime DESC') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> select();
+    $result = $comapnycomment -> table('yesow_company_comment as cc') -> field('cc.id,cc.cid,c.name as cname,cc.floor,cc.score,cc.content,m.name as mname,cc.addtime,cc.status,cc.face') -> where($where) -> order('cc.status ASC,cc.addtime DESC') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -836,7 +847,7 @@ class CompanyAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $comment -> table('yesow_company_comment as cc') -> field('c.name as cname,m.name as mname,cc.floor,cc.score,cc.content') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> where(array('cc.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $comment -> table('yesow_company_comment as cc') -> field('c.name as cname,m.name as mname,cc.floor,cc.score,cc.content,cc.face') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> where(array('cc.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $this -> display();
   }

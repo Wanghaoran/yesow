@@ -36,7 +36,11 @@
 		<li><a href="__APP__/business">商家服务</a></li>
 		</if>
 		<li><a href="#">个人服务</a></li>
-		<li><a href="#">业务服务</a></li>
+		<if condition="MODULE_NAME eq 'Services'">
+		<li class="hover"><a href="__APP__/Services">业务服务</a></li>
+		<else/>
+		<li><a href="__APP__/Services">业务服务</a></li>
+		</if>
 		<li><a href="#">易搜联盟</a></li>
 		<if condition="MODULE_NAME eq 'Help'">
 		<li class="hover"><a href="__APP__/help">使用帮助</a></li>

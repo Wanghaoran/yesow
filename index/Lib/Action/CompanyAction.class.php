@@ -150,7 +150,7 @@ class CompanyAction extends CommonAction {
     $page = new Page($count, 10);//每页10条
     $page->setConfig('header','条评论');
     $show = $page -> show();
-    $result_comment = $comment -> table('yesow_company_comment as cc') -> field('m.name,cc.content,cc.addtime,cc.floor,cc.score') -> where($comment_where) -> join('yesow_member as m ON cc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
+    $result_comment = $comment -> table('yesow_company_comment as cc') -> field('m.name,cc.content,cc.addtime,cc.floor,cc.score,cc.face') -> where($comment_where) -> join('yesow_member as m ON cc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
 
@@ -287,6 +287,7 @@ class CompanyAction extends CommonAction {
     $data['mid'] = isset($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
     $data['content'] = $this -> _post('content');
     $data['score'] = $this -> _post('score');
+    $data['face'] = $this -> _post('face');
     if(!$commit -> create($data)){
       $this -> error($commit -> getError());
     }

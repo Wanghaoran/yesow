@@ -52,6 +52,8 @@ ul.user_set li.btn_img4{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img4 a img{ margin:0 0 0 10px; }
 ul.user_set li.btn_img5{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img5 a img{ margin:0 0 0 5px; }
+ul.user_set li.btn_img6{ padding-bottom:0; width:270px; text-align:center;}
+ul.user_set li.btn_img6 a img{ margin:0 15px 0 0; }
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}

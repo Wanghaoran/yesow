@@ -19,8 +19,23 @@
 	      <div class="unit">
 		<label>评分：</label>
 		<input type="text" class="required" name="score" value="<!--{$result.score}--!>" />
-	</div>
-	<div class="unit">
+	      </div>
+	      <div class="unit">
+		<label>表情：</label>
+		<eq name="result.face" value="">
+		<input type="radio" name="face" value="" checked="checked" />无
+		<else/>
+		<input type="radio" name="face" value="" />无
+		</eq>
+		<for start="1" end="8" comparison="elt">
+		<eq name="result.face" value="$i">
+		<input type="radio" name="face" value="<!--{$i}--!>" checked="checked" /><img src="__PUBLIC__/index/style/images/face/<!--{$i}--!>.gif" />
+		<else/>
+		<input type="radio" name="face" value="<!--{$i}--!>" /><img src="__PUBLIC__/index/style/images/face/<!--{$i}--!>.gif" />
+		</eq>
+		</for>
+	      </div>
+	      <div class="unit">
 		<label>评论内容：</label>
 		<textarea name="content" class="required" rows="5" cols="57" ><!--{$result.content}--!></textarea>
 	      </div>
