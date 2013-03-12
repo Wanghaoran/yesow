@@ -471,6 +471,7 @@ class PublicAction extends Action {
     //如果是高级搜索,只检索出按更新时间排序的一页数据
     if(empty($_GET['keyword']) || $_GET['keyword'] == '请输入您要搜索的内容'){
       $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> order('c.updatetime DESC') -> limit(10) -> select();
+      $count = 10;
     }
 
     /* 首先再进行搜索，得出无分页的结果 */

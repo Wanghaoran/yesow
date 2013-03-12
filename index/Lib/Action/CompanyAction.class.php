@@ -271,7 +271,7 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_company_category_one', $result_company_category_one);
     //如果会员已登录，则查出此会员的个人信息
     if(isset($_SESSION[C('USER_AUTH_KEY')])){
-      $add_info = M('Member') -> field('fullname,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
+      $add_info = M('Member') -> field('name,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
       $this -> assign('add_info', $add_info);
     }
     $this -> display();
@@ -307,6 +307,7 @@ class CompanyAction extends CommonAction {
     if(empty($_GET['keyword']) || $_GET['keyword'] == '请输入您要搜索的内容'){
       $result = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> order('updatetime DESC') -> limit(10) -> select();
       $this -> assign('result', $result);
+      $this -> assign('count', 10);
       $this -> display();
       exit();
     }
