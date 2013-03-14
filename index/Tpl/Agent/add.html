@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>加盟申请 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script>
+function csubstr(str,len){
+ if(str.length>100){
+  return str.substring(0,len)+"...";
+ }else{
+  return str;
+ }
+}
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+	<include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/agent">代理加盟</a> &gt;
+		<span>加盟申请</span>
+	</div>
+	<!--支付流程开始-->
+	<div id="main15">
+    	<div id="main15_l">
+            <div class="cat_header">
+                <h3>最新加盟商</h3>
+            </div>
+            <div class="cat_bod">
+                <ul class="ul_zxjms">
+                	<li><a href="#">杭州百联信息技术有限公司</a></li>
+                    <li><a href="#">杭州百联信息技术有限公司</a></li>
+                    <li><a href="#">杭州百联信息技术有限公司</a></li>
+                    <li><a href="#">杭州百联信息技术有限公司</a></li>
+                    <li><a href="#">杭州百联信息技术有限公司</a></li>
+                    <li><a href="#">杭州百联信息技术有限公司</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="clear10"></div>
+            <volist name="result" id="r">
+	    <div class="cat_header">
+	      <h3><!--{$r.title}--!></h3>
+            </div>
+	    <div class="cat_bod">
+	      
+	      <P><script>document.write(csubstr("<!--{$r.content|strip_tags|DeleteHtml}--!>",100));</script></P>
+            </div>
+	    <div class="clear10"></div>
+	    </volist>
+        </div>
+        <div id="main15_r">
+            <div class="cat_header">
+                <h3>加盟申请表</h3>
+            </div>
+            <div class="cat_bod">
+                <h4 class="h4_sqxz">申请性质：<span><input type="radio" name="radio_sqxz"/>个人</span><span><input type="radio" name="radio_sqxz"/>商家</span><span><input type="radio" name="radio_sqxz"/>企业</span></h4>
+                <div class="sqb_box">
+                	<h5>申请商家基本情况</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left">所在省份：</div><div class="tab_right1"><select class="select_jmsqb1"><option selected="selected">请选择省份</option></select></div>
+                            <div class="tab_left">所在城市：</div><div class="tab_right1"><select class="select_jmsqb1"><option selected="selected">请选择城市</option></select></div>
+                            <div class="tab_left">经营类型：</div><div class="tab_right1"><select class="select_jmsqb1"><option selected="selected">请选择类别</option></select></div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">企业名称：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">注册资金：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">详细地址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">负责人：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">联系电话：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">QQ号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">电子邮件：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">公司网址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">经营项目：</div><div class="tab_right2"><textarea class="textarea_jmsqb"></textarea></div>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>申请人基本情况</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left">联系人：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">出生年月：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/></div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">联系电话：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">手机号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">个人地址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                            <div class="tab_left">QQ号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/></div>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>企业规模</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left">职工人数：</div><div class="tab_right2"><input type="radio" name="radio_zgrs"/>1-5人<input type="radio" name="radio_zgrs"/>6-10人<input type="radio" name="radio_zgrs"/>11-20人<input type="radio" name="radio_zgrs"/>20人以上</div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">开业时间：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>（如果还没有开业，请填写预计开业时间）</div>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>场地情况</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left">场地所有权：</div><div class="tab_right1"><input type="radio" name="radio_cdqk"/>自由<input type="radio" name="radio_cdqk"/>租用</div>
+                            <div class="tab_left">场地类型：</div><div class="tab_right4"><input type="radio" name="radio_cdlx"/>办公室<input type="radio" name="radio_cdqk"/>店面<input type="radio" name="radio_cdqk"/>住宅</div>
+                            <div class="tab_left">经营面积：</div><div class="tab_right1"><input type="text" class="input_jmsqb3"/>平方米</div>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>现有设备</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left2">办公电脑：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
+                            <div class="tab_left2">打印机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
+                            <div class="tab_left2">上网设备：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
+                            <div class="tab_left2">传真机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
+                            <div class="tab_left2">电话机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>加盟意向</h5>
+                    <ul>
+                    	<li class="radio_jmyx"><input type="radio" name="radio_jmyx"/>代理<input type="radio" name="radio_jmyx"/>地级代理<input type="radio" name="radio_jmyx"/>省级代理<input type="radio" name="radio_jmyx"/>片区代理</li>
+                        <li class="radio_jmyx"><input type="radio" name="radio_jmyx"/>加盟<input type="radio" name="radio_jmyx"/>地级加盟<input type="radio" name="radio_jmyx"/>省级加盟<input type="radio" name="radio_jmyx"/>片区加盟</li>
+                        <li class="radio_jmyx"><input type="radio" name="radio_jmyx"/>合作<input type="radio" name="radio_jmyx"/>地级合作<input type="radio" name="radio_jmyx"/>省级合作<input type="radio" name="radio_jmyx"/>片区合作</li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>期望愿景</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left">企业见意：</div><div class="tab_right2"><textarea class="textarea_jmsqb"></textarea></div>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                    <h5>相关建议</h5>
+                    <ul>
+                    	<li>
+                        	<div class="tab_left">其他信息：</div><div class="tab_right2"><textarea class="textarea_jmsqb"></textarea></div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div class="tab_left">验证码：</div><div class="tab_right2"><input type="text" class="input_jmsqb1"  /></div>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                        	<div style="width:200px; margin:0 auto;"><input type="button" class="btn_qbxz fl" value="提交"/><input type="button" class="btn_qbxz fl" value="重置"/></div>
+                        </li>
+                    </ul>
+                    <div class="clear10"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+	</div>
+	<!--支付流程结束-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

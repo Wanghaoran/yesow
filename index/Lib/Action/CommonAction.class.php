@@ -69,10 +69,10 @@ class CommonAction extends Action {
 
   //获得分站信息
   private function getchildsite(){
-    $result = M('Area') -> field('id,name') -> where(array('name' => array('neq', '主站'))) -> select();
+    $result = M('Area') -> field('id,name') -> where(array('name' => array('neq', '主站'), 'isshow' => '1')) -> select();
     $childsite = M('ChildSite');
     foreach($result as $key => $value){
-      $result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'])) -> select();
+      $result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'], 'isshow' => 1)) -> select();
     }
     return $result;
   }

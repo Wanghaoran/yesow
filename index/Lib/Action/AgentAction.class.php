@@ -16,4 +16,13 @@ class AgentAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  //加盟申请
+  public function add(){
+    $agent = M('AgentJoin');
+    //随机读取3条数据
+    $result = $agent -> field('title,content') -> order('RAND()') -> limit(3) -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
 }

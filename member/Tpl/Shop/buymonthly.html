@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我要包月订购 - 网上购物 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/ks-switch.pack.js"></script>
+<script type="text/javascript">
+$(function($){
+	$("#switchBox2").switchTab({titCell: "dt a", trigger: "mouseover", delayTime: 0});
+});
+</script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+  }
+
+$(function(){
+	$('#radiolist').hradio();
+});
+
+var moneystr = '';
+function radioShow(lid){
+  $.ajax({
+      url:'__ROOT__/member.php/public/ajaxlevelmonthly/lid/' + lid,
+      success: function(ress){
+        //再次请求，获得价格
+        $.ajax({
+	  url:'__ROOT__/member.php/public/getmonthlymoney/lid/' + lid,
+	  success: function(res){
+	    moneystr = '';
+	    $.each(res, function(i,json){
+	      moneystr += '<input name="bysjradio" id="bysjr'+i+'" type="radio" value="'+json.id+'"/><label for="bysjr'+i+'" class="bysjradio">包月数：'+json.months+'个月<br />市场价：'+json.marketprice+'元<br />推广价：'+json.promotionprice+'元</label>';
+	      });
+	    },
+	    dataType:'json'
+	  });
+
+        //查看电话
+        if(ress.author_one == 1){
+	  var author_one = 'check_yes';
+	}else{
+	  var author_one = 'check_no';
+	}
+	//查看手机
+        if(ress.author_two == 1){
+	  var author_two = 'check_yes';
+	}else{
+	  var author_two = 'check_no';
+	}
+	//查看手机
+        if(ress.author_three == 1){
+	  var author_three = 'check_yes';
+	}else{
+	  var author_three = 'check_no';
+	}
+	//查看邮件
+        if(ress.author_four == 1){
+	  var author_four = 'check_yes';
+	}else{
+	  var author_four = 'check_no';
+	}
+	//查看网址
+        if(ress.author_five == 1){
+	  var author_five = 'check_yes';
+	}else{
+	  var author_five = 'check_no';
+	}
+	//单条复制
+        if(ress.author_six == 1){
+	  var author_six = 'check_yes';
+	}else{
+	  var author_six = 'check_no';
+	}
+	//批量复制
+        if(ress.author_ten == 1){
+	  var author_ten = 'check_yes';
+	}else{
+	  var author_ten = 'check_no';
+	}
+	//单个下载
+        if(ress.author_seven == 1){
+	  var author_seven = 'check_yes';
+	}else{
+	  var author_seven = 'check_no';
+	}
+	//批量下载
+        if(ress.author_eight == 1){
+	  var author_eight = 'check_yes';
+	}else{
+	  var author_eight = 'check_no';
+	}
+	//全部下载
+        if(ress.author_nine == 1){
+	  var author_nine = 'check_yes';
+	}else{
+	  var author_nine = 'check_no';
+	}
+	$('#c').html('<ul class="c1"><div class="div_hydj"><h1>包月会员权限</h1><div class="div_byhyxx"><li><span class="'+author_two+'">查看电话</span><span class="'+author_two+'">查看手机</span><span class="'+author_three+'">查看QQ</span><span class="'+author_four+'">查看邮件</span><span class="'+author_five+'">查看网址</span>·····每天可免费查看的最多条数：'+ress.monthly_one_num+'条/天</li><div class="clear"></div><li><span class="'+author_six+'">单条复制</span><span class="'+author_ten+'">批量复制</span>····················每天可免费复制的最多条数：'+ress.monthly_two_num+'条/天</li><div class="clear"></div><li><span class="'+author_seven+'">单个下载</span><span class="'+author_eight+'">批量下载</span><span class="'+author_nine+'">全部下载</span>···············每天可免费下载的最多条数：'+ress.monthly_three_num+'条/天</li><div class="clear"></div></div></div><div class="clear10"></div><div id="radiolist2" class="div_hydj"><h1>选择包月时间</h1>'+moneystr+'<div class="clear"></div></div></ul><script>$("#radiolist2").hradio();<\/script>');
+      },
+      dataType:'json'
+    });
+}
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">易搜会员包月</div>
+                   <div class="clear30"></div>
+                    <!--tab切換內容 開始-->
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#">我要包月订购</a>
+                            </dt>
+                            <!--nav end-->
+                            <dd>
+                                <!--tab我要包月订购 start-->
+                                <div class="main_baoyue">
+                                    <div id="radiolist" class="div_hydj">
+				      <h1>选择会员等级</h1>
+				      <volist name="result" id="r">
+				      <input name="hydjradio" id="hydjr<!--{$r.id}--!>" type="radio" value="<!--{$r.id}--!>"  onclick="radioShow($(this).val());"/><label for="hydjr<!--{$r.id}--!>" class="byradio"><!--{$r.name}--!></label> 
+				      </volist>
+				      <div class="clear"></div>
+				      
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div id="c">
+                                        
+				    </div>
+				  </div>
+				  <div class="clear30"></div>  
+                                <!--tab我要包月订购 end-->                      
+                            </dd>
+                        </dl>
+		      </div>
+<div class="editbtn">
+<input type="button" class="BtnC" value="提交" />
+                                         </div>
+		      
+		      
+                    <!--tab切換內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

@@ -60,6 +60,14 @@
 				<else/>
 				<li><input type="checkbox" disabled="disabled" />单条复制</li>
 				</eq>
+				<eq name="r.author_ten" value="1">
+				<li><input type="checkbox" checked="checked" disabled="disabled"/>批量复制</li>
+				<else/>
+				<li><input type="checkbox" disabled="disabled" />批量复制</li>
+				</eq>
+			      </ul>
+			      <ul class="ul_checked">
+				<div class="clear"></div>
 				<eq name="r.author_seven" value="1">
 				<li><input type="checkbox" checked="checked" disabled="disabled"/>单个下载</li>
 				<else/>
@@ -75,11 +83,7 @@
 				<else/>
 				<li><input type="checkbox" disabled="disabled" />全部下载</li>
 				</eq>
-				<eq name="r.author_ten" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>批量复制</li>
-				<else/>
-				<li><input type="checkbox" disabled="disabled" />批量复制</li>
-				</eq>
+			      </ul>
                                     <div class="clear10"></div>
                                 </td>
 				<td><!--{$r.freecompany}--!>条</td>

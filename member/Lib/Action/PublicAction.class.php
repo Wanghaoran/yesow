@@ -180,5 +180,19 @@ class PublicAction extends Action {
       R('Register/errorjump',array(L('LOGOUT_ERROR')));
     }
   }
+
+  //ajax获取会员等级包月信息
+  public function ajaxlevelmonthly(){
+    $member_level = M('MemberLevel');
+    $result = $member_level -> field('author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten,monthly_one_num,monthly_two_num,monthly_three_num') -> find($this -> _get('lid', 'intval'));
+    echo json_encode($result);
+  }
+
+  //ajax获取包月价格
+  public function getmonthlymoney(){
+    $member_monthly = M('MemberMonthly');
+    $result = $member_monthly -> field('id,months,marketprice,promotionprice') -> where(array('lid' => $this -> _get('lid', 'intval'))) -> order('months ASC') -> select();
+    echo json_encode($result);
+  }
 }
 

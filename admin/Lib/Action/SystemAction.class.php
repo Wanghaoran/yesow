@@ -561,7 +561,7 @@ class SystemAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $Area -> field('id,name,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
+    $result = $Area -> field('id,name,remark,isshow') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
@@ -580,12 +580,14 @@ class SystemAction extends CommonAction {
 	$this -> error($area -> getError());
       }
       if($area -> save()){
+	//删除缓存
+	S('header_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }    
-    $result = $area -> field('id,name,remark') -> find($this -> _get('id', 'intval'));
+    $result = $area -> field('id,name,remark,isshow') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
@@ -599,6 +601,8 @@ class SystemAction extends CommonAction {
 	$this -> error($area -> getError());
       }
       if($area -> add()){
+	//删除缓存
+	S('header_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -611,6 +615,8 @@ class SystemAction extends CommonAction {
   public function deletearea(){
     $area = M('Area');
     if($area -> delete($this -> _get('id', 'intval'))){
+      //删除缓存
+      S('header_child_site', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -744,7 +750,7 @@ class SystemAction extends CommonAction {
       }
       if($childsite -> add()){
 	//删除缓存
-	S('index_child_site', NULL, NULL, '', NULL, 'index');
+	S('header_child_site', NULL, NULL, '', NULL, 'index');
       	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -769,7 +775,7 @@ class SystemAction extends CommonAction {
     $childsite = M('ChildSite');
     if($childsite -> delete($this -> _get('id', 'intval'))){
       //删除缓存
-      S('index_child_site', NULL, NULL, '', NULL, 'index');
+      S('header_child_site', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -785,7 +791,7 @@ class SystemAction extends CommonAction {
       }
       if($childsite -> save()){
 	//删除缓存
-	S('index_child_site', NULL, NULL, '', NULL, 'index');
+	S('header_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));

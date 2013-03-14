@@ -487,6 +487,9 @@ class MemberAction extends CommonAction {
       $data['rmb_one'] = $this -> _post('rmb_one');
       $data['rmb_two'] = $this -> _post('rmb_two');
       $data['rmb_three'] = $this -> _post('rmb_three');
+      $data['monthly_one_num'] = $this -> _post('monthly_one_num');
+      $data['monthly_two_num'] = $this -> _post('monthly_two_num');
+      $data['monthly_three_num'] = $this -> _post('monthly_three_num');
       $level -> save($data);
       $this -> success(L('DATA_UPDATE_SUCCESS'));
 
@@ -495,7 +498,7 @@ class MemberAction extends CommonAction {
     $name = $level -> getFieldByid($this -> _get('id', 'intval'), 'name');
     $this -> assign('name', $name);
     //结果
-    $result = $level -> field('rmb_one,rmb_two,rmb_three,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten') -> find($this -> _get('id', 'intval'));
+    $result = $level -> field('rmb_one,rmb_two,rmb_three,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten,monthly_one_num,monthly_two_num,monthly_three_num') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }

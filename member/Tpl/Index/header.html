@@ -29,7 +29,11 @@
 		<else/>
 		<li><a href="__APP__/money">资金管理</a></li>
 		</if>
-			<li><a href="#">网上购物</a></li>
+		<if condition="MODULE_NAME eq 'Shop'">
+		<li class="hover"><a href="__APP__/shop">网上购物</a></li>
+		<else/>
+		<li><a href="__APP__/shop">网上购物</a></li>
+		</if>
 		<if condition="MODULE_NAME eq 'Business'">
 		<li class="hover"><a href="__APP__/business">商家服务</a></li>
 		<else/>

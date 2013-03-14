@@ -7,6 +7,19 @@
 	<div class="unit">
 		<label>地区名称：</label>
 		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" /><label>(50个字符以内)</label>
+	 </div>
+
+	 <div class="unit">
+		<label>是否显示：</label>
+		<select class="combox" name="isshow">
+		  <eq name="result.isshow" value="1">
+		  <option value="1" selected="selected">显示</option>
+		  <option value="0">不显示</option>
+		  <else/>
+		  <option value="1">显示</option>
+		  <option value="0" selected="selected">不显示</option>
+		  </eq>
+		</select>
 	</div>
 	
 	<div class="unit">

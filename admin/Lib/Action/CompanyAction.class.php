@@ -1521,5 +1521,100 @@ class CompanyAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  //包月价格管理
+  public function monthlymoney(){
+    $member_monthly = M('MemberMonthly');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['lid'])){
+      $where['mm.lid'] = $this -> _post('lid', 'intval');
+    }
+
+    //记录总数
+    $count = $member_monthly -> table('yesow_member_monthly as mm') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,ml.name as lname,mm.months,mm.marketprice,mm.promotionprice,mm.remark') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> order('ml.updatemoney ASC,mm.months ASC') -> where($where) -> select();
+    $this -> assign('result', $result);
+    //查询会员等级
+    $result_level = M('MemberLevel') -> field('id,name') -> order('updatemoney ASC') -> select();
+    $this -> assign('result_level', $result_level);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  
+  }
+
+  //增加包月价格
+  public function addmonthlymoney(){
+    $member_level = M('MemberLevel');
+    //处理添加
+    if(!empty($_POST['lid'])){
+      $level_monthly = M('MemberMonthly');
+      if(!$level_monthly -> create()){
+	$this -> error($level_monthly -> getError());
+      }
+      if($level_monthly -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询会员等级
+    $result_level = $member_level -> field('id,name') -> order('updatemoney ASC') -> select();
+    $this -> assign('result_level', $result_level);
+    $this -> display();
+  
+  }
+
+  //删除包月价格
+  public function delmonthlymoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $level_monthly = M('MemberMonthly');
+    if($level_monthly -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑包月价格
+  public function editmonthlymoney(){
+    $level_monthly = M('MemberMonthly');
+    //处理更新
+    if(!empty($_POST['lid'])){
+      if(!$level_monthly -> create()){
+	$this -> error($level_monthly -> getError());
+      }
+      if($level_monthly -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //查询数据
+    $result = $level_monthly -> field('lid,months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //会员等级
+    $result_level = M('MemberLevel') -> field('id,name') -> order('updatemoney ASC') -> select();
+    $this -> assign('result_level', $result_level);
+
+    $this -> display();
+  
+  }
   /* --------------- 速查业务管理 ---------------- */
 }

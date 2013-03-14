@@ -226,7 +226,7 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	R('Public/infojump',array(L('COMPANY_ADD_SUCCESS'), '__ROOT__/company/' . $cid));
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");</script>';
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
       }
