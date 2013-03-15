@@ -1,7 +1,11 @@
 <div id="main_l">
   <div id="main_l_tit"><h3>网上购物</h3></div>
   <ul>
-    <li><a href="#">易搜商城购物</a></li>
+    <if condition="(ACTION_NAME eq 'index')">
+    <li class="hover"><a href="__URL__">易搜商城购物</a></li>
+    <else/>
+    <li><a href="__URL__">易搜商城购物</a></li>
+    </if>
     <if condition="(ACTION_NAME eq 'monthly') OR (ACTION_NAME eq 'buymonthly')">
     <li class="hover"><a href="__URL__/monthly">会员包月管理</a></li>
     <else/>

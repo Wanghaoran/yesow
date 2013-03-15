@@ -476,6 +476,7 @@ class MemberAction extends CommonAction {
       $data['author_seven'] = 0;
       $data['author_eight'] = 0;
       $data['author_nine'] = 0;
+      $data['author_ten'] = 0;
       $data['id'] = $id;
       $level -> save($data);
       //再将有权限的设置为1

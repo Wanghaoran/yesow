@@ -262,7 +262,7 @@ class PublicAction extends Action {
     $filename = date('YmdHis');
     header("Content-Disposition: attachment; filename={$filename}.txt");
     $updatetime = date('Y-m-d H:i:s', $result['updatetime']);
-    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['emial']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
+    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['email']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
     echo $content_download;
     
   }
@@ -352,7 +352,7 @@ class PublicAction extends Action {
     //更新会员余额和等级
     $rmb -> rmbtotal($session_uid);
     //写RMB消费日志
-    $log_content = "在搜索结果页下载{$count_arr}条名片详细信息 [<span style='color:blue'>{$_GET['keyword']}</span>]";
+    $log_content = "在搜索结果页<span style='color:blue'>批量下载</span>{$count_arr}条名片详细信息 [<span style='color:blue'>{$_GET['keyword']}</span>]";
     D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
 
     //查出资料
@@ -363,7 +363,7 @@ class PublicAction extends Action {
     $i = 1;
     foreach($result as $value){
       $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
-      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
+      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     
@@ -516,7 +516,7 @@ class PublicAction extends Action {
     //更新会员余额和等级
     $rmb -> rmbtotal($session_uid);
     //写RMB消费日志
-    $log_content = "在搜索结果页下载{$count}条名片详细信息 [<span style='color:blue'>{$_GET['keyword']}</span>]";
+    $log_content = "在搜索结果页<span style='color:blue'>全部下载</span>{$count}条名片详细信息 [<span style='color:blue'>{$_GET['keyword']}</span>]";
     D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
 
     //生成下载信息
@@ -524,7 +524,7 @@ class PublicAction extends Action {
     $i = 1;
     foreach($result as $value){
       $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
-      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
+      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     
@@ -585,7 +585,7 @@ class PublicAction extends Action {
     
     //生成下载信息
     $updatetime = date('Y-m-d H:i:s', $result['updatetime']);
-    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['emial']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
+    $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['email']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
     echo $content_download;
   
   }
@@ -760,10 +760,45 @@ class PublicAction extends Action {
     $i = 1;
     foreach($result as $value){
       $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
-      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['emial']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
+      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     echo $content_download;
+  }
+
+  //温馨提示页面 前置操作
+  public function _before_authorprompt(){
+    //分站信息
+    if(S('header_child_site')){
+      $this -> assign('header_child_site', S('header_child_site'));
+    }else{
+      $header_child_site = $this -> getchildsite();
+      $this -> assign('header_child_site', $header_child_site);
+      S('header_child_site', $header_child_site);
+    }
+  }
+
+  //权限不足 - 温馨提示页面
+  public function authorprompt(){
+    //计算拥有此权限最低的用户等级
+    $member_level = M('MemberLevel');
+    $where[$this -> _get('authname')] = 1;
+    $min_level = $member_level -> field('name,updatemoney') -> where($where) -> order('updatemoney ASC') -> find();
+    $this -> assign('min_level', $min_level);
+    //计算RMB差值
+    $diff = $min_level['updatemoney'] - $_SESSION['rmb_total'];
+    $this -> assign('diff', $diff);
+    $this -> display();
+  }
+
+  //获得分站信息
+  private function getchildsite(){
+    $result = M('Area') -> field('id,name') -> where(array('name' => array('neq', '主站'), 'isshow' => '1')) -> select();
+    $childsite = M('ChildSite');
+    foreach($result as $key => $value){
+      $result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'], 'isshow' => 1)) -> select();
+    }
+    return $result;
   }
 
 }

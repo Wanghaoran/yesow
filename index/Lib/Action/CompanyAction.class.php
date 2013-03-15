@@ -277,6 +277,16 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //手动复制页
+  public function manualcopy(){
+    $where = array();
+    $where['c.id'] = array('in', $this -> _get('cids'));
+    //查出资料
+    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   //提交评论
   public function commit(){
     if($this -> _post('code', 'md5') != $_SESSION['verify']){

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手动下载 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+    <!--主体-->
+    <div id="user_m">
+    	<div class="warp_850">
+	  <div id="main">
+	    <volist name="result" id="r">
+	    <div style=" clear:both; width:421px; margin:0 auto;">
+	      
+	      <div class="tiaozhuan"><b><!--{$r.name}--!></b></div>
+	      <div class="tiaozhuan">公司地址：<!--{$r.address}--!></div>
+	      <div class="tiaozhuan">主营产品：<!--{$r.manproducts}--!></div>
+	      <div class="tiaozhuan">公司电话：<!--{$r.companyphone}--!></div>
+	      <div class="tiaozhuan">移动电话：<!--{$r.mobilephone}--!></div>
+	      <div class="tiaozhuan">联系人：<!--{$r.linkman}--!></div>
+	      <div class="tiaozhuan">电子邮件：<!--{$r.email}--!></div>
+	      <div class="tiaozhuan">QQ：<!--{$r.companyphone}--!></div>
+	      <div class="tiaozhuan">所在地：<!--{$r.csname}--!> - <!--{$r.csaname}--!></div>
+	      <div class="tiaozhuan">主营类别：<!--{$r.ccname}--!></div>
+	      <div class="tiaozhuan">更新时间：<!--{$r.updatetime|date="Y-m-d H:i:s", ###}--!></div>
+	      <hr />
+	    </div>
+	    </volist>
+
+    
+		</div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</div>
+</body>
+</html>

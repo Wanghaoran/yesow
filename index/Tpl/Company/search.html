@@ -36,7 +36,7 @@
   } 
 </script>
 <script>
-  //首页结果下载
+  //批量下载
   var downindexresult = function(){
     var api = $.dialog({
       id:'piliangcopy',
@@ -61,6 +61,7 @@
 	    success:function(msg){
 	      if(msg.author_eight == 0){
 		alert('您所在的会员等级暂无此权限！');
+		location.href="__APP__/public/authorprompt/modname/批量下载/authname/author_eight";
 		}else{
 		//会员余额足够扣费
 		if(msg.enough == 1){
@@ -111,6 +112,7 @@
       success: function(msg){
 	if(msg.author_nine == 0){
 	  alert('您所在的会员等级暂无此权限！');
+	  location.href="__APP__/public/authorprompt/modname/全部下载/authname/author_nine";
 	  }else{
 	  //会员余额足够扣费
 	    if(msg.enough == 1){
@@ -160,6 +162,7 @@
 	    success:function(msg){
 	      if(msg.author_ten == 0){
 		alert('您所在的会员等级暂无此权限！');
+		location.href="__APP__/public/authorprompt/modname/批量复制/authname/author_ten";
 	      }else{
 	        //会员余额足够扣费
 		if(msg.enough == 1){
@@ -174,6 +177,7 @@
 			  alert('信息已被复制到剪贴板，请粘贴到文档中！');
 			}else{
 			  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+			  location.href="__URL__/manualcopy/cids/" + msg.id_string;
 			}
 		      }
 		    });

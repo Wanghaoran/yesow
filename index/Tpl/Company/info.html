@@ -35,6 +35,7 @@ body {
       success: function(msg){
 	if(msg.author_six == 0){
 	  alert('您所在的会员等级暂无此权限！');
+	  location.href="__APP__/public/authorprompt/modname/单条复制/authname/author_six";
 	}else{
 	  //确认
 	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认')){
@@ -47,6 +48,7 @@ body {
 		  alert('信息已被复制到剪贴板，请粘贴到文档中！');
 		}else{
 		  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+		  location.href="__URL__/manualcopy/cid/<!--{$Think.get.id}--!>";
 		}
 	      }
 	    });
@@ -147,7 +149,8 @@ var onedownload = function(){
 	success: function(msg){
 	  msg = jQuery.parseJSON(msg);
 	  if(msg.author_seven == 0){
-	    alert('您所在的会员等级暂无此权限！');
+	  alert('您所在的会员等级暂无此权限！');
+	  location.href="__APP__/public/authorprompt/modname/单条复制/authname/author_seven";
 	    }else{
 	  //确认
 	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
@@ -210,7 +213,6 @@ var onedownload = function(){
 			  <p>联系Q Q：<!--{$result.qqcode}--!></p>
 			  <p>电子邮件：<!--{$result.email}--!></p>
 			  <p>公司网址：<!--{$result.website}--!></p>
-			  <p>更新时间：<!--{$result.updatetime|date="Y-m-d", ###}--!></p>
 			  <div style="position:relative; background:#E7EBEE; padding:5px 0; margin-bottom:10px;">
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 			    <eq name="isview" value="0">
@@ -248,9 +250,14 @@ var onedownload = function(){
                 <ul class="saledetail_btn">
                 	<li class="btn_add"><a href="__URL__/add" target="_blank"></a></li>
 			<li class="btn_gaicuo"><a href="__ROOT__/change/<!--{$Think.get.id}--!>" target="_blank"></a></li>
-		    <li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank"></a></li>
-                    <li class="btn_copy"><a id="onecopy" onclick="onecopy(this);" ></a></li>
-                    <li class="btn_download"><a href="javascript:onedownload();"></a></li>
+			<li class="btn_baocuo"><a href="__ROOT__/report/<!--{$Think.get.id}--!>" target="_blank"></a></li>
+			<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+			<li class="btn_copy"><a id="onecopy" onclick="onecopy(this);" ></a></li>
+			<li class="btn_download"><a href="javascript:onedownload();"></a></li>
+			<else/>
+			<li class="btn_copy"><a id="onecopy" onclick="poplogin();" ></a></li>
+			<li class="btn_download"><a href="javascript:poplogin();"></a></li>
+			</if>
                 </ul>
                 <div class="clear10"></div>
                 <h3 class="h3_text">企业在线</h3>

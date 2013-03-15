@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>订单中心 - 网上购物 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('zfRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('zfRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("zfRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("zfRadio_Checked");
+                $(this).prev()[0].checked = true;
+            }
+               
+            event.stopPropagation();
+
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#zhifuradio').hradio();
+});
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_850">
+	<!--支付流程开始-->
+	<div id="main14">
+    	<div class="clear10"></div>
+        <div class="zxzfbox">
+            <div class="zxzfbox_title">
+                <h2>商品付款详单</h2>
+            </div>
+            <div class="zxzfbox_con">
+                <h2>您本次购买的产品为下列清单</h2>
+                <table class="table_zxzf1">
+                    <tr>
+                        <th>单号</th>
+                        <th>包月会员等级</th>
+                        <th>包月价格</th>
+                        <th>包月数量</th>
+                        <th>小计金额</th>
+                    </tr>
+                    <tr>
+		      <td><!--{$result_monthly.orderid}--!></td>
+		      <td><!--{$result_monthly.mlname}--!></td>
+		      <td><!--{$result_monthly.promotionprice}--!>元/月</td>
+		      <td><!--{$result_monthly.months}--!>月</td>
+		      <td><!--{$result_monthly.count}--!>元</td>
+                    </tr>
+                </table>
+                <div class="clear10"></div>
+            </div>
+        </div>
+        <div class="clear10"></div>
+        <div class="zxzfbox">
+            <div class="zxzfbox_title">
+                <h2>支付方式一：余额支付</h2>
+            </div>
+            <div class="zxzfbox_con">
+                <table class="table_zxzf2">
+		  <tr><td class="tdleft">本次付款的总金额：</td><td class="tdright"><!--{$result_monthly.count}--!>元</td></tr>
+		  <tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$Think.session.rmb_total}--!>元<a href="#">[我要充值]</a></td></tr>
+		  <eq name="result_monthly.rmb_enough" value="1">
+		  <tr><td colspan="2" class="zxzf_tishi">您的余额充足，可以使用余额支付方式！</td></tr>
+		</table>
+		<div class="clear10"></div>
+		<hr class="hrstyle" />
+                <table class="table_zxzf2">
+                    <tr><td class="tdleft">易搜在线支付密码：</td><td><input type="text" class="inputclass1" /></td></tr>
+                    <tr><td colspan="2" class="tdmid"><input type="button" value="确认付款" class="rmb_fanhui"/></td></tr>
+                </table>
+                <div class="div_zxzf">我还没有支付密码，马上去<a href="#">设置>></a></div>
+		<else/>
+		<tr><td colspan="2" class="zxzf_tishi">您的余额不足，请使用网上支付方式支付！</td></tr>
+		</table>
+		</eq>
+		<div class="clear10"></div>
+            </div>
+        </div>
+        <div class="clear10"></div>
+        <div class="zxzfbox">
+            <div class="zxzfbox_title">
+                <h2>支付方式二：网上支付</h2>
+            </div>
+	    <div class="zxzfbox_con" id="zhifuradio">
+	      <volist name="result_pay" id="rp">
+	      <input name='r' type="radio" value='' /><label><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50"/></label>
+	      </volist>
+	      
+	    </div>
+	    <div class="editbtn">
+  <input type="button" onclick="tosubmit();" class="rmb_fanhui" value="使用网上支付" />
+  <input type="button" style="margin-left:20px;" onclick="location.href='__URL__/monthly';" class="rmb_fanhui" value="取消" />
+                                         </div>
+	  </div>
+	  
+         <div class="clear10"></div>
+	</div>
+	<!--支付流程结束-->
+	
+	</div>
+    </div>
+    <include file="Index:footer" />
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>
