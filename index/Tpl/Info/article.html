@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title><!--{$result.title}--!></title>
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
@@ -120,7 +120,7 @@
 				</div>
 				<ul class="bl_list">
 				  <volist name="recent_updates" id="ru">
-				  <li><a href="__ACTION__/id/<!--{$ru.id}--!>"><span>[<b><!--{$ru.cname}--!></b>]</span> <!--{$ru.title|msubstr=0,9}--!> </a><span class="time"><!--{$ru.addtime|date="Y-m-d", ###}--!></span></li>
+				  <li><a href="__ROOT__/article/<!--{$ru.id}--!>"><span>[<b><!--{$ru.cname}--!></b>]</span> <!--{$ru.title|msubstr=0,9}--!> </a><span class="time"><!--{$ru.addtime|date="Y-m-d", ###}--!></span></li>
 				  </volist>	  
 				</ul>
 				<div class="clear"></div>
@@ -136,7 +136,7 @@
 				</div>
 				<ul class="bl_list">
 				  <volist name="hot_clicks" id="hc">
-				  <li><a href="__ACTION__/id/<!--{$hc.id}--!>"><span>[<b><!--{$hc.cname}--!></b>]</span> <!--{$hc.title|msubstr=0,9}--!> </a><span class="time"><!--{$hc.addtime|date="Y-m-d", ###}--!></span></li>
+				  <li><a href="__ROOT__/article/<!--{$hc.id}--!>"><span>[<b><!--{$hc.cname}--!></b>]</span> <!--{$hc.title|msubstr=0,9}--!> </a><span class="time"><!--{$hc.addtime|date="Y-m-d", ###}--!></span></li>
 				  </volist>		  
 				</ul>
 				<div class="clear"></div>

@@ -309,13 +309,40 @@
                         <div class="div_right">
                         	<p>1、使用关键词查询时减少查询字词的数量，获取更多的查询结果。</p>
                             <p>2、如果你想精确查找你的结果请点击[<a onclick="showsenior();">高级搜索</a>]。</p>
-                            <p>3、如果贵单位的信息尚未登记入本站，请点击[<a href="__ROOT__/company/add" target="_blank">我要添加</a>]。</p>
-                            <p>4、如果搜索结果对您有用您可以点击[<a href="javascript:downindexresult();">结果首页下载</a>]或[<a href="javascript:downallresult();">全部下载</a>]。</p>
+			    <p>3、如果贵单位的信息尚未登记入本站，请点击[<a href="__ROOT__/company/add" target="_blank">我要添加</a>]。</p>
+			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+			    <p>4、如果搜索结果对您有用您可以点击[<a href="javascript:downindexresult();">结果首页下载</a>]或[<a href="javascript:downallresult();">全部下载</a>]。</p>
+			    <else/>
+			    <script type="text/javascript">
+			      function poplogin(){
+				var api = $.dialog({id:'L1360'});
+				/* jQuery ajax */
+				$.ajax({
+				  url:'__ROOT__/public/ajaxlogin',
+				  success:function(data){
+				    api.content(data);
+				  },
+				  cache:false
+				});
+			      }
+			    </script>
+			    <p>4、如果搜索结果对您有用您可以点击[<a href="javascript:poplogin();">结果首页下载</a>]或[<a href="javascript:poplogin();">全部下载</a>]。</p>
+			    </if>
                         </div>
                     </li>
                 </ul>
                 <div class="clear30"></div>
-                <div class="btn_download"><input type="button" value="全部下载" class="btn_qbxz" onclick="downallresult();" /><input type="button" value="批量下载" class="btn_qbxz" onclick="downindexresult();" /><input type="button" value="批量复制" class="btn_qbxz" onclick="piliangcopy();" id="piliangcopy"/></div>
+		<div class="btn_download">
+		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+		  <input type="button" value="全部下载" class="btn_qbxz" onclick="downallresult();" />
+		  <input type="button" value="批量下载" class="btn_qbxz" onclick="downindexresult();" />
+		  <input type="button" value="批量复制" class="btn_qbxz" onclick="piliangcopy();" id="piliangcopy"/>
+		  <else/>
+		  <input type="button" value="全部下载" class="btn_qbxz" onclick="poplogin();" />
+		  <input type="button" value="批量下载" class="btn_qbxz" onclick="poplogin();" />
+		  <input type="button" value="批量复制" class="btn_qbxz" onclick="poplogin();" id="piliangcopy"/>
+		  </if>
+		</div>
                 <div class="clear"></div>	
 		<ul id="ul_mytable" class="ul_mytable">
 		  <volist name="result" id="r">

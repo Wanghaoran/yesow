@@ -30,9 +30,9 @@ class ShopAction extends CommonAction {
 
   //资金管理 - 包月订购 - 我要包月订购
   public function buymonthly(){
-    $member_level = M('MemberLevel');
+    $member_monthly = M('MemberMonthly');
     //查询会员等级
-    $result = $member_level -> field('id,name') -> order('updatemoney ASC') -> select();
+    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();
     $this -> assign('result', $result);
 
     $this -> display();

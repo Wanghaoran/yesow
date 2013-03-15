@@ -9,11 +9,23 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
-
-
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/dialog.js"></script>
+<script type="text/javascript"> 
+<!-- 
+document.oncontextmenu=function(e){return false;} 
+// -->
+</script>
+<style>
+  <!-- 
+body { 
+-moz-user-select:none; 
+} 
+-->
+</style> 
+
+
 <script>
   //单个复制
   var onecopy = function(res){
@@ -153,7 +165,7 @@ var onedownload = function(){
 
 
 </head>
-<body id="body_index">
+<body id="body_index" onselectstart="return false">
  
 <div id="warp_body">
   <include file="Index:header" />
