@@ -421,7 +421,7 @@ input.inputclass1{ width:140px; height:20px; line-height:20px; border:#999 1px s
 .c1,.c2{width:378px;line-height:20px;}
 .c1{color:#014CC9;}
 .c2{color:#7E6095;}
-.byradio{ float:left; width:138px; height:68px; line-height:68px; text-align:center; cursor:pointer;vertical-align:middle; font-size:14px; font-weight:bold; margin:10px;}
+.byradio{ float:left; width:118px; height:68px; line-height:68px; text-align:center; cursor:pointer;vertical-align:middle; font-size:14px; font-weight:bold; margin:10px 0 10px 20px;}
 .bysjradio{float:left; width:110px; height:108px; padding:10px; line-height:30px; text-align:left; cursor:pointer;vertical-align:middle; font-size:14px; margin:10px 0 10px 10px;}
 .byhyRadio{display: inline-block;background:url(images/user/baoyue_radio2.jpg) no-repeat right bottom; border:#bbb 1px solid; color:#7c7c7c;}
 .byhyRadio_Checked {background:url(images/user/baoyue_radio1.jpg) no-repeat right bottom; border:#ea6c07 1px solid; color:#e96800;}

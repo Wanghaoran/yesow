@@ -35,10 +35,9 @@ $(function(){
 	$('#radiolist').hradio();
 });
 
-//var moneystr = '';
 function radioShow(lid){
   $.ajax({
-      url:'__ROOT__/member.php/public/getmonthlymoney/lid/' + lid,
+      url: '__ROOT__/member.php/public/getmonthlymoney/lid/' + lid,
       success: function(ress){
       var moneystr = '';
       $.each(ress, function(i,json){

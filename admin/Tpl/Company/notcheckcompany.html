@@ -1,5 +1,5 @@
 <div class="page unitBox" style="display: block;">
-  <div style="float:left; display:block; overflow:auto; width:519px;" class="unitBox" id="jbsxBox2">
+  <div style="float:left; display:block; overflow:auto; width:430px;" class="unitBox" id="jbsxBox2">
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
   <input type="hidden" name="search_name" value="<!--{$Think.request.search_name}--!>" />
@@ -26,15 +26,7 @@
 				  <option value="addname">添加人</option>
 				</select>
 				</li>
-		  <li style="width:270px;">
-		  <label>添加时间：</label>
-		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_starttime" />
-		    -  
-		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_endtime" />
-		  </li>
-		</ul>
-		<ul class="searchContent">
-		  <li style="width:400px;">
+				<li style="width:190px;">
 		  <label style="width:37px;">地区</label>
 		  <select class="combox" name="search_csid" ref="search_csaid2" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
 		    <option value="">请选择</option>
@@ -46,6 +38,16 @@
 		    <option value="">请选择</option>
 		  </select>
 		  </li>
+		  
+		</ul>
+		<ul class="searchContent">
+		  <li style="width:270px;">
+		  <label>添加时间：</label>
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_starttime" />
+		    -  
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_endtime" />
+		  </li>
+		  
 		  <li style="width:70px;"><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
 		  </ul>
 
@@ -104,7 +106,7 @@
 
 	</div>
 	
-	<div style="margin-left:520px;" class="unitBox" id="jbsxBox3">
+	<div style="margin-left:430px;" class="unitBox" id="jbsxBox3">
 	  <include file="Company:editnotcheckcompany" />
 </div>
 </div>

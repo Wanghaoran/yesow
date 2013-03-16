@@ -150,7 +150,7 @@ var onedownload = function(){
 	  msg = jQuery.parseJSON(msg);
 	  if(msg.author_seven == 0){
 	  alert('您所在的会员等级暂无此权限！');
-	  location.href="__APP__/public/authorprompt/modname/单条复制/authname/author_seven";
+	  location.href="__APP__/public/authorprompt/modname/单个下载/authname/author_seven";
 	    }else{
 	  //确认
 	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
@@ -189,27 +189,26 @@ var onedownload = function(){
 				  <li class="li_h1"><!--{$result.name}--!><span>人气 [ <!--{$result.clickcount}--!> ]</span></li>
 				  <li class="li_img"><a href="#"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic|default='detailimg.gif'}--!>" width="343" height="275" border="0" /></a></li>
                     <li>
-                        <h2>
-			  <span class="span_left">企业类型：</span><!--{$result.ctname}--!>
-                        </h2>
-                        <h2>
-			  <span class="span_left">所在地区：</span><!--{$result.csname}--!> <!--{$result.csaname}--!>
+		    <h2>
+		      <span class="span_left">所在地区：</span><!--{$result.csname}--!> <!--{$result.csaname}--!>
+		      <span class="span_left" style="margin-left:10px;">类型：</span><!--{$result.ctname}--!>
+			  
                         </h2>
                         <h2>
 			  <span class="span_left">主营类别：</span><!--{$result.one_ccname}--!> - <!--{$result.ccname}--!>
                         </h2>
-                        <h2>
-			  <span class="span_left">主营产品：</span><!--{$result.manproducts}--!>
+                        <h2 class="h2_zylb">
+			  <span class="span_left">主营产品：</span><a title="<!--{$result.manproducts}--!>"><!--{$result.manproducts}--!></a>
                         </h2>
                         <h2>
 			  <span class="span_left">联系人：</span><!--{$result.linkman}--!>
                         </h2>
-                        <h2>
-			  <span class="span_left">公司地址：</span><!--{$result.address}--!>
+                        <h2 class="h2_gsdz">
+			  <span class="span_left">公司地址：</span><a title="<!--{$result.address}--!>"><!--{$result.address}--!></a>
 			</h2>
 			<div class="div_info">
 			  <p>公司电话：<!--{$result.companyphone}--!></p>
-			  <p>手机：<!--{$result.mobilephone}--!></p>
+			  <p>移动电话：<!--{$result.mobilephone}--!></p>
 			  <p>联系Q Q：<!--{$result.qqcode}--!></p>
 			  <p>电子邮件：<!--{$result.email}--!></p>
 			  <p>公司网址：<!--{$result.website}--!></p>
@@ -235,7 +234,7 @@ var onedownload = function(){
 				   });
 			       }
 			     </script>
-			    <a onclick="poplogin()">登录查看</a><a href="" class="btn_tuijian"></a>
+			    <a onclick="poplogin()"><img src="__PUBLIC__/index/style/images/btn_dlck.gif" width="88" height="20" border="0" /></a><a href="" class="btn_tuijian"></a>
 			    </if>
                             	<div class="isblock" id="isblock2" style="display:none;">   
                                 </div>

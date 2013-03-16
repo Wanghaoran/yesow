@@ -27,7 +27,7 @@ class CompanyAction extends CommonAction {
     if(!empty($_POST['companyname'])){
       if($this -> _post('verify', 'md5') != $_SESSION['verify']){
 	echo '<script>alert("验证码错误");history.go(-1);</script>';
-	//R('Public/errorjump',array(L('VERIFY_ERROR')));
+	exit();
       }
       $companyaudit = D('admin://CompanyAudit');
       if(!$a = $companyaudit -> create()){
@@ -126,11 +126,11 @@ class CompanyAction extends CommonAction {
     }
     //如果没有登录，加一张提示图片到后面
     if(!isset($_SESSION[C('USER_AUTH_KEY')])){
-	$result['companyphone'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
-	$result['mobilephone'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
-	$result['qqcode'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
-	$result['email'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
-	$result['website'] .= ' <img src="__PUBLIC__/index/style/images/dd.gif" />';
+      $result['companyphone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
+	$result['mobilephone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
+	$result['qqcode'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
+	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
+	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
 
     }
     $this -> assign('result', $result);
@@ -226,7 +226,8 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");</script>';
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");history.go(-1);</script>';
+	exit();
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
       }
@@ -280,7 +281,7 @@ class CompanyAction extends CommonAction {
   //手动复制页
   public function manualcopy(){
     $where = array();
-    $where['c.id'] = array('in', $this -> _get('cids'));
+    $where['c.id'] = array('in', $this -> _get('cid'));
     //查出资料
     $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($where) -> select();
     $this -> assign('result', $result);
@@ -313,101 +314,33 @@ class CompanyAction extends CommonAction {
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
+   
     //高级搜索,只检索出按更新时间排序的一页数据
     if(empty($_GET['keyword']) || $_GET['keyword'] == '请输入您要搜索的内容'){
-      $result = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> order('updatetime DESC') -> limit(10) -> select();
-      $this -> assign('result', $result);
-      $this -> assign('count', 10);
+      $result = $this -> search_company($_GET['keyword']);
+      $this -> assign('result', $result['result']);
+      $this -> assign('count', $result['count']);
       $this -> display();
       exit();
     }
-    $auditkeyword = M('AuditSearchKeyword');
-    $company = M('Company');
-    $keyword = $this -> _get('keyword', 'trim');
-    $keyword = iconv('UTF-8', 'GB2312', $keyword);//转化编码
-    //引入dede分词类库，进行搜索词分词操作
-    Vendor('lib_splitword_full');
-    $sp = new SplitWord();
-    $keyword_str = $sp->SplitRMM($keyword);
-    $keyword_str = iconv('GB2312', 'UTF-8', $keyword_str);//再转回来
-    $keyword = iconv('GB2312', 'UTF-8', $keyword);//再转回来
-    $keyword_arr = explode(' ', $keyword_str);
-    $sp->Clear();
-    //删除关键字数组最后一个无效空元素
-    unset($keyword_arr[count($keyword_arr) - 1]);
-    //复制分词数组，用于后面记录搜索关键词
-    $search_keyword_arr = $keyword_arr;
-    //关键词过滤，剔除没有的关键词
-    foreach($keyword_arr as $key => $value){
-      if(!$auditkeyword -> getFieldByname($value, 'id')){
-	unset($keyword_arr[$key]);      
-      }    
-    }
-    //进行分词后关键词的SQL组装
-    $keyword_sql = array();
-    foreach($keyword_arr as $value){
-      $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
-    }
+    $result =  $this -> search_company($_GET['keyword']);
+    //总条数
+    $this -> assign('count', $result['count']);
+    //分页
+    $this -> assign('show', $result['show']);
+    //查询时间
+    $this -> assign('time', $result['time']);
 
-    //根据组装好的各SQL语句，结合主SQL语句，进行查询
-    $where_select = array();
-    $where_select['name'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['address'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['manproducts'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['mobilephone'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['email'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['linkman'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['companyphone'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['qqcode'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['website'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['_logic'] = 'OR';
-    $map['_complex'] = $where_select;
-    $map['delaid']  = array('exp','is NULL');
-    
-
-    //构建查询SQL
-    $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where($map) -> union($keyword_sql) -> buildSql();
-
-    //高级查询条件
-    $senior_where = array();
-    if(!empty($_GET['type'])){
-      $senior_where[$this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
-    }
-    if(!empty($_GET['csid'])){
-      $senior_where['csid'] = $this -> _get('csid', 'intval');
-    }
-    if(!empty($_GET['csaid'])){
-      $senior_where['csaid'] = $this -> _get('csaid', 'intval');
-    }
-
-    import("ORG.Util.Page");// 导入分页类
-    $count = $company -> table($sql . ' a') -> where($senior_where) -> count('id');
-    $page = new Page($count, 20);//每页10条
-    $page->setConfig('header','条数据');
-    $show = $page -> show();
-    $this -> assign('count', $count);
-    $this -> assign('show', $show);
-
-    //记录查询时间
-    G('start');
-
-    //查询结果
-    $result = $company -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
-    //获得查询时间
-    $this -> assign('time', G('start', 'end'));
-
-    //将主查询词，写入关键词数组头部
-    array_unshift($keyword_arr, $keyword);
     //制作复制替换数组
     $replace_arr = array();
-    foreach($keyword_arr as $value){
+    foreach($result['keyword_arr'] as $value){
       $replace_arr[] = '<font color="#FF0000"><b>' . $value . '</b></font>';
     }
     //执行关键字高亮替换
-    foreach($result as $key => $value){
-      $result[$key] = str_replace($keyword_arr, $replace_arr, $result[$key]);
+    foreach($result['result'] as $key => $value){
+      $result['result'][$key] = str_replace($result['keyword_arr'], $replace_arr, $result['result'][$key]);
     }
-    $this -> assign('result', $result);
+    $this -> assign('result', $result['result']);
 
     //记录搜索词及搜索信息
     $search_keyword = D('SearchKeyword');
@@ -416,9 +349,9 @@ class CompanyAction extends CommonAction {
       $search_data['mid'] = session(C('USER_AUTH_KEY'));
     }
     $search_data['sourceaddress'] = $_SERVER["HTTP_REFERER"];
-    $search_data['keyword'] = $keyword_str;
+    $search_data['keyword'] = $result['keyword_str'];
     //如果这个词已经存在，直接设置为已审核
-    if(M('AuditSearchKeyword') -> getFieldByname($keyword_str, 'id')){
+    if(M('AuditSearchKeyword') -> getFieldByname($result['keyword_str'], 'id')){
       $search_data['status'] = 1;    
     }
     $search_keyword -> create($search_data);
@@ -458,5 +391,164 @@ class CompanyAction extends CommonAction {
     $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
     $this -> assign('company_info', $company_info);
     $this -> display();
+  }
+
+  //速查搜索算法
+  //keyword 搜索关键词
+  //page 是否需要分页
+  //down 是否是下载全部资料
+  public function search_company($keyword ,$page=true, $down=false){
+    //最终输出结果
+    $result = array();
+    //高级搜索,只检索出按更新时间排序的一页数据(20条)
+    if(empty($keyword) || $keyword == '请输入您要搜索的内容'){
+      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> order('updatetime DESC') -> limit(20) -> select();
+      $result['count'] = 20;
+      return $result;
+    }
+    //初始化已审关键词表
+    $auditkeyword = M('AuditSearchKeyword');
+    //初始化速查主表
+    $company = M('Company');
+    //删除关键词两边的空格
+    $keyword = trim($keyword);
+    //将关键词进行转码用于分词
+    $keyword = iconv('UTF-8', 'GB2312', $keyword);
+    //引入dede分词类库，进行搜索词分词操作
+    Vendor('lib_splitword_full');
+    $sp = new SplitWord();
+    //分词后得到的字符串
+    $keyword_str = $sp->SplitRMM($keyword);
+    //将字符串转为UTF-8
+    $keyword_str = iconv('GB2312', 'UTF-8', $keyword_str);
+    //将关键字转回UTF-8
+    $keyword = iconv('GB2312', 'UTF-8', $keyword);
+    //分割分词字符串
+    $keyword_arr = explode(' ', $keyword_str);
+    //GC
+    $sp->Clear();
+    //删除关键字数组最后一个无效空元素
+    unset($keyword_arr[count($keyword_arr) - 1]);
+    //复制分词数组，用于后面记录搜索关键词
+    $search_keyword_arr = $keyword_arr;
+    //关键词过滤，剔除没有的关键词
+    foreach($keyword_arr as $key => $value){
+      if(!$auditkeyword -> getFieldByname($value, 'id')){
+	unset($keyword_arr[$key]);      
+      }    
+    }
+    //进行分词后关键词的SQL组装
+    $keyword_sql = array();
+    //如果分词后的结果和关键词相同，则不需要进行子查询
+    if($keyword != $keyword_arr[0]){
+      foreach($keyword_arr as $value){
+	//判断是否是下载详细数据
+	if(!$down){
+	  $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
+	}else{
+	  $keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";	
+	}
+      }
+    }
+    
+    //根据组装好的各SQL语句，结合主SQL语句，进行查询
+    $where_select = array();
+    if(!$down){
+      $where_select['name'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['address'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['manproducts'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['mobilephone'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['email'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['linkman'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['companyphone'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['qqcode'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['website'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['_logic'] = 'OR';
+      $map['_complex'] = $where_select;
+      $map['delaid']  = array('exp','is NULL');
+    }else{
+      $where_select['c.name'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.address'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.manproducts'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.mobilephone'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.email'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.linkman'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.companyphone'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.qqcode'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['c.website'] = array('LIKE', '%' . $keyword . '%');
+      $where_select['_logic'] = 'OR';
+      $map['_complex'] = $where_select;
+      $map['c.delaid']  = array('exp','is NULL');
+    }
+    
+    //构建查询SQL
+    //判断是否为下载
+    if(!$down){
+      $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where($map) -> union($keyword_sql) -> buildSql();
+    }else{
+      $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
+    }
+    //高级查询条件
+    $senior_where = array();
+    if(!$down){
+      if(!empty($_GET['type'])){
+	$senior_where[$this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
+      }
+      if(!empty($_GET['csid'])){
+	$senior_where['csid'] = $this -> _get('csid', 'intval');
+      }
+      if(!empty($_GET['csaid'])){
+	$senior_where['csaid'] = $this -> _get('csaid', 'intval');
+      }
+    }else{
+      if(!empty($_GET['type'])){
+	$senior_where['a' . $this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
+      }
+      if(!empty($_GET['csid'])){
+	$senior_where['a.csid'] = $this -> _get('csid', 'intval');
+      }
+      if(!empty($_GET['csaid'])){
+	$senior_where['a.csaid'] = $this -> _get('csaid', 'intval');
+      }
+    }
+    
+    //统计总数
+    $count = $company -> table($sql . ' a') -> where($senior_where) -> count();
+    //是否需要分页
+    if($page){
+      // 导入分页类
+      import("ORG.Util.Page");
+      $page = new Page($count, 20);//每页20条
+      $page->setConfig('header','条数据');
+      $show = $page -> show();
+      //分页信息写入结果数组
+      $result['show'] = $show;
+    }
+    //总数写入结果数组
+    $result['count'] = $count;
+    
+    //记录查询时间
+    G('start');
+    //查询结果
+    ////是否需要分页
+    if($page){
+      $result['result'] = $company -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
+    }else{
+      $result['result'] = $company -> table($sql . ' a') -> where($senior_where) -> select();
+    }
+    //将查询时间写入结果数组
+    $result['time'] = G('start', 'end');
+    //将主查询词，写入关键词数组头部
+    array_unshift($keyword_arr, $keyword);
+    //查询关键词数组写入结果数组
+    $result['keyword_arr'] = $keyword_arr;
+    //查询主关键词写入结果数组
+    $result['keyword'] = $keyword;
+    //分词后的关键词字符串写入结果数组
+    $result['keyword_str'] = $keyword_str;
+    //调试信息
+    $result['lastsql'] = $company -> getLastSql();
+    return $result;
+
   }
 }

@@ -13,18 +13,18 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //网上购物首页(易搜购物商城)
+  //网上购物首页(包月订购)
   public function index(){
     $this -> display();
   }
 
   //包月订购前置操作
-  public function _before_monthly(){
+  public function _before_shop(){
     $this -> _before_index();
   }
 
-  //资金管理 - 包月订购首页
-  public function monthly(){
+  //资金管理 - 易搜商城首页
+  public function shop(){
     $this -> display();
   }
 

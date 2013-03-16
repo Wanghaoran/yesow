@@ -4,17 +4,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript">
+  function isSelectAll(){
+    var selectAll = document.getElementById("selectAll");
+    var indexIds = document.getElementsByName("checkCopy");
+    if(selectAll.checked){
+      for(var i=0;i<indexIds.length;i++){
+	indexIds[i].checked=true;
+      }
+    }else{
+      for(var i=0;i<indexIds.length;i++){
+	indexIds[i].checked=false;
+      }
+    }
+    document.getElementById("num_plfz").innerHTML=indexIds.length;
+  }
+
+  function checkSelect(field){
+    var count=0;
+    var indexIds = document.getElementsByName("checkCopy");
+    var selectAll = document.getElementById("selectAll");
+    for(var i=0;i<indexIds.length;i++){
+      if(indexIds[i].checked){
+	count++;
+      }
+      if(count==indexIds.length){
+	selectAll.checked=true;
+      }
+      if(count<indexIds.length){
+	selectAll.checked=false;
+      }
+    }
+    document.getElementById("num_plfz").innerHTML=count; 
+  }
+</script>
 </head>
 <body>
+  <div class="plfzbox">
 <input type='hidden' id='current_page' />
 <input type='hidden' id='show_per_page' />
+<h1>您所选的关键词为 <!--{$keyword}--!> ,共有 <!--{$count}--!> 条记录符合</h1>
+    <h2><input name="checkbox" type="checkbox" value="" onClick="isSelectAll()" id="selectAll"/>全选&nbsp;&nbsp;批量复制请选择左边的多选框即可。您已选择<span id="num_plfz">0</span>条</h2>
 <ul id="ul_parter" class="ul_parter">
   <volist name="result_batch" id="rb">
-  <li><input type="checkbox" name="checkCopy" value="<!--{$rb.id}--!>"/><!--{$rb.name}--!><br /><span class="littlespan"><!--{$rb.manproducts}--!></span></a></li>
+  <li><input type="checkbox" name="checkCopy" onClick="checkSelect(this);" value="<!--{$rb.id}--!>"/><!--{$rb.name}--!><br /><span class="littlespan"><!--{$rb.manproducts}--!></span></a></li>
   </volist>
 </ul>
 <div class="clear"></div>
-<div id="page_navigation"></div>             
+<div id="page_navigation"></div> 
+</div>
 </body>
 <script type="text/javascript">
 //分页
