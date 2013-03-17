@@ -79,7 +79,7 @@ class IndexAction extends CommonAction {
   //最新IT商家
   private function newcompany(){
     $company = M('Company');
-    $new_company = $company -> field('id,name') -> order('updatetime DESC') -> limit(20) -> select();
+    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
 

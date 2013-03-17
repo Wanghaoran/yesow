@@ -475,7 +475,7 @@ class PublicAction extends Action {
     header("Content-Type: application/force-download");
     $filename = date('YmdHis');
     header("Content-Disposition: attachment; filename={$filename}.txt");
-    echo $content_download . $result['lastsql'];
+    echo $content_download;
   }
 
   //ajax获取单个复制扣费信息

@@ -61,6 +61,12 @@ class CompanyAction extends CommonAction {
       $add_info = M('Member') -> field('name,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
       $this -> assign('add_info', $add_info);
     }
+    //添加RMB金额变化
+    $company_setup = M('CompanySetup');
+    $success_rmb = $company_setup -> getFieldByname('addsuccess', 'value');
+    $error_rmb = $company_setup -> getFieldByname('adderror', 'value');
+    $this -> assign('success_rmb', $success_rmb);
+    $this -> assign('error_rmb', $error_rmb);
     $this -> display();
   }
 
@@ -186,6 +192,12 @@ class CompanyAction extends CommonAction {
     //错误类型
     $result_errortype = M('CompanyErrorType') -> field('id,name') -> select();
     $this -> assign('result_errortype', $result_errortype);
+    //报错RMB金额变化
+    $company_setup = M('CompanySetup');
+    $success_rmb = $company_setup -> getFieldByname('reportsuccess', 'value');
+    $error_rmb = $company_setup -> getFieldByname('reporterror', 'value');
+    $this -> assign('success_rmb', $success_rmb);
+    $this -> assign('error_rmb', $error_rmb);
     $this -> display();
   }
 
@@ -491,23 +503,23 @@ class CompanyAction extends CommonAction {
     //高级查询条件
     $senior_where = array();
     if(!$down){
-      if(!empty($_GET['type'])){
+      if(!empty($_GET['type']) && $_GET['type'] != 'null'){
 	$senior_where[$this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
       }
-      if(!empty($_GET['csid'])){
+      if(!empty($_GET['csid']) && $_GET['csid'] != 'null'){
 	$senior_where['csid'] = $this -> _get('csid', 'intval');
       }
-      if(!empty($_GET['csaid'])){
+      if(!empty($_GET['csaid']) && $_GET['csaid'] != 'null'){
 	$senior_where['csaid'] = $this -> _get('csaid', 'intval');
       }
     }else{
-      if(!empty($_GET['type'])){
+      if(!empty($_GET['type']) && $_GET['type'] != 'null'){
 	$senior_where['a' . $this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
       }
-      if(!empty($_GET['csid'])){
+      if(!empty($_GET['csid']) && $_GET['csid'] != 'null'){
 	$senior_where['a.csid'] = $this -> _get('csid', 'intval');
       }
-      if(!empty($_GET['csaid'])){
+      if(!empty($_GET['csaid']) && $_GET['csaid'] != 'null'){
 	$senior_where['a.csaid'] = $this -> _get('csaid', 'intval');
       }
     }
@@ -547,7 +559,7 @@ class CompanyAction extends CommonAction {
     //分词后的关键词字符串写入结果数组
     $result['keyword_str'] = $keyword_str;
     //调试信息
-    $result['lastsql'] = $company -> getLastSql();
+    //$result['lastsql'] = $company -> getLastSql();
     return $result;
 
   }

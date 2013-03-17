@@ -35,7 +35,7 @@ class MemberAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     //会员数据
-    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck,ttt.name as tname,ttt.count as tcount') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON m.id = ttt.mid') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.id DESC') -> where($where) -> select();
+    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck,m.isservice,ttt.name as tname,ttt.count as tcount') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON m.id = ttt.mid') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.id DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -96,6 +96,25 @@ class MemberAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
+  }
+
+  //编辑会员服务
+  public function editmemberservice(){
+    $member = M('Member');
+    //处理更新
+    if(!empty($_POST['id'])){
+      if(!$member -> create()){
+	$this -> error($member -> getError());
+      }
+      if($member -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $member -> field('name,isservice') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   }
 
   //会员学历管理

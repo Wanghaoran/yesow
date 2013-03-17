@@ -63,7 +63,7 @@
 		<thead>
 		  <tr>
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
-			<th width="60">编号</th>
+			<th width="30">编号</th>
 			<th width="60">用户名</th>
 			<th width="60">昵称</th>
 			<th width="100">电子邮件</th>
@@ -75,7 +75,8 @@
 			<th width="60">注册时间</th>
 			<th width="100">最近登录时间</th>
 			<th width="30">状态</th>
-			<th width="20">验证</th>
+			<th width="25">验证</th>
+			<th width="25">服务</th>
 
 		</tr>
 		</thead>
@@ -107,7 +108,12 @@
 			  <td style="color:green;">是</td>
 			  <else/>
 			  <td style="color:red;">否</td>
-			  </eq>			  
+			  </eq>
+			  <empty name="r.isservice">
+			  <td><a style="color:red;" href="__URL__/editmemberservice/id/<!--{$r.id}--!>" target="dialog">服务</a></td>
+			  <else/>
+			  <td style="color:green;"><a style="color:green;" href="__URL__/editmemberservice/id/<!--{$r.id}--!>" target="dialog">服务</a></td>
+			  </empty>
 			</tr>
 		</volist>
 		</tbody>

@@ -117,7 +117,7 @@
 	      if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.num + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 		if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 		  //执行下载并扣费
-		  location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+		  location.href='__APP__/public/doalldownload/keyword/<!--{$Think.get.keyword}--!>/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>';
 		}
 	      }
 	    //会员余额不足够扣费
@@ -125,7 +125,7 @@
 	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 	      if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 		//执行下载并扣费
-		location.href='__APP__/public/doalldownload?keyword=<!--{$Think.get.keyword}--!>&type=<!--{$Think.get.type}--!>&csid=<!--{$Think.get.csid}--!>&csaid=<!--{$Think.get.csaid}--!>';
+		location.href='__APP__/public/doalldownload/keyword/<!--{$Think.get.keyword}--!>/type/<!--{$Think.get.type}--!>/csid/<!--{$Think.get.csid}--!>/csaid/<!--{$Think.get.csaid}--!>';
 	      }
 	    }
 	  }

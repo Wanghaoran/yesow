@@ -43,7 +43,7 @@
   <div class="plfzbox">
 <input type='hidden' id='current_page' />
 <input type='hidden' id='show_per_page' />
-<h1>您所选的关键词为 <!--{$keyword}--!> ,共有 <!--{$count}--!> 条记录符合</h1>
+<h1>您所选的关键词为 <span style="color:red"><!--{$keyword}--!></span> ,共有 <!--{$count}--!> 条记录符合</h1>
     <h2><input name="checkbox" type="checkbox" value="" onClick="isSelectAll()" id="selectAll"/>全选&nbsp;&nbsp;批量复制请选择左边的多选框即可。您已选择<span id="num_plfz">0</span>条</h2>
 <ul id="ul_parter" class="ul_parter">
   <volist name="result_batch" id="rb">

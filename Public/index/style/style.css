@@ -86,7 +86,8 @@ p#hot_search{padding-top:10px;}
 #main01_l_ul{ width:273px; height:220px; float:left;}
 #main01_l_ul li{ width:126px; padding:0 2px 0 8px; height:22px; float:left;overflow:hidden;}
 #main01_l_ul li.odd_li{border-left:1px solid #eee;}
-#main01_l_ul li a{display:inline-block; height:22px; line-height:22px; background:url(images/new.gif) no-repeat right center; padding-right:26px;}
+#main01_l_ul li a.new{display:inline-block; height:22px; line-height:22px; background:url(images/new.gif) no-repeat right center; padding-right:26px;}
+#main01_l_ul li a{display:inline-block; height:22px; line-height:22px;}
 
 .border_ui,
 .border_ui_r,
@@ -583,8 +584,8 @@ ul.saledetail{ width:628px; margin:0 auto;}
 ul.saledetail li{ float:left;}
 ul.saledetail li.li_h1{width:628px; height:40px; line-height:40px; font-size:18px; font-weight:800; color:#010101; text-align:center; position:relative;}
 ul.saledetail li.li_h1 span{ position:absolute; top:0; right:0; padding-right:20px; font-size:12px; font-weight:bold; color:#fe0201;}
-ul.saledetail li.li_img{ width:303px; height:303px; border:#ffaf02 1px solid; margin:0 10px 20px 0;}
-ul.saledetail li.li_img a img{width:303px; height:303px; border:none;}
+ul.saledetail li.li_img{ width:303px; height:263px; border:#ffaf02 1px solid; margin:0 10px 20px 0;}
+ul.saledetail li.li_img a img{width:303px; height:263px; border:none;}
 ul.saledetail li h2{width:310px; font-size:12px; font-weight:normal; color:#343434; line-height:20px;}
 ul.saledetail li h2.h2_zylb{ border:#ccc 1px solid; height:40px; overflow:hidden;}
 ul.saledetail li h2.h2_gsdz{height:20px; overflow:hidden;}
