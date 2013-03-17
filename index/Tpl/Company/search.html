@@ -95,10 +95,10 @@
     });
 
     $.ajax({ 
-      url:'__APP__/public/batch/keyword/<!--{$Think.get.keyword}--!>', 
+      url:'__APP__/public/batch/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
       success:function(data){ 
 	api.content(data); 
-      }, 
+      },
       cache:false 
     });
   }
@@ -212,10 +212,10 @@
     });
 
     $.ajax({ 
-      url:'__APP__/public/batch/keyword/<!--{$Think.get.keyword}--!>', 
+      url:'__APP__/public/batch/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
       success:function(data){ 
 	api.content(data); 
-      }, 
+      },
       cache:false 
     });
   }

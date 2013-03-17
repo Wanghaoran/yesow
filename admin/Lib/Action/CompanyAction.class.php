@@ -1211,6 +1211,81 @@ class CompanyAction extends CommonAction {
     }
   }
 
+  //会员包月订单
+  public function monthlyorder(){
+    $monthlyorder = M('MonthlyOrder');
+    //处理搜索
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['mo.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['mo.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $monthlyorder -> table('yesow_monthly_order as mo') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //结果
+    $result = $monthlyorder -> table('yesow_monthly_order as mo') -> field('mo.id,mo.ordernum,m.name as mname,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime') -> join('yesow_member as m ON mo.mid = m.id') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除会员包月订单
+  public function delmonthlyorder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $monthlyorder = M('MonthlyOrder');
+    if($monthlyorder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  
+  }
+
+  //通过审核会员包月订单
+  public function passauditmonthlyorder(){
+    $monthlyorder = M('MonthlyOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($monthlyorder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核会员包月订单
+  public function nopassauditmonthlyorder(){
+    $monthlyorder = M('MonthlyOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($monthlyorder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
   /* --------------- 业务订单管理 ---------------- */
 
   /* --------------- 速查业务管理 ---------------- */

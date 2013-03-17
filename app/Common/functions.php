@@ -869,3 +869,4 @@ function DeleteHtml($str) {
   return trim($str); 
 }
 
+

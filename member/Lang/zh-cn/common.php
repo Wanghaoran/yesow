@@ -11,6 +11,12 @@ $app_lang = array(
   'PASSWORD_EMAIL_NAME_ERROR' => '用户名错误，此用户密码不能通过邮件找回',
   'TRADERSPASSWORD_EMPTY_ERROR' => '您还没有设置交易密码,请先设置交易密码',
   'TRADERSPASSWORD_ERROR' => '交易密码错误,请重新输入',
+  'ORDER_ERROR' => '生成订单错误',
+  'RMB_ERROR' => 'RMB操作失败',
+  'RMB_CACHE' => '更新RMB缓存失败',
+  'RMB_LOG_ERROR' => 'RMB明细写入失败',
+  'MONTHLY_ERROR' => '更新包月信息失败',
+  'ORDER_UPDATE_ERROR' => '更新订单状态失败',
 );
 
 return array_merge($common_lang, $app_lang);

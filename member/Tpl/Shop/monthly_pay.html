@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.md5.js"></script>
 <script type="text/javascript">
 $.fn.hradio = function(options){
         var self = this;
@@ -30,6 +31,18 @@ $.fn.hradio = function(options){
 $(function(){
 	$('#zhifuradio').hradio();
 });
+</script>
+<script>
+  //余额支付
+  var balancepay = function(){
+    //订单号
+    var orderid = '<!--{$result_monthly.orderid}--!>';
+    //购买包月类型id
+    var monid = '<!--{$Think.get.mid}--!>';
+    //交易密码
+    var pwd = $.md5($('#paypwd').val());
+    location.href = '__URL__/monthly_rmb_pay/orderid/' + orderid + '/monid/' + monid + '/pwd/' + pwd;
+  }
 </script>
 </head>
 <body id="body_user">
@@ -79,10 +92,10 @@ $(function(){
 		<div class="clear10"></div>
 		<hr class="hrstyle" />
                 <table class="table_zxzf2">
-                    <tr><td class="tdleft">易搜在线支付密码：</td><td><input type="text" class="inputclass1" /></td></tr>
-                    <tr><td colspan="2" class="tdmid"><input type="button" value="确认付款" class="rmb_fanhui"/></td></tr>
+                    <tr><td class="tdleft">易搜交易密码：</td><td><input type="text" id="paypwd" class="inputclass1" /></td></tr>
+                    <tr><td colspan="2" class="tdmid"><input type="button" onclick="balancepay();" value="确认付款" class="rmb_fanhui"/></td></tr>
                 </table>
-                <div class="div_zxzf">我还没有支付密码，马上去<a href="#">设置>></a></div>
+                <div class="div_zxzf">我还没有交易密码，马上去<a href="#">设置>></a></div>
 		<else/>
 		<tr><td colspan="2" class="zxzf_tishi">您的余额不足，请使用网上支付方式支付！</td></tr>
 		</table>

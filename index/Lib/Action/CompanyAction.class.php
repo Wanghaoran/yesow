@@ -42,6 +42,7 @@ class CompanyAction extends CommonAction {
       }
       if($companyaudit -> add()){
 	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");</script>';
+	exit();
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
       }
@@ -559,7 +560,7 @@ class CompanyAction extends CommonAction {
     //分词后的关键词字符串写入结果数组
     $result['keyword_str'] = $keyword_str;
     //调试信息
-    //$result['lastsql'] = $company -> getLastSql();
+    $result['lastsql'] = $company -> getLastSql();
     return $result;
 
   }
