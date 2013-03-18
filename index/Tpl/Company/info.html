@@ -145,23 +145,24 @@ var onedownload = function(){
   $.ajax({
 	type: "POST",
 	url: "__APP__/public/ajaxonedownload",
-	datatype: "json",
+	dataType: "json",
 	success: function(msg){
-	  msg = jQuery.parseJSON(msg);
 	  if(msg.author_seven == 0){
-	  alert('您所在的会员等级暂无此权限！');
-	  location.href="__APP__/public/authorprompt/modname/单个下载/authname/author_seven";
+	    alert('您所在的会员等级暂无此权限！');
+	    location.href = "__APP__/public/authorprompt/modname/单个下载/authname/author_seven";
 	    }else{
-	  //确认
-	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
-	  location.href="__APP__/public/doonedownload/cid/<!--{$Think.get.id}--!>";
-
-	  }
+	    if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
+	      $.ajax({
+		url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>",
+		success: function(){
+		  location.href = '__APP__/public/doonedownload_down/cid/<!--{$Think.get.id}--!>';
+		}
+		});
+	      }
 	  }
 	}
-      });
-
-  }
+   });
+}
 </script>
 
 
@@ -303,7 +304,7 @@ var onedownload = function(){
 				<div class="div_right">
 				  <textarea class="txt_pl" id="content"></textarea>
 				  <p>表情:
-				  <input type="radio" name="face" value=""/>无
+				  <input type="radio" name="face" value="" checked="checked"/>无
 				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/style/images/face/1.gif" width="20" height="20" border="0" />
 				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/style/images/face/2.gif" width="20" height="20" border="0" />
 				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/style/images/face/3.gif" width="20" height="20" border="0" />

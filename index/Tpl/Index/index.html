@@ -21,11 +21,19 @@
 			<div class="main01_l_bod">
 			  <ul id="main01_l_ul">
 			    <volist name="new_company" id="nc" mod="2">
+			    <if condition="time() - $nc['updatetime'] elt 24*60*60">
+			    <eq name="mod" value="1">
+			    <li class="odd_li"><a href="__ROOT__/company/<!--{$nc.id}--!>" class="new" target="_blank"><!--{$nc.name}--!></a></li>
+			    <else/>
+			    <li><a href="__ROOT__/company/<!--{$nc.id}--!>" class="new" target="_blank"><!--{$nc.name}--!></a></li>
+			    </eq>
+			    <else/>
 			    <eq name="mod" value="1">
 			    <li class="odd_li"><a href="__ROOT__/company/<!--{$nc.id}--!>" target="_blank"><!--{$nc.name}--!></a></li>
 			    <else/>
 			    <li><a href="__ROOT__/company/<!--{$nc.id}--!>" target="_blank"><!--{$nc.name}--!></a></li>
 			    </eq>
+			    </if>
 			    </volist>
 			  </ul>
 			</div>

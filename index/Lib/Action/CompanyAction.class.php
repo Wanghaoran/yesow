@@ -41,7 +41,7 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");</script>';
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");history.go(-1);</script>';
 	exit();
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
@@ -111,22 +111,27 @@ class CompanyAction extends CommonAction {
       //公司电话
       if($author['author_one'] == 0){
 	$result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
+	$result['companyphone'] .= ' <img src="__PUBLIC__/index/style/images/dd2.gif" />';
       }
       //手机
       if($author['author_two'] == 0){
 	$result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
+	$result['mobilephone'] .= ' <img src="__PUBLIC__/index/style/images/dd2.gif" />';
       }
       //QQ
       if($author['author_three'] == 0){
 	$result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
+	$result['qqcode'] .= ' <img src="__PUBLIC__/index/style/images/dd2.gif" />';
       }
       //邮件
       if($author['author_four'] == 0){
 	$result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
+	$result['email'] .= ' <img src="__PUBLIC__/index/style/images/dd2.gif" />';
       }
       //网址
       if($author['author_five'] == 0){
 	$result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
+	$result['website'] .= ' <img src="__PUBLIC__/index/style/images/dd2.gif" />';
       }
       //是否有查看权
       $this -> assign('isview', 1);
@@ -288,6 +293,12 @@ class CompanyAction extends CommonAction {
       $add_info = M('Member') -> field('name,tel,unit,address,email,idnumber') -> find(session(C('USER_AUTH_KEY')));
       $this -> assign('add_info', $add_info);
     }
+    //改错RMB金额变化
+    $company_setup = M('CompanySetup');
+    $success_rmb = $company_setup -> getFieldByname('changesuccess', 'value');
+    $error_rmb = $company_setup -> getFieldByname('changeerror', 'value');
+    $this -> assign('success_rmb', $success_rmb);
+    $this -> assign('error_rmb', $error_rmb);
     $this -> display();
   }
 

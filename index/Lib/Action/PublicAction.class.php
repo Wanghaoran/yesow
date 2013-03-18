@@ -7,11 +7,6 @@ class PublicAction extends Action {
     echo preg_replace('/[a-zA-Z]/i', '', $code);
   }
 
-  //成功跳转前置操作
-  public function _before_successjump(){
-    $this -> _before_authorprompt();
-  }
-
   //成功跳转
   public function successjump($title, $url="", $time=3){
     $this -> assign('title', $title);
@@ -26,11 +21,6 @@ class PublicAction extends Action {
     $this -> assign('status', 1);
     $this -> display('./index/Tpl/Public/jumpurl.html');
     exit();
-  }
-
-  //失败跳转前置操作
-  public function _before_errorjump(){
-    $this -> _before_authorprompt();
   }
 
   //失败跳转
@@ -59,6 +49,11 @@ class PublicAction extends Action {
     }
     $this -> display('./index/Tpl/Public/infojump.html');
     exit();
+  }
+
+  //ajax验证登录前置操作
+  public function _before_checkajaxlogin(){
+    $this -> _before_authorprompt();
   }
 
   //ajax验证登录
@@ -229,10 +224,10 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
-  //ajax单个下载
-  public function doonedownload(){
-    //查出资料
-    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $this -> _get('cid', 'intval'))) -> find();
+  //ajax单个下载(记录日志)
+  public function doonedownload_log(){
+    //查出公司名
+    $company = M('Company') -> getFieldByid($this -> _get('cid', 'intval'), 'name');
     //扣费
     $const = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'rmb_three');
     //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
@@ -263,10 +258,16 @@ class PublicAction extends Action {
     //更新会员余额和等级
     $rmb -> rmbtotal($session_uid);
     //公司名称，用于记录日志
-    $companyname = msubstr($result['name'], 0, 6);
+    $companyname = msubstr($company, 0, 6);
     //写RMB消费日志
     $log_content = "在详细页下载一条名片详细内容 [<span style='color:blue'>{$companyname}</span>]";
     D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
+  }
+
+  //ajax单个下载(生成下载)
+  public function doonedownload_down(){
+    //查出资料
+    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $this -> _get('cid', 'intval'))) -> find();
     //生成下载信息
     header("Content-Type: application/force-download");
     $filename = date('YmdHis');
@@ -274,7 +275,6 @@ class PublicAction extends Action {
     $updatetime = date('Y-m-d H:i:s', $result['updatetime']);
     $content_download = "-------------------------------------\r\n商家导出信息\r\n-------------------------------------\r\n{$result['name']}\r\n公司地址:{$result['address']}\r\n主营产品:{$result['manproducts']}\r\n公司电话:{$result['companyphone']}\r\n移动电话:{$result['mobilephone']}\r\n联系人:{$result['linkman']}\r\n电子邮件:{$result['email']}\r\nQQ:{$result['qqcode']}\r\n所在地:{$result['csname']} - {$result['csaname']}\r\n主营类别:{$result['ccname']}\r\n更新时间:{$updatetime}\r\n";
     echo $content_download;
-    
   }
 
   //ajax获取批量结果下载扣费信息
@@ -322,8 +322,8 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
-  //ajax批量下载
-  public function doindexdownload(){
+  //ajax批量下载(记录日志)
+  public function doindexdownload_log(){
     $member_level = M('MemberLevel');
     //获取每条价格
     $price_ever = $member_level -> getFieldByid(session('member_level_id'), 'rmb_three');
@@ -364,7 +364,12 @@ class PublicAction extends Action {
     //写RMB消费日志
     $log_content = "在搜索结果页<span style='color:blue'>批量下载</span>{$count_arr}条名片详细信息 [<span style='color:blue'>{$_GET['keyword']}</span>]";
     D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
+    
+  }
 
+
+  //ajax批量下载(生成下载)
+  public function doindexdownload_down(){
     //查出资料
     $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => array('IN', $_GET['id_str']))) -> select();
 
@@ -381,7 +386,7 @@ class PublicAction extends Action {
     $filename = date('YmdHis');
     header("Content-Disposition: attachment; filename={$filename}.txt");
     echo $content_download;
-    
+  
   }
 
   //ajax获取全部搜索结果下载扣费信息
@@ -416,8 +421,8 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
-  //ajax全部结果下载
-  public function doalldownload(){
+  //ajax全部结果下载(记录日志)
+  public function doalldownload_log(){
     //不需要分页查询所有数据
     $result = R('Company/search_company', array($this -> _get('keyword'), false, true));
     
@@ -463,6 +468,24 @@ class PublicAction extends Action {
     $log_content = "在搜索结果页<span style='color:blue'>全部下载</span>{$result['count']}条名片详细信息 [<span style='color:blue'>{$_GET['keyword']}</span>]";
     D('member://MemberRmbDetail') -> writelog($session_uid, $log_content, '消费', '-' . $const);
 
+    
+  }
+
+  //ajax全部结果下载(生成下载)
+  public function doalldownload_down(){
+    //不需要分页查询所有数据
+    $result = R('Company/search_company', array($this -> _get('keyword'), false, true));
+    $member_level = M('MemberLevel');
+    //获取每条价格
+    $price_ever = $member_level -> getFieldByid(session('member_level_id'), 'rmb_three');
+    //总费用
+    $const = $result['count'] * $price_ever;
+    //查帐户余额
+    $money = D('member://MemberRmb') -> getrmbtotal(session(C('USER_AUTH_KEY')));
+    //如果账户余额不够支付所有信息，则删除部分信息
+    if($money < $const){
+      $result['result'] = array_slice($result['result'], 0, floor(($money - 2) / $price_ever));
+    }
     //生成下载信息
     $content_download = '';
     $i = 1;
@@ -476,6 +499,7 @@ class PublicAction extends Action {
     $filename = date('YmdHis');
     header("Content-Disposition: attachment; filename={$filename}.txt");
     echo $content_download;
+  
   }
 
   //ajax获取单个复制扣费信息
@@ -552,7 +576,7 @@ class PublicAction extends Action {
     //构造id数组
     $id_arr = explode(',', $_GET['cid']);
     //首页结果数量
-    $num = count($id_arr);
+    $num = empty($_GET['cid']) ? 0 : count($id_arr);
     //查询此会员等级有无此权限
     $result = $member_level -> field('rmb_two,author_ten') -> find(session('member_level_id'));
     //查帐户余额
