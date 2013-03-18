@@ -55,6 +55,10 @@
 	      str += ',' + $(this).val();
 	    } 
 	  });
+	  if(str == ''){
+	    alert('您还未选择您要的商家信息，请选择！');
+	    return ;
+	  }
 	  $.ajax({
 	    url:'__APP__/public/ajaxindexdownload',
 	    data:'id_str=' + str,
@@ -78,11 +82,16 @@
 		  //会员余额不足够扣费
 		  }else{
 		  if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
-		    if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+		    if(confirm('即将下载' + msg.listnum + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 		      $.ajax({
 			url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
 			success: function(ress){
-			  location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+			  if(ress != 1){
+			    location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+			  }else{
+			  alert('余额不足！');
+			}
+			  
 			}
 		      });
 		    }
@@ -137,12 +146,17 @@
 	    //会员余额不足够扣费
 	    }else{
 	    if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,共搜出' + msg.num + '条,可以下载' + msg.listnum + '条,您本次下载所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
-	      if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+	      if(confirm('即将下载' + msg.listnum + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 		//执行下载并扣费
 		$.ajax({
-		    url: '__APP__/public/doalldownload_log/keyword/<!--{$Think.get.keyword}--!>/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
+		    url: '__APP__/public/doalldownload_log/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
 		    success: function(ress){
-		      location.href='__APP__/public/doalldownload_down/keyword/<!--{$Think.get.keyword}--!>/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>';
+		      if(ress != 1){
+			location.href='__APP__/public/doalldownload_down/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>/num/' + msg.listnum;
+		      }else{
+		      alert('余额不足！');
+		    }
+		      
 		    }
 		  });
 	      }

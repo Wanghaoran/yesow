@@ -283,7 +283,7 @@ class PublicAction extends Action {
     //构造id数组
     $id_arr = explode(',', $_POST['id_str']);
     //首页结果数量
-    $num = count($id_arr);
+    $num = empty($_GET['cid']) ? 0 : count($id_arr);
     //查询此会员等级有无此权限
     $result = $member_level -> field('rmb_three,author_eight') -> find(session('member_level_id'));
     //查帐户余额
@@ -291,7 +291,6 @@ class PublicAction extends Action {
     $result['money'] = $money['total'];
     //计算本次所需费用
     $const = $num * $result['rmb_three'];
-    $result['consts'] = $const;
     $result['num'] = $num;
     //如果账户余额足够本次扣费
     if($const <= $result['money']){
@@ -301,6 +300,7 @@ class PublicAction extends Action {
       $result['enough'] = 1;
       //需要下载的id字符串
       $result['id_string'] = $this -> _post('id_str');
+      $result['consts'] = $const;
     }else{
       //余额不够支付费用
       $result['enough'] = 0;
@@ -308,6 +308,8 @@ class PublicAction extends Action {
       $result['listnum'] = floor(($result['money'] - 2) / $result['rmb_three']);
       //计算此次下载后用户余额
       $result['balance'] = $result['money'] - $result['listnum'] * $result['rmb_three'];
+      //实际需要费用
+      $result['consts'] = $result['listnum'] * $result['rmb_three'];
       //需要下载的id字符串
       $down_arr = array_slice($id_arr, 0, $result['listnum']);
       $result['id_string'] = '';
@@ -350,7 +352,8 @@ class PublicAction extends Action {
       $fee = abs($price['rmb_exchange'] - $const);
       //如果差值不够支付，则退出执行
       if($price['rmb_pay'] < $fee){
-	exit();
+	echo 1;
+	return;
       }
       $data_rmb = array();
       $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
@@ -401,15 +404,15 @@ class PublicAction extends Action {
     $result['money'] = $money['total'];
     //计算本次所需费用
     $const = $num * $result['rmb_three'];
-    $result['consts'] = $const;
-    //结果数量
-    $result['num'] = $num;
     //如果账户余额足够本次扣费
     if($const <= $result['money']){
       //计算扣费后余额
       $result['balance'] = $result['money'] - $const;
       //余额足够支付费用
       $result['enough'] = 1;
+      $result['consts'] = $const;
+      //结果数量
+      $result['num'] = $num;
     }else{
       //余额不够支付费用
       $result['enough'] = 0;
@@ -417,6 +420,10 @@ class PublicAction extends Action {
       $result['listnum'] = floor(($result['money'] - 2) / $result['rmb_three']);
       //计算此次下载后用户余额
       $result['balance'] = $result['money'] - $result['listnum'] * $result['rmb_three'];
+      //支付费用
+      $result['consts'] = $result['listnum'] * $result['rmb_three'];
+      //结果数量
+      $result['num'] = $num;
     }
     echo json_encode($result);
   }
@@ -433,9 +440,12 @@ class PublicAction extends Action {
     $const = $result['count'] * $price_ever;
     //查帐户余额
     $money = D('member://MemberRmb') -> getrmbtotal(session(C('USER_AUTH_KEY')));
-    //如果账户余额不够支付所有信息，则删除部分信息
-    if($money < $const){
-      $result['result'] = array_slice($result['result'], 0, floor(($money - 2) / $price_ever));
+    //如果账户余额不够支付所有信息，则计算可以下载的数量
+    if($money['total'] < $const){
+      $result['count'] = floor(($money['total'] - 2) / $price_ever);
+      //更新总费用
+      $const = $result['count'] * $price_ever;
+
     }
     //先从 兑换RMB 字段中扣，在从充值RMB字段 中扣
     $rmb = D('member://MemberRmb');
@@ -453,7 +463,7 @@ class PublicAction extends Action {
       $fee = abs($price['rmb_exchange'] - $const);
       //如果差值不够支付，则退出执行
       if($price['rmb_pay'] < $fee){
-	exit();
+	echo 1;
       }
       $data_rmb = array();
       $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
@@ -475,17 +485,8 @@ class PublicAction extends Action {
   public function doalldownload_down(){
     //不需要分页查询所有数据
     $result = R('Company/search_company', array($this -> _get('keyword'), false, true));
-    $member_level = M('MemberLevel');
-    //获取每条价格
-    $price_ever = $member_level -> getFieldByid(session('member_level_id'), 'rmb_three');
-    //总费用
-    $const = $result['count'] * $price_ever;
-    //查帐户余额
-    $money = D('member://MemberRmb') -> getrmbtotal(session(C('USER_AUTH_KEY')));
     //如果账户余额不够支付所有信息，则删除部分信息
-    if($money < $const){
-      $result['result'] = array_slice($result['result'], 0, floor(($money - 2) / $price_ever));
-    }
+    $result['result'] = array_slice($result['result'], 0, $_GET['num']);
     //生成下载信息
     $content_download = '';
     $i = 1;
@@ -584,7 +585,6 @@ class PublicAction extends Action {
     $result['money'] = $money['total'];
     //计算本次所需费用
     $const = $num * $result['rmb_two'];
-    $result['consts'] = $const;
     $result['num'] = $num;
     //如果账户余额足够本次扣费
     if($const <= $result['money']){
@@ -594,6 +594,7 @@ class PublicAction extends Action {
       $result['enough'] = 1;
       //需要复制的id字符串
       $result['id_string'] = $this -> _get('cid');
+      $result['consts'] = $const;
     }else{
       //余额不够支付费用
       $result['enough'] = 0;
@@ -601,6 +602,8 @@ class PublicAction extends Action {
       $result['listnum'] = floor(($result['money'] - 2) / $result['rmb_two']);
       //计算此次下载后用户余额
       $result['balance'] = $result['money'] - $result['listnum'] * $result['rmb_two'];
+      //实际需要费用
+      $result['consts'] = $result['listnum'] * $result['rmb_two'];
       //需要下载的id字符串
       $down_arr = array_slice($id_arr, 0, $result['listnum']);
       $result['id_string'] = '';
