@@ -85,7 +85,7 @@ $(function(){
             <div class="zxzfbox_con">
                 <table class="table_zxzf2">
 		  <tr><td class="tdleft">本次付款的总金额：</td><td class="tdright"><!--{$result_monthly.count}--!>元</td></tr>
-		  <tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$Think.session.rmb_total}--!>元<a href="#">[我要充值]</a></td></tr>
+		  <tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$Think.session.rmb_total}--!>元<a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
 		  <eq name="result_monthly.rmb_enough" value="1">
 		  <tr><td colspan="2" class="zxzf_tishi">您的余额充足，可以使用余额支付方式！</td></tr>
 		</table>
@@ -95,7 +95,7 @@ $(function(){
                     <tr><td class="tdleft">易搜交易密码：</td><td><input type="text" id="paypwd" class="inputclass1" /></td></tr>
                     <tr><td colspan="2" class="tdmid"><input type="button" onclick="balancepay();" value="确认付款" class="rmb_fanhui"/></td></tr>
                 </table>
-                <div class="div_zxzf">我还没有交易密码，马上去<a href="#">设置>></a></div>
+                <div class="div_zxzf">我还没有交易密码，马上去<a href="__ROOT__/member.php/index/setsafepwd">设置>></a></div>
 		<else/>
 		<tr><td colspan="2" class="zxzf_tishi">您的余额不足，请使用网上支付方式支付！</td></tr>
 		</table>

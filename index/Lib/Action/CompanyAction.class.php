@@ -94,8 +94,14 @@ class CompanyAction extends CommonAction {
     //计算最早购买时间,大于这个购买时间的都有效
     $time = mktime() - $viewtime*60*60;
     $where['time'] = array('EGT', $time);
-    //如果未查询到数据，则隐藏数据内容
-    if(!$member_company -> where($where) -> find()){
+    //查询会员包月信息
+    $where_monthly = array();
+    $where_monthly['m.endtime'] = array('EGT', time());
+    $where_monthly['m.mid'] = session(C('USER_AUTH_KEY'));
+    //获取包月权限
+    $monthly_info = M('Monthly') -> table('yesow_monthly as m') -> field('tmp.author_one,tmp.author_two,tmp.author_three,tmp.author_four,tmp.author_five') -> join('LEFT JOIN (SELECT mm.id,author_one,author_two,author_three,author_four,author_five FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> where($where_monthly) -> order('starttime DESC') -> find();
+    //如果未查询到数据，并且不是包月会员,则隐藏数据内容
+    if(!$member_company -> where($where) -> find() && !$monthly_info){
       $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
       $result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
       $result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
@@ -108,6 +114,10 @@ class CompanyAction extends CommonAction {
       $level = M('MemberLevel');
       //获取权限位
       $author = $level -> field('author_one,author_two,author_three,author_four,author_five') -> find(session('member_level_id'));
+      //如果存在包月会员，则用包月会员的权限
+      if($monthly_info){
+	$author = $monthly_info;
+      }
       //公司电话
       if($author['author_one'] == 0){
 	$result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
@@ -143,9 +153,12 @@ class CompanyAction extends CommonAction {
 	$result['qqcode'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
 	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
 	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
-
     }
     $this -> assign('result', $result);
+    //如果是包月会员，则需要记录此次查看信息
+    if($monthly_info){
+      D('MemberMonthlyDetail') -> writelog('查看', '查看一条名片详细内容[<span style="color:blue">' . msubstr($result['name'], 0, 6) . '</span>]');
+    }
     //最新更新同行
     $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where(array('c.ccid' => $result['ccid'])) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site as cs ON c.csid = cs.id') -> select();
     $this -> assign('result_counterparts', $result_counterparts);
@@ -422,6 +435,7 @@ class CompanyAction extends CommonAction {
   //page 是否需要分页
   //down 是否是下载全部资料
   public function search_company($keyword ,$page=true, $down=false){
+    $keyword = $_GET['keyword'];
     //最终输出结果
     $result = array();
     //高级搜索,只检索出按更新时间排序的一页数据(20条)
@@ -461,6 +475,17 @@ class CompanyAction extends CommonAction {
 	unset($keyword_arr[$key]);      
       }    
     }
+    //进行关键字排序
+    function keyword_sort($a, $b){
+      (int)$sort_a = M() -> table('yesow_audit_search_keyword as ask') -> field('aska.sort') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> where(array('ask.name' => $a)) -> find();
+      (int)$sort_b = M() -> table('yesow_audit_search_keyword as ask') -> field('aska.sort') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> where(array('ask.name' => $b)) -> find();
+      if($sort_a['sort'] == $sort_b['sort']){
+	return 0;
+      }
+      return $sort_a['sort'] < $sort_b['sort'] ? -1 : 1;
+    }
+    //生成排序后数组
+    usort($keyword_arr, 'keyword_sort');
     //进行分词后关键词的SQL组装
     $keyword_sql = array();
     //如果分词后的结果和关键词相同，则不需要进行子查询

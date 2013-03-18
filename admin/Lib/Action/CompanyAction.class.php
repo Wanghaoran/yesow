@@ -984,11 +984,11 @@ class CompanyAction extends CommonAction {
     $passkeyword = M('AuditSearchKeyword');
     $where = array();
     if(!empty($_POST['name'])){
-      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+      $where['ask.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
 
     //记录总数
-    $count = $passkeyword -> where($where) -> count('id');
+    $count = $passkeyword -> table('yesow_audit_search_keyword as ask') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1000,7 +1000,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $passkeyword -> field('id,name,addtime') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $passkeyword -> table('yesow_audit_search_keyword as ask') -> field('ask.id,ask.name,ask.addtime,aska.name as askaname') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -1018,12 +1018,19 @@ class CompanyAction extends CommonAction {
       if(!$passkeyword -> create()){
 	$this -> error($passkeyword -> getError());
       }
+      if(empty($_POST['aid'])){
+	$passkeyword -> aid = NULL;
+      }
       if($passkeyword -> add()){
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
+    //查询关键词属性
+    $keyword_attribute = M('AuditSearchKeywordAttribute');
+    $result_keyword = $keyword_attribute -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_keyword', $result_keyword);
     $this -> display();  
   }
 
@@ -1046,14 +1053,21 @@ class CompanyAction extends CommonAction {
       if(!$passkeyword -> create()){
 	$this -> error($passkeyword -> getError());
       }
+      if(empty($_POST['aid'])){
+	$passkeyword -> aid = NULL;
+      }
       if($passkeyword -> save()){
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
+        $this -> error($passkeyword -> getLastSql());
       }
     }
-    $result = $passkeyword -> field('name') -> find($this -> _get('id', 'intval'));
+    $result = $passkeyword -> field('name,aid') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
+    //查询关键词属性
+    $keyword_attribute = M('AuditSearchKeywordAttribute');
+    $result_keyword = $keyword_attribute -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_keyword', $result_keyword);
     $this -> display();
   }
 
@@ -1130,6 +1144,84 @@ class CompanyAction extends CommonAction {
       }    
     }
     $this -> success(L('DATA_UPDATE_SUCCESS'));
+  }
+
+  //已审词属性管理
+  public function keywordattribute(){
+    $keyword_attribute = M('AuditSearchKeywordAttribute');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $keyword_attribute -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $keyword_attribute -> field('id,name,sort') -> where($where) -> order('sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加已审词属性
+  public function addkeywordattribute(){
+    //处理添加
+    if(!empty($_POST['name'])){
+      $keyword_attribute = M('AuditSearchKeywordAttribute');
+      if(!$keyword_attribute -> create()){
+	$this -> error($keyword_attribute -> getError());
+      }
+      if($keyword_attribute -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除已审词属性
+  public function delkeywordattribute(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $keyword_attribute = M('AuditSearchKeywordAttribute');
+    if($keyword_attribute -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑已审词属性
+  public function editkeywordattribute(){
+    $keyword_attribute = M('AuditSearchKeywordAttribute');
+    if(!empty($_POST['name'])){
+      if(!$keyword_attribute -> create()){
+	$this -> error($keyword_attribute -> getError());
+      }
+      if($keyword_attribute -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $keyword_attribute -> field('name,sort') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  
   }
 
 
@@ -1290,93 +1382,6 @@ class CompanyAction extends CommonAction {
 
   /* --------------- 速查业务管理 ---------------- */
 
-  //速查基本设置
-  public function companysetup(){
-    $company_setup = M('CompanySetup');
-    //更新
-    if(!empty($_POST['cs_viewtime'])){
-      $mun = 0;
-      foreach($_POST as $key => $value){
-	if(substr($key, 0, 3) == 'cs_'){
-	  $data = array();
-	  $where = array();
-	  $where['name'] = substr($key, 3);
-	  $data['value'] = $value;
-	  $num += $company_setup -> where($where) -> save($data);
-	}
-      }
-      //更新免费分站数据
-      $freechildsite = '';
-      foreach($_POST['childsite'] as $key => $value){
-	if($key == 0){
-	  $freechildsite .= $value;
-	}else{
-	  $freechildsite .= ',' . $value;
-	}
-      }
-      $data = array();
-      $where = array();
-      $data['value'] = $freechildsite;
-      $where['name'] = 'freechildsite';
-      $num += $company_setup -> where($where) -> save($data);
-
-      if($num != 0){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-	$this -> error(L('DATA_UPDATE_ERROR'));
-      }
-    }
-    //读取辖区
-    $result_area = M('Area') -> field('id,name') -> select();
-    $child_site = M('ChildSite');
-    //读取辖区下分站
-    foreach($result_area as $key => $value){
-      $result_area[$key]['childsite'] = $child_site -> field('id,name') -> where(array('aid' => $value['id'])) -> select();
-    }
-    $this -> assign('childsite', $result_area);
-    //读取免费分站
-    $freesite = $company_setup -> getFieldByname('freechildsite', 'value');
-    $freesite_arr = explode(',', $freesite);
-    $this -> assign('freesite_arr', $freesite_arr);
-    //读取设置项
-    $this -> assign('viewtime', $company_setup -> getFieldByname('viewtime', 'value'));
-    $this -> assign('ebtormb', $company_setup -> getFieldByname('ebtormb', 'value'));
-    $this -> assign('addsuccess', $company_setup -> getFieldByname('addsuccess', 'value'));
-    $this -> assign('adderror', $company_setup -> getFieldByname('adderror', 'value'));
-    $this -> assign('reportsuccess', $company_setup -> getFieldByname('reportsuccess', 'value'));
-    $this -> assign('reporterror', $company_setup -> getFieldByname('reporterror', 'value'));
-    $this -> assign('changesuccess', $company_setup -> getFieldByname('changesuccess', 'value'));
-    $this -> assign('changeerror', $company_setup -> getFieldByname('changeerror', 'value'));
-    $this -> display();
-  
-  }
-  
-  //速查业务设置
-  public function companybusinesssetup(){
-    $business = M('CompanyBusinessSetup');
-    //处理编辑
-    if(!empty($_POST['cbs_qq'])){
-      $mun = 0;
-      foreach($_POST as $key => $value){
-	if(substr($key, 0, 4) == 'cbs_'){
-	  $data = array();
-	  $where = array();
-	  $where['name'] = substr($key, 4);
-	  $data['value'] = $value;
-	  $num += $business -> where($where) -> save($data);
-	}
-      }
-      if($num != 0){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-	$this -> error(L('DATA_UPDATE_ERROR'));
-      }
-    }
-    //名片qq
-    $this -> assign('qq', $business -> getFieldByname('qq', 'value'));
-    $this -> display();
-  }
-
   //会员人民币管理
   public function memberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
@@ -1517,8 +1522,120 @@ class CompanyAction extends CommonAction {
     //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+    $this -> display(); 
+  }
+
+  //会员包月管理
+  public function membermonthly(){
+    $monthly = M('Monthly');
+  
+  }
+
+  //添加会员包月
+  public function addmembermonthly(){
+  
+  }
+
+  //删除会员包月
+  public function delmembermonthly(){
+  
+  }
+
+  //编辑会员包月
+  public function editmembermonthly(){
+  
+  }
+  
+  /* --------------- 速查业务管理 ---------------- */
+
+
+  /* --------------- 速查设置管理 ---------------- */
+
+  //速查基本设置
+  public function companysetup(){
+    $company_setup = M('CompanySetup');
+    //更新
+    if(!empty($_POST['cs_viewtime'])){
+      $mun = 0;
+      foreach($_POST as $key => $value){
+	if(substr($key, 0, 3) == 'cs_'){
+	  $data = array();
+	  $where = array();
+	  $where['name'] = substr($key, 3);
+	  $data['value'] = $value;
+	  $num += $company_setup -> where($where) -> save($data);
+	}
+      }
+      //更新免费分站数据
+      $freechildsite = '';
+      foreach($_POST['childsite'] as $key => $value){
+	if($key == 0){
+	  $freechildsite .= $value;
+	}else{
+	  $freechildsite .= ',' . $value;
+	}
+      }
+      $data = array();
+      $where = array();
+      $data['value'] = $freechildsite;
+      $where['name'] = 'freechildsite';
+      $num += $company_setup -> where($where) -> save($data);
+
+      if($num != 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //读取辖区
+    $result_area = M('Area') -> field('id,name') -> select();
+    $child_site = M('ChildSite');
+    //读取辖区下分站
+    foreach($result_area as $key => $value){
+      $result_area[$key]['childsite'] = $child_site -> field('id,name') -> where(array('aid' => $value['id'])) -> select();
+    }
+    $this -> assign('childsite', $result_area);
+    //读取免费分站
+    $freesite = $company_setup -> getFieldByname('freechildsite', 'value');
+    $freesite_arr = explode(',', $freesite);
+    $this -> assign('freesite_arr', $freesite_arr);
+    //读取设置项
+    $this -> assign('viewtime', $company_setup -> getFieldByname('viewtime', 'value'));
+    $this -> assign('ebtormb', $company_setup -> getFieldByname('ebtormb', 'value'));
+    $this -> assign('addsuccess', $company_setup -> getFieldByname('addsuccess', 'value'));
+    $this -> assign('adderror', $company_setup -> getFieldByname('adderror', 'value'));
+    $this -> assign('reportsuccess', $company_setup -> getFieldByname('reportsuccess', 'value'));
+    $this -> assign('reporterror', $company_setup -> getFieldByname('reporterror', 'value'));
+    $this -> assign('changesuccess', $company_setup -> getFieldByname('changesuccess', 'value'));
+    $this -> assign('changeerror', $company_setup -> getFieldByname('changeerror', 'value'));
     $this -> display();
   
+  }
+  
+  //速查业务设置
+  public function companybusinesssetup(){
+    $business = M('CompanyBusinessSetup');
+    //处理编辑
+    if(!empty($_POST['cbs_qq'])){
+      $mun = 0;
+      foreach($_POST as $key => $value){
+	if(substr($key, 0, 4) == 'cbs_'){
+	  $data = array();
+	  $where = array();
+	  $where['name'] = substr($key, 4);
+	  $data['value'] = $value;
+	  $num += $business -> where($where) -> save($data);
+	}
+      }
+      if($num != 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //名片qq
+    $this -> assign('qq', $business -> getFieldByname('qq', 'value'));
+    $this -> display();
   }
 
   //充值返送管理
@@ -1691,5 +1808,6 @@ class CompanyAction extends CommonAction {
     $this -> display();
   
   }
-  /* --------------- 速查业务管理 ---------------- */
+
+  /* --------------- 速查设置管理 ---------------- */
 }

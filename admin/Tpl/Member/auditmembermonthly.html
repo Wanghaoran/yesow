@@ -1,0 +1,53 @@
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="id" value="<!--{$Think.request.id}--!>" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="delete" href="__URL__/delmonthlymember/callbackType/closeCurrent/navTabId/auditmembermonthly" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['member']['delmonthlymember'])">	    
+	    <li><a class="delete" href="__URL__/delmonthlymember/callbackType/closeCurrent/navTabId/auditmembermonthly" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
+	    </if>
+	    </if>
+	    
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="80">
+		<thead>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+			<th width="30">编号</th>
+			<th width="30">操作分类</th>
+			<th width="200">操作事件</th>
+			<th width="100">操作时间</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+		  <td><!--{$r.id}--!></td>
+		  <td><!--{$r.type}--!></td>
+		  <td><!--{$r.content}--!></td>
+		  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+		</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

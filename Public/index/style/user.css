@@ -214,7 +214,9 @@ p.p_class2{ float:left; text-align:left; font-size:12px; color:#F00; line-height
 .tableclass3 td{ background:#fff; height:30px; line-height:30px; text-align:center; font-weight:bold; border:#ccc 1px solid; border-collapse:collapse;}
 ul.ul_checked{ padding:10px;}
 ul.ul_checked li{ float:left; font-size:12px; font-weight:normal; word-break:break-all;}
-
+span.memberblue1{ font-size:16px; font-weight:800; color:#1430d1;}
+span.memberblue2{ font-size:14px; font-weight:800; color:#1430d1;}
+span.fontnormal{ font-weight:normal;}
 /* switchBox */
 .switchBox{width:750px; margin: 10px auto;}
 .switchBox dt{height:31px; border-bottom:#ff8b01 1px solid;}
@@ -425,3 +427,8 @@ input.inputclass1{ width:140px; height:20px; line-height:20px; border:#999 1px s
 .bysjradio{float:left; width:110px; height:108px; padding:10px; line-height:30px; text-align:left; cursor:pointer;vertical-align:middle; font-size:14px; margin:10px 0 10px 10px;}
 .byhyRadio{display: inline-block;background:url(images/user/baoyue_radio2.jpg) no-repeat right bottom; border:#bbb 1px solid; color:#7c7c7c;}
 .byhyRadio_Checked {background:url(images/user/baoyue_radio1.jpg) no-repeat right bottom; border:#ea6c07 1px solid; color:#e96800;}
+
+ul.memberqx{ padding-left:10px;  margin:10px 0; color:#000;}
+ul.memberqx li{ float:left;height:13px; line-height:13px; margin:0 2px; padding-left:15px; background:url(images/user/checkboxbg.gif) no-repeat; color:#000; font-weight:normal;}
+ul.memberqx li.check_yes{ background-position: top left; }
+ul.memberqx li.check_no{ background-position: bottom left; }

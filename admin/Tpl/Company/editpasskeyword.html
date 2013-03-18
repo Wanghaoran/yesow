@@ -8,6 +8,19 @@
 		<label>已审关键词：</label>
 		<input type="text" class="required" name="name" size="50" value="<!--{$result.name}--!>" /><label>(255个字符以内)</label>
 	      </div>
+	      <div class="unit">
+		<label>关键词属性：</label>
+		<select class="combox" name="aid">
+		  <option value="">未定义</option>
+		<volist name="result_keyword" id="rk">
+		  <eq name="result.aid" value="$rk.id">
+		  <option value="<!--{$rk.id}--!>" selected="selected"><!--{$rk.name}--!></option>
+		  <else/>
+		  <option value="<!--{$rk.id}--!>"><!--{$rk.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+		</div>
 	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
 
 </div>

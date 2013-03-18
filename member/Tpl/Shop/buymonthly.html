@@ -26,10 +26,30 @@ $.fn.hradio = function(options){
 				$(this).addClass("byhyRadio_Checked");
                 $(this).prev()[0].checked = true;
             } 
-            event.stopPropagation();
+	    event.stopPropagation();
+	    radioShow($(this).prev().val());
+
         })
         .prev().hide();
-  }
+}
+
+$.fn.hradio2 = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+	    event.stopPropagation();
+
+        })
+        .prev().hide();
+	}
 
 $(function(){
 	$('#radiolist').hradio();
@@ -104,10 +124,10 @@ function radioShow(lid){
 	}else{
 	  var author_nine = 'check_no';
 	}
-	$('#c').html('<ul class="c1"><div class="div_hydj"><h1>包月会员权限</h1><div class="div_byhyxx"><li><span class="'+author_two+'">查看电话</span><span class="'+author_two+'">查看手机</span><span class="'+author_three+'">查看QQ</span><span class="'+author_four+'">查看邮件</span><span class="'+author_five+'">查看网址</span>·····每天可免费查看的最多条数：'+ress[0].monthly_one_num+'条/天</li><div class="clear"></div><li><span class="'+author_six+'">单条复制</span><span class="'+author_ten+'">批量复制</span>····················每天可免费复制的最多条数：'+ress[0].monthly_two_num+'条/天</li><div class="clear"></div><li><span class="'+author_seven+'">单个下载</span><span class="'+author_eight+'">批量下载</span><span class="'+author_nine+'">全部下载</span>···············每天可免费下载的最多条数：'+ress[0].monthly_three_num+'条/天</li><div class="clear"></div></div></div><div class="clear10"></div><div id="radiolist2" class="div_hydj"><h1>选择包月时间</h1>'+moneystr+'<div class="clear"></div></div></ul><script>$("#radiolist2").hradio();<\/script>');
+	$('#c').html('<ul class="c1"><div class="div_hydj"><h1>包月会员权限</h1><div class="div_byhyxx"><li><span class="'+author_two+'">查看电话</span><span class="'+author_two+'">查看手机</span><span class="'+author_three+'">查看QQ</span><span class="'+author_four+'">查看邮件</span><span class="'+author_five+'">查看网址</span>·····每天可免费查看的最多条数：'+ress[0].monthly_one_num+'条/天</li><div class="clear"></div><li><span class="'+author_six+'">单条复制</span><span class="'+author_ten+'">批量复制</span>····················每天可免费复制的最多条数：'+ress[0].monthly_two_num+'条/天</li><div class="clear"></div><li><span class="'+author_seven+'">单个下载</span><span class="'+author_eight+'">批量下载</span><span class="'+author_nine+'">全部下载</span>···············每天可免费下载的最多条数：'+ress[0].monthly_three_num+'条/天</li><div class="clear"></div></div></div><div class="clear10"></div><div id="radiolist2" class="div_hydj"><h1>选择包月时间</h1>'+moneystr+'<div class="clear"></div></div></ul><script>$("#radiolist2").hradio2();<\/script>');
       },
       dataType:'json'
-    });
+});
 }
 </script>
 <script>
@@ -143,7 +163,7 @@ function radioShow(lid){
                                     <div id="radiolist" class="div_hydj">
 				      <h1>选择会员等级</h1>
 				      <volist name="result" id="r">
-				      <input name="hydjradio" id="hydjr<!--{$r.id}--!>" type="radio" value="<!--{$r.id}--!>"  onclick="radioShow($(this).val());"/><label for="hydjr<!--{$r.id}--!>" class="byradio"><!--{$r.name}--!></label> 
+				      <input name="hydjradio" id="hydjr<!--{$r.id}--!>" type="radio" value="<!--{$r.id}--!>" /><label for="hydjr<!--{$r.id}--!>" class="byradio"><!--{$r.name}--!></label> 
 				      </volist>
 				      <div class="clear"></div>
 				      

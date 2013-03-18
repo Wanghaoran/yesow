@@ -117,6 +117,54 @@ class MemberAction extends CommonAction {
     $this -> display();
   }
 
+  //包月会员管理
+  public function monthlymember(){
+    $monthlydetail = M('MemberMonthlyDetail');
+    $result = $monthlydetail -> table('yesow_member_monthly_detail as mmd') -> field('tmp.id as mid,tmp.name as mname,tmp.csname,tmp.csaname,ttt.name as tname,tmp.join_time as mjoin_time,tmp.last_login_time as mltime,m.endtime') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON m.csaid = csa.id) as tmp ON mmd.mid = tmp.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON mmd.mid = ttt.mid') -> join('LEFT JOIN (SELECT * FROM (SELECT * FROM yesow_monthly ORDER BY starttime DESC) as ttt GROUP BY mid) as m ON mmd.mid = m.mid') -> group('mmd.mid') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //查看包月会员详情
+  public function auditmembermonthly(){
+    $monthlydetail = M('MemberMonthlyDetail');
+    $where = array();
+    $where['mid'] = $this -> _request('id', 'intval');
+    //记录总数
+    $count = $monthlydetail -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $monthlydetail -> field('id,type,content,addtime') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除包月会员详情
+  public function delmonthlymember(){
+    $monthlydetail = M('MemberMonthlyDetail');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($monthlydetail -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
   //会员学历管理
   public function memberedu(){
     $member_edu = M('MemberEdu');

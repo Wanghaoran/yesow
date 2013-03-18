@@ -84,7 +84,7 @@ class IndexAction extends CommonAction {
   //用户升级管理
   public function userupdeta(){
     $member_level = M('MemberLevel');
-    $result = $member_level -> field('name,updatemoney,freecompany,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten') -> order('updatemoney ASC') -> select();
+    $result = $member_level -> field('name,updatemoney,freecompany,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten,rmb_one,rmb_two,rmb_three') -> order('updatemoney ASC') -> select();
     $this -> assign('result', $result);
     $this -> display();
   }

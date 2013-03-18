@@ -20,75 +20,102 @@
                     <div class="main_rlong_con">
 		      <h2 class="h2_clss1">注册用户可以分为 <!--{$result|count}--!> 级，分级如下表所示：</h2>
                         <table class="tableclass3">
-			  <tr><th width="100">用户等级</th><th width="100">所需RMB币</th><th>所拥有的使用权限</th><th width="150">每天免费查看条数</th></tr>
+			  <tr><th>用户等级</th><th>所需RMB币</th><th>所拥有的使用权限</th><th>单条消费</th><th>每天免费查看条数</th><th>直通车</th></tr>
 			  <volist name="result" id="r">
 			  <tr>
-			    <td><!--{$r.name}--!></td>
-			    <td><!--{$r.updatemoney}--!></td>
+			    <td rowspan="3"><!--{$r.name}--!></td>
+			    <td rowspan="3"><span class="memberblue1"><!--{$r.updatemoney}--!></span></td>
 			    <td>
-			      <ul class="ul_checked">
+			      <ul class="memberqx">
 				<eq name="r.author_one" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>查看电话</li>
+				<li class="check_yes">查看电话</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />查看电话</li>
+				<li class="check_no">查看电话</li>
 				</eq>
 				<eq name="r.author_two" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>查看手机</li>
+				<li class="check_yes">查看手机</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />查看手机</li>
+				<li class="check_no">查看手机</li>
 				</eq>
 				<eq name="r.author_three" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>查看QQ</li>
+				<li class="check_yesow">查看QQ</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />查看QQ</li>
+				<li class="check_no">查看QQ</li>
 				</eq>
 				<eq name="r.author_four" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>查看邮件</li>
+				<li class="check_yes">查看邮件</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />查看邮件</li>
+				<li class="check_no">查看邮件</li>
 				</eq>
 				<eq name="r.author_five" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>查看网址</li>
+				<li class="check_yes">查看网址</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />查看网址</li>
+				<li class="check_no">查看网址</li>
 				</eq>
 			      </ul>
-			      <ul class="ul_checked">
-				<div class="clear"></div>
+			    </td>
+			    <td>
+			      <if condition="($r['author_one'] == 1) OR ($r['author_two'] == 1) OR ($r['author_three'] == 1) OR ($r['author_four'] == 1) OR ($r['author_five'] == 1)">
+			      <span class="memberblue2"><!--{$r.rmb_one}--!></span>元/条
+			      <else/>
+			      —— ——
+			      </if>
+			    </td>
+			    <td rowspan="3"><span class="fontnormal"><!--{$r.freecompany}--!>条/天</span></td>
+			    <td rowspan="3"><a href="__APP__/shop/buymonthly"><img src="__PUBLIC__/index/style/images/user/btn_wyby.gif" width="76" height="21" border="0" /></a><br/><a href="__APP__/money/rmbrecharge"><img src="__PUBLIC__/index/style/images/user/btn_wycz.gif" width="76" height="21" border="0" style="margin-top:5px;"/></a></td>
+			  </tr>
+			  <tr>
+			    <td>
+			      <ul class="memberqx">
 				<eq name="r.author_six" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>单条复制</li>
+				<li class="check_yes">单条复制</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />单条复制</li>
+				<li class="check_no">单条复制</li>
 				</eq>
 				<eq name="r.author_ten" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>批量复制</li>
+				<li class="check_yes">批量复制</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />批量复制</li>
+				<li class="check_no">批量复制</li>
 				</eq>
 			      </ul>
-			      <ul class="ul_checked">
-				<div class="clear"></div>
+			    </td>
+			    <td>
+			      <if condition="($r['author_six'] == 1) OR ($r['author_ten'] == 1)">
+			      <span class="memberblue2"><!--{$r.rmb_two}--!></span>元/条
+			      <else/>
+			      —— ——
+			      </if>
+			    </td>
+			  </tr>
+			  <tr>
+			    <td>
+			      <ul class="memberqx">
 				<eq name="r.author_seven" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>单个下载</li>
+				<li class="check_yes">单个下载</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />单个下载</li>
+				<li class="check_no">单个下载</li>
 				</eq>
 				<eq name="r.author_eight" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>批量下载</li>
+				<li class="check_yes">批量下载</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />批量下载</li>
+				<li class="check_no">批量下载</li>
 				</eq>
 				<eq name="r.author_nine" value="1">
-				<li><input type="checkbox" checked="checked" disabled="disabled"/>全部下载</li>
+				<li class="check_yes">全部下载</li>
 				<else/>
-				<li><input type="checkbox" disabled="disabled" />全部下载</li>
+				<li class="check_no">全部下载</li>
 				</eq>
 			      </ul>
-                                    <div class="clear10"></div>
-                                </td>
-				<td><!--{$r.freecompany}--!>条</td>
-                            </tr>
-			    </volist>
+			    </td>
+			    <td>
+			      <if condition="($r['author_seven'] == 1) OR ($r['author_eight'] == 1) OR ($r['author_nine'] == 1)">
+			      <span class="memberblue2"><!--{$r.rmb_two}--!></span>元/条
+			      <else/>
+			      —— ——
+			      </if>
+			    </td>
+			 </tr>
+			 </volist>
                         </table>
                     </div>
                 </div>
