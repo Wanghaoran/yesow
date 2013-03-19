@@ -37,8 +37,13 @@ body {
 	  alert('您所在的会员等级暂无此权限！');
 	  location.href="__APP__/public/authorprompt/modname/单条复制/authname/author_six";
 	}else{
+	  if(msg.type == 1){
+	    var confirmstr = '尊敬的包月会员:您今日可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要1条,请确认';
+	  }else{
+	  var confirmstr = '易搜友情提示:您本次下载所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认';
+	}
 	  //确认
-	  if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认')){
+	  if(confirm(confirmstr)){
 	    //请求内容
 	    $.ajax({
 	      url: "__APP__/public/doajaxonecopy/cid/<!--{$Think.get.id}--!>",
@@ -86,6 +91,9 @@ body {
 	  location.reload();
 	  }else if(ress == 2){
 	  alert('免费信息查看成功！仅对当前页面有效!');
+	  location.reload();
+	  }else if(ress == 3){
+	  alert('查看成功！您在扣除此条数起的<!--{$viewtime}--!>小时内可免费浏览！');
 	  location.reload();
 	  }else{
 	  alert('扣款失败！账户余额不足或网络错误！');
@@ -140,7 +148,7 @@ function submitcommit(){
 	});
     }
   }
-  
+//单个下载  
 var onedownload = function(){
   $.ajax({
 	type: "POST",
@@ -151,13 +159,24 @@ var onedownload = function(){
 	    alert('您所在的会员等级暂无此权限！');
 	    location.href = "__APP__/public/authorprompt/modname/单个下载/authname/author_seven";
 	    }else{
-	    if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
+	      if(msg.type == 1){
+	        if(confirm('尊敬的包月会员:您今日可免费下载的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次下载需要1条,请确认')){
+		  $.ajax({
+	 	    url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>",
+		    success: function(){
+		      location.href = '__APP__/public/doonedownload_down/cid/<!--{$Think.get.id}--!>';
+		      }
+		  });
+		}
+	      }else{
+	      if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
 	      $.ajax({
 		url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>",
 		success: function(){
 		  location.href = '__APP__/public/doonedownload_down/cid/<!--{$Think.get.id}--!>';
 		}
 		});
+	      }
 	      }
 	  }
 	}

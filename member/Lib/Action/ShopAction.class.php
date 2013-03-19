@@ -112,6 +112,10 @@ class ShopAction extends CommonAction {
     $mon_data['endtime'] = $mon_data['starttime'] + ( $monthly_info['months'] * 30 * 24 * 60 * 60);
     if($monthly -> add($mon_data)){
       $info_succ = "您已成功购买 {$memberlevel} 级会员包月 {$monthly_info['months']} 个月";
+      //更新等级缓存
+      $level_monthly = D('index://Monthly') -> monthlylevel();
+      session('member_level_id', $level_monthly['mid']);
+      session('member_level_name', '包月' . $level_monthly['name']);
       R('Register/successjump',array($info_succ, U('Shop/index')));
     }else{
       R('Register/errorjump',array(L('MONTHLY_ERROR')));

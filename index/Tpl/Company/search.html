@@ -62,43 +62,92 @@
 	  $.ajax({
 	    url:'__APP__/public/ajaxindexdownload',
 	    data:'id_str=' + str,
-	    success:function(msg){
+	    success:function(msg){////
 	      if(msg.author_eight == 0){
 		location.href="__APP__/public/authorprompt/modname/批量下载/authname/author_eight";
-		}else{
-		//会员余额足够扣费
-		if(msg.enough == 1){
-		  if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
-		    if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
-		      $.ajax({
-			url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
-			success: function(ress){
-			  location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+		}else{///
+		if(msg.type == 3){
+		  if(confirm('尊敬的包月会员，您今日可免费下载的条数还剩余' + msg.less_num + '条,您所选择的下载条数为' + msg.num + '超出您今日所剩余的下载条数，将使用RMB继续下载，请确认')){
+		    //余额足够扣费
+		    if(msg.enough == 1){
+		      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
+			if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+			  $.ajax({
+			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			    success: function(ress){
+			      if(ress != 1){
+				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				}else{
+				  alert('余额不足！');	
+				}
+			      }
+			    });
+			  }
 			}
-		      });
+		      }else{
+		      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.num + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
+			if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+			  $.ajax({
+			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			    success: function(ress){
+			      if(ress != 1){
+				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				}else{
+				  alert('余额不足！');	
+			      }
+			    }
+			  });
+			}
+		      }
 		    }
-		   
 		  }
-		  //会员余额不足够扣费
-		  }else{
-		  if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.listnum + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
-		    if(confirm('即将下载' + msg.listnum + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
-		      $.ajax({
-			url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
-			success: function(ress){
-			  if(ress != 1){
-			    location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
-			  }else{
-			  alert('余额不足！');
-			}
-			  
-			}
-		      });
-		    }
+		}else if(msg.type == 2){
+		  if(confirm('尊敬的包月会员，您今日可免费下载的条数为' + msg.see_num + ',您还剩余' + msg.less_num + '条,此次下载将消耗' + msg.num + '条，请确认')){
+		  if(confirm('即将下载' + msg.less_num + '条数据，确认后立即扣除条数，请确认！')){
+		    $.ajax({
+		      url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      success: function(ress){
+			location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+		      }
+		    });
 		  }
 		}
-	      }
-	    },
+	      }else if(msg.type == 1){//
+	      //余额足够扣费
+		    if(msg.enough == 1){
+		      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
+			if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+			  $.ajax({
+			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			    success: function(ress){
+			      if(ress != 1){
+				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				}else{
+				  alert('余额不足！');	
+				}
+			      }
+			    });
+			  }
+			}
+		      }else{
+		        if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.num + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
+			  if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
+			    $.ajax({
+			      url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			      success: function(ress){
+			        if(ress != 1){
+				  location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				  }else{
+				    alert('余额不足！');	
+			        }
+			      }
+			    });
+			  }
+		        }
+		      }
+		    }//
+		  }///
+	    },////
 	    type:'POST',
 	    dataType:'json'
 	  }); 
@@ -197,8 +246,10 @@
 	    success:function(msg){
 	      if(msg.author_ten == 0){
 		location.href="__APP__/public/authorprompt/modname/批量复制/authname/author_ten";
-	      }else{
-	        //会员余额足够扣费
+	     }else{
+	       if(msg.type == 3){
+		 if(confirm('尊敬的包月会员，您今日可免费复制的条数还剩余' + msg.less_num + '条,您所选择的复制条数为' + msg.num + '超出您今日所剩余的复制条数，将使用RMB继续复制，请确认')){
+		   //会员余额足够扣费
 		if(msg.enough == 1){
 		  if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,您共选择' + msg.num + '条,可以复制' + msg.num + '条,您本次复制所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
 		    //执行下载并扣费
@@ -235,6 +286,65 @@
 		    });
 		  }
 		}
+
+		 }
+
+	     }else if(msg.type == 2){
+	     if(confirm('尊敬的包月会员，您今日可免费下载的条数为' + msg.see_num + ',您还剩余' + msg.less_num + '条,此次下载将消耗' + msg.num + '条，请确认')){
+	       $.ajax({
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      success: function(ress){
+			if(window.clipboardData){
+			  window.clipboardData.setData("text",ress);
+			  alert('信息已被复制到剪贴板，请粘贴到文档中！');
+			}else{
+			  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+			  location.href="__URL__/manualcopy/cid/" + msg.id_string;
+			}
+		      }
+		    });
+
+	       }
+	       }else if(msg.type == 1){
+
+	       //会员余额足够扣费
+		if(msg.enough == 1){
+		  if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,您共选择' + msg.num + '条,可以复制' + msg.num + '条,您本次复制所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+		    //执行下载并扣费
+		    //请求内容
+		    $.ajax({
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      success: function(ress){
+			if(window.clipboardData){
+			  window.clipboardData.setData("text",ress);
+			  alert('信息已被复制到剪贴板，请粘贴到文档中！');
+			}else{
+			  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+			  location.href="__URL__/manualcopy/cid/" + msg.id_string;
+			}
+		      }
+		    });
+		  }
+		  //会员余额不足够扣费
+		  }else{
+		  if(confirm('易搜友情提示:您的帐户余额为:' + msg.money + '元,您共选择' + msg.num + '条,可以复制' + msg.listnum + '条,您本次复制所需的费用为:' + msg.consts + '元,本次下载后还有余额:' + msg.balance + '元,请确认?')){
+		    //执行下载并扣费
+		    //请求内容
+		    $.ajax({
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      success: function(ress){
+			if(window.clipboardData){
+			  window.clipboardData.setData("text",ress);
+			  alert('信息已被复制到剪贴板，请粘贴到文档中！');
+			}else{
+			  alert('您的浏览器不支持剪贴板操作，请自行复制。');
+			  location.href="__URL__/manualcopy/cid/" + msg.id_string;
+			}
+		      }
+		    });
+		  }
+		}
+	   }
 	      }
 	    },
 	    dataType:'json'
