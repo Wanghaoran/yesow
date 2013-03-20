@@ -177,7 +177,8 @@ class CompanyAction extends CommonAction {
     //处理更新
     if(!empty($_POST['submit'])){
       if($_SESSION['verify'] != $this -> _post('verify', 'md5')){
-	R('Public/errorjump',array(L('VERIFY_ERROR')));
+	echo '<script>alert("验证码错误");history.go(-1);</script>';
+	exit();
       }
       $report = D('CompanyReport');
       if(!$a = $report -> create()){

@@ -38,7 +38,7 @@ class MonthlyModel extends CommonModel {
     //查询每天查看的数量
     $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname);
     //查询今日已经查看了的数量
-    $use_num = D('MonthlyLimitDetail') -> gettypenum($type);
+    $use_num = D('index://MonthlyLimitDetail') -> gettypenum($type);
     //剩余条数
     $less_num = $see_num - $use_num;
     if($less_num <= 0){

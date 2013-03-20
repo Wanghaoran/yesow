@@ -43,6 +43,14 @@ $(function(){
     var pwd = $.md5($('#paypwd').val());
     location.href = '__URL__/monthly_rmb_pay/orderid/' + orderid + '/monid/' + monid + '/pwd/' + pwd;
   }
+
+  //网银支付
+  var tosubmit = function(){
+    var selectid = $('input[name="paytype"]:checked').val();
+    if(selectid){
+      location.href = '__URL__/monthly_' + selectid + '_pay/oid/<!--{$result_monthly.orderid}--!>';
+    }
+  }
 </script>
 </head>
 <body id="body_user">
@@ -95,7 +103,7 @@ $(function(){
                     <tr><td class="tdleft">易搜交易密码：</td><td><input type="password" id="paypwd" class="inputclass1" /></td></tr>
                     <tr><td colspan="2" class="tdmid"><input type="button" onclick="balancepay();" value="确认付款" class="rmb_fanhui"/></td></tr>
                 </table>
-                <div class="div_zxzf">我还没有交易密码，马上去<a href="__ROOT__/member.php/index/setsafepwd">设置>></a></div>
+                <div class="div_zxzf">我还没有交易密码，马上去<a target="_blank" href="__ROOT__/member.php/index/setsafepwd">设置>></a></div>
 		<else/>
 		<tr><td colspan="2" class="zxzf_tishi">您的余额不足，请使用网上支付方式支付！</td></tr>
 		</table>
@@ -110,13 +118,13 @@ $(function(){
             </div>
 	    <div class="zxzfbox_con" id="zhifuradio">
 	      <volist name="result_pay" id="rp">
-	      <input name='r' type="radio" value='' /><label><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50"/></label>
+	      <input name='paytype' type="radio" value='<!--{$rp.enname}--!>' /><label><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50"/></label>
 	      </volist>
 	      
 	    </div>
 	    <div class="editbtn">
   <input type="button" onclick="tosubmit();" class="rmb_fanhui" value="使用网上支付" />
-  <input type="button" style="margin-left:20px;" onclick="location.href='__URL__/monthly';" class="rmb_fanhui" value="取消" />
+  <input type="button" style="margin-left:20px;" onclick="location.href='__URL__';" class="rmb_fanhui" value="取消" />
                                          </div>
 	  </div>
 	  

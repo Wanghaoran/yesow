@@ -1,0 +1,63 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/qqonline" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>QQ号码：</label>
+		<input type="text" class="required" name="qqcode" value="<!--{$result.qqcode}--!>" />
+	 </div>
+
+	 <div class="unit">
+		<label>昵称：</label>
+		<input type="text" class="required" name="nickname" value="<!--{$result.nickname}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>性别：</label>
+		<eq name="result.sex" value="男">
+		<input type="radio" name="sex" value="男" checked="checked" /> 男
+		<input type="radio" name="sex" value="女" /> 女
+		<else/>
+		<input type="radio" name="sex" value="男" /> 男
+		<input type="radio" name="sex" value="女" checked="checked" /> 女
+		</eq>
+
+	 </div>
+	<div class="unit">
+		<label>所属分站：</label>
+		<select class="combox" name="csid">
+		  <volist name="result_childsite" id="rs">
+		    <eq name="result.csid" value="$rs.id">
+		    <option value="<!--{$rs.id}--!>" selected="selected"><!--{$rs.name}--!></option>
+		    <else/>
+		    <option value="<!--{$rs.id}--!>"><!--{$rs.name}--!></option>
+		    </eq>
+		  </volist>
+		</select>
+	 </div>
+	<div class="unit">
+		<label>类别：</label>
+		<select class="combox" name="tid">
+		  <volist name="result_type" id="rt">
+		    <eq name="result.tid" value="$rt.id">
+		    <option value="<!--{$rt.id}--!>" selected="selected"><!--{$rt.name}--!></option>
+		    <else/>
+		    <option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+		    </eq>
+		  </volist>
+		</select>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

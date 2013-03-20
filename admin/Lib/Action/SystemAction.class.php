@@ -1373,7 +1373,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $helpclass -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> select();
+    $result = $helpclass -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -1456,7 +1456,7 @@ class SystemAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $helparticle -> table('yesow_help_article as ha') -> field('ha.id,hc.name as cname,ha.title,ha.sort,ha.addtime') -> join('yesow_help_class as hc ON ha.cid = hc.id') -> order('ha.addtime DESC') -> where($where) -> select();
+    $result = $helparticle -> table('yesow_help_article as ha') -> field('ha.id,hc.name as cname,ha.title,ha.sort,ha.addtime') -> join('yesow_help_class as hc ON ha.cid = hc.id') -> order('ha.addtime DESC') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -1520,6 +1520,116 @@ class SystemAction extends CommonAction {
     //查询分类
     $result_class = M('HelpClass') -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_class', $result_class);
+    $this -> display();
+  }
+
+  //在线QQ管理
+  public function qqonline(){
+    $qqonline = M('Qqonline');
+
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['qqcode'])){
+      $where['q.qqcode'] = $this -> _post('qqcode');
+    }
+    if(!empty($_POST['csid'])){
+      $where['q.csid'] = $this -> _post('csid');
+    }
+
+    //记录总数
+    $count = $qqonline -> table('yesow_qqonline as q') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $qqonline -> table('yesow_qqonline as q') -> field('q.id,q.qqcode,cs.name as csname,q.nickname,q.sex,qt.name as qtname') -> join('yesow_child_site as cs ON q.csid = cs.id') -> join('yesow_qqonline_type as qt ON q.tid = qt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('q.id DESC') -> select();
+    $this -> assign('result', $result);
+    //查出所有站点
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加在线QQ
+  public function addqqonline(){
+    //处理添加
+    if(!empty($_POST['qqcode'])){
+      $qqonline = M('Qqonline');
+      if(!$qqonline -> create()){
+	$this -> error($qqonline -> getError());
+      }
+      if($qqonline -> add()){
+	//删除缓存
+	S('index_qqonline', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查出所有站点
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查出在线QQ类型
+    $result_type = M('QqonlineType') -> field('id,name') -> select();
+    $this -> assign('result_type', $result_type);
+    $this -> display();
+  
+  }
+
+  //删除在线QQ
+  public function delqqonline(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $qqonline = M('Qqonline');
+    if($qqonline -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_qqonline', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑在线QQ
+  public function editqqonline(){
+    $qqonline = M('Qqonline');
+
+    if(!empty($_POST['qqcode'])){
+      if(!$qqonline -> create()){
+	$this -> error($qqonline -> getError());
+      }
+      if($qqonline -> save()){
+	//删除缓存
+	S('index_qqonline', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $qqonline -> field('id,csid,tid,qqcode,nickname,sex') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    
+    //查出所有站点
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查出在线QQ类型
+    $result_type = M('QqonlineType') -> field('id,name') -> select();
+    $this -> assign('result_type', $result_type);
+
     $this -> display();
   }
 

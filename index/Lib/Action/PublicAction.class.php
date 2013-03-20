@@ -428,9 +428,9 @@ class PublicAction extends Action {
 	}else{
 	  $result['id_string'] .= ',' . $value;
 	}
-      }
-      $result['type'] = 1;
+      }     
     }
+    $result['type'] = 1;
     }
     echo json_encode($result);
   }
@@ -780,7 +780,7 @@ class PublicAction extends Action {
 	  }
 	}
       }
-      $type = 1;
+      $result['type'] = 1;
       //如果是包月条数不够了，标识3
       if($less_num && $less_num < $num){
 	$result['type'] = 3;

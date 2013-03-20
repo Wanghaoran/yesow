@@ -17,6 +17,7 @@ $app_lang = array(
   'RMB_LOG_ERROR' => 'RMB明细写入失败',
   'MONTHLY_ERROR' => '更新包月信息失败',
   'ORDER_UPDATE_ERROR' => '更新订单状态失败',
+  'MONTHLY_LEVEL_ERROR' => '您现在已经是包月会员，请重新选择高于您现在会员等级的包月类型',
 );
 
 return array_merge($common_lang, $app_lang);

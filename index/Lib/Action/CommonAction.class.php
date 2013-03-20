@@ -42,6 +42,14 @@ class CommonAction extends Action {
       $this -> assign('header_child_site', $header_child_site);
       S('header_child_site', $header_child_site);
     }
+    //QQ客服
+    if(S('index_qqonline')){
+      $this -> assign('index_qqonline', S('index_qqonline'));
+    }else{
+      $index_qqonline = $this -> getqqonline();
+      $this -> assign('index_qqonline', $index_qqonline);
+      S('index_qqonline', $index_qqonline);
+    }
   }
 
   //获得一级资讯分类
@@ -73,6 +81,16 @@ class CommonAction extends Action {
     $childsite = M('ChildSite');
     foreach($result as $key => $value){
       $result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'], 'isshow' => 1)) -> select();
+    }
+    return $result;
+  }
+
+  //获得QQ客服
+  private function getqqonline(){
+    $qqonline = M('Qqonline');
+    $result = M('QqonlineType') -> field('id,name') -> select();
+    foreach($result as $key => $value){
+      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'])) -> select();
     }
     return $result;
   }

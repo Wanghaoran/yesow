@@ -200,6 +200,14 @@ var checkcompanylinkman = function(){
 
 </script>
 
+<script>
+  //查看是否已有
+  var viewhave = function(){
+    var companytempname = $('#companyname').val();
+    window.open('__APP__/search?keyword=' + companytempname + '');
+  }
+</script>
+
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -228,7 +236,7 @@ var checkcompanylinkman = function(){
                     <div class="div_mid2" style=" position:relative;">
                     <input type="text" id="companyname" class="div_input2" name="companyname" />
                     </div>
-                    <div class="div_right"><span class="fl">*</span><a href="javascript:alert('还没有做，搜索做好了再做这个')" class="ishave">查看是否已有</a></div>
+                    <div class="div_right"><span class="fl">*</span><a href="javascript:viewhave();" class="ishave">查看是否已有</a></div>
                 </li>
                 <div class="clear"></div>
                 <li>
