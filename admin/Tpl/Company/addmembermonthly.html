@@ -1,0 +1,40 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/membermonthly" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+			<label>用户名：</label>
+				<input name="org2.id" value="" type="hidden">
+				<input class="required" name="org2.name" type="text required" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org2"/>
+	</div>
+	<div class="unit">
+		<label>包月类型</label>
+		<select class="combox" ref="monid" refUrl="__APP__/public/ajaxgetmonthlytype/id/{value}">
+		    <option value="">请选择</option>
+		    <volist name="result_level" id="rl">
+		    <option value="<!--{$rl.id}--!>"><!--{$rl.name}--!></option>
+		    </volist>
+		  </select>
+		  <select class="combox" name="monid" id="monid">
+		    <option value="">请选择</option>
+		  </select>
+	</div>
+	
+	<div class="unit">
+		<label>开始日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="starttime" />
+	</div>
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -1528,22 +1528,96 @@ class CompanyAction extends CommonAction {
   //会员包月管理
   public function membermonthly(){
     $monthly = M('Monthly');
+    $where = array();
+    //记录总数
+    $count = $monthly -> table('yesow_monthly as m') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,tmp.name as tname,tmpt.name as tmpname,tmpt.csname as csname,m.starttime,m.endtime,tmpt.nickname,m.ischeck') -> join('LEFT JOIN (SELECT ml.name,mm.id FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,m.nickname FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id) as tmpt ON m.mid = tmpt.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('starttime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
   
   }
 
   //添加会员包月
   public function addmembermonthly(){
+    //处理添加
+    if(!empty($_POST['starttime'])){
+      $monthly = D('index://Monthly');
+      if(!$monthly -> create()){
+	$this -> error($monthly -> getError());
+      }
+      if($monthly -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $member_monthly = M('MemberMonthly');
+    //查询包月会员等级
+    $result_level = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();
+    $this -> assign('result_level', $result_level);
+    $this -> display();
   
   }
 
   //删除会员包月
   public function delmembermonthly(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $monthly = M('Monthly');
+    if($monthly -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
+  /*
   //编辑会员包月
   public function editmembermonthly(){
   
+  }
+   */
+
+  //通过审核会员包月
+  public function passauditmembermonthly(){
+    $monthly = M('Monthly');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($monthly -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核会员包月
+  public function nopassauditmembermonthly(){
+    $monthly = M('Monthly');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($monthly -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
   }
   
   /* --------------- 速查业务管理 ---------------- */

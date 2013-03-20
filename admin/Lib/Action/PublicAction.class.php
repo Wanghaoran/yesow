@@ -229,4 +229,27 @@ class PublicAction extends Action {
     }
     echo json_encode($result);
   }
+
+  //ajax获取用户名及id
+  public function ajaxgetmemberinfo(){
+    $username = $this -> _post('inputValue');
+    $member = M('Member');
+    $where = array();
+    $where['name'] = array('like', '%' . $username . '%');
+    $result = $member -> field('id,name') -> where($where) -> limit(10) -> select();
+    echo json_encode($result);
+  }
+
+  //ajax获取包月会员类型
+  public function ajaxgetmonthlytype(){
+    $member_monthly = M('MemberMonthly');
+    $lid = $this -> _get('id', 'intval');
+    $result_tmp = $member_monthly -> field('id,months') -> where(array('lid' => $lid)) -> order('months ASC') -> select();
+    $result = array();
+    //格式化结果集
+    foreach($result_tmp as $key => $value){
+      $result[] = array($value['id'], $value['months'] . '个月');
+    }
+    echo json_encode($result);
+  }
 }
