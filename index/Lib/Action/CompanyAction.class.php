@@ -41,7 +41,7 @@ class CompanyAction extends CommonAction {
 	$companyaudit -> pic = $this -> upload();
       }
       if($companyaudit -> add()){
-	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");history.go(-1);</script>';
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");location.href="'.__ACTION__.'";</script>';
 	exit();
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
@@ -212,7 +212,8 @@ class CompanyAction extends CommonAction {
     //处理提交
     if(!empty($_POST['submit'])){
       if($_SESSION['verify'] != $this -> _post('verify', 'md5')){
-	R('Public/errorjump',array(L('VERIFY_ERROR')));
+	echo '<script>alert("验证码错误");history.go(-1);</script>';
+	exit();
       }
       $cid = $this -> _post('cid', 'intval');
       //如果存在*号，则认为数据没改变

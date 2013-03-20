@@ -24,6 +24,7 @@ class MonthlyModel extends CommonModel {
     $mid = !empty($mid) ? $mid : session(C('USER_AUTH_KEY'));
     $where_monthly = array();
     $where_monthly['endtime'] = array('EGT', time());
+    $where_monthly['starttime'] = array('ELT', time());
     $where_monthly['mid'] = $mid;
     $result = $this -> where($where_monthly) -> order('starttime DESC') -> find();
     return $result ? true : false;

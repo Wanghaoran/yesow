@@ -415,10 +415,10 @@ input.inputclass1{ width:140px; height:20px; line-height:20px; border:#999 1px s
 .main_baoyue h1{ color:#e96800; font-size:14px; font-weight:800; padding:10px 10px 0 10px;}
 .div_hydj{width:730px; margin:10px auto; font-size:14px; border:#eaeaea 1px solid;}
 .div_byhyxx{width:710px; margin:10px auto; font-size:14px; border:#e96800 1px solid; background:url(images/user/baoyue_radio1.jpg) no-repeat right bottom;}
-.div_byhyxx li{ padding-left:10px; height:13px; line-height:13px; margin:10px 0; color:#000;}
-.div_byhyxx li span{ float:left; margin:0 2px; padding-left:15px; background:url(images/user/checkboxbg.gif) no-repeat; color:#000;}
-.div_byhyxx li span.check_yes{ background-position: top left; }
-.div_byhyxx li span.check_no{ background-position: bottom left; }
+.div_byhyxx li{ padding-left:10px; height:23px; line-height:23px; margin:5px 0; color:#000;}
+.div_byhyxx li span{ float:left; margin:0 2px; padding-left:15px; color:#000;}
+.div_byhyxx li span.check_yes{background:url(images/user/checkboxbg1.jpg) left center no-repeat;  }
+.div_byhyxx li span.check_no{ background:url(images/user/checkboxbg2.jpg) left center no-repeat;  }
 #c{margin-top:10px;}
 .c1,.c2{width:378px;line-height:20px;}
 .c1{color:#014CC9;}
@@ -428,7 +428,7 @@ input.inputclass1{ width:140px; height:20px; line-height:20px; border:#999 1px s
 .byhyRadio{display: inline-block;background:url(images/user/baoyue_radio2.jpg) no-repeat right bottom; border:#bbb 1px solid; color:#7c7c7c;}
 .byhyRadio_Checked {background:url(images/user/baoyue_radio1.jpg) no-repeat right bottom; border:#ea6c07 1px solid; color:#e96800;}
 
-ul.memberqx{ padding-left:10px;  margin:10px 0; color:#000;}
-ul.memberqx li{ float:left;height:13px; line-height:13px; margin:0 2px; padding-left:15px; background:url(images/user/checkboxbg.gif) no-repeat; color:#000; font-weight:normal;}
-ul.memberqx li.check_yes{ background-position: top left; }
-ul.memberqx li.check_no{ background-position: bottom left; }
+ul.memberqx{ padding-left:10px;  margin:5px 0; color:#000;}
+ul.memberqx li{ float:left;height:23px; line-height:25px; margin:0 2px; padding-left:15px;  color:#000; font-weight:normal;}
+ul.memberqx li.check_yes{ background:url(images/user/checkboxbg1.jpg) left center no-repeat; }
+ul.memberqx li.check_no{ background:url(images/user/checkboxbg2.jpg) left center no-repeat; }
