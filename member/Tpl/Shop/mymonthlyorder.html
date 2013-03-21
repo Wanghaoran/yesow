@@ -47,6 +47,7 @@ $(function($){
                                             <th>是否确认</th>
                                             <th>支付方式</th>
                                             <th>下单时间</th>
+                                            <th>订单状态</th>
 					  </tr>
 					  <volist name="result" id="r">
 					  <tr>
@@ -68,6 +69,12 @@ $(function($){
 					    </eq>
 					    <td><!--{$r.paytype}--!></td>
 					    <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+					    <eq name="r.status" value="0">
+					    <td><input type="button" value="去付款" onclick="window.open('__URL__/monthly_pay/orderid/<!--{$r.ordernum}--!>/mid/<!--{$r.monid}--!>');" /></td>
+					    <else/>
+					    <td style="color:green;">已完成</td>
+					    </eq>
+					    
 					  </tr>
 					  </volist>
                                     </table>

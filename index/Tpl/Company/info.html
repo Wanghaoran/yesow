@@ -96,7 +96,8 @@ body {
 	  alert('查看成功！您在扣除此条数起的<!--{$viewtime}--!>小时内可免费浏览！');
 	  location.reload();
 	  }else{
-	  alert('扣款失败！账户余额不足或网络错误！');
+	  alert('扣款失败！账户余额不足！');
+	  window.open('__ROOT__/index.php/public/authorprompt/mod/nomoney');
 	  }
       }
     });

@@ -16,10 +16,7 @@
 	<div class="wxts_box">
     	<div class="wxts_b1"></div>
         <div class="wxts_b2">
-	  <P><!--{$Think.session.name}--!> 会员您好：</P>
-	  <P>&nbsp;&nbsp;&nbsp;&nbsp;您需要<span><!--{$Think.get.modname}--!></span>的功能吗？您目前的会员等级为<span><!--{$Think.session.member_level_name}--!></span>，您无权使用此功能！可以操作<span><!--{$Think.get.modname}--!></span>的会员等级为<span><!--{$min_level.name}--!></span>，该会员的RMB不低于<span><!--{$min_level.updatemoney}--!></span>RMB以上就可以拥有，您目前的账户余额为<span><!--{$Think.session.rmb_total}--!></span>RMB，还差<span><!--{$diff}--!></span>RMB，请点这里的<a href="__ROOT__/member.php/money/rmbrecharge/amount/<!--{$diff}--!>">我要充值</a>进行充值即可拥有！</P>
-        	<div class="clear"></div>
-		<input type="button" class="wxts_btn btn_margin1" onclick="location.href='__ROOT__/member.php/money/rmbrecharge/amount/<!--{$diff}--!>'" value="我要充值"/><input type="button" class="wxts_btn btn_margin1" onclick="location.href='__ROOT__/member.php/index/userupdeta';" value="会员权限"/>
+	  <!--{$content}--!>
             <div class="clear"></div>
         </div>
         <div class="wxts_b3"></div>

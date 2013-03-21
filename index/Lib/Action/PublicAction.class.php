@@ -100,6 +100,12 @@ class PublicAction extends Action {
       echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
       return;
     }
+
+    //如果用户的RMB余额为0，则可以免费查看一条信息
+    if($_SESSION['rmb_total'] == 0){
+      echo "您的会员帐号已经低于0元，此时您的帐号还可以免费查看一条商家信息，确认后您将无法再进行任何操作！<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
+      return;
+    }
     $level = M('MemberLevel');
     //查询会员等级免费查看条数 和 查看一条速查信息，扣款数
     $level_info = $level -> field('freecompany,rmb_one') -> find(session('member_level_id'));
@@ -122,6 +128,11 @@ class PublicAction extends Action {
 
   //ajax确认查看速查资料
   public function ajaxconfirmview(){
+    //如果账户余额小于0，则直接退出
+    if($_SESSION['rmb_total'] < 0){
+      echo 0;
+      return ;
+    }
     $isfree = false;//是否是免费查看
     $ismonthly = false;//是否是包月查看
     //如果是会员包月，且还有条数,需单独处理
@@ -178,11 +189,7 @@ class PublicAction extends Action {
 	  //如果兑换RMB不足够支付此次信息，则用充值RMB支付
 	  //计算差值
 	  $fee = abs($price['rmb_exchange'] - $const);
-	  //如果差值不够支付，则退出执行
-	  if($price['rmb_pay'] < $fee){
-	    echo 0;
-	    exit();
-	  }
+	  //更新会员表
 	  $data_rmb = array();
 	  $data_rmb['mid'] = session(C('USER_AUTH_KEY'));
 	  $data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
@@ -877,14 +884,30 @@ class PublicAction extends Action {
 
   //权限不足 - 温馨提示页面
   public function authorprompt(){
+    if($_GET['mod'] == 'nomoney'){
+      $content = "<p>您已经无任何操作权限，请立即到会员中心充值！</p>
+	<div class=\"clear\"></div>
+	<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge'\" value=\"我要充值\"/>";
+      $this -> assign('content', $content);
+      $this -> display();
+      return ;
+    }
+    if($_GET['mod'] == 'nopower'){
+    
+    }
     //计算拥有此权限最低的用户等级
     $member_level = M('MemberLevel');
     $where[$this -> _get('authname')] = 1;
     $min_level = $member_level -> field('name,updatemoney') -> where($where) -> order('updatemoney ASC') -> find();
-    $this -> assign('min_level', $min_level);
     //计算RMB差值
     $diff = $min_level['updatemoney'] - $_SESSION['rmb_total'];
-    $this -> assign('diff', $diff);
+
+    $content = "<P>{$_SESSION['name']}会员您好：</P>
+	  <P>&nbsp;&nbsp;&nbsp;&nbsp;您需要<span> {$_GET['modname']} </span>的功能吗？您目前的会员等级为<span> {$_SESSION['member_level_name']} </span>，您无权使用此功能！可以操作<span> {$_GET['modname']} </span>的会员等级为<span> {$min_level['name']} </span>，该会员的RMB不低于<span> {$min_level['updatemoney']} </span>RMB以上就可以拥有，您目前的账户余额为<span> {$_SESSION['rmb_total']} </span>RMB，还差<span> {$diff} </span>RMB，请点这里的<a href=\"" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}\">我要充值</a>进行充值即可拥有！</P>
+        	<div class=\"clear\"></div>
+		<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}'\" value=\"我要充值\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/index/userupdeta';\" value=\"会员权限\"/>";
+
+    $this -> assign('content', $content);
     $this -> display();
   }
 

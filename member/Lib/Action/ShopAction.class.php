@@ -47,7 +47,7 @@ class ShopAction extends CommonAction {
     $page = new Page($count, 10);
     $show = $page -> show();
     //结果
-    $result = $monthly_order -> table('yesow_monthly_order as mo') -> field('mo.id,mo.ordernum,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where(array('mo.mid' => $_SESSION[C('USER_AUTH_KEY')])) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
+    $result = $monthly_order -> table('yesow_monthly_order as mo') -> field('mo.id,mo.monid,mo.ordernum,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where(array('mo.mid' => $_SESSION[C('USER_AUTH_KEY')])) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
@@ -73,20 +73,24 @@ class ShopAction extends CommonAction {
 	R('Register/errorjump',array(L('MONTHLY_LEVEL_ERROR')));
       }
     }
+
     //生成订单号
-    $result_monthly['orderid'] = date('YmdHis') . mt_rand(100000,999999);
+    $result_monthly['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
     //总价
-    $result_monthly['count'] = $result_monthly['promotionprice'] * $result_monthly['months'];
-    //生成订单
-    $monthly_order = M('MonthlyOrder');
-    $data = array();
-    $data['ordernum'] = $result_monthly['orderid'];
-    $data['mid'] = session(C('USER_AUTH_KEY'));
-    $data['monid'] = $this -> _get('mid', 'intval');
-    $data['price'] = $result_monthly['count'];
-    $data['addtime'] = time();
-    if(!$ordid = $monthly_order -> add($data)){
-      R('Register/errorjump',array(L('ORDER_ERROR')));
+    $result_monthly['count'] = $result_monthly['promotionprice'];
+
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $monthly_order = M('MonthlyOrder');
+      $data = array();
+      $data['ordernum'] = $result_monthly['orderid'];
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['monid'] = $this -> _get('mid', 'intval');
+      $data['price'] = $result_monthly['count'];
+      $data['addtime'] = time();
+      if(!$monthly_order -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
     }
     
     //RMB余额是否足够支付
@@ -114,7 +118,7 @@ class ShopAction extends CommonAction {
     //查询包月价格、月数
     $monthly_info = M('MemberMonthly') -> field('lid,months,promotionprice') -> find($this -> _get('monid', 'intval'));
     //计算总价格
-    $const = $monthly_info['months'] * $monthly_info['promotionprice'];
+    $const = $monthly_info['promotionprice'];
     //扣费
     $rmb = D('MemberRmb');
     if(!$rmb -> lessrmb($const)){
