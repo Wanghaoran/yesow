@@ -46,26 +46,40 @@ class MoneyAction extends CommonAction {
       exit();
     }
     //RMB充值第三步
-    if(!empty($_POST['paytype'])){
-      //查询支付方式中文名称
-      $paytype_name = M('Payport') -> getFieldByenname($this -> _post('paytype'), 'name');
+    if(!empty($_POST['paytype']) || !empty($_GET['orderid'])){
+      //如果是已有订单号，则获取支付方式中英文名称
+      if(!empty($_GET['orderid'])){
+	//根据订单号查询支付方式英文名称
+	$paytype_enname = M('RmbOrder') -> getFieldByordernum($_GET['orderid'], 'paytype');
+	$_POST['money'] = M('RmbOrder') -> getFieldByordernum($_GET['orderid'], 'price');
+	//查询支付方式中文名称
+	$paytype_name = M('Payport') -> getFieldByenname($paytype_enname, 'name');
+      }
       $this -> assign('paytype_name', $paytype_name);
-      //根据不同的支付方式，提交到不同的处理方法中
-      $this -> assign('payapi', $_POST['paytype'] . 'api');
-      //生成订单号
-      $orderid = date('YmdHis') . mt_rand(100000,999999);
+      if(!empty($_GET['orderid'])){
+	$this -> assign('payapi', $paytype_enname . 'api');
+      }else{
+	//根据不同的支付方式，提交到不同的处理方法中
+	$this -> assign('payapi', $_POST['paytype'] . 'api');
+      }
+      
+      //生成订单号，如果是已存在的订单，则使用传递过来的订单号
+      $orderid = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
       $this -> assign('orderid', $orderid);
-      //记录订单信息
-      $rmb_order = D('RmbOrder');
-      $data = array();
-      $data['ordernum'] = $orderid;
-      $data['mid'] = session(C('USER_AUTH_KEY'));
-      $data['price'] = $this -> _post('money');
-      $data['paytype'] = $this -> _post('paytype');
-      $data['remark'] = $this -> _post('remark');
-      $rmb_order -> create($data);
-      $rmb_order -> add();
 
+      //如果没有这个订单号，才生成订单
+      if(empty($_GET['orderid'])){
+	//记录订单信息
+	$rmb_order = D('RmbOrder');
+	$data = array();
+	$data['ordernum'] = $orderid;
+	$data['mid'] = session(C('USER_AUTH_KEY'));
+	$data['price'] = $this -> _post('money');
+	$data['paytype'] = $this -> _post('paytype');
+	$data['remark'] = $this -> _post('remark');
+	$rmb_order -> create($data);
+	$rmb_order -> add();
+      }
       $this -> display('rmbrecharge_three');
       exit();
     }

@@ -6,31 +6,40 @@
 		
 	<div class="unit">
 			<label>用户名：</label>
-				<input name="org2.id" value="" type="hidden">
-				<input class="required" name="org2.name" type="text required" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org2"/>
+			<input class="required" type="text" disabled="true" value="<!--{$result.mname}--!>" />
 	</div>
 	<div class="unit">
 		<label>包月类型</label>
 		<select class="combox" ref="monid" refUrl="__APP__/public/ajaxgetmonthlytype/id/{value}">
 		    <option value="">请选择</option>
 		    <volist name="result_level" id="rl">
+		    <eq name="result_monthly.lid" value="$rl.id">
+		    <option value="<!--{$rl.id}--!>" selected="selected"><!--{$rl.name}--!></option>
+		    <else/>
 		    <option value="<!--{$rl.id}--!>"><!--{$rl.name}--!></option>
+		    </eq>
 		    </volist>
 		  </select>
 		  <select class="combox" name="monid" id="monid">
-		    <option value="">请选择</option>
+		    <volist name="result_monthlu_month" id="rmm">
+		    <eq name="result_monthly.months" value="$rmm.months">
+		    <option value="<!--{$rmm.id}--!>" selected="selected"><!--{$rmm.months}--!>个月</option>
+		    <else/>
+		    <option value="<!--{$rmm.id}--!>"><!--{$rmm.months}--!>个月</option>
+		    </eq>
+		    </volist>
 		  </select>
 	</div>
 	
 	<div class="unit">
 		<label>开始日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly required" name="starttime" />
+		<input type="text" readonly="true" class="date textInput readonly required" name="starttime" value="<!--{$result.starttime|date='Y-m-d', ###}--!>" />
 	      </div>
 	      <div class="unit">
 		<label>结束日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly required" name="endtime" />
-	</div>
-
+		<input type="text" readonly="true" class="date textInput readonly required" name="endtime" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" />
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
 </div>
 		<div class="formBar">
 		  <ul>

@@ -1571,9 +1571,13 @@ class SystemAction extends CommonAction {
       if(!$qqonline -> create()){
 	$this -> error($qqonline -> getError());
       }
+      if(empty($_POST['csid'])){
+	$qqonline -> csid = null;
+      }
       if($qqonline -> add()){
 	//删除缓存
 	S('index_qqonline', NULL, NULL, '', NULL, 'index');
+	S('member_qqonline', NULL, NULL, '', NULL, 'member');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -1597,6 +1601,7 @@ class SystemAction extends CommonAction {
     if($qqonline -> where($where_del) -> delete()){
       //删除缓存
       S('index_qqonline', NULL, NULL, '', NULL, 'index');
+      S('member_qqonline', NULL, NULL, '', NULL, 'member');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -1611,9 +1616,13 @@ class SystemAction extends CommonAction {
       if(!$qqonline -> create()){
 	$this -> error($qqonline -> getError());
       }
+      if(empty($_POST['csid'])){
+	$qqonline -> csid = null;
+      }
       if($qqonline -> save()){
 	//删除缓存
 	S('index_qqonline', NULL, NULL, '', NULL, 'index');
+	S('member_qqonline', NULL, NULL, '', NULL, 'member');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));

@@ -75,11 +75,12 @@ function ChkAllClick2(){
                                     	<tr>
                                         	<th width="100">订单编号</th>
                                             <th width="80">充值金额</th>
-                                            <th width="100">充值用户</th>
-                                            <th width="100">充值状态</th>
-                                            <th width="100">是否确认</th>
-                                            <th width="100">支付方式</th>
-                                            <th>充值时间</th>
+                                            <th width="80">充值用户</th>
+                                            <th width="80">充值状态</th>
+                                            <th width="80">是否确认</th>
+                                            <th width="80">支付方式</th>
+					    <th>充值时间</th>
+					    <th width="80">充值状态</th>
 					  </tr>
 					  <volist name="result" id="r">
                                         <tr>
@@ -99,6 +100,11 @@ function ChkAllClick2(){
 			  </eq>
 			  <td><!--{$r.pname}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <eq name="r.status" value="0">
+			  <td><input type="button" value="去付款" onclick="window.open('__URL__/rmbrecharge/orderid/<!--{$r.ordernum}--!>');" /></td>
+			  <else/>
+			  <td style="color:green;">已完成</td>
+			  </eq>
 					  </tr>
 					  </volist>
                                     </table>

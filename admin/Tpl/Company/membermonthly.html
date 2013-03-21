@@ -24,9 +24,7 @@
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li><a class="add" href="__URL__/addmembermonthly" target="dialog" mask="true"><span>新增</span></a></li>
 	    <li class=""><a class="delete" href="__URL__/delmembermonthly/navTabId/membermonthly" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择会员包月"><span>删除</span></a></li>
-	    <!--
 	    <li><a class="edit" href="__URL__/editmembermonthly/id/{sid_role}" target="dialog" mask="true" warn="请选择会员包月"><span>编辑</span></a></li>
-	    -->
 	    <li class="line">line</li>
 	    <li class=""><a class="icon" href="__URL__/passauditmembermonthly/navTabId/membermonthly" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些记录吗?" warn="请选择会员包月"><span>通过审核</span></a></li>
 	    <li class=""><a class="icon" href="__URL__/nopassauditmembermonthly/navTabId/membermonthly" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择会员包月"><span>不通过审核</span></a></li>
@@ -38,9 +36,7 @@
 	    <li class=""><a class="delete" href="__URL__/delmembermonthly/navTabId/membermonthly" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择会员包月"><span>删除</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['company']['editmembermonthly'])">
-	    <!--
 	    <li><a class="edit" href="__URL__/editmembermonthly/id/{sid_role}" target="dialog" mask="true" warn="请选择会员包月"><span>编辑</span></a></li>
-	    -->
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['company']['passauditmembermonthly'])">
 	    <li class="line">line</li>

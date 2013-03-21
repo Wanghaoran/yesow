@@ -1587,12 +1587,34 @@ class CompanyAction extends CommonAction {
     }
   }
 
-  /*
   //编辑会员包月
   public function editmembermonthly(){
-  
+    $monthly = D('index://Monthly');
+    //处理更新
+    if(!empty($_POST['monid'])){
+      if(!$monthly -> create()){
+	$this -> error($monthly -> getError());
+      }
+      if($monthly -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $monthly -> table('yesow_monthly as m') -> field('m.monid,m.starttime,m.endtime,mr.name as mname') -> join('yesow_member as mr ON m.mid = mr.id') -> where(array('m.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $member_monthly = M('MemberMonthly');
+    //查询包月会员等级
+    $result_level = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();
+    $this -> assign('result_level', $result_level);
+    //查询包月的会员等级和月数
+    $result_monthly = $member_monthly -> field('lid,months') -> find($result['monid']);
+    $this -> assign('result_monthly', $result_monthly);
+    //查询该会员等级的包月数
+    $result_monthlu_month = $member_monthly -> field('id,months') -> where(array('lid' => $result_monthly['lid'])) -> order('months ASC') -> select();
+    $this -> assign('result_monthlu_month', $result_monthlu_month);
+    $this -> display();
   }
-   */
 
   //通过审核会员包月
   public function passauditmembermonthly(){

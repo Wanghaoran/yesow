@@ -6,18 +6,9 @@ class MonthlyModel extends CommonModel {
   );
 
   protected $_auto = array(
-    array('starttime','strtotime',1,'function'),
-    array('endtime','getendtime',1,'callback'),
+    array('starttime','strtotime',3,'function'),
+    array('endtime','strtotime',3,'function'),
   );
-
-  //计算结束时间
-  public function getendtime(){
-    $monid = $_POST['monid'];
-    $starttime = strtotime($_POST['starttime']);
-    //查询月数
-    $months = M('MemberMonthly') -> getFieldByid($monid, 'months');
-    return $starttime + ($months * 30 * 24 * 60 * 60);
-  }
 
   //判断是否是包月会员
   public function ismonthly($mid){

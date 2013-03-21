@@ -27,6 +27,7 @@
 	<div class="unit">
 		<label>所属分站：</label>
 		<select class="combox" name="csid">
+		  <option value="">会员中心</option>
 		  <volist name="result_childsite" id="rs">
 		    <eq name="result.csid" value="$rs.id">
 		    <option value="<!--{$rs.id}--!>" selected="selected"><!--{$rs.name}--!></option>

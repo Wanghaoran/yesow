@@ -73,7 +73,11 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.qqcode}--!></td>
+			  <empty name="r.csname">
+			  <td>会员中心</td>
+			  <else/>
 			  <td><!--{$r.csname}--!></td>
+			  </empty>
 			  <td><!--{$r.nickname}--!></td>
 			  <td><!--{$r.sex}--!></td>
 			  <td><!--{$r.qtname}--!></td>
