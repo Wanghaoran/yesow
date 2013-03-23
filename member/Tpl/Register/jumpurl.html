@@ -6,14 +6,14 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
 <script type="text/javascript">
-  var i = <!--{$time}--!>;
-    function onload()
+  var i_jump = <!--{$time}--!>;
+    function onload_jump()
     {
         var timeturn = document.getElementById('timeturn');
-        i--;
-        timeturn.innerHTML = i+'秒';
-        setTimeout("onload()",1100);
-        if(i==0)
+        i_jump--;
+        timeturn.innerHTML = i_jump + '秒';
+        setTimeout("onload_jump()",1100);
+        if(i_jump == 0)
 	{
 	  window.location.href="<!--{$url}--!>"; 
         }
@@ -46,7 +46,7 @@
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F54b6f7368126ad54eeaafed0a50fc6f9' type='text/javascript'%3E%3C/script%3E"));
 
-onload();
+onload_jump();
 </script>
 </body>
 </html>

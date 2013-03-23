@@ -51,10 +51,12 @@ class MoneyAction extends CommonAction {
       if(!empty($_GET['orderid'])){
 	//根据订单号查询支付方式英文名称
 	$paytype_enname = M('RmbOrder') -> getFieldByordernum($_GET['orderid'], 'paytype');
-	$_POST['money'] = M('RmbOrder') -> getFieldByordernum($_GET['orderid'], 'price');
-	//查询支付方式中文名称
-	$paytype_name = M('Payport') -> getFieldByenname($paytype_enname, 'name');
+	$_POST['money'] = M('RmbOrder') -> getFieldByordernum($_GET['orderid'], 'price');	
+      }else{
+	$paytype_enname = $_POST['paytype'];
       }
+      //查询支付方式中文名称
+      $paytype_name = M('Payport') -> getFieldByenname($paytype_enname, 'name');
       $this -> assign('paytype_name', $paytype_name);
       if(!empty($_GET['orderid'])){
 	$this -> assign('payapi', $paytype_enname . 'api');

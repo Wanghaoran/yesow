@@ -12,6 +12,15 @@
     $('#zhpaytype').html(zhdata);
     $('#enpaytype')[0].value = endata;
   }
+  $(function(){
+			 
+			 $("ul.zhifu_img").eq(0).find('li').click(function()
+			{
+				$("ul.zhifu_img").eq(0).find('li').attr("class","");
+				$(this).attr("class","cur");												
+			});
+			 
+			 });
 </script>
 </head>
 <body id="body_user">
@@ -61,7 +70,7 @@
                             	<td colspan="2">
 				  <ul class="zhifu_img">
 				    <volist name="result_pay" id="rp">
-				    <li class="zhifu_kqwg"><a onclick="changepaytype('<!--{$rp.enname}--!>','<!--{$rp.name}--!>')" title="<!--{$rp.name}--!>"><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="153" height="50" border="0" /></a></li>
+				    <li class="zhifu_kqwg"><a onclick="changepaytype('<!--{$rp.enname}--!>','<!--{$rp.name}--!>')" title="<!--{$rp.name}--!>"><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif" width="126" height="50" border="0" /></a></li>
 				    </volist>
                                     </ul>
                                     <div class="clear"></div>

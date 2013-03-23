@@ -107,106 +107,17 @@
 			<div id="main02_lt"></div>
 			<div id="main02_lc">
 				<ul id="main02_ul">
-					<li class="exclude"><a class="pop_nav_a" href="javascript:;">渠道黄页分类</a></li>
-					<li>
-						<a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span>
-						<div class="pop_div">
-							<dl>
-								<dt><a href="#">二级分类1</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							
-							<dl>
-								<dt><a href="#">二级分类1</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							
-							<dl class="hover">
-								<dt><a href="#">二级分类1</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							<dl>
-								<dt><a href="#">二级分类1</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							<dl>
-								<dt><a href="#">二级分类1</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							<dl>
-								<dt><a href="#">二级分类1</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-						</div>
-					</li>
+				  <li class="exclude"><a class="pop_nav_a" href="javascript:;">渠道黄页分类</a></li>
+				  <volist name="category_result" id="cr">
+				  <li>
+				  <a class="pop_nav_a" href="#"><!--{$cr.name}--!></a>
+				  <volist name="cr.child" id="crc">
+				  <span>&nbsp;&nbsp;<!--{$crc.name}--!></span>
+				  </volist>
+				  </li>
+				  </volist>
 
-					<li>
-						<a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span>
-						<div class="pop_div">
-							<dl>
-								<dt><a href="#">二级分类</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							
-							<dl>
-								<dt><a href="#">二级分类</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							
-							<dl class="hover">
-								<dt><a href="#">二级分类</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							<dl>
-								<dt><a href="#">二级分类</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							<dl>
-								<dt><a href="#">二级分类</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-							<dl>
-								<dt><a href="#">二级分类</a></dt>
-								<dd><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a>
-								<a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a><a href="#">三级分类</a></dd>
-							</dl>
-						</div>
-					</li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
-					<li><a class="pop_nav_a" href="#">品牌整机</a><span>台式机</span><span>笔记本</span></li>
+		
 				</ul>
 			</div>
 			<div id="main02_ld"></div>
@@ -218,15 +129,11 @@
 				</div>
 			</div>
 			<div class="main02_r_bod">
-				<ul id="main02_r_bod_ul">
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-					<li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li><li><a href="#" >上海伟伟科技有限公司</a></li>
-				</ul>				
+			  <ul id="main02_r_bod_ul">
+			    <volist name="recommend_company" id="rc">
+			    <li><a href="__ROOT__/company/<!--{$rc.id}--!>" target="_blank" ><!--{$rc.name}--!></a></li>
+			    </volist>
+			  </ul>				
 			</div>
 			<div class="main02_r_fot">
 				<div class="main02_r_fot_item">
@@ -235,26 +142,9 @@
 						<a class="more" href="#">更多</a>
 					</div>
 					<ul class="main02_r_fot_item_bod">
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
+					  <volist name="qqonline_company" id="qc">
+					  <li><a href="__ROOT__/company/<!--{$qc.id}--!>" target="_blank" ><!--{$qc.name}--!></a></li>
+					  </volist>
 					</ul>
 				</div>
 				<div class="line"></div>
@@ -264,26 +154,9 @@
 						<a class="more" href="#">更多</a>
 					</div>
 					<ul class="main02_r_fot_item_bod">
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
+					  <volist name="show_company" id="sc">
+					  <li><a href="__ROOT__/company/<!--{$sc.id}--!>" target="_blank" ><!--{$sc.name}--!></a></li>
+					  </volist>
 					</ul>
 				</div>
 				<div class="line"></div>
@@ -293,26 +166,9 @@
 						<a class="more" href="#">更多</a>
 					</div>
 					<ul class="main02_r_fot_item_bod">
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
-						<li><a href="#">南宁盛世达科技</a></li>
+					  <volist name="media_company" id="mc">
+					  <li><a href="__ROOT__/company/<!--{$mc.id}--!>" target="_blank"><!--{$mc.name}--!></a></li>
+					  </volist>
 					</ul>
 				</div>
 

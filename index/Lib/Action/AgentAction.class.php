@@ -23,6 +23,12 @@ class AgentAction extends CommonAction {
     //随机读取3条数据
     $result = $agent -> field('title,content') -> order('RAND()') -> limit(3) -> select();
     $this -> assign('result', $result);
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询经营类型
+    $result_add_type = M('AgentAddType') -> field('id,name') -> select();
+    $this -> assign('result_add_type', $result_add_type);
     $this -> display();
   }
 }

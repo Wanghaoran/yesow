@@ -341,15 +341,10 @@ input.radio_rmb{ vertical-align:middle; padding:0 3px 2px 0;}
 
 ul.zhifu_text li{ float:left; margin-right:10px;}
 ul.zhifu_img{ margin:10px;}
-ul.zhifu_img li{ float:left; width:155px; height:100px; margin:10px 0 20px 50px;}
-ul.zhifu_img li a{width:153px; height:98px; border:#8bb5c4 1px solid;display:block;
-		/*圆角*/
-	   -webkit-border-radius: 5px; 
-	   -moz-border-radius: 5px;
-	   border-radius: 5px; 
-	   behavior: url(style/PIE.htc);/*IE6、7、8下支持一些 CSS3 html5 属性*/}
-ul.zhifu_img li a:hover{ border:#fe9426 1px solid;}
-ul.zhifu_img li a img{ padding:24px 0; vertical-align:middle;}
+ul.zhifu_img li{ float:left; width:165px; height:100px; margin:10px 0 20px 40px;}
+ul.zhifu_img li a{width:165px; height:100px; display:block; background:url(images/user/payradiono.gif) no-repeat;}
+ul.zhifu_img li.cur a{ background:url(images/user/payradioyes.gif) no-repeat;}
+ul.zhifu_img li a img{ padding:24px 0; vertical-align:middle; margin-left:20px;}
 
 table.table_mingxi{ float:left;width:720px; border:none; border-collapse:collapse; margin:10px auto;}
 table.table_mingxi th{border:none; font-size:12px; font-weight:bold; border-bottom:#666 1px dotted; border-collapse:collapse; height:30px; line-height:30px; text-align:center;}
@@ -403,13 +398,10 @@ input.inputclass1{ width:140px; height:20px; line-height:20px; border:#999 1px s
 
 #zhifuradio{ padding:20px 0;}
 #zhifuradio label{ margin-left:20px;}
-.zfRadio{display: inline-block; width:153px; height:74px; border:#8bb5c4 1px solid; cursor:pointer;vertical-align:middle; padding-top:24px;
-		/*圆角*/
-	   -webkit-border-radius: 5px; 
-	   -moz-border-radius: 5px;
-	   border-radius: 5px; 
-	   behavior: url(style/PIE.htc);/*IE6、7、8下支持一些 CSS3 html5 属性*/}
-.zfRadio_Checked{ border:#fe9426 1px solid; }
+.zfRadio{display: inline-block; width:165px; height:76px; background:url(images/user/payradiono.gif) no-repeat;  cursor:pointer;vertical-align:middle; padding-top:24px;
+		}
+.zfRadio_Checked{background:url(images/user/payradioyes.gif) no-repeat; }
+#zhifuradio label img{ text-align:center; vertical-align:middle; margin-left:20px;}
 
 .main_baoyue{ width:730px; margin:0 auto;}
 .main_baoyue h1{ color:#e96800; font-size:14px; font-weight:800; padding:10px 10px 0 10px;}

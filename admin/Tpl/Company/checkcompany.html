@@ -1,5 +1,5 @@
 <div class="page unitBox" style="display: block;">
-  <div style="float:left; display:block; overflow:auto; width:500px;" class="unitBox" id="jbsxBox4">
+  <div style="float:left; display:block; overflow:auto; width:290px;" class="unitBox" id="jbsxBox4">
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
   <input type="hidden" name="search_name" value="<!--{$Think.request.search_name}--!>" />
@@ -12,9 +12,9 @@
 
 <div class="pageHeader">
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
-	<div class="searchBar">
+	<div class="searchBar" style="height:75px;">
 	  <ul class="searchContent">
-	    <li style="width:220px;">
+	    <li style="width:300px;">
 			<label style="width:37px;">搜索：</label>
 			  <input type="text" name="search_name" size="10" />
 				<select class="combox" name="search_key">
@@ -27,15 +27,10 @@
 				  <option value="updatename">更新人</option>
 				</select>
 				</li>
-		  <li style="width:270px;">
-		  <label>更新时间：</label>
-		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_starttime" />
-		    -  
-		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="search_endtime" />
-		  </li>
+		  
 		</ul>
 		<ul class="searchContent">
-		  <li style="width:400px;">
+				<li style="width:190px;">
 		  <label style="width:37px;">地区</label>
 		  <select class="combox" name="search_csid" ref="search_csaid6" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
 		    <option value="">请选择</option>
@@ -47,6 +42,16 @@
 		    <option value="">请选择</option>
 		  </select>
 		  </li>
+		  
+		</ul>
+		<ul class="searchContent">
+		  <li style="width:210px;">
+		  <label>更新时间：</label>
+		  <input type="text" readonly="true" size="3" class="date textInput readonly" name="search_starttime" />
+		    -  
+		  <input type="text" readonly="true" size="3" class="date textInput readonly" name="search_endtime" />
+		  </li>
+		  
 		  <li style="width:70px;"><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
 		  </ul>
 
@@ -68,7 +73,7 @@
 		</ul>
 	</div>
 
-	<table class="table" width="100%" layoutH="162">
+	<table class="table" width="100%" layoutH="190">
 		<thead>
 		  <tr>
 		    <th width="30"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
@@ -110,7 +115,7 @@
 
 	</div>
 	
-	<div style="margin-left:501px;" class="unitBox" id="jbsxBox5">
+	<div style="margin-left:290px;" class="unitBox" id="jbsxBox5">
 	  <include file="Company:editcheckcompany" />
 </div>
 </div>

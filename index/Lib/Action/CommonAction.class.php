@@ -90,7 +90,7 @@ class CommonAction extends Action {
     $qqonline = M('Qqonline');
     $result = M('QqonlineType') -> field('id,name') -> select();
     foreach($result as $key => $value){
-      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'])) -> select();
+      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'], 'csid' => 18)) -> select();
     }
     return $result;
   }

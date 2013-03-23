@@ -23,31 +23,31 @@
   <h1><!--{$result_edit.name}--!></h1>
   <div class="pageFormContent" layoutH="40">
     <form method="post" action="__ACTION__/navTabId/checkcompany" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
-      <p style="width:100%"><label style="width:80px;">公司名称：</label>
+      <p style="width:90%"><label style="width:70px;">公司名称：</label>
       <input type="text" class="textInput required" id="name3" name="name" style="width:79%" value="<!--{$result_edit.name}--!>">
       </p>
-      <p style="width:100%"><label style="width:80px;">公司地址：</label>
+      <p style="width:90%"><label style="width:70px;">公司地址：</label>
       <input type="text" class="textInput required" id="address3" name="address" style="width:79%" value="<!--{$result_edit.address}--!>">
       </p>
-      <p style="width:100%;height:58px;"><label style="width:80px;">主营类别：</label>
+      <p style="width:90%;height:58px;"><label style="width:70px;">主营类别：</label>
       <textarea name="manproducts" id="manproducts3" style="resize:none;width:79%;height:60px;" ><!--{$result_edit.manproducts}--!></textarea>
       </p>
-      <p style="width:50%"><label style="width:80px;">公司电话：</label>
-      <input type="text" class="textInput required" name="companyphone" size="23" value="<!--{$result_edit.companyphone}--!>">
+      <p style="width:45%"><label style="width:70px;">公司电话：</label>
+      <input type="text" class="textInput required" name="companyphone" size="20" value="<!--{$result_edit.companyphone}--!>">
       </p>
-      <p style="width:50%"><label style="width:80px;">移动电话：</label>
-      <input type="text" class="textInput" name="mobilephone" size="23" value="<!--{$result_edit.mobilephone}--!>">
+      <p style="width:45%"><label style="width:70px;">移动电话：</label>
+      <input type="text" class="textInput" name="mobilephone" size="20" value="<!--{$result_edit.mobilephone}--!>">
       </p>
-      <p style="width:50%"><label style="width:80px;">联系人：</label>
-      <input type="text" class="textInput required" id="linkman3" name="linkman" size="23" value="<!--{$result_edit.linkman}--!>">
+      <p style="width:45%"><label style="width:70px;">联系人：</label>
+      <input type="text" class="textInput required" id="linkman3" name="linkman" size="20" value="<!--{$result_edit.linkman}--!>">
       </p>
-      <p style="width:50%"><label style="width:80px;">电子邮件：</label>
-      <input type="text" class="textInput" name="email" size="23" value="<!--{$result_edit.email}--!>">
+      <p style="width:45%"><label style="width:70px;">电子邮件：</label>
+      <input type="text" class="textInput" name="email" size="20" value="<!--{$result_edit.email}--!>">
       </p>
-      <p style="width:50%"><label style="width:80px;">联系QQ：</label>
-      <input type="text" class="textInput" name="qqcode" size="23" value="<!--{$result_edit.qqcode}--!>">
+      <p style="width:45%"><label style="width:70px;">联系QQ：</label>
+      <input type="text" class="textInput" name="qqcode" size="20" value="<!--{$result_edit.qqcode}--!>">
       </p>
-      <p style="width:50%"><label style="width:80px;">所在地：</label>
+      <p style="width:45%"><label style="width:70px;">所在地：</label>
       <select class="combox" id="csid3" name="csid" ref="csaid3" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
 	<volist name="result_childsite" id="rc">
 	<eq name="result_edit.csid" value="$rc.id">
@@ -67,7 +67,7 @@
 	</volist>
       </select>
       </p>
-      <p style="width:50%"><label style="width:80px;">企业类型：</label>
+      <p style="width:45%"><label style="width:70px;">企业类型：</label>
       <select id="typeid3" class="combox" name="typeid">
 	<volist name="result_company_type" id="rct">
 	<eq name="result_edit.typeid" value="$rct.id">
@@ -78,7 +78,7 @@
 	</volist>
       </select>
       </p>
-       <p style="width:50%"><label style="width:80px;">主营类别：</label>
+       <p style="width:45%"><label style="width:70px;">主营类别：</label>
       <select class="combox" ref="ccid" refUrl="__APP__/public/ajaxgetcompanycategorytwo/id/{value}">
 	<volist name="result_company_category_one" id="rcco">
 	<eq name="result_ccid_one" value="$rcco.id">
@@ -98,28 +98,28 @@
 	</volist>
       </select>
       </p>
-      <p style="width:50%"><label style="width:80px;">公司网址：</label>
-      <input type="text" class="textInput" id="website3" name="website" size="23" value="<!--{$result_edit.website}--!>">
+      <p style="width:45%"><label style="width:70px;">公司网址：</label>
+      <input type="text" class="textInput" id="website3" name="website" size="20" value="<!--{$result_edit.website}--!>">
       </p>
-      <p style="width:50%"><label style="width:80px;">点击量：</label>
-      <input type="text" class="textInput" name="clickcount" size="23" value="<!--{$result_edit.clickcount}--!>">
+      <p style="width:45%"><label style="width:70px;">点击量：</label>
+      <input type="text" class="textInput" name="clickcount" size="20" value="<!--{$result_edit.clickcount}--!>">
       </p>
-      <p style="width:100%"><label style="width:80px;">关键词：</label>
+      <p style="width:90%"><label style="width:70px;">关键词：</label>
       <input type="text" class="textInput" name="keyword" style="width:79%" value="<!--{$result_edit.keyword}--!>">
       </p>
-      <p style="width:100%"><label style="width:80px;">形象照片：</label>
+      <p style="width:90%"><label style="width:70px;">形象照片：</label>
       <input type="file" class="textInput" name="image" />
       </p>
-      <p style="width:100%;height:100%;"><label style="width:80px;">公司简介：<br/><br/><br/><a href="javascript:createabout();" class="button"><span>生成简介</span></a></label>
+      <p style="width:90%;height:100%;"><label style="width:70px;">公司简介：<br/><br/><br/><a href="javascript:createabout();" class="button"><span>生成简介</span></a></label>
       <textarea name="content" id="content" style="resize:none;width:79%;height:100px;" ><!--{$result_edit.content}--!></textarea>
       </p>
       <div class="divider"></div>
-      <p style="width:100%;height:100%;">
-      <label style="width:30%;">数据审核人：<span style="color:green;"><!--{$result_edit.auditname}--!></span></label><label style="width:30%;">最后更新人：<span style="color:blue;"><!--{$result_edit.updatename|default="无"}--!></span></label><label style="width:30%;">数据删除人：<span style="color:red;"><!--{$result_edit.delname|default="无"}--!></span></label>
+      <p style="width:95%;height:100%;">
+      <label style="width:31%;">数据审核人：<span style="color:green;"><!--{$result_edit.auditname}--!></span></label><label style="width:31%;">最后更新人：<span style="color:blue;"><!--{$result_edit.updatename|default="无"}--!></span></label><label style="width:31%;">数据删除人：<span style="color:red;"><!--{$result_edit.delname|default="无"}--!></span></label>
       </p>
       <div class="divider"></div>
-      <p style="width:100%;height:100%;">
-      <label style="width:45%;">添加时间：<!--{$result_edit.addtime|date="Y-m-d H:i:s", ###}--!></label><label style="width:45%;">最后更新时间：<!--{$result_edit.updatetime|date="Y-m-d H:i:s", ###}--!></label>
+      <p style="width:90%;height:100%;">
+      <label style="width:43%;">添加时间：<!--{$result_edit.addtime|date="Y-m-d H:i:s", ###}--!></label><label style="width:46%;">最后更新时间：<!--{$result_edit.updatetime|date="Y-m-d H:i:s", ###}--!></label>
       </p>
       <input type="hidden" name="id" value="<!--{$id}--!>" />
       

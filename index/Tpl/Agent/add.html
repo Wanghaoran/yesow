@@ -16,6 +16,27 @@ function csubstr(str,len){
  }
 }
 </script>
+<script>
+  var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#csaid').html(_nstr).show();
+	  }else{
+	  $('#csaid').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+</script>
+
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -60,14 +81,33 @@ function csubstr(str,len){
                 <h3>加盟申请表</h3>
             </div>
             <div class="cat_bod">
-                <h4 class="h4_sqxz">申请性质：<span><input type="radio" name="radio_sqxz"/>个人</span><span><input type="radio" name="radio_sqxz"/>商家</span><span><input type="radio" name="radio_sqxz"/>企业</span></h4>
+                <h4 class="h4_sqxz">申请性质：<span><input type="radio" name="type" value="个人"/>个人</span><span><input type="radio" name="type" value="商家" />商家</span><span><input type="radio" name="type" value="企业" />企业</span></h4>
                 <div class="sqb_box">
                 	<h5>申请商家基本情况</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left">所在省份：</div><div class="tab_right1"><select class="select_jmsqb1"><option selected="selected">请选择省份</option></select></div>
-                            <div class="tab_left">所在城市：</div><div class="tab_right1"><select class="select_jmsqb1"><option selected="selected">请选择城市</option></select></div>
-                            <div class="tab_left">经营类型：</div><div class="tab_right1"><select class="select_jmsqb1"><option selected="selected">请选择类别</option></select></div>
+			<div class="tab_left">所在省份：</div>
+			<div class="tab_right1">
+			  <select class="select_jmsqb1" name="csid" onchange="getchildsitearea($(this).val());">
+			    <volist name="result_childsite" id="rc">
+			    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+			    </volist>
+			</select>
+		      </div>
+		      <div class="tab_left">所在城市：</div>
+		      <div class="tab_right1">
+			<select class="select_jmsqb1" id="csaid" name="csaid">
+			  <option selected="selected">请选择</option>
+		      </select>
+		    </div>
+		    <div class="tab_left">经营类型：</div>
+		    <div class="tab_right1">
+		      <select class="select_jmsqb1" name="tid">
+			<volist name="result_add_type" id="rat">
+			<option value="<!--{$rat.id}--!>"><!--{$rat.name}--!></option>
+			</volist>
+		    </select>
+		  </div>
                             <div class="clear"></div>
                         </li>
                         <li>

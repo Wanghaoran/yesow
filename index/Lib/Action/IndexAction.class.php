@@ -9,6 +9,16 @@ class IndexAction extends CommonAction {
     $this -> getyesownotice();
     //最新IT商家
     $this -> newcompany();
+    //推荐商家
+    $this -> recommendcompany();
+    //在线QQ
+    $this -> qqonlinecompany();
+    //商家风采
+    $this -> showcompany();
+    //动感传媒
+    $this -> mediacompany();
+    //渠道黄页分类
+    $this -> companytype();
 
     $this -> display();
   }
@@ -79,7 +89,7 @@ class IndexAction extends CommonAction {
   //最新IT商家
   private function newcompany(){
     $company = M('Company');
-    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> limit(20) -> select();
+    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'))) -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
 
@@ -130,6 +140,46 @@ class IndexAction extends CommonAction {
       S('index_child_site', $result);
       $this -> assign('index_child_site', $result);
     }
+  }
+
+  //推荐商家
+  private function recommendcompany(){
+    $company = M('Company');
+    $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'))) -> limit(28) -> select();
+    $this -> assign('recommend_company', $recommend_company);
+  }
+
+  //在线QQ
+  private function qqonlinecompany(){
+    $company = M('Company');
+    $qqonline_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 22)) -> limit(20) -> select();
+    $this -> assign('qqonline_company', $qqonline_company);
+  }
+
+  //商家风采
+  private function showcompany(){
+    $company = M('Company');
+    $show_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 21)) -> limit(20) -> select();
+    $this -> assign('show_company', $show_company);
+  }
+
+  //动感传媒
+  private function mediacompany(){
+    $company = M('Company');
+    $media_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 17)) -> limit(20) -> select();
+    $this -> assign('media_company', $media_company);
+  }
+
+  //渠道黄页分类
+  private function companytype(){
+    $category = M('CompanyCategory');
+    //主营一级类别
+    $category_result = $category -> field('id,name') -> where(array('pid' => 0)) -> limit(14) -> select();
+    //主营一级类别下的二级类别
+    foreach($category_result as $key => $value){
+      $category_result[$key]['child'] = $category -> field('id,name') -> where(array('pid' => $value['id'])) -> limit(2) -> select();
+    }
+    $this -> assign('category_result', $category_result);
   }
   
 }
