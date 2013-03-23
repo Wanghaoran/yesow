@@ -7,7 +7,23 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<link type="text/css" href="__PUBLIC__/index/datepicker/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="__PUBLIC__/index/datepicker/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
 <script>
+  $(function () {
+    $("#sdate").datepicker();
+    $('#starttime').datepicker();
+  });
+  $(function(){
+     //点击图片更换验证码
+     $("#code").click(function(){
+         $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+    });
+  });
 function csubstr(str,len){
  if(str.length>100){
   return str.substring(0,len)+"...";
@@ -77,7 +93,8 @@ function csubstr(str,len){
 	    </volist>
         </div>
         <div id="main15_r">
-            <div class="cat_header">
+	  <div class="cat_header">
+	    <form action="__ACTION__" method="post">
                 <h3>加盟申请表</h3>
             </div>
             <div class="cat_bod">
@@ -111,27 +128,27 @@ function csubstr(str,len){
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">企业名称：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">注册资金：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                        	<div class="tab_left">企业名称：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="name" />*</div>
+                            <div class="tab_left">注册资金：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="registeredcapital"/>*</div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">详细地址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">负责人：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                        	<div class="tab_left">详细地址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="address" />*</div>
+                            <div class="tab_left">负责人：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="linkman" />*</div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">联系电话：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">QQ号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                        	<div class="tab_left">联系电话：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="tel" />*</div>
+                            <div class="tab_left">QQ号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="qqcode" />*</div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">电子邮件：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">公司网址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                        	<div class="tab_left">电子邮件：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="email"/>*</div>
+                            <div class="tab_left">公司网址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="website"/>*</div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">经营项目：</div><div class="tab_right2"><textarea class="textarea_jmsqb"></textarea></div>
+                        	<div class="tab_left">经营项目：</div><div class="tab_right2"><textarea class="textarea_jmsqb" name="businessproject"></textarea></div>
                             <div class="clear"></div>
                         </li>
                     </ul>
@@ -139,18 +156,18 @@ function csubstr(str,len){
                     <h5>申请人基本情况</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left">联系人：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">出生年月：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/></div>
+                        	<div class="tab_left">联系人：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="p_name"/>*</div>
+                            <div class="tab_left">出生年月：</div><div class="tab_right2"><input type="text" id="sdate" class="input_jmsqb2" name="p_birthday" readonly="readonly" /></div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">联系电话：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">手机号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
+                        	<div class="tab_left">联系电话：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="p_tel" />*</div>
+                            <div class="tab_left">手机号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="p_telphone" />*</div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">个人地址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>*</div>
-                            <div class="tab_left">QQ号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/></div>
+                        	<div class="tab_left">个人地址：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="p_address"/>*</div>
+                            <div class="tab_left">QQ号码：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" name="p_qqcode" /></div>
                             <div class="clear"></div>
                         </li>
                     </ul>
@@ -158,11 +175,11 @@ function csubstr(str,len){
                     <h5>企业规模</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left">职工人数：</div><div class="tab_right2"><input type="radio" name="radio_zgrs"/>1-5人<input type="radio" name="radio_zgrs"/>6-10人<input type="radio" name="radio_zgrs"/>11-20人<input type="radio" name="radio_zgrs"/>20人以上</div>
+                        	<div class="tab_left">职工人数：</div><div class="tab_right2"><input type="radio" name="employeesnum" value="1-5人"/>1-5人<input type="radio" name="employeesnum" value="6-10人"/>6-10人<input type="radio" name="employeesnum" value="11-20人"/>11-20人<input type="radio" name="employeesnum" value="20人以上"/>20人以上</div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">开业时间：</div><div class="tab_right2"><input type="text" class="input_jmsqb2"/>（如果还没有开业，请填写预计开业时间）</div>
+                        	<div class="tab_left">开业时间：</div><div class="tab_right2"><input type="text" class="input_jmsqb2" id="starttime" name="starttime" readonly="readonly" />（如果还没有开业，请填写预计开业时间）</div>
                             <div class="clear"></div>
                         </li>
                     </ul>
@@ -170,9 +187,9 @@ function csubstr(str,len){
                     <h5>场地情况</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left">场地所有权：</div><div class="tab_right1"><input type="radio" name="radio_cdqk"/>自由<input type="radio" name="radio_cdqk"/>租用</div>
-                            <div class="tab_left">场地类型：</div><div class="tab_right4"><input type="radio" name="radio_cdlx"/>办公室<input type="radio" name="radio_cdqk"/>店面<input type="radio" name="radio_cdqk"/>住宅</div>
-                            <div class="tab_left">经营面积：</div><div class="tab_right1"><input type="text" class="input_jmsqb3"/>平方米</div>
+                        	<div class="tab_left">场地所有权：</div><div class="tab_right1"><input type="radio" name="ownership" value="自由"/>自由<input type="radio" name="ownership" value="租用"/>租用</div>
+                            <div class="tab_left">场地类型：</div><div class="tab_right4"><input type="radio" name="sitetpe" value="办公室" />办公室<input type="radio" name="sitetpe" value="店面" />店面<input type="radio" name="sitetpe" value="住宅" />住宅</div>
+                            <div class="tab_left">经营面积：</div><div class="tab_right1"><input type="text" name="businessarea" class="input_jmsqb3"/>平方米</div>
                             <div class="clear"></div>
                         </li>
                     </ul>
@@ -180,26 +197,27 @@ function csubstr(str,len){
                     <h5>现有设备</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left2">办公电脑：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
-                            <div class="tab_left2">打印机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
-                            <div class="tab_left2">上网设备：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
-                            <div class="tab_left2">传真机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
-                            <div class="tab_left2">电话机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3"/>台</div>
+                        	<div class="tab_left2">办公电脑：</div><div class="tab_right3"><input type="text" class="input_jmsqb3" name="computernum"/>台</div>
+                            <div class="tab_left2">打印机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3" name="printernum" />台</div>
+                            <div class="tab_left2">上网设备：</div><div class="tab_right3"><input type="text" class="input_jmsqb3" name="interdevicenum"/>台</div>
+                            <div class="tab_left2">传真机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3" name="fexnum"/>台</div>
+                            <div class="tab_left2">电话机：</div><div class="tab_right3"><input type="text" class="input_jmsqb3" name="telnum"/>台</div>
                             <div class="clear"></div>
                         </li>
                     </ul>
                     <div class="clear10"></div>
                     <h5>加盟意向</h5>
                     <ul>
-                    	<li class="radio_jmyx"><input type="radio" name="radio_jmyx"/>代理<input type="radio" name="radio_jmyx"/>地级代理<input type="radio" name="radio_jmyx"/>省级代理<input type="radio" name="radio_jmyx"/>片区代理</li>
-                        <li class="radio_jmyx"><input type="radio" name="radio_jmyx"/>加盟<input type="radio" name="radio_jmyx"/>地级加盟<input type="radio" name="radio_jmyx"/>省级加盟<input type="radio" name="radio_jmyx"/>片区加盟</li>
-                        <li class="radio_jmyx"><input type="radio" name="radio_jmyx"/>合作<input type="radio" name="radio_jmyx"/>地级合作<input type="radio" name="radio_jmyx"/>省级合作<input type="radio" name="radio_jmyx"/>片区合作</li>
+		      <li class="radio_jmyx">
+		      代理<input type="radio" name="addidea" value="地级代理"/>地级代理<input type="radio" name="addidea" value="省级代理"/>省级代理<input type="radio" name="addidea" value="片区代理"/>片区代理</li>
+                        <li class="radio_jmyx">加盟<input type="radio" name="addidea" value="地级加盟"/>地级加盟<input type="radio" name="addidea" value="省级加盟"/>省级加盟<input type="radio" name="addidea" value="片区加盟"/>片区加盟</li>
+                        <li class="radio_jmyx">合作<input type="radio" name="addidea" value="地级合作"/>地级合作<input type="radio" name="addidea" value="省级合作"/>省级合作<input type="radio" name="addidea" value="片区合作"/>片区合作</li>
                     </ul>
                     <div class="clear10"></div>
                     <h5>期望愿景</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left">企业见意：</div><div class="tab_right2"><textarea class="textarea_jmsqb"></textarea></div>
+                        	<div class="tab_left">企业建议：</div><div class="tab_right2"><textarea class="textarea_jmsqb" name="advice" ></textarea></div>
                             <div class="clear"></div>
                         </li>
                     </ul>
@@ -207,18 +225,19 @@ function csubstr(str,len){
                     <h5>相关建议</h5>
                     <ul>
                     	<li>
-                        	<div class="tab_left">其他信息：</div><div class="tab_right2"><textarea class="textarea_jmsqb"></textarea></div>
+                        	<div class="tab_left">其他信息：</div><div class="tab_right2"><textarea class="textarea_jmsqb" name="other"></textarea></div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div class="tab_left">验证码：</div><div class="tab_right2"><input type="text" class="input_jmsqb1"  /></div>
+                        	<div class="tab_left">验证码：</div><div class="tab_right2" style="width:100px;"><input type="text" class="input_jmsqb1" name="verify" /></div><div class="fl" style="padding:3px 0 0 5px;"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div>
                             <div class="clear"></div>
                         </li>
                         <li>
-                        	<div style="width:200px; margin:0 auto;"><input type="button" class="btn_qbxz fl" value="提交"/><input type="button" class="btn_qbxz fl" value="重置"/></div>
+                        	<div style="width:200px; margin:0 auto;"><input type="submit" class="btn_qbxz fl" value="提交"/><input type="reset" class="btn_qbxz fl" value="重置"/></div>
                         </li>
                     </ul>
-                    <div class="clear10"></div>
+		    <div class="clear10"></div>
+		    </form>
                 </div>
             </div>
             <div class="clear"></div>

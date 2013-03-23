@@ -19,6 +19,8 @@ class IndexAction extends CommonAction {
     $this -> mediacompany();
     //渠道黄页分类
     $this -> companytype();
+    //SEO信息
+    $this -> seo();
 
     $this -> display();
   }
@@ -180,6 +182,27 @@ class IndexAction extends CommonAction {
       $category_result[$key]['child'] = $category -> field('id,name') -> where(array('pid' => $value['id'])) -> limit(2) -> select();
     }
     $this -> assign('category_result', $category_result);
+  }
+
+  //SEO
+  private function seo(){
+    if(S('index_seo')){
+      $this -> assign('index_seo', S('index_seo'));
+    }else{
+      //查询SEO结果
+      $system = M('System');
+      $result = $system -> field('name,value') -> where(array('name' => array('exp', "in ('title','keywords','description')"))) -> select();
+      //查询分站名
+      $childsite_name = M('ChildSite') -> getFieldBydomain($_SERVER['HTTP_HOST'], 'name');
+      $childsite_name = !empty($childsite_name) ? $childsite_name : '中国';
+      //分站名替换
+      $index_seo = array();
+      foreach($result as $value){
+	$index_seo[] = str_replace('{site}', $childsite_name, $value);
+      }
+      S('index_seo', $index_seo);
+      $this -> assign('index_seo', $index_seo);
+    }
   }
   
 }

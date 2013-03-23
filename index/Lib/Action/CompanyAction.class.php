@@ -144,6 +144,26 @@ class CompanyAction extends CommonAction {
 	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
 	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
     }
+    //非法词过滤，过滤的字段：公司名称、主营、企业介绍
+    $illegal = M('IllegalWord');
+    //需要过滤的词的数组
+    $illegal_word_temp = $illegal -> field('name') -> order('id') -> select();
+    //需要替换的词的数组
+    $replace_word_temp = $illegal -> field('replace') -> order('id') -> select();
+    //整理这两个数组
+    $illegal_word = array();
+    $replace_word = array();
+    foreach($illegal_word_temp as $key => $value){
+      $illegal_word[] = $value['name'];
+    }
+    foreach($replace_word_temp as $key => $value){
+      $replace_word[] = $value['replace'];
+    }
+    //进行过滤
+    $result['name'] = str_replace($illegal_word, $replace_word, $result['name']);
+    $result['manproducts'] = str_replace($illegal_word, $replace_word, $result['manproducts']);
+    $result['content'] = str_replace($illegal_word, $replace_word, $result['content']);
+
     $this -> assign('result', $result);
     //最新更新同行
     $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where(array('c.ccid' => $result['ccid'])) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site as cs ON c.csid = cs.id') -> select();
@@ -374,9 +394,9 @@ class CompanyAction extends CommonAction {
       $search_data['mid'] = session(C('USER_AUTH_KEY'));
     }
     $search_data['sourceaddress'] = $_SERVER["HTTP_REFERER"];
-    $search_data['keyword'] = $result['keyword_str'];
+    $search_data['keyword'] = $result['keyword'];
     //如果这个词已经存在，直接设置为已审核
-    if(M('AuditSearchKeyword') -> getFieldByname($result['keyword_str'], 'id')){
+    if(M('AuditSearchKeyword') -> getFieldByname($result['keyword'], 'id')){
       $search_data['status'] = 1;    
     }
     $search_keyword -> create($search_data);
@@ -432,7 +452,7 @@ class CompanyAction extends CommonAction {
     $result = array();
     //高级搜索,只检索出按更新时间排序的一页数据(20条)
     if(empty($keyword) || $keyword == '请输入您要搜索的内容'){
-      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> order('updatetime DESC') -> limit(20) -> select();
+      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where('delaid is NULL') -> order('updatetime DESC') -> limit(20) -> select();
       $result['count'] = 20;
       return $result;
     }

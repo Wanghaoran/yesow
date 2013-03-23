@@ -1144,6 +1144,8 @@ class SystemAction extends CommonAction {
 	  $system -> where($where) -> save($data);
 	}
       }
+      //删除缓存
+      S('index_seo', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }
 
@@ -1640,6 +1642,24 @@ class SystemAction extends CommonAction {
     $this -> assign('result_type', $result_type);
 
     $this -> display();
+  }
+
+  //加盟申请管理
+  public function agentapply(){
+    $agent_add = M('Agent_add');
+    $result = $agent_add -> field('id,type,addidea,advice') -> order('id DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除加盟申请
+  public function delagentapply(){
+  
+  }
+
+  //查看加盟申请
+  public function editagentapply(){
+  
   }
 
   /* ----------- 关于我们 ------------ */

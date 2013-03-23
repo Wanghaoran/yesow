@@ -826,9 +826,16 @@ ul.ul_xgjs li.xgjs_on{ background:url(images/btn_aboutus.gif) 0 0px no-repeat; }
 ul.ul_parter{ width:480px; padding:0 10px;}
 ul.ul_parter li{ float:left; width:470px; font-size:14px; padding:5px; line-height:20px;}
 ul.ul_parter li span.littlespan{ font-size:12px; padding:5px 0 0 18px;}
-#page_navigation{ height:30px; line-height:30px; float:right; padding-right:10px; font-family:Arial;}
-#page_navigation a{ float:left; width:20px; height:21px; line-height:21px; font-size:14px; font-weight:bold; text-align:center; display:block; margin:2px; color:#666;text-decoration:none; background:#fff; border:#ddd 1px solid;}
-#page_navigation a.active_page{background:#F00; color:#fff;}
+#page_navigation { float:right;margin: 15px 0;}
+#page_navigation a {font-size: 12px;cursor: pointer;margin: 0 5px;color: #333;}
+#page_navigation a:hover {background-color: #222;color: #fff;}
+#page_navigation a.jp-previous { margin-right: 15px; }
+#page_navigation a.jp-next { margin-left: 15px; }
+#page_navigation a.jp-current, a.jp-current:hover { color: #FF4242;font-weight: bold;}
+#page_navigation a.jp-disabled, a.jp-disabled:hover {color: #bbb;}
+#page_navigation a.jp-current, a.jp-current:hover,
+#page_navigation a.jp-disabled, a.jp-disabled:hover {cursor: default; background: none;}
+#page_navigation span { margin: 0 5px; }
 ul.ul_zxjms{ padding:10px;}
 ul.ul_zxjms li{ float:left; width:170px; height:20px; line-height:20px; text-align:left;}
 
