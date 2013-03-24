@@ -42,6 +42,35 @@
   }
 </script>
 
+<script>
+function setHomepage()
+{
+ if (document.all)
+    {
+        document.body.style.behavior='url(#default#homepage)';
+  document.body.setHomePage('http://www.yesow.com');
+ 
+    }
+    else if (window.sidebar)
+    {
+    if(window.netscape)
+    {
+         try
+   { 
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+         } 
+         catch (e) 
+         { 
+    alert( "该操作被浏览器拒绝，如果想启用该功能，请在地址栏内输入 about:config,然后将项 signed.applets.codebase_principal_support 值该为true" ); 
+         }
+    }
+    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components. interfaces.nsIPrefBranch);
+    prefs.setCharPref('browser.startup.homepage','http://www.yesow.com');
+ }
+}
+  
+</script>
+
 <div id="minitop"><div id="minitop_l"></div>
    		<div id="minitop_c">
 		  <p id="welcome">
@@ -57,9 +86,9 @@
 		</if>
 		</p>
             <p id="webtool">
-               	<a href="#">设为首页</a>&nbsp;
+               	<a href="javascript:setHomepage();">设为首页</a>&nbsp;
                	<a href="#">加入收藏</a>&nbsp;
-               	<a href="#">网站地图</a>&nbsp;
+               	<a href="http://old.yesow.com">进入老站</a>&nbsp;
             </p>
         </div>
    		<div id="minitop_r"></div>
@@ -112,7 +141,7 @@
 		    <li><a href="__ROOT__/company">渠道黄页</a></li>
 		    </if>
                 	<li><a href="#">企业会员</a></li>
-			<li><a href="#">出租招聘</a></li>
+			<li><a href="http://old.yesow.com/fuwu" target="_blank">出租招聘</a></li>
 			<if condition="MODULE_NAME eq 'Info'">
 			<li class="hover"><a href="__ROOT__/info">资讯文章</a></li>
 			<else/>
@@ -124,7 +153,7 @@
 			<else/>
 			<li><a href="__ROOT__/agent">代理加盟</a></li>
 			</if>
-			<li class="last"><a href="#">易搜商城</a></li>
+			<li class="last"><a href="http://old.yesow.com/mall" target="_blank">易搜商城</a></li>
                 </ul>
 	      </div>
 	      

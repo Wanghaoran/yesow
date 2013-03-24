@@ -7,6 +7,11 @@ class PublicAction extends Action {
     echo preg_replace('/[a-zA-Z]/i', '', $code);
   }
 
+  //成功跳转 前置方法
+  public function _before_successjump(){
+    $this -> assign('index_search_hot', S('index_search_hot'));
+  }
+
   //成功跳转
   public function successjump($title, $url="", $time=3){
     $this -> assign('title', $title);
@@ -21,6 +26,11 @@ class PublicAction extends Action {
     $this -> assign('status', 1);
     $this -> display('./index/Tpl/Public/jumpurl.html');
     exit();
+  }
+
+  //成功跳转 前置方法
+  public function _before_errorjump(){
+    $this -> assign('index_search_hot', S('index_search_hot'));
   }
 
   //失败跳转
@@ -880,14 +890,17 @@ class PublicAction extends Action {
       $this -> assign('header_child_site', $header_child_site);
       S('header_child_site', $header_child_site);
     }
+    $this -> assign('index_search_hot', S('index_search_hot'));
   }
 
   //权限不足 - 温馨提示页面
   public function authorprompt(){
+    //判断并转换编码
+    $_GET['modname'] = safeEncoding($_GET['modname']);
     if($_GET['mod'] == 'nomoney'){
       $content = "<p>您已经无任何操作权限，请立即到会员中心充值！</p>
 	<div class=\"clear\"></div>
-	<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge'\" value=\"我要充值\"/>";
+	<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"history.go(-1);\" value=\"返回前页\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge'\" value=\"我要充值\"/>";
       $this -> assign('content', $content);
       $this -> display();
       return ;
@@ -903,9 +916,9 @@ class PublicAction extends Action {
     $diff = $min_level['updatemoney'] - $_SESSION['rmb_total'];
 
     $content = "<P>{$_SESSION['name']}会员您好：</P>
-	  <P>&nbsp;&nbsp;&nbsp;&nbsp;您需要<span> {$_GET['modname']} </span>的功能吗？您目前的会员等级为<span> {$_SESSION['member_level_name']} </span>，您无权使用此功能！可以操作<span> {$_GET['modname']} </span>的会员等级为<span> {$min_level['name']} </span>，该会员的RMB不低于<span> {$min_level['updatemoney']} </span>RMB以上就可以拥有，您目前的账户余额为<span> {$_SESSION['rmb_total']} </span>RMB，还差<span> {$diff} </span>RMB，请点这里的<a href=\"" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}\">我要充值</a>进行充值即可拥有！</P>
+	  <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您需要<span>{$_GET['modname']}</span>的功能吗？您目前的会员等级为<span>{$_SESSION['member_level_name']}</span>，您无权使用此功能！可以操作<span>{$_GET['modname']}</span>的会员等级为<span>{$min_level['name']}</span>，该会员的RMB不低于<span>{$min_level['updatemoney']}</span>RMB以上就可以拥有，您目前的账户余额为<span>{$_SESSION['rmb_total']}</span>RMB，还差<span>{$diff}</span>RMB，请点这里的<a href=\"" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}\">我要充值</a>进行充值即可拥有！</P>
         	<div class=\"clear\"></div>
-		<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}'\" value=\"我要充值\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/index/userupdeta';\" value=\"会员权限\"/>";
+		<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"history.go(-1);\" value=\"返回前页\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}'\" value=\"我要充值\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/index/userupdeta';\" value=\"会员权限\"/>";
 
     $this -> assign('content', $content);
     $this -> display();

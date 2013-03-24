@@ -864,7 +864,7 @@ textarea.textarea_jmsqb{border:#7f9db9 1px solid; height:50px; width:580px;}
 .wxts_b1{ width:665px; height:51px; background:url(images/wxts1.gif) no-repeat;}
 .wxts_b2{ width:565px; background:url(images/wxts2.gif) repeat-y; padding:30px 50px;}
 .wxts_b2 p{ font-size:14px; font-weight:800; line-height:25px;}
-.wxts_b2 span{ padding:0 10px; color:#F00;}
+.wxts_b2 span{ padding:0; color:#F00;}
 .wxts_b2 p a{ color:#03F;}
 .wxts_b3{ width:665px; height:23px; background:url(images/wxts3.gif) no-repeat;}
 .wxts_btn{ width:88px; height:28px; line-height:28px; background:url(images/wxts_btn.gif) no-repeat; font-size:14px; color:#fc0403; border:none; cursor:pointer;}

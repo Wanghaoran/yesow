@@ -274,22 +274,13 @@ class CompanyAction extends CommonAction {
    
     //结果
     $result = $company -> field('name,address,typeid,csid,csaid,linkman,mobilephone,companyphone,qqcode,email,website,manproducts,ccid,keyword,content') -> find($this -> _get('id', 'intval'));
-    //是否有查看权
-    $member_company = M('MemberCompany');
-    $where = array();
-    $where['mid'] = session(C('USER_AUTH_KEY'));
-    $where['cid'] = $this -> _get('id', 'intval');
-    //计算最早购买时间,大于这个购买时间的都有效
-    $time = mktime() - 86400;
-    $where['time'] = array('EGT', $time);
     //如果未查询到数据，则隐藏数据内容
-    if(!$member_company -> where($where) -> find()){
-      $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
-      $result['qqcode'] = '********';
-      $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
-      $result['website'] = substr_replace($result['website'], '*******', 7);
-      $result['companyphone'] = substr_replace($result['companyphone'], '*******', 5);
-    }
+    $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
+    $result['qqcode'] = '********';
+    $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
+    $result['website'] = substr_replace($result['website'], '*******', 7);
+    $result['companyphone'] = substr_replace($result['companyphone'], '*******', 5);
+
     $this -> assign('result', $result);
     //查询公司类型
     $result_company_type = M('CompanyType') -> field('id,name') -> select();
@@ -359,6 +350,7 @@ class CompanyAction extends CommonAction {
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
+    $_GET['keyword'] = safeEncoding($_GET['keyword']);
    
     //高级搜索,只检索出按更新时间排序的一页数据
     if(empty($_GET['keyword']) || $_GET['keyword'] == '请输入您要搜索的内容'){
@@ -406,6 +398,13 @@ class CompanyAction extends CommonAction {
     if(D('Monthly') -> ismonthly()){
       D('MemberMonthlyDetail') -> writelog('搜索', '在主站搜索一次[<span style="color:blue">' . $_GET['keyword'] . '</span>]');
     }
+
+    //右侧固定排名(取点击量最低的前20名)
+    $fixed_result = $this -> search_company($_GET['keyword'], false, false, 'clickcount ASC', 20);
+    $this -> assign('fixed_result', $fixed_result);
+    //右侧热点排名(取点击率最高的前20名)
+    $hot_result = $this -> search_company($_GET['keyword'], false, false, 'clickcount DESC', 20);
+    $this -> assign('hot_result', $hot_result);
     $this -> display();
   }
 
@@ -446,7 +445,7 @@ class CompanyAction extends CommonAction {
   //keyword 搜索关键词
   //page 是否需要分页
   //down 是否是下载全部资料
-  public function search_company($keyword ,$page=true, $down=false){
+  public function search_company($keyword ,$page=true, $down=false, $order=false, $limit=false){
     $keyword = $_GET['keyword'];
     //最终输出结果
     $result = array();
@@ -488,14 +487,17 @@ class CompanyAction extends CommonAction {
       }    
     }
     //进行关键字排序
-    function keyword_sort($a, $b){
-      (int)$sort_a = M() -> table('yesow_audit_search_keyword as ask') -> field('aska.sort') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> where(array('ask.name' => $a)) -> find();
-      (int)$sort_b = M() -> table('yesow_audit_search_keyword as ask') -> field('aska.sort') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> where(array('ask.name' => $b)) -> find();
-      if($sort_a['sort'] == $sort_b['sort']){
-	return 0;
+    if(!function_exists('keyword_sort')){
+      function keyword_sort($a, $b){
+	(int)$sort_a = M() -> table('yesow_audit_search_keyword as ask') -> field('aska.sort') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> where(array('ask.name' => $a)) -> find();
+	(int)$sort_b = M() -> table('yesow_audit_search_keyword as ask') -> field('aska.sort') -> join('yesow_audit_search_keyword_attribute as aska ON ask.aid = aska.id') -> where(array('ask.name' => $b)) -> find();
+	if($sort_a['sort'] == $sort_b['sort']){
+	  return 0;
+	}
+	return $sort_a['sort'] < $sort_b['sort'] ? -1 : 1;
       }
-      return $sort_a['sort'] < $sort_b['sort'] ? -1 : 1;
     }
+    
     //生成排序后数组
     usort($keyword_arr, 'keyword_sort');
     //进行分词后关键词的SQL组装
@@ -505,9 +507,9 @@ class CompanyAction extends CommonAction {
       foreach($keyword_arr as $value){
 	//判断是否是下载详细数据
 	if(!$down){
-	  $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
+	  $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
 	}else{
-	  $keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";	
+	  $keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.clickcount FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";	
 	}
       }
     }
@@ -545,9 +547,9 @@ class CompanyAction extends CommonAction {
     //构建查询SQL
     //判断是否为下载
     if(!$down){
-      $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where($map) -> union($keyword_sql) -> buildSql();
+      $sql = $company -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount') -> where($map) -> union($keyword_sql) -> buildSql();
     }else{
-      $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
+      $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.clickcount') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
     }
     //高级查询条件
     $senior_where = array();
@@ -593,10 +595,33 @@ class CompanyAction extends CommonAction {
     //查询结果
     ////是否需要分页
     if($page){
-      $result['result'] = $company -> table($sql . ' a') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
+      $result['result'] = $company -> table($sql . ' a') -> order($order) -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
     }else{
-      $result['result'] = $company -> table($sql . ' a') -> where($senior_where) -> select();
+      $result['result'] = $company -> table($sql . ' a') -> order($order) -> limit($limit) -> where($senior_where) -> select();
     }
+
+    //非法词过滤，过滤的字段：公司名称、主营、企业介绍
+    $illegal = M('IllegalWord');
+    //需要过滤的词的数组
+    $illegal_word_temp = $illegal -> field('name') -> order('id') -> select();
+    //需要替换的词的数组
+    $replace_word_temp = $illegal -> field('replace') -> order('id') -> select();
+    //整理这两个数组
+    $illegal_word = array();
+    $replace_word = array();
+    foreach($illegal_word_temp as $key => $value){
+      $illegal_word[] = $value['name'];
+    }
+    foreach($replace_word_temp as $key => $value){
+      $replace_word[] = $value['replace'];
+    }
+    //进行过滤
+    foreach($result['result'] as $key => $value){
+      $result['result'][$key]['name'] = str_replace($illegal_word, $replace_word, $result['result'][$key]['name']);
+      $result['result'][$key]['manproducts'] = str_replace($illegal_word, $replace_word, $result['result'][$key]['manproducts']);
+      $result['result'][$key]['content'] = str_replace($illegal_word, $replace_word, $result['result'][$key]['content']);
+    }
+
     //将查询时间写入结果数组
     $result['time'] = G('start', 'end');
     //将主查询词，写入关键词数组头部
