@@ -63,30 +63,29 @@
   <script>
     /* when document is ready */
     $(function(){
-    
-        /* initiate the plugin */
-        $("div#page_navigation").jPages({
-            containerID  : "ul_parter",
-			first: '首页',
-			last: '尾页',
-			previous: '上页',
-			next: '下页',
-            perPage: 12,
-            startPage: 1,
-            startRange: 2,
-            midRange: 3,
-            endRange: 2,
-			animation: 'wobble',
-			keyBrowse: true,
-			callback    : function( pages, items ){
-				/* lazy load current images */
-				items.showing.find("img").trigger("turnPage");
-				/* lazy load next page images */
-				items.oncoming.find("img").trigger("turnPage");
-			}
-        });
-    
+      /* initiate the plugin */  
+      $("div#page_navigation").jPages({
+	containerID  : "ul_parter",
+	first: '首页',
+	last: '尾页',
+	previous: '上一页',
+	next: '下一页',
+	perPage: 12,
+	startPage: 1,
+	startRange: 2,
+	midRange: 3,
+	endRange: 2,
+	animation: 'wobble',
+	keyBrowse: true,
+	callback    : function( pages, items ){
+	  /* lazy load current images */
+	  items.showing.find("img").trigger("turnPage");
+	  /* lazy load next page images */
+	  items.oncoming.find("img").trigger("turnPage");
+	}
+      });
     });
-</script>
+  </script>
+
 
 </html>

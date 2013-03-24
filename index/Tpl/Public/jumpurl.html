@@ -9,13 +9,13 @@
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
 </head>
 <script type="text/javascript">
-  var i = <!--{$time}--!>;
-    function onload()
+  var i_jump = <!--{$time}--!>;
+    function onload_jump()
     {
         var timeturn = document.getElementById('timeturn');
-        i--;
-        timeturn.innerHTML = i+'秒';
-        setTimeout("onload()",1100);
+        i_jump--;
+        timeturn.innerHTML = i_jump +'秒';
+        setTimeout("onload_jump()",1100);
         if(i==0)
 	{
 	  window.location.href="<!--{$url}--!>"; 
@@ -46,7 +46,7 @@
     </div>
     <include file="Index:footer" />
     <script type="text/javascript">
-      onload();
+      onload_jump();
     </script>
 </div>
 </body>

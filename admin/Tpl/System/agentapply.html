@@ -27,13 +27,13 @@
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li class=""><a class="delete" href="__URL__/delagentapply/navTabId/agentapply" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editagentapply/id/{sid_role}" target="navTab" mask="true" warn="请选择记录"><span>查看</span></a></li>
+	    <li><a class="edit" href="__URL__/editagentapply/id/{sid_role}" target="dialog" mask="true" height="600" warn="请选择记录"><span>查看</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['system']['delagentapply'])">
 	    <li class=""><a class="delete" href="__URL__/delagentapply/navTabId/agentapply" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['system']['editagentapply'])">
-	    <li><a class="edit" href="__URL__/editagentapply/id/{sid_role}" target="navTab" mask="true" warn="请选择记录"><span>查看</span></a></li>
+	    <li><a class="edit" href="__URL__/editagentapply/id/{sid_role}" target="dialog" mask="true" height="600" warn="请选择记录"><span>查看</span></a></li>
 	    </if>
 	    </if>
 		</ul>

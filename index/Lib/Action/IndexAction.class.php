@@ -21,6 +21,8 @@ class IndexAction extends CommonAction {
     $this -> companytype();
     //SEO信息
     $this -> seo();
+    //图片幻灯
+    $this -> imagetab();
 
     $this -> display();
   }
@@ -203,6 +205,13 @@ class IndexAction extends CommonAction {
       S('index_seo', $index_seo);
       $this -> assign('index_seo', $index_seo);
     }
+  }
+
+  private function imagetab(){
+    //图片幻灯
+    $article_pic = M('InfoArticlePic');
+    $result_pic = $article_pic -> table('yesow_info_article_pic as iap') -> field('iap.aid,iap.address,ia.title as title') -> where(array('iap.isshow_index' => 1)) -> order('iap.addtime DESC') -> limit(6) -> join('yesow_info_article as ia ON iap.aid = ia.id') -> select();
+    $this -> assign('result_pic', $result_pic);
   }
   
 }

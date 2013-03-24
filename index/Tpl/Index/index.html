@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script src="__PUBLIC__/index/javascript/jquery.KinSlideshow-1.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("#KinSlideshow").KinSlideshow();
+})
+</script>
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -46,7 +52,11 @@
 			</div>
 		</div>
 		<div id="main01_c">
-			<p style="text-align:center; padding:50px 0;">这里是幻灯片，暂时未开发。	</p>
+			<div id="KinSlideshow" style="visibility:hidden;">
+			    <volist name="result_pic" id="rp">
+			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="310" height="300" /></a>
+		    </volist>
+                </div>
 		</div>
 		<div id="main01_r">
 			<div class="main01_r_tit">

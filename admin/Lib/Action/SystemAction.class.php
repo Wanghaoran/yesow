@@ -1646,7 +1646,7 @@ class SystemAction extends CommonAction {
 
   //加盟申请管理
   public function agentapply(){
-    $agent_add = M('Agent_add');
+    $agent_add = M('AgentAdd');
     $result = $agent_add -> field('id,type,addidea,advice') -> order('id DESC') -> select();
     $this -> assign('result', $result);
     $this -> display();
@@ -1654,11 +1654,22 @@ class SystemAction extends CommonAction {
 
   //删除加盟申请
   public function delagentapply(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $agent_add = M('AgentAdd');
+    if($agent_add -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //查看加盟申请
   public function editagentapply(){
+    $agent_add = M('AgentAdd');
+    $result = $agent_add -> table('yesow_agent_add as aa') -> field('type,cs.name as csname,csa.name as csaname,aat.name as aatname,aa.name,registeredcapital,address,linkman,tel,qqcode,email,website,businessproject,p_name,p_birthday,p_tel,p_telphone,p_address,p_qqcode,employeesnum,starttime,ownership,sitetpe,businessarea,computernum,printernum,interdevicenum,fexnum,telnum,addidea,advice,other') -> join('yesow_child_site as cs ON aa.csid = cs.id') -> join('yesow_child_site_area as csa ON aa.csaid = csa.id') -> join('yesow_agent_add_type as aat ON aa.tid = aat.id') -> where(array('aa.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
   
   }
 
