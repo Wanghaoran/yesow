@@ -205,7 +205,7 @@ p#hot_search{padding-top:10px;}
 #footer{width:950px; padding-top:5px;}
 #footer_nav{ height:34px; padding-bottom:2px; background:url(images/footer_nav.gif) no-repeat 0 0;}
 #footer_nav p{ text-align:center; width:950px; height:34px; line-height:34px;}
-#footer_nav p, #footer_nav p a{color:#FFF;}
+#footer_nav p, #footer_nav p a{color:#FFF;font-size:15px;font-weight:bold;}
 
 .goods_img li{width:180px;height:140px;padding:5px 4px;float:left; overflow:hidden;}
 .goods_img li a{ display:block; width:180px; height:140px; float:left; overflow:hidden;}

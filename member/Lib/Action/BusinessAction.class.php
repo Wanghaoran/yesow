@@ -56,7 +56,7 @@ class BusinessAction extends CommonAction {
 	}
 
 	//提取文章图片，写入文章图片表
-	if(preg_match_all('/<img.*?src=\"(.*?)\".*?\>/i', $_POST['content'], $arr)){
+	if(preg_match_all("/<img.*src\s*=\s*[\"|\']?\s*([^>\"\'\s]*)/i", str_ireplace("\\","",$_POST['content']), $arr)){
 	  $infoarticlepic = M('InfoArticlePic');
 	  $data = array();
 	  $data['aid'] = $iaid;

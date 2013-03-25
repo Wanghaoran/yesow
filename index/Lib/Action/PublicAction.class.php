@@ -727,8 +727,9 @@ class PublicAction extends Action {
 
   //批量操作页面
   public function batch(){
+    $keyword = safeEncoding($_GET['keyword']);
     //不需要分页查询所有数据
-    $result = R('Company/search_company', array($this -> _get('keyword'), false, true));
+    $result = R('Company/search_company', array($keyword, false, true));
     $this -> assign('result_batch', $result['result']);
     //搜索关键词
     $this -> assign('keyword', $result['keyword']);

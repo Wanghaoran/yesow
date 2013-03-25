@@ -446,7 +446,6 @@ class CompanyAction extends CommonAction {
   //page 是否需要分页
   //down 是否是下载全部资料
   public function search_company($keyword ,$page=true, $down=false, $order=false, $limit=false){
-    $keyword = $_GET['keyword'];
     //最终输出结果
     $result = array();
     //高级搜索,只检索出按更新时间排序的一页数据(20条)
