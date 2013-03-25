@@ -1,0 +1,73 @@
+<style type="text/css">
+  ul.rightTools {float:right; display:block;}
+  ul.rightTools li{float:left; display:block; margin-left:5px}
+</style>
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="company_keyword" value="<!--{$Think.request.company_keyword}--!>" />
+</form>
+
+<div class="pageContent" style="padding:5px">
+  <div class="panel" defH="40">
+    <h1>后台信息检索</h1>
+    <div>
+      <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+    请输入你要查询的关键字：<input type="text" name="company_keyword" size="40" />
+    <ul class="rightTools">
+      <li><div class="buttonActive"><div class="buttonContent"><button type="submit">搜 索</button></div></div></li>
+      </form>
+      <li><div class="buttonDisabled"><div class="buttonContent"><button>下载EXECL文件</button></div></div></li>
+      <li><div class="buttonDisabled"><div class="buttonContent"><button>下载TXT文件</button></div></div></li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<div class="pageContent" style="padding:5px">
+  <div class="panel" defH="340">
+    <h1>搜索结果</h1>
+  <div>
+	<table class="table" width="100%" layoutH="340">
+		<thead>
+			<tr>
+				<th width="120">客户号</th>
+				<th>客户名称</th>
+				<th width="100">客户类型</th>
+				<th width="150">证件号码</th>
+				<th width="80" align="center">信用等级</th>
+				<th width="80">所属行业</th>
+				<th width="80">建档日期</th>
+			</tr>
+		</thead>
+		<tbody>
+		  <volist name="search_result.result" id="srr">
+			<tr>
+			  <td><!--{$srr.name}--!></td>
+				<td>天津市华建装饰工程有限公司</td>
+				<td>联社营业部</td>
+				<td>29385739203816293</td>
+				<td>5级</td>
+				<td>政府机构</td>
+				<td>2009-05-21</td>
+			      </tr>
+			      </volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+		
+			<span>条，共${totalCount}条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+
+	</div>
+</div>
+
+
+
+	
+

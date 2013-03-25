@@ -890,6 +890,16 @@ class CompanyAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
+
+  //后台数据检索
+  public function backgroundsearch(){
+    //处理检索
+    if(!empty($_POST['company_keyword'])){
+
+    }
+    $this -> display();
+  }
+
   /* --------------- 速查数据管理 ---------------- */
 
 
