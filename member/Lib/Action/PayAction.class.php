@@ -50,12 +50,30 @@ class PayAction extends Action {
 	$data['status'] = 1;
 	//如果更新成功，并且订单状态是从未付款到已付款，则更新会员RMB表
 	if($rmb_order -> where($where) -> save($data) && $now_status == 0){
+	  $member_rmb = D('MemberRmb');
 	  //获取支付总额
 	  $total_pee = $this -> _post('total_fee');
 	  //获取此订单的用户id
 	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
-	  //更新用户RMB余额
-	  M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	  //向用户RMB表增加
+	  if($member_rmb -> addmoney('rmb_pay', $total_pee, $mid)){
+	    //写RMB消费日志
+	    $detail = D('MemberRmbDetail');
+	    $detail -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
+	    //计算返送费率
+	    $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
+	    $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
+	    //返送金额
+	    $gaving_pee = $gaving_ratio['ratio'] * $total_pee;
+	    //如果存在返送金额，则增加返送的金
+	    if($gaving_pee > 0){
+	      //更新用户RMB余额
+	      if($member_rmb -> addmoney('rmb_pay', $gaving_pee, $mid)){
+		//写RMB消费日志
+		D('MemberRmbDetail') -> writelog($mid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+	      }	      
+	    }
+	  }
 	}
 	echo "success";
       }
@@ -64,7 +82,6 @@ class PayAction extends Action {
 	$data['status'] = 2;
 	$rmb_order -> where($where) -> save($data);
 	echo "success";
-      
       }
       //该判断表示买家已经确认收货，这笔交易完成 status = 3
       else if($_POST['trade_status'] == 'TRADE_FINISHED'){
@@ -106,48 +123,8 @@ class PayAction extends Action {
     $verify_result = $alipayNotify->verifyReturn();
     //验证成功
     if($verify_result){
-      //商户订单号
-      $out_trade_no = $_GET['out_trade_no'];
-
-      $rmb_order = M('RmbOrder');
-      $where = array();
-      $where['ordernum'] = $out_trade_no;
-      $data = array();
-      $member_rmb = D('MemberRmb');
-      //获取支付总额
-      $total_pee = $_GET['price'];
-
-      if($_GET['trade_status'] == 'WAIT_SELLER_SEND_GOODS'){
-	//先读取目前的订单状态
-	$now_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
-	//更新订单状态
-	$data['status'] = 1;
-	//如果更新成功，并且订单状态是从未付款到已付款，则更新会员RMB表
-	if($rmb_order -> where($where) -> save($data) && $now_status == 0){
-	  
-	  //获取此订单的用户id
-	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
-	  //更新用户RMB余额
-	  $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
-	}
-      }
-      $session_uid = session(C('USER_AUTH_KEY'));
-      //写RMB消费日志
-      $detail = D('MemberRmbDetail');
-      $detail -> writelog($session_uid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
-      //计算返送金额
-      $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $total_pee))) -> order('money DESC') -> find();
-      $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
-      $gaving_pee = $gaving_ratio['ratio'] * $total_pee;
-      //如果存在返送金额，则更新用户余额
-      if($gaving_pee > 0){
-	//更新用户RMB余额
-	$member_rmb -> where(array('mid' => $session_uid)) -> setInc('rmb_pay', $gaving_pee);
-	//写RMB消费日志
-	D('MemberRmbDetail') -> writelog($session_uid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
-      }
       //重新缓存用户rmb余额
-      $member_rmb -> rmbtotal($session_uid);
+      D('MemberRmb') -> rmbtotal();
       //充值成功的图片
       $this -> assign('pic_name', 'success_tishi.gif');
     }else{
@@ -668,7 +645,7 @@ class PayAction extends Action {
 	if("1" == $trade_mode ) {
 	  if( "0" == $trade_state){
 	    //重新缓存用户rmb及等级
-	    D('MemberRmb')-> rmbtotal($session_uid);
+	    D('MemberRmb')-> rmbtotal();
 	    $this -> assign('pic_name', 'success_tishi.gif');
 	  }else{
 	    $this -> assign('pic_name', 'fail_tishi.gif');
@@ -782,7 +759,7 @@ class PayAction extends Action {
 	      //写包月主表
 	      M('Monthly') -> add($data);
 	      //重新缓存用户rmb及等级
-	      $member_rmb -> rmbtotal($mid);	   
+	      D('MemberRmb')-> rmbtotal($data['mid']);	   
 	  }
 	  $this -> assign('pic_name', 'success_tishi.gif');
 	  break;
@@ -801,5 +778,4 @@ class PayAction extends Action {
 
 
   /* -------------------------- 包 月 ------------------------ */
-
 }

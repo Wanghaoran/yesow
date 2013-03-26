@@ -54,4 +54,20 @@ class MemberRmbModel extends Model {
     }
     return 0;
   }
+
+  //增加会员RMB
+  public function addmoney($field, $money, $mid){
+    $mid = !empty($mid) ? $mid : $_SESSION[C('USER_AUTH_KEY')];
+    $where = array();
+    $where['mid'] = $mid;
+    return $this -> where($where) -> setInc($field, $money);
+  }
+
+  //减少会员RMB
+  public function lessmoney($field, $money, $mid){
+    $mid = !empty($mid) ? $mid : $_SESSION[C('USER_AUTH_KEY')];
+    $where = array();
+    $where['mid'] = $mid;
+    return $this -> where($where) -> setDec($field, $money);
+  }
 }
