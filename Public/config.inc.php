@@ -44,4 +44,10 @@ return array(
   'COMPANY_PIC_PATH' => './Upload/companypic/',
   //企业形象照片显示地址
   'COMPANY_PIC_PATH_SAVE' => __ROOT__ . '/Upload/companypic/',
+  /*
+  //重新定义__ROOT__常量，线上项目需要设置此项
+  'TMPL_PARSE_STRING' => array(
+    '__ROOT__' => 'http://www.yesow.com',
+  ),
+   */
 );
