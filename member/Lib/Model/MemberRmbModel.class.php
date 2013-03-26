@@ -70,4 +70,29 @@ class MemberRmbModel extends Model {
     $where['mid'] = $mid;
     return $this -> where($where) -> setDec($field, $money);
   }
+
+  //自动判断并减少会员金额，标准：先减少 rmb_exchange 字段，不够的再减 rmb_pay 字段
+  public function autolessmoney($money, $mid){
+    $mid = !empty($mid) ? $mid : $_SESSION[C('USER_AUTH_KEY')];
+    $money = abs($money);
+    //查出两种余额
+    $price = $this -> field('rmb_pay,rmb_exchange') -> find($mid);
+    //如果 兑换RMB余额足够扣除
+    if($price['rmb_exchange'] >= $money){
+      $data_rmb = array();
+      $data_rmb['mid'] = $mid;
+      $data_rmb['rmb_exchange'] = $price['rmb_exchange'] - $money;     
+      return $this -> save($data_rmb);
+
+    }else{
+      //如果兑换RMB不足够支付此次信息，则用充值RMB支付
+      //计算差值
+      $fee = $money - $price['rmb_exchange'];
+      $data_rmb = array();
+      $data_rmb['mid'] = $mid;
+      $data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
+      $data_rmb['rmb_exchange'] = 0;
+      return $this -> save($data_rmb);
+    }
+  }
 }

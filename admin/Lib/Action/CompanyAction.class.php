@@ -1433,8 +1433,21 @@ class CompanyAction extends CommonAction {
 	//如果增加成功，则在此会员RMB余额中做相应变化
 	$mid = $this -> _post('mid');
 	$money = $this -> _post('money');
-	if(M('MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $money)){
-	  $this -> success(L('DATA_UPDATE_SUCCESS'));
+	$member_rmb = D('member://MemberRmb');
+	//如果是增加金额，则调用增加方法
+	if($money > 0){
+	  if($member_rmb -> addmoney('rmb_exchange', $money, $mid)){
+	    $this -> success(L('DATA_UPDATE_SUCCESS'));
+	  }else{
+	    $this -> error(L('DATA_UPDATE_ERROR'));
+	  }
+	  //如果是减少金额，则要先减少 rmb_exchange 字段，如果 rmb_exchange 字段不够，再减少 rmb_pay 字段
+	}else if($money < 0){
+	  if($member_rmb -> autolessmoney($money, $mid)){
+	    $this -> success(L('DATA_UPDATE_SUCCESS'));
+	  }else{
+	    $this -> error(L('DATA_UPDATE_ERROR'));
+	  }
 	}else{
 	  $this -> error(L('DATA_UPDATE_ERROR'));
 	}
@@ -1449,14 +1462,26 @@ class CompanyAction extends CommonAction {
   public function editmemberrmb(){
     $member_rmb_detail = D('MemberRmbDetail');
     if(!empty($_POST['id'])){
-      $member_rmb = M('MemberRmb');
+      $member_rmb = D('member://MemberRmb');
       $mid = $this -> _post('mid', 'intval');
       //启用事务
       $member_rmb -> startTrans();
       //先从RMB表中扣除原订单的金额
-      $member_rmb -> where(array('mid' => $mid)) -> setDec('rmb_exchange', $this -> _post('oldmoney'));
+      //大于0则需要删除
+      if($_POST['oldmoney'] > 0){
+	$member_rmb -> autolessmoney($_POST['oldmoney'], $mid);
+	//小于0则是添加
+      }else{
+	$member_rmb -> addmoney('rmb_exchange', abs($_POST['oldmoney']), $mid);
+      }
       //在增加新的金额
-      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $this -> _post('money'));
+      //大于0是增加，
+      if($_POST['money'] > 0){
+	$member_rmb -> addmoney('rmb_exchange', $_POST['money'], $mid);
+	//小于0是删除
+      }else{
+	$member_rmb -> autolessmoney($_POST['money'], $mid);
+      }
       //最后更新订单表
       if(!$member_rmb_detail -> create()){
 	$this -> error($member_rmb_detail -> getError());
@@ -1480,14 +1505,20 @@ class CompanyAction extends CommonAction {
   //删除会员人民币
   public function delmemberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
-    $member_rmb = M('MemberRmb');
+    $member_rmb = D('member://MemberRmb');
     //启用事务
     $member_rmb -> startTrans();
     //先查询要删除记录的金额
     $del_money_arr = $member_rmb_detail -> field('mid,money') -> where(array('id' => array('in', $_POST['ids']))) -> select();
     //循环从RMB表中删除这些金额
     foreach($del_money_arr as $value){
-      $member_rmb -> where(array('mid' => $value['mid'])) -> setDec('rmb_exchange', $value['money']);
+      //大于0则需要减少
+      if($value['money'] > 0){
+	$member_rmb -> autolessmoney($value['money'], $value['mid']);
+	//小于0则是添加
+      }else{
+	$member_rmb -> addmoney('rmb_exchange', abs($value['money']), $value['mid']);
+      }
     }
     //再删除明细表
     $where_del = array();
