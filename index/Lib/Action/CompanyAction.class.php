@@ -111,27 +111,27 @@ class CompanyAction extends CommonAction {
       //公司电话
       if($author['author_one'] == 0){
 	$result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
-	$result['companyphone'] .= ' <a target="_blank" href="' . __APP__ . '/public/authorprompt/modname/查看电话/authname/author_one"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['companyphone'] .= ' <a href="javascript:noauthor(\'author_one\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
       }
       //手机
       if($author['author_two'] == 0){
 	$result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
-	$result['mobilephone'] .= ' <a target="_blank" href="' . __APP__ . '/public/authorprompt/modname/查看手机/authname/author_two"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['mobilephone'] .= ' <a href="javascript:noauthor(\'author_two\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
       }
       //QQ
       if($author['author_three'] == 0){
 	$result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
-	$result['qqcode'] .= ' <a target="_blank" href="' . __APP__ . '/public/authorprompt/modname/查看QQ/authname/author_three"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['qqcode'] .= ' <a href="javascript:noauthor(\'author_three\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
       }
       //邮件
       if($author['author_four'] == 0){
 	$result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
-	$result['email'] .= ' <a target="_blank" href="' . __APP__ . '/public/authorprompt/modname/查看邮件/authname/author_four"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['email'] .= ' <a href="javascript:noauthor(\'author_four\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
       }
       //网址
       if($author['author_five'] == 0){
 	$result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
-	$result['website'] .= ' <a target="_blank" href="' . __APP__ . '/public/authorprompt/modname/查看网址/authname/author_five"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['website'] .= ' <a href="javascript:noauthor(\'author_five\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
       }
       //是否有查看权
       $this -> assign('isview', 1);

@@ -40,13 +40,13 @@
 	    <li class=""><a class="delete" href="__URL__/delhelparticle/navTabId/helparticle" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择文章"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/edithelparticle/id/{sid_role}" target="navTab" mask="true" warn="请选择文章"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['system']['addhelparticle'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['addhelparticle'])">
 	    <li><a class="add" href="__URL__/addhelparticle" target="navTab" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['delhelparticle'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['delhelparticle'])">
 	    <li class=""><a class="delete" href="__URL__/delhelparticle/navTabId/helparticle" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择文章"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['system']['edithelparticle'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['edithelparticle'])">
 	    <li><a class="edit" href="__URL__/edithelparticle/id/{sid_role}" target="navTab" mask="true" warn="请选择文章"><span>编辑</span></a></li>
 	    </if>
 	    </if>

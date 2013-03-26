@@ -29,13 +29,13 @@
 	    <li class=""><a class="delete" href="__URL__/deltitlenotice/navTabId/titlenotice" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公告"><span>删除</span></a></li>
 	    <li><a class="edit" href="__URL__/edittitlenotice/id/{sid_role}" target="dialog" mask="true" warn="请选择公告"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['member']['addtitlenotice'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['addtitlenotice'])">
 	    <li><a class="add" href="__URL__/addtitlenotice" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['member']['deltitlenotice'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['deltitlenotice'])">
 	    <li class=""><a class="delete" href="__URL__/deltitlenotice/navTabId/titlenotice" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公告"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['member']['edittitlenotice'])">
+	    <if condition="isset($_SESSION['acc_arr']['content']['edittitlenotice'])">
 	    <li><a class="edit" href="__URL__/edittitlenotice/id/{sid_role}" target="dialog" mask="true" warn="请选择公告"><span>编辑</span></a></li>
 	    </if>
 	    </if>

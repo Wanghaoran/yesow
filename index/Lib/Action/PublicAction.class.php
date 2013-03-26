@@ -896,8 +896,20 @@ class PublicAction extends Action {
 
   //权限不足 - 温馨提示页面
   public function authorprompt(){
-    //判断并转换编码
-    $_GET['modname'] = safeEncoding($_GET['modname']);
+    //权限中英对应数组
+    $author_arr = array(
+      'author_one' => '查看电话',
+      'author_two' => '查看手机',
+      'author_three' => '查看QQ',
+      'author_four' => '查看邮件',
+      'author_five' => '查看网址',
+      'author_six' => '单条复制',
+      'author_seven' => '单条下载',
+      'author_eight' => '批量下载',
+      'author_nine' => '全部下载',
+      'author_ten' => '批量复制',
+    );
+
     if($_GET['mod'] == 'nomoney'){
       $content = "<p>您已经无任何操作权限，请立即到会员中心充值！</p>
 	<div class=\"clear\"></div>
@@ -905,9 +917,6 @@ class PublicAction extends Action {
       $this -> assign('content', $content);
       $this -> display();
       return ;
-    }
-    if($_GET['mod'] == 'nopower'){
-    
     }
     //计算拥有此权限最低的用户等级
     $member_level = M('MemberLevel');
@@ -917,7 +926,7 @@ class PublicAction extends Action {
     $diff = $min_level['updatemoney'] - $_SESSION['rmb_total'];
 
     $content = "<P>{$_SESSION['name']}会员您好：</P>
-	  <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您需要<span>{$_GET['modname']}</span>的功能吗？您目前的会员等级为<span>{$_SESSION['member_level_name']}</span>，您无权使用此功能！可以操作<span>{$_GET['modname']}</span>的会员等级为<span>{$min_level['name']}</span>，该会员的RMB不低于<span>{$min_level['updatemoney']}</span>RMB以上就可以拥有，您目前的账户余额为<span>{$_SESSION['rmb_total']}</span>RMB，还差<span>{$diff}</span>RMB，请点这里的<a href=\"" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}\">我要充值</a>进行充值即可拥有！</P>
+	  <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您需要<span>{$author_arr[$_GET['authname']]}</span>的功能吗？您目前的会员等级为<span>{$_SESSION['member_level_name']}</span>，您无权使用此功能！可以操作<span>{$author_arr[$_GET['authname']]}</span>的会员等级为<span>{$min_level['name']}</span>，该会员的RMB不低于<span>{$min_level['updatemoney']}</span>RMB以上就可以拥有，您目前的账户余额为<span>{$_SESSION['rmb_total']}</span>RMB，还差<span>{$diff}</span>RMB，请点这里的<a href=\"" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}\">我要充值</a>进行充值即可拥有！</P>
         	<div class=\"clear\"></div>
 		<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"history.go(-1);\" value=\"返回前页\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge/amount/{$diff}'\" value=\"我要充值\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/index/userupdeta';\" value=\"会员权限\"/>";
 

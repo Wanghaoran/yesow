@@ -1439,7 +1439,6 @@ class CompanyAction extends CommonAction {
 	  $this -> error(L('DATA_UPDATE_ERROR'));
 	}
       }else{
-	echo $member_rmb_detail -> getLastSql();
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }

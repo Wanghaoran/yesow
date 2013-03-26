@@ -64,7 +64,7 @@
 	    data:'id_str=' + str,
 	    success:function(msg){////
 	      if(msg.author_eight == 0){
-		location.href="__APP__/public/authorprompt/modname/" + encodeURIComponent('批量下载') + "/authname/author_eight";
+		location.href="__APP__/public/authorprompt/authname/author_eight";
 		}else{///
 		if(msg.type == 3){
 		  if(confirm('尊敬的包月会员，您今日可免费下载的条数还剩余' + msg.less_num + '条,您所选择的下载条数为' + msg.num + '超出您今日所剩余的下载条数，将使用RMB继续下载，请确认')){
@@ -176,7 +176,7 @@
       url:'__APP__/public/ajaxalldownload/num/' + sum,
       success: function(msg){
 	if(msg.author_nine == 0){
-	  location.href="__APP__/public/authorprompt/modname/" + encodeURIComponent('全部下载') + "/authname/author_nine";
+	  location.href="__APP__/public/authorprompt/authname/author_nine";
 	  }else{
 	  //会员余额足够扣费
 	    if(msg.enough == 1){
@@ -245,7 +245,7 @@
 	    url:'__APP__/public/ajaxbatchcopy/cid/' + str,
 	    success:function(msg){
 	      if(msg.author_ten == 0){
-		location.href="__APP__/public/authorprompt/modname/" + encodeURIComponent('批量复制') + "/authname/author_ten";
+		location.href="__APP__/public/authorprompt/authname/author_ten";
 	     }else{
 	       if(msg.type == 3){
 		 if(confirm('尊敬的包月会员，您今日可免费复制的条数还剩余' + msg.less_num + '条,您所选择的复制条数为' + msg.num + '超出您今日所剩余的复制条数，将使用RMB继续复制，请确认')){

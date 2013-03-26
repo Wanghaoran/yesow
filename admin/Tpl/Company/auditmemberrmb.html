@@ -12,7 +12,7 @@
 	    <span>会员帐号：<!--{$info.mname}--!>，会员余额：<!--{$info.count}--!><span>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['company']['addmemberrmb'])">
-	    <li><a class="add" href="__URL__/addmemberrmb" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li><a class="add" href="__URL__/addmemberrmb/mid/<!--{$Think.get.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['company']['delmemberrmb'])">	    
 	    <li><a class="delete" href="__URL__/delmemberrmb/navTabId/auditmemberrmb" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择消费明细"><span>删除</span></a></li>
