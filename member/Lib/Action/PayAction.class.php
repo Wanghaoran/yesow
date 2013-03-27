@@ -2,6 +2,7 @@
 class PayAction extends Action {
   //支付宝异步通知页面
   public function alipaynotify(){
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
@@ -35,21 +36,13 @@ class PayAction extends Action {
       $where['ordernum'] = $out_trade_no;
       $data = array();
 
-      //该判断表示买家已在支付宝交易管理中产生了交易记录，但没有付款  status = 0
-      if($_POST['trade_status'] == 'WAIT_BUYER_PAY'){
-	$data['status'] = 0;
-	$rmb_order -> where($where) -> save($data);
-	echo "success";
-      
-      }
-      //该判断表示买家已在支付宝交易管理中产生了交易记录且付款成功，但卖家没有发货 status = 1
-      else if($_POST['trade_status'] == 'WAIT_SELLER_SEND_GOODS'){
-	//先读取目前的订单状态
-	//$now_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
+      if($_POST['trade_status'] == 'WAIT_SELLER_SEND_GOODS'){
+	//先读取此订单是否已经进行过充值操作
+	$ispay = $rmb_order -> getFieldByordernum($out_trade_no, 'ispay');
 	//更新订单状态
 	$data['status'] = 1;
-	//如果更新成功，并且订单状态是从未付款到已付款，则更新会员RMB表
-	if($rmb_order -> where($where) -> save($data)){
+	//如果更新成功，并且未进行过更新RMB表的操作，则更新会员RMB表
+	if($rmb_order -> where($where) -> save($data) && $ispay == 0){
 	  $member_rmb = D('MemberRmb');
 	  //获取支付总额
 	  $total_pee = $this -> _post('total_fee');
@@ -57,6 +50,8 @@ class PayAction extends Action {
 	  $mid = $rmb_order -> getFieldByordernum($out_trade_no, 'mid');
 	  //向用户RMB表增加
 	  if($member_rmb -> addmoney('rmb_pay', $total_pee, $mid)){
+	    //标记为已充值
+	    $rmb_order -> where($where) -> save(array('ispay' => 1));
 	    //写RMB消费日志
 	    $detail = D('MemberRmbDetail');
 	    $detail -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
@@ -76,21 +71,25 @@ class PayAction extends Action {
 	  }
 	}
 	echo "success";
+	exit();
       }
       //该判断表示卖家已经发了货，但买家还没有做确认收货的操作 status = 2
       else if($_POST['trade_status'] == 'WAIT_BUYER_CONFIRM_GOODS'){
 	$data['status'] = 2;
 	$rmb_order -> where($where) -> save($data);
 	echo "success";
+	exit();
       }
       //该判断表示买家已经确认收货，这笔交易完成 status = 3
       else if($_POST['trade_status'] == 'TRADE_FINISHED'){
 	$data['status'] = 3;
 	$rmb_order -> where($where) -> save($data);
 	echo "success";
+	exit();
       }
     }else{
       echo "fail";
+      exit();
     }
   }
 
