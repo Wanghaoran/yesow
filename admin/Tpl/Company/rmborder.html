@@ -57,6 +57,7 @@
 			<th width="50">充值金额</th>
 			<th width="60">充值用户</th>
 			<th width="70">订单状态</th>
+			<th width="40">金额状态</th>
 			<th width="40">是否确认</th>
 			<th width="60">支付方式</th>
 			<th width="110">下单时间</th>
@@ -78,6 +79,11 @@
 			  <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
 			  <case value="3"><td style="color:green;">交易完成</td></case>
 			  </switch>
+			  <eq name="r.ispay" value="1">
+			  <td style="color:blue">已添加</td>
+			  <else/>
+			  <td style="color:red">未添加</td>
+			  </eq>
 			  <eq name="r.ischeck" value="1">
 			  <td style="color:blue">已确认</td>
 			  <else/>
