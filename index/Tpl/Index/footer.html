@@ -12,46 +12,14 @@
 			</p>
 		      </div>
 		      <div class="footer_list">
+			<volist name="index_bottomhelp" id="ib">
 			<ul>
-				<li class="tit">栏目名称01</li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
+			  <li class="tit"><!--{$ib.name}--!></li>
+			  <volist name="ib.article" id="iba">
+			  <li><a href="__ROOT__/member.php/help/index/cid/<!--{$ib.id}--!>/aid/<!--{$iba.id}--!>" target="_blank" ><!--{$iba.title}--!></a></li>
+			  </volist>
 			</ul>
-			<ul>
-				<li class="tit">栏目名称02</li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-			</ul>
-			<ul>
-				<li class="tit">栏目名称03</li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-			</ul>
-			<ul>
-				<li class="tit">栏目名称04</li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-			</ul>
-			<ul>
-				<li class="tit">栏目名称05</li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-				<li><a href="" >这里是栏目01分类下的文章</a></li>
-			</ul>
+			</volist>
 			<div class="clear"></div>
 		      </div>
 		      <div id="copyright">

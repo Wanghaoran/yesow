@@ -50,6 +50,14 @@ class CommonAction extends Action {
       $this -> assign('index_qqonline', $index_qqonline);
       S('index_qqonline', $index_qqonline);
     }
+    //底部栏目
+    if(S('index_bottomhelp')){
+      $this -> assign('index_bottomhelp', S('index_bottomhelp'));
+    }else{
+      $index_bottomhelp = $this -> getbottomhelp();
+      $this -> assign('index_bottomhelp', $index_bottomhelp);
+      S('index_bottomhelp', $index_bottomhelp);
+    }
   }
 
   //获得一级资讯分类
@@ -91,6 +99,17 @@ class CommonAction extends Action {
     $result = M('QqonlineType') -> field('id,name') -> select();
     foreach($result as $key => $value){
       $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'], 'csid' => 18)) -> select();
+    }
+    return $result;
+  }
+
+  //获取底部帮助栏目
+  private function getbottomhelp(){
+    $help_class = M('HelpClass');
+    $help_article = M('HelpArticle');
+    $result = $help_class -> field('id,name') -> order('sort ASC') -> limit(5) -> select();
+    foreach($result as $key => $value){
+      $result[$key]['article'] = $help_article -> field('id,title') -> where(array('cid' => $value['id'])) -> order('sort ASC') -> limit(5) -> select();
     }
     return $result;
   }

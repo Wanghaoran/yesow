@@ -1198,6 +1198,8 @@ class ContentAction extends CommonAction {
 	$this -> error($helpclass -> getError());
       }
       if($helpclass -> add()){
+	//删除缓存
+	S('index_bottomhelp', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -1212,6 +1214,8 @@ class ContentAction extends CommonAction {
     $where_del['id'] = array('in', $_POST['ids']);
     $helpclass = M('HelpClass');
     if($helpclass -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_bottomhelp', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -1226,6 +1230,8 @@ class ContentAction extends CommonAction {
 	$this -> error($helpclass -> getError());
       }
       if($helpclass -> save()){
+	//删除缓存
+	S('index_bottomhelp', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
@@ -1284,6 +1290,8 @@ class ContentAction extends CommonAction {
 	$this -> error($helparticle -> getError());
       }
       if($helparticle -> add()){
+	//删除缓存
+	S('index_bottomhelp', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -1302,6 +1310,8 @@ class ContentAction extends CommonAction {
     $where_del['id'] = array('in', $_POST['ids']);
     $helparticle = M('HelpArticle');
     if($helparticle -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_bottomhelp', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -1316,6 +1326,8 @@ class ContentAction extends CommonAction {
 	$this -> error($helparticle -> getError());
       }
       if($helparticle -> save()){
+	//删除缓存
+	S('index_bottomhelp', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));

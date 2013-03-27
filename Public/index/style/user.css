@@ -297,6 +297,7 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 span.col_blue{ color:#0006ff}
 span.col_red{ color:#ff0000}
 span.col_grey{ color:#0006ff}
+span.col_green{ color:#009107;}
 p.p_btn{ width:160px; margin:20px auto;}
 input.wydh_btn{ margin:10px;width:160px; height:30px; line-height:30px; background:url(images/user/RightColumn_Btn.gif) 0 -60px no-repeat; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center; cursor:pointer;}
 p.p_title{ font-size:14px; height:25px; line-height:25px;}
@@ -424,3 +425,7 @@ ul.memberqx{ padding-left:10px;  margin:5px 0; color:#000;}
 ul.memberqx li{ float:left;height:23px; line-height:25px; margin:0 2px; padding-left:15px;  color:#000; font-weight:normal;}
 ul.memberqx li.check_yes{ background:url(images/user/checkboxbg1.jpg) left center no-repeat; }
 ul.memberqx li.check_no{ background:url(images/user/checkboxbg2.jpg) left center no-repeat; }
+
+table.table_gwc{ float:left;width:740px; border:#e4e4e4 1px solid; border-collapse:collapse; margin:10px auto;}
+table.table_gwc th{border:none; font-size:12px; font-weight:bold; background:url(images/user/tabletitlebg.jpg) repeat-x; border:#e4e4e4 1px solid; border-collapse:collapse; height:30px; line-height:30px; text-align:center;}
+table.table_gwc td{border:none; border:#e4e4e4 1px solid; border-collapse:collapse; height:25px; line-height:25px; text-align:center;}
