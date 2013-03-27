@@ -45,11 +45,11 @@ class PayAction extends Action {
       //该判断表示买家已在支付宝交易管理中产生了交易记录且付款成功，但卖家没有发货 status = 1
       else if($_POST['trade_status'] == 'WAIT_SELLER_SEND_GOODS'){
 	//先读取目前的订单状态
-	$now_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
+	//$now_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
 	//更新订单状态
 	$data['status'] = 1;
 	//如果更新成功，并且订单状态是从未付款到已付款，则更新会员RMB表
-	if($rmb_order -> where($where) -> save($data) && $now_status == 0){
+	if($rmb_order -> where($where) -> save($data)){
 	  $member_rmb = D('MemberRmb');
 	  //获取支付总额
 	  $total_pee = $this -> _post('total_fee');
