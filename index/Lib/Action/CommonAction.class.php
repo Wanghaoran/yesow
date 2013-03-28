@@ -58,5 +58,13 @@ class CommonAction extends Action {
       $this -> assign('index_bottomhelp', $index_bottomhelp);
       S('index_bottomhelp', $index_bottomhelp);
     }
+    //商城导航
+    if(S('index_shop_nav')){
+      $this -> assign('index_shop_nav', S('index_shop_nav'));
+    }else{
+      $index_shop_nav = R('Public/getshopnav');
+      $this -> assign('index_shop_nav', $index_shop_nav);
+      S('index_shop_nav', $index_shop_nav);   
+    }
   }
 }

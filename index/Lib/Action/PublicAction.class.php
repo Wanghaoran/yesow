@@ -989,4 +989,11 @@ class PublicAction extends Action {
     return $result;
   }
 
+  //获取商城导航
+  public function getshopnav(){
+    $shop_class = M('Shop_class');
+    $result = $shop_class -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    return $result;
+  }
+
 }

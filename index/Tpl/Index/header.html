@@ -153,7 +153,11 @@ function setHomepage()
 			<else/>
 			<li><a href="__ROOT__/agent">代理加盟</a></li>
 			</if>
-			<li class="last"><a href="http://old.yesow.com/mall" target="_blank">易搜商城</a></li>
+			<if condition="MODULE_NAME eq 'Shop'">
+			<li class="hover"><a href="__ROOT__/shop">易搜商城</a></li>
+			<else/>
+			<li><a href="__ROOT__/shop">易搜商城</a></li>
+			</if>
                 </ul>
 	      </div>
 	      
@@ -186,7 +190,19 @@ function setHomepage()
 				<else/>
 				<li class="none li_weizhi7"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist><a href="__ROOT__/agent/add">加盟申请</a></li>
 				</if>
-				<li class="none li_weizhi8"><a href="" >第八个01</a><a href="" >第八个02</a><a href="" >第八个03</a><a href="" >第八个04</a></li>
+				<if condition="MODULE_NAME eq 'Shop'">
+				<li class="li_weizhi8">
+				<volist name="index_shop_nav" id="isn">
+				<a href="__ROOT__/Shop/index/cid/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
+				</volist>
+				</li>
+				<else/>
+				<li class="none li_weizhi8">
+				<volist name="index_shop_nav" id="isn">
+				<a href="__ROOT__/Shop/index/cid/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
+				</volist>
+				</li>
+				</if>				
 			</ul>	
 		      </div>
 

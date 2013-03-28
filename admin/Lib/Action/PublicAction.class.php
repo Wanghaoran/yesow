@@ -253,4 +253,32 @@ class PublicAction extends Action {
     }
     echo json_encode($result);
   }
+
+  //ajax获取商品二级分类
+  public function ajaxgetshoptwoclass(){
+    $pid = $this -> _get('id', 'intval');
+    $shop_class = M('ShopClass');
+    $result_tmp = $shop_class -> field('id,name') -> where(array('pid' => $pid)) -> order('sort ASC') -> select();
+    $result = array();
+    //格式化结果集
+    foreach($result_tmp as $key => $value){
+      $result[] = array($value['id'], $value['name']);
+    }
+    echo json_encode($result);
+  }
+
+  //商品图片文件上传
+  public function shop_pic_upload(){
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('SHOP_PIC_PATH') ;//设置上传目录
+    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> saveRule = 'uniqid';
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info;
+    }else{
+      return $upload;
+    }
+  }
 }

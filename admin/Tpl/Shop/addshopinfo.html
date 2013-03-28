@@ -1,0 +1,62 @@
+<div class="panel">
+  <h1>添加商品</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/shopinfo" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:90%;">
+      <label>商品名称：</label>
+      <input type="text" class="textInput required" size="90" name="title" />
+      </p>
+      <p>
+      <label>所属分类：</label>
+      <select class="combox" name="cid_one" ref="cid_two" refUrl="__APP__/public/ajaxgetshoptwoclass/id/{value}">
+	<option value="">请选择</option>
+	<volist name="result_shopclass" id="rs">
+	<option value="<!--{$rs.id}--!>"><!--{$rs.name}--!></option>
+	</volist>
+      </select>
+      <select class="combox" name="cid_two" id="cid_two">
+	<option value="">请选择</option>
+      </select>
+      </p>
+      <p>
+      <label>商品运费：</label>
+      <input type="radio" name="issend" value="1" checked="checked" />运费自理 <input type="radio" name="issend" value="0" />免运产品
+      </p>
+
+      <p>
+      <label>市场价格：</label>
+      <input type="text" class="textInput required" name="marketprice" />
+      </p>
+      <p>
+      <label>促销价格：</label>
+      <input type="text" class="textInput required" name="promotionprice" />
+      </p>
+
+      <p>
+      <label>小图上传：</label>
+      <input name="small_pic" type="file" />
+      </p>
+      <p>
+      <label>大图上传：</label>
+      <input name="big_pic" type="file" />
+      </p>
+      <p style="width:800px;height:100%">
+      <label>简介：</label>
+      <textarea name="remark" cols="90"></textarea>
+      </p>
+      
+      
+      <div class="divider"></div>
+      <p style="width:100%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"></textarea>
+      </p>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>
