@@ -131,6 +131,14 @@ class PublicAction extends Action {
 
   //登录
   public function login(){
+    //在线QQ客服
+    if(S('member_qqonline')){
+      $this -> assign('member_qqonline', S('member_qqonline'));
+    }else{
+      $member_qqonline = $this -> getqqonline();
+      $this -> assign('member_qqonline', $member_qqonline);
+      S('member_qqonline', $member_qqonline);
+    }
     $this -> display();
   }
 
@@ -186,6 +194,22 @@ class PublicAction extends Action {
     $member_monthly = M('MemberMonthly');
     $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num,ml.monthly_two_num,ml.monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where(array('mm.lid' => $this -> _get('lid', 'intval'))) -> order('mm.months ASC') -> select();
     echo json_encode($result);
+  }
+
+  //获得底部关于我们
+  public function getfooternav(){
+    $aboutus =  M('Aboutus');
+    return $aboutus -> field('id,title') -> order('sort ASC') -> select();
+  }
+
+  //获得QQ客服
+  public function getqqonline(){
+    $qqonline = M('Qqonline');
+    $result = M('QqonlineType') -> field('id,name') -> select();
+    foreach($result as $key => $value){
+      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'], 'csid' => array('exp', 'is null'))) -> select();
+    }
+    return $result;
   }
 }
 

@@ -935,11 +935,56 @@ class PublicAction extends Action {
   }
 
   //获得分站信息
-  private function getchildsite(){
+  public function getchildsite(){
     $result = M('Area') -> field('id,name') -> where(array('name' => array('neq', '主站'), 'isshow' => '1')) -> select();
     $childsite = M('ChildSite');
     foreach($result as $key => $value){
       $result[$key]['childsite'] = $childsite -> field('domain,name') -> where(array('aid' => $value['id'], 'isshow' => 1)) -> select();
+    }
+    return $result;
+  }
+
+
+  //获得一级资讯分类
+  public function getonearticle(){
+    $articleonecolumn = M('InfoOneColumn');
+    return $articleonecolumn -> field('id,name') -> where(array('isnav' => 1)) -> order('sort ASC') -> select();
+  }
+
+  //获取热搜关键词
+  public function getsearchhot(){
+    $searchhot = M('SearchHot');
+    return $searchhot -> field('name') -> order('sort ASC') -> select();
+  }
+
+  //获得底部关于我们
+  public function getfooternav(){
+    $aboutus =  M('Aboutus');
+    return $aboutus -> field('id,title') -> order('sort ASC') -> select();
+  }
+
+  //获得代理加盟二级分类
+  public function getagentjoin(){
+    return M('AgentJoin') -> field('id,title') -> order('sort ASC') -> select();
+  }
+
+  //获得QQ客服
+  public function getqqonline(){
+    $qqonline = M('Qqonline');
+    $result = M('QqonlineType') -> field('id,name') -> select();
+    foreach($result as $key => $value){
+      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'], 'csid' => 18)) -> select();
+    }
+    return $result;
+  }
+
+  //获取底部帮助栏目
+  public function getbottomhelp(){
+    $help_class = M('HelpClass');
+    $help_article = M('HelpArticle');
+    $result = $help_class -> field('id,name') -> order('sort ASC') -> limit(5) -> select();
+    foreach($result as $key => $value){
+      $result[$key]['article'] = $help_article -> field('id,title') -> where(array('cid' => $value['id'])) -> order('sort ASC') -> limit(5) -> select();
     }
     return $result;
   }
