@@ -12,7 +12,7 @@ class CommonAction extends Action {
    * 前置操作检查用户权限
    */
   public function _initialize(){
-    if(C('USER_AUTH_ON') && !in_array(MODULE_NAME, explode(',', C('NOT_AUTH_MODULE'))) && ACTION_NAME != 'menu' && ACTION_NAME != 'uploadfile'){
+    if(C('USER_AUTH_ON') && !in_array(MODULE_NAME, explode(',', C('NOT_AUTH_MODULE'))) && ACTION_NAME != 'menu' && ACTION_NAME != 'uploadfile' && ACTION_NAME != 'setpicisshow'){
       import('ORG.Util.RBACI');
       if(!RBAC::AccessDecision()){
 	//检查认证识别号
