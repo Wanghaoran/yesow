@@ -68,6 +68,10 @@ function setHomepage()
     prefs.setCharPref('browser.startup.homepage','http://www.yesow.com');
  }
 }
+
+var opensearch = function(key_word){
+  window.open('__ROOT__/search/keyword/' + encodeURIComponent(key_word) + '');
+}
   
 </script>
 
@@ -115,7 +119,7 @@ function setHomepage()
             <p class="clear" id="hot_search">
 	    <b>热门搜索:</b>
 	    <volist name="index_search_hot" id="ish">
-	    <a href="__ROOT__/search/keyword/<!--{$ish.name}--!>" target="_blank"><!--{$ish.name}--!></a>&nbsp;
+	    <a onclick="opensearch('<!--{$ish.name}--!>')"><!--{$ish.name}--!></a>&nbsp;
 	    </volist>
             </p>
         </div>

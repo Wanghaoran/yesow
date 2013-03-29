@@ -23,6 +23,7 @@ class CompanyAction extends CommonAction {
 
   //添加速查信息
   public function add(){
+    header("Content-Type:text/html;charset=utf-8");
     //处理添加
     if(!empty($_POST['companyname'])){
       if($this -> _post('verify', 'md5') != $_SESSION['verify']){
@@ -54,7 +55,7 @@ class CompanyAction extends CommonAction {
     $result_company_type = M('CompanyType') -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_company_type', $result_company_type);
     //查询主营类别 - 二级
-    $result_company_category_two = M('CompanyCategory') -> table('yesow_company_category as cc') -> field('cc.id,cc.name,cct.name as cctname') -> where(array('cc.pid' => array('neq', 0))) -> join('yesow_company_category as cct ON cc.pid = cct.id') -> order('cct.sort ASC,cc.sort ASC') -> select();
+    $result_company_category_two = M('CompanyCategory') -> table('yesow_company_category as cc') -> field('cc.id,cc.name,cct.name as cctname') -> where(array('cc.pid' => array('neq', 0))) -> join('yesow_company_category as cct ON cc.pid = cct.id') -> order('cc.id ASC,cct.sort ASC') -> select();
 
     $this -> assign('result_company_category_two', $result_company_category_two);
     //如果会员已登录，则查出此会员的个人信息
