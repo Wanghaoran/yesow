@@ -442,6 +442,11 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //商家在线
+  public function companyonline(){
+    $this -> display();
+  }
+
   //速查搜索算法
   //keyword 搜索关键词
   //page 是否需要分页

@@ -39,10 +39,12 @@ class PayAction extends Action {
       if($_POST['trade_status'] == 'WAIT_SELLER_SEND_GOODS'){
 	//先读取此订单是否已经进行过充值操作
 	$ispay = $rmb_order -> getFieldByordernum($out_trade_no, 'ispay');
+	//再读取此订单目前的订单状态
+	$old_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
 	//更新订单状态
 	$data['status'] = 1;
-	//如果更新成功，并且未进行过更新RMB表的操作，则更新会员RMB表
-	if($rmb_order -> where($where) -> save($data) && $ispay == 0){
+	//如果订单是未付款的状态，并且未进行过更新RMB表的操作，并且更新成功，则更新会员RMB表
+	if($old_status == 0 && $ispay == 0 && $rmb_order -> where($where) -> save($data)){
 	  $member_rmb = D('MemberRmb');
 	  //获取支付总额
 	  $total_pee = $this -> _post('total_fee');
@@ -75,15 +77,25 @@ class PayAction extends Action {
       }
       //该判断表示卖家已经发了货，但买家还没有做确认收货的操作 status = 2
       else if($_POST['trade_status'] == 'WAIT_BUYER_CONFIRM_GOODS'){
+	//读取此订单目前的订单状态
+	$old_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
 	$data['status'] = 2;
-	$rmb_order -> where($where) -> save($data);
+	//如果订单是 已付款未发货，才进行此更新
+	if($old_status == 1){
+	  $rmb_order -> where($where) -> save($data);
+	}
 	echo "success";
 	exit();
       }
       //该判断表示买家已经确认收货，这笔交易完成 status = 3
       else if($_POST['trade_status'] == 'TRADE_FINISHED'){
+	//读取此订单目前的订单状态
+	$old_status = $rmb_order -> getFieldByordernum($out_trade_no, 'status');
 	$data['status'] = 3;
-	$rmb_order -> where($where) -> save($data);
+	//如果订单是 已发货未确认收货，才进行此更新
+	if($old_status == 2){
+	  $rmb_order -> where($where) -> save($data);
+	}
 	echo "success";
 	exit();
       }

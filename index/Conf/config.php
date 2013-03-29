@@ -20,7 +20,8 @@ $app_config = array(
     'scorerank' => 'company/scorerank',//正负排名
     'aboutus/:id\d' => 'index/aboutus',//关于我们
     'aboutus' => 'index/aboutus',//关于我们
-    'agent/:id\d' => 'agent/index',
+    'agent/:id\d' => 'agent/index',//代理加盟
+    'shop/:id\d' => 'shop/info',//商品详情
   ),
 );
 
