@@ -447,6 +447,16 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //关键排名
+  public function keywordrank(){
+    $this -> display();
+  }
+
+  //商家风采
+  public function companyshow(){
+    $this -> display();
+  }
+
   //速查搜索算法
   //keyword 搜索关键词
   //page 是否需要分页
