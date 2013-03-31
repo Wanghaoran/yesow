@@ -7,6 +7,50 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript">
+  function poplogin(){
+    var api = $.dialog({id:'L1360'});
+    /* jQuery ajax */
+    $.ajax({
+      url:'__ROOT__/public/ajaxlogin',
+      success:function(data){
+        api.content(data);
+       },
+       cache:false
+    });
+  }
+
+  function buynow(){
+    var shopnum = $('#shopnums').val();
+    $.ajax({
+      url:'__URL__/addshopcart/sid/<!--{$Think.get.id}--!>/num/' + shopnum,
+      success:function(data){
+        if(data == 1){
+	  location.href="__URL__/shopcart";
+	}else{
+	  alert('购物车添加失败！');
+	}
+       }
+    });
+  }
+
+  function addshopcart(){
+    var shopnum = $('#shopnums').val();
+    $.ajax({
+      url:'__URL__/addshopcart/sid/<!--{$Think.get.id}--!>/num/' + shopnum,
+      success:function(data){
+        if(data == 1){
+	  if(confirm('添加到购物车成功,是否转到购物车付款？')){
+	    location.href="__URL__/shopcart";
+	  }
+	}else{
+	  alert('购物车添加失败！');
+	}
+       }
+    });
+  }
+</script>
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -74,12 +118,18 @@
 					    免运产品
 					    </eq>
 					  </h6>
-                                            <h6><span>购买数量：</span><input type="text" class="input_gmsl" value="1" />&nbsp;件</h6>
+                                            <h6><span>购买数量：</span><input type="text" id="shopnums" class="input_gmsl" value="1" />&nbsp;件</h6>
                                             <h6><span>支付方式：</span>余额支付  在线支付</h6>
 					    <h6><span>人气指数：</span><!--{$result.clickcount}--!></h6>
                                             <h6><span>市场价格：</span><!--{$result.marketprice}--!></h6>
                                             <h6><span>促销价格：</span><!--{$result.promotionprice}--!></h6>
-                                            <h6><input type="button" class="btn_scgw" value="立即购买"/><input type="button" class="btn_scgw" value="加入购物车"/></h6>
+					    <h6>
+					      <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+					      <input type="button" class="btn_scgw" value="立即购买" onclick="buynow();" />
+					      <else/>
+					      <input type="button" class="btn_scgw" value="立即购买" onclick="poplogin();"/>
+					      </if>
+					      <input type="button" class="btn_scgw" value="加入购物车" onclick="addshopcart();"/></h6>
                                         </div>
                                     </li>
                                 </ul>

@@ -7,6 +7,33 @@
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript">
+  function poplogin(){
+    var api = $.dialog({id:'L1360'});
+    /* jQuery ajax */
+    $.ajax({
+      url:'__ROOT__/public/ajaxlogin',
+      success:function(data){
+        api.content(data);
+       },
+       cache:false
+    });
+  }
+
+  function buynow(shopid){
+    $.ajax({
+      url:'__URL__/addshopcart/sid/' + shopid + '/num/1',
+      success:function(data){
+        if(data == 1){
+	  location.href="__URL__/shopcart";
+	}else{
+	  alert('购物车添加失败！');
+	}
+       }
+    });
+  }
+</script>
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -80,7 +107,13 @@
 				<div class="clear"></div>
 				</li>
 				<li class="libox">市场价：<span class="linethrough"><!--{$r.marketprice}--!></span>元&nbsp;&nbsp;&nbsp;&nbsp;促销价：<span class="font_gdbq"><!--{$r.promotionprice}--!>元</span></li>
-				<li class="libtn"><input type="button" onclick="window.open('__ROOT__/shop/<!--{$r.id}--!>');" class="btn_scgw" value="详细介绍"/><input type="button" class="btn_scgw" value="立即购买"/></li>
+				<li class="libtn">
+				<input type="button" onclick="window.open('__ROOT__/shop/<!--{$r.id}--!>');" class="btn_scgw" value="详细介绍"/>
+				<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+				<input type="button" class="btn_scgw" value="立即购买" onclick="buynow('<!--{$r.id}--!>')"/></li>
+				<else/>
+				<input type="button" class="btn_scgw" value="立即购买" onclick="poplogin();"/></li>
+				</if>
                                     </ul>
                                     <div class="clear"></div>
 				  </div>

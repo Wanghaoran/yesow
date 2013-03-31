@@ -299,4 +299,16 @@ class ShopAction extends CommonAction {
   }
 
   /* --------------------- 商品管理 --------------------- */
+
+  /* --------------------- 订单管理 --------------------- */
+
+  //商城订单管理
+  public function shoporder(){
+    $order = M('ShopOrder');
+    $result = $order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,m.name as mname,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus') -> join('yesow_send_type as st ON so.sendid = st.id') -> join('yesow_member as m ON so.mid = m.id') -> order('so.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  /* --------------------- 订单管理 --------------------- */
 }

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的购物车 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script>
+  //删除购物车中的商品
+  var delcart = function(idstr){
+    $.ajax({
+      url:'__URL__/delshopcart/ids/' + idstr,
+      success:function(data){
+	location.reload();
+       }
+    });
+  }
+
+  //修改商品数量
+  var editcart = function(scid, obj){
+    //获取新的数量
+    var shopnum = $(obj).parent().children()[0].value;
+    $.ajax({
+      url:'__URL__/editshopcare/id/' + scid + '/shopnum/' + shopnum,
+      success:function(data){
+	location.reload();
+       }
+    });
+  }
+
+  //获取支付总额
+  var total = function(){
+    var totalprice = 0;
+    //商品总价
+    $('.totalmoney').each(function(){
+      totalprice += parseFloat($(this).html());
+    });
+    //税
+    if($('input[name="isbull"]:checked').val() == 1){
+      //100元以下加10元
+      if(totalprice <= 100){
+	totalprice += 10;
+      //100元以上加8%
+      }else{
+        totalprice += totalprice * 0.08;
+      }
+    }
+    //运费
+    totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
+    $('#tm').html(totalprice);
+
+  }
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/shop">易搜商城</a> &gt;
+		<span>购物车</span> 
+	</div>
+	<!--网上商城开始-->
+	<div id="main14">
+        <div class="cat_header">
+            <h3>网上商城</h3>
+        </div>
+        <div class="cat_bod">
+        	<div class="clear30"></div>
+            <div class="zxzfbox" style="border-bottom:none;">
+            	<div class="zxzfbox_title">
+                	<h2 class="h2_gwc">您的购物车中有如下商品</h2>
+                </div>
+                <div class="zxzfbox_con">
+                	<h2></h2>
+			<table class="table_zxzf1">
+			  <tr>
+			    <th>商品编号</th>
+                            <th>商品名称</th>
+                            <th>商品价格</th>
+                            <th>数量</th>
+                            <th>小记金额</th>
+                            <th>删除</th>
+			  </tr>
+			  <volist name="result" id="r">
+			  <tr>
+			    <td><!--{$r.id}--!></td>
+			    <td><!--{$r.title}--!></td>
+			    <td>￥ <!--{$r.promotionprice}--!> 元</td>
+			    <td><input type="text" value="<!--{$r.shopnum}--!>" class="text_gwcnum"/><input type="button" value="修改" class="btn_xiugai" onclick="editcart('<!--{$r.scid}--!>', this);"/></td>
+			    <td>￥ <span class="totalmoney"><!--{$r.totalmoney}--!></span> 元</td>
+                            <td><input type="button" class="btn_shanchu" onclick="delcart('<!--{$r.scid}--!>');" /></td>
+			  </tr>
+			  </volist>
+                    </table>
+                    <div class="clear10"></div>
+		    <div class="div_gwcbtn">
+		      <input type="button" class="btn_jxgw" onclick="location.href='__ROOT__/shop'" />
+		      <input type="button" class="btn_qksp" onclick="delcart('all');" />
+		      <input type="button" class="btn_fhqy" onclick="history.go(-1);"/></div>
+                    <div class="clear10"></div>
+                </div>
+            </div>
+            <div class="zxzfbox" style="border-top:none;">
+            	<div class="zxzfbox_title">
+                	<h2>请填写收货人信息</h2>
+                </div>
+		<div class="clear10"></div>
+		<form action="__URL__/orderpay" method="post" id="topay">
+                <table class="table_gwc">
+		  <tr><td class="tdleft">真实姓名：</td><td class="tdright"><input type="text" class="text_gwcshrxx" value="<!--{$info.fullname}--!>" name="username" /></td><td class="tdmid">*必须填写，将是收货人的真实姓名。</td></tr>
+		  <tr><td class="tdleft">联系地址：</td><td class="tdright"><input type="text" class="text_gwcshrxx" value="<!--{$info.address}--!>" name="address" /></td><td class="tdmid">*务必填写是收货人的详细地址。</td></tr>
+		  <tr><td class="tdleft">邮政编码：</td><td class="tdright"><input type="text" class="text_gwcshrxx" value="<!--{$info.zipcode}--!>" name="zipcode" /></td><td class="tdmid">*准确填写收货地的邮政编码。</td></tr>
+		  <tr><td class="tdleft">联系电话：</td><td class="tdright"><input type="text" class="text_gwcshrxx" value="<!--{$info.tel}--!>" name="tel" /></td><td class="tdmid">*请如实填写，便于我们与您联系。</td></tr>
+		  <tr><td class="tdleft">电子邮箱：</td><td class="tdright"><input type="text" class="text_gwcshrxx" value="<!--{$info.email}--!>" name="email" /></td><td class="tdmid">*请如实填写，便于我们与您联系。</td></tr>
+                    <tr><td class="tdleft">是否开票：</td>
+		      <td class="tdright">
+			<input type="radio" name="isbull" value="1" onclick="total();" />需要（100元以下加10元税，100元以上加8%税点）
+			<input type="radio" name="isbull" value="0" checked="checked" onclick="total();"/>不需要
+		      </td>
+                        <td class="tdmid">*请根据您的需要选择开票情况，以免造成您经济上的损失。</td>
+                    </tr>
+                    <tr><td class="tdleft">送货方式：</td>
+                    	<td class="tdright">
+			  <select name="sendid" id="sendid" onchange="total();">
+			    <volist name="send" id="s">
+			    <option value="<!--{$s.id}--!>" sendmoney="<!--{$s.money}--!>"><!--{$s.name}--!>(￥<!--{$s.money}--!>元)</option>
+			    </volist>
+			  </select>
+                        </td>
+                        <td class="tdmid">*请选择，不同的送货方式其费用不一样。</td></tr>
+                    <tr><td class="tdleft">买家留言：</td><td class="tdright"><input type="text" class="text_gwcshrxx" name="remark" /></td><td class="tdmid">*请写下您对我们的特殊要求。</td></tr>
+		  </table>
+		  
+                <div class="clear30 gwc_tishi1">*注意：以上信息是您默认注册时的信息，请认真阅读并如实填写，我们将以此为您发货。否则由此造成的损失，我方概不负责！您也可以修改您会员中心的注册信息后进行购买。</div>
+                <div class="clear10"></div>
+                <div class="clear30 gwc_tishi2">以上总计金额：<span id="tm">0</span>元</div>
+		<div class="clear30 gwc_tishi3"><input type="button" class="btn_xyb" onclick="$('#topay').submit();" /></div>
+		</form>
+             </div>
+        </div>
+		<div class="clear"></div>
+	</div>
+	<!--支付流程结束-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	<include file="Index:footer" />
+</div>
+</body>
+<script>
+  total();
+</script>
+</html>
