@@ -8,15 +8,8 @@ $app_lang = array(
   'USER_FORGET_PASSWORD_ANSWER_ERROR' => '密码保护问题不正确，请返回检查',
   'PASSWORD_CHANGE_SUCCESS' => '密码更改成功，请您重新登录',
   'PASSWORD_DATA_UPDATE_ERROR' => '更新失败，新密码与原密码相同，请返回修改',
-  'PASSWORD_EMAIL_NAME_ERROR' => '用户名错误，此用户密码不能通过邮件找回',
-  'TRADERSPASSWORD_EMPTY_ERROR' => '您还没有设置交易密码,请先设置交易密码',
-  'TRADERSPASSWORD_ERROR' => '交易密码错误,请重新输入',
-  'ORDER_ERROR' => '生成订单错误',
-  'RMB_ERROR' => 'RMB操作失败',
-  'RMB_CACHE' => '更新RMB缓存失败',
-  'RMB_LOG_ERROR' => 'RMB明细写入失败',
+  'PASSWORD_EMAIL_NAME_ERROR' => '用户名错误，此用户密码不能通过邮件找回', 
   'MONTHLY_ERROR' => '更新包月信息失败',
-  'ORDER_UPDATE_ERROR' => '更新订单状态失败',
   'MONTHLY_LEVEL_ERROR' => '您现在已经是包月会员，请重新选择高于您现在会员等级的包月类型',
 );
 

@@ -298,6 +298,82 @@ class ShopAction extends CommonAction {
     $this -> display();
   }
 
+  //发票税率管理
+  public function invoice(){
+    $invoice = M('ShopInvoice');
+    //记录总数
+    $count = $invoice -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $invoice -> field('id,money,ratio*100 as ratio,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('money ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //增加发票税率
+  public function addinvoice(){
+    //处理添加
+    if(!empty($_POST['money'])){
+      $invoice = M('ShopInvoice');
+      $_POST['ratio'] = $_POST['ratio'] / 100;
+      if(!$invoice -> create()){
+	$this -> error($invoice -> getError());
+      }
+      if($invoice -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除发票税率
+  public function delinvoice(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $invoice = M('ShopInvoice');
+    if($invoice -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑发票税率
+  public function editinvoice(){
+    $invoice = M('ShopInvoice');
+    //处理更新
+    if(!empty($_POST['money'])){
+      $_POST['ratio'] = $_POST['ratio'] / 100;
+      if(!$invoice -> create()){
+	$this -> error($invoice -> getError());
+      }
+      if($invoice -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $invoice -> field('id,money,ratio*100 as ratio,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   /* --------------------- 商品管理 --------------------- */
 
   /* --------------------- 订单管理 --------------------- */
@@ -305,8 +381,36 @@ class ShopAction extends CommonAction {
   //商城订单管理
   public function shoporder(){
     $order = M('ShopOrder');
-    $result = $order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,m.name as mname,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus') -> join('yesow_send_type as st ON so.sendid = st.id') -> join('yesow_member as m ON so.mid = m.id') -> order('so.addtime DESC') -> select();
+    //处理搜索
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['so.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['so.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $order -> table('yesow_shop_order as so') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,so.paytotal,m.name as mname,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus,so.paytype') -> join('yesow_send_type as st ON so.sendid = st.id') -> join('yesow_member as m ON so.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> where($where) -> select();
     $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
   }
 

@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>支付订单 - 易搜商城 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.md5.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('zfRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('zfRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("zfRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("zfRadio_Checked");
+                $(this).prev()[0].checked = true;
+            }
+               
+            event.stopPropagation();
+
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#zhifuradio').hradio();
+});
+</script>
+<script>
+  var balancepay = function(){
+    //订单号
+    var orderid = '<!--{$ordernum}--!>';
+    //交易密码
+    var pwd = $.md5($('#paypwd').val());
+    location.href = '__URL__/shop_rmb_pay/orderid/' + orderid + '/pwd/' + pwd;
+  }
+
+  //网银支付
+  var tosubmit = function(){
+    var selectid = $('input[name="paytype"]:checked').val();
+    if(selectid){
+      location.href = '__URL__/shop_' + selectid + '_pay/oid/<!--{$ordernum}--!>';
+    }
+  }
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header" />
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/shop">易搜商城</a> &gt;
+		<span>订单支付</span> 
+	</div>
+	<!--支付流程开始-->
+	<div id="main14">
+        <div class="cat_header">
+            <h3>网上商城</h3>
+        </div>
+        <div class="cat_bod">
+        	<div class="clear10"></div>
+            <div class="zxzfbox">
+                <div class="zxzfbox_title">
+                    <h2>商品付款详单</h2>
+                </div>
+                <div class="zxzfbox_con">
+		  <h2>您本次购买的产品为下列清单</h2>
+		  <h3 style="width:99%;">订单号:<!--{$ordernum}--!></h3>
+                    <table class="table_zxzf1">
+                        <tr>
+                            <th>编号</th>
+                            <th>本次所购商品</th>
+                            <th>单价</th>
+                            <th>数量</th>
+                            <th>总价</th>
+			  </tr>
+			  <volist name="shop_result" id="sr">
+                        <tr>
+			  <td><!--{$sr.id}--!></td>
+			  <td><!--{$sr.shoptitle}--!></td>
+			  <td><!--{$sr.price}--!>元</td>
+                            <td><!--{$sr.num}--!></td>
+                            <td><!--{$sr.totalmoney}--!>元</td>
+			  </tr>
+			  </volist>
+		      </table>
+		      <h3 style="width:99%;">商品总价：<span style="color:black;"><!--{$shop_price}--!></span>元   物流费用：<span style="color:black;"><!--{$send_price}--!></span> 元  发票税费：<span style="color:black;"><!--{$invoice_price}--!></span>元  总计 ：<span style="color:black;"><!--{$total_price}--!></span>元</h3>
+                    <div class="clear10"></div>
+                </div>
+            </div>
+            <div class="clear10"></div>
+            <div class="zxzfbox">
+                <div class="zxzfbox_title">
+                    <h2>支付方式一：余额支付</h2>
+                </div>
+                <div class="zxzfbox_con">
+                    <table class="table_zxzf2">
+                        <tr><td class="tdleft">本次付款的总金额：</td><td class="tdright"><!--{$total_price}--!>元</td></tr>
+			<tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$Think.session.rmb_total}--!>元<a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
+			<if condition="$_SESSION['rmb_total'] egt $total_price">
+                        <tr><td colspan="2" class="wsgw_tishi">您的余额充足，可以使用余额支付方式！</td></tr>
+                    </table>
+                    <div class="clear10"></div>
+                    <hr class="hrstyle" />
+                    <table class="table_zxzf2">
+                        <tr><td class="tdleft">易搜在线支付密码：</td><td><input type="password" id="paypwd" class="inputclass1" /></td></tr>
+                        <tr><td colspan="2" class="tdmid"><input type="button" onclick="balancepay();" value="确认付款" class="btn_qbxz"/></td></tr>
+                    </table>
+		    <div class="div_zxzf">我还没有支付密码，马上去<a href="#">设置>></a></div>
+		    <else/>
+		    <tr><td colspan="2" class="zxzf_tishi">您的余额不足，请使用网上支付方式支付！</td></tr>
+		</table>
+		    </if>
+                    <div class="clear10"></div>
+                </div>
+            </div>
+            <div class="clear10"></div>
+            <div class="zxzfbox">
+                <div class="zxzfbox_title">
+                    <h2>支付方式二：网上支付</h2>
+                </div>
+		<div class="zxzfbox_con" id="zhifuradio">
+		  <volist name="result_pay" id="rp">
+		  <input name='paytype' type="radio" value='<!--{$rp.enname}--!>' /><label><img src="__PUBLIC__/index/style/images/user/pay_<!--{$rp.enname}--!>.gif"/></label>
+		  </volist>
+		</div>
+		<div class="editbtn">
+  <input type="button" onclick="tosubmit();" class="rmb_fanhui" value="使用网上支付" />
+  <input type="button" style="margin-left:20px;" onclick="location.href='__URL__';" class="rmb_fanhui" value="取消" />
+                                         </div>
+             </div>
+             <div class="clear10"></div>
+        </div>
+		<div class="clear"></div>
+	</div>
+	<!--支付流程结束-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

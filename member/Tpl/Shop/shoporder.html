@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商城购物订单 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/style/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">易搜商城购物</div>
+                    <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="singleBox">
+                            <dt>
+                                <a href="#" class="on">商城购物订单</a>
+                            </dt>
+                            <dd>
+                            	<div style="min-height:250px;">
+                                <table class="table_gwc">
+                                	<tr>
+                                    	<th>单号</th>
+                                        <th>应付总额</th>
+                                        <th>支付方式</th>
+                                        <th>配送方式</th>
+                                        <th>发票</th>
+                                        <th>下单时间</th>
+                                        <th>状态</th>
+                                        <th>付款</th>
+				      </tr>
+				      <volist name="result" id="r">
+				      <tr>
+					<td><!--{$r.ordernum}--!></td>
+					<td><!--{$r.paytotal}--!></td>
+					<td><!--{$r.paytype}--!></td>
+					<td><!--{$r.stname}--!></td>
+					<eq name="r.isbull" value="1">
+                                        <td>有</td>
+					<else/>
+                                        <td>无</td>
+					</eq>
+					<td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+					<td>
+					  <eq name="r.ischeck" value="1">
+					  <span class="col_green">已确认</span>,
+					  <else/>
+					  <span class="col_red">未确认</span>,
+					  </eq>
+					  <eq name="r.issend" value="1">
+					  <span class="col_green">已发货</span>,
+					  <else/>
+					  <span class="col_red">未发货</span>,
+					  </eq>
+					  <eq name="r.paystatus" value="0">
+					  <span class="col_red">未付款</span>
+					  <else/>
+					  <span class="col_green">已付款</span>
+					  </eq>
+					</td>
+					<td>
+					  <eq name="r.paystatus" value="0">
+					  <input type="button" value="付款" />
+					  <else/>
+					  <span class="col_green">已付款</span>
+					  </eq>
+
+					</td>
+				      </tr>
+				      </volist>
+                                   
+                                </table>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="page">
+				  <!--{$show}--!>
+                                </div>
+                                <div class="clear30"></div>                      
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

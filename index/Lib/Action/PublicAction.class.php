@@ -996,4 +996,20 @@ class PublicAction extends Action {
     return $result;
   }
 
+  //ajax获取购物开票税率
+  public function ajaxgetinvoice(){
+    //查询开票税率
+    $invoice = M('ShopInvoice') -> field('money,ratio') -> order('money ASC') -> select();
+    $this -> assign('invoice', $invoice);
+    echo json_encode($invoice);
+  }
+
+  //ajax获取当前金额的税率
+  public function ajaxgetmoneyinvoice(){
+    $money = $this -> _get('money');
+    $result = M('ShopInvoice') -> field('ratio') -> where(array('money' => array('elt', $money))) -> order('money DESC') -> find();
+    echo !empty($result['ratio']) ? $result['ratio'] : 0;
+  
+  }
+
 }

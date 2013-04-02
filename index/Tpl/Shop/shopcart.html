@@ -39,18 +39,36 @@
     });
     //税
     if($('input[name="isbull"]:checked').val() == 1){
-      //100元以下加10元
-      if(totalprice <= 100){
-	totalprice += 10;
-      //100元以上加8%
-      }else{
-        totalprice += totalprice * 0.08;
+      $.ajax({
+      url:'__APP__/public/ajaxgetmoneyinvoice/money/' + totalprice,
+      success:function(data){
+	//添加税
+	totalprice += Math.round(totalprice * parseFloat(data));
+	//运费
+	totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
+	$('#tm').html(totalprice);
+      }
+    });
+  }else{
+  	//运费
+	totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
+	$('#tm').html(totalprice);
       }
     }
-    //运费
-    totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
-    $('#tm').html(totalprice);
 
+  //弹出费率
+  var seeinvoice = function(){
+    var alertcontent = '';
+    $.ajax({
+      url:'__APP__/public/ajaxgetinvoice',
+      success:function(data){
+	$.each(data, function(i,ress){
+	  alertcontent += '购物满:' + ress.money + '元(税率:' + ress.ratio * 100 + '%)\r\n';
+	});
+	alert(alertcontent);
+      },
+      dataType:'json'
+    });
   }
 </script>
 </head>
@@ -118,7 +136,7 @@
 		  <tr><td class="tdleft">电子邮箱：</td><td class="tdright"><input type="text" class="text_gwcshrxx" value="<!--{$info.email}--!>" name="email" /></td><td class="tdmid">*请如实填写，便于我们与您联系。</td></tr>
                     <tr><td class="tdleft">是否开票：</td>
 		      <td class="tdright">
-			<input type="radio" name="isbull" value="1" onclick="total();" />需要（100元以下加10元税，100元以上加8%税点）
+			<input type="radio" name="isbull" value="1" onclick="total();" />需要  <input type="button" value="查看费率" onclick="seeinvoice();" /><br />
 			<input type="radio" name="isbull" value="0" checked="checked" onclick="total();"/>不需要
 		      </td>
                         <td class="tdmid">*请根据您的需要选择开票情况，以免造成您经济上的损失。</td>

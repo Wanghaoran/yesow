@@ -72,7 +72,7 @@
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.ordernum}--!></td>
 			  <td><!--{$r.mname}--!></td>
-			  <td></td>
+			  <td><!--{$r.paytotal}--!></td>
 			  <td><!--{$r.stname}--!></td>
 			  <switch name="r.paystatus">
 			  <case value="0"><td style="color:red;">未付款</td></case>
@@ -90,7 +90,7 @@
 			  <else/>
 			  <td style="color:red">未确认</td>
 			  </eq>
-			  <td><!--{$r.pname}--!></td>
+			  <td><!--{$r.paytype}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			</tr>
 		</volist>

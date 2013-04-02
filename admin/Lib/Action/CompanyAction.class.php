@@ -1795,7 +1795,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $pay_gaving -> field('id,money,ratio*100 as ratio,remark') -> order('money') -> select();
+    $result = $pay_gaving -> field('id,money,ratio*100 as ratio,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('money') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -1876,7 +1876,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,ml.name as lname,mm.months,mm.marketprice,mm.promotionprice,mm.remark') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> order('ml.updatemoney ASC,mm.months ASC') -> where($where) -> select();
+    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,ml.name as lname,mm.months,mm.marketprice,mm.promotionprice,mm.remark') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> order('ml.updatemoney ASC,mm.months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     //查询会员等级
     $result_level = M('MemberLevel') -> field('id,name') -> order('updatemoney ASC') -> select();

@@ -886,7 +886,7 @@ ul.main14_l_d{ width:235px; padding:4px; border:1px solid #f60; border-top:0; fl
 ul.main14_l_d li{ width:230px; float:left; padding-top:5px;white-space:nowrap; word-break:break-all; overflow: hidden;}
 ul.main14_l_d li a{float:left;}
 
-#main14_r{ width:680px; float:left;}
+#main14_r{ width:680px; float:left; overflow:hidden;}
 /* switchBox */
 .switchBox{width:680px; margin: 10px auto;}
 .switchBox dt{height:31px; border-bottom:#ff8b01 1px solid;}
@@ -909,7 +909,7 @@ ul.ul_scgw li.libox span.linethrough{text-decoration:line-through}
 ul.ul_scgw li.libox span.font_gdbq{ text-decoration:inherit;}
 ul.ul_scgw li.libtn{ float:right;}
 ul.ul_scgw li.libtn input{ margin-left:10px;}
-input.btn_scgw{ width:66px; height:22px; line-height:22px; color:#fff; background:url(images/btn_scgw.gif) no-repeat; text-align:center; border:none; cursor:pointer;}
+input.btn_scgw{ width:66px; height:22px; line-height:22px; color:#fff; background:url(images/btn_scgw.gif) no-repeat; text-align:center; border:none; cursor:pointer; padding:0;}
 
 ul.scgw_detail1{ width:680px;}
 ul.scgw_detail1 li{ float:left; margin-bottom:10px;}
@@ -926,7 +926,7 @@ div.detailbox{ width:648px; min-height:80px; height:auto!important; height:80px;
 div.hlwllgbox{ width:648px; min-height:80px; height:auto!important; height:80px; padding:10px; line-height:20px; border:#d8d8d8 1px solid;}
 div.hlwllgbox h2{ height:30px; line-height:30px; font-size:14px; font-weight:bold; color:#cc0c0c;}
 div.hlwllgbox ul li{ float:left; margin:10px 20px;}
-div.hlwllgbox ul li h6{color:#000; font-weight:normal; font-size:12px; text-align:center;}
+div.hlwllgbox ul li h6{color:#000; font-weight:normal; font-size:12px; text-align:center; width:110px; height:25px; line-height:25px; overflow:hidden; word-break:break-all;}
 div.hlwllgbox ul li h6 span{color:#cc0c0c;}
 div.scgw_left{ float:left; width:450px; margin:10px 10px 0 0;}
 div.scgw_right{ float:left; width:140px; margin:10px 0 0 0;}
@@ -995,3 +995,10 @@ ul.ul_sjfc li div.right_div p{ font-size:14px; color:#7d7d7d;line-height:20px; h
 ul.ul_sjfc li div.right_div input{ float:left; margin-right:5px;}
 ul.ul_sjfc div.page{ height:40px; background:#fff;}
 
+.wsgw_tishi{color:#ff0101; font-weight:bold; text-align:center}
+#zhifuradio{ padding:20px 0;}
+#zhifuradio label{ margin-left:20px;}
+.zfRadio{display: inline-block; width:165px; height:76px; background:url(images/payradiono.gif) no-repeat;  cursor:pointer;vertical-align:middle; padding-top:24px;
+		}
+.zfRadio_Checked{background:url(images/payradioyes.gif) no-repeat; }
+#zhifuradio label img{ text-align:center; vertical-align:middle; margin-left:20px;}

@@ -23,8 +23,21 @@ class ShopAction extends CommonAction {
     $this -> _before_index();
   }
 
-  //资金管理 - 易搜商城首页
+  //易搜商城购物
   public function shop(){
+    $this -> display();
+  }
+
+  //商城购物订单
+  public function shoporder(){
+    $shop_order = M('ShopOrder');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $shop_order -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count('id');
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $shop_order -> table('yesow_shop_order as so') -> field('so.ordernum,so.paytotal,so.paytype,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
     $this -> display();
   }
 
