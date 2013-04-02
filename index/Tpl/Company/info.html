@@ -87,13 +87,10 @@ body {
       url:'__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>',
       success: function(ress){
         if(ress == 1){
-	alert('扣款成功！您在购买此信息起的<!--{$viewtime}--!>小时内可免费浏览！');
 	  location.reload();
 	  }else if(ress == 2){
-	  alert('免费信息查看成功！仅对当前页面有效!');
 	  location.reload();
 	  }else if(ress == 3){
-	  alert('查看成功！您在扣除此条数起的<!--{$viewtime}--!>小时内可免费浏览！');
 	  location.reload();
 	  }else{
 	  alert('扣款失败！账户余额不足！');
@@ -297,7 +294,7 @@ var onedownload = function(){
                 <div class="clear10"></div>
                 <h3 class="h3_text">企业在线</h3>
                 <ul class="ul_qq">
-		  <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1368986123&site=qq&menu=yes" title="点击这里给我发消息" class="qq_online">自定义</a></li>
+		  <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=39352580&site=qq&menu=yes" title="点击这里给我发消息" class="qq_online">自定义</a></li>
 		  <li><a target="_blank" href="__URL__/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline">暂无QQ</a></li>
                 </ul>
                 <div class="clear"></div>

@@ -634,8 +634,22 @@ class CompanyAction extends CommonAction {
   public function checkcompany(){
     $company = M('Company');
     $where = array();
+    //如果不是总管理员，不能查看已删除的数据，和不是自己所属分站的数据
     if($_SESSION[C('USER_AUTH_KEY')] != 1){
       $where['delaid'] = array('exp', 'IS NULL');
+      //查询所属分站的域名
+      $domain = M('ChildSite') -> getFieldByid($_SESSION['csid'], 'domain');
+      $this -> assign('domain', $domain);
+      //如果域名不是主站，则过滤掉其他分站的数据
+      if($domain != 'yesow.com'){
+	$where['csid'] = $_SESSION['csid'];
+	//分配分站名
+	$child_name = M('ChildSite') -> getFieldByid($_SESSION['csid'], 'name');
+	$this -> assign('child_name', $child_name);
+	//查当前分站下的地区
+	$noadmin_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $_SESSION['csid'])) -> select();
+	$this -> assign('noadmin_area', $noadmin_area);
+      }
     }
     //处理搜索
     if(!empty($_POST['search_name'])){
@@ -672,7 +686,6 @@ class CompanyAction extends CommonAction {
     if(!empty($_POST['search_csaid'])){
       $where['csaid'] = $this -> _post('search_csaid', 'intval');
     }
-
 
     //记录总数
     $count = $company -> where($where) -> count('id');

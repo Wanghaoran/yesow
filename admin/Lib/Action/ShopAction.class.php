@@ -414,5 +414,94 @@ class ShopAction extends CommonAction {
     $this -> display();
   }
 
+  //删除商品订单
+  public function delshoporder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $order = M('ShopOrder');
+    if($order -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核商品订单
+  public function passauditshoporder(){
+    $order = M('ShopOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($order -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核商品订单
+  public function nopassauditshoporder(){
+    $order = M('ShopOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($order -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //订单处理
+  public function editsendshop(){
+    $order = M('ShopOrder');
+    //处理更新
+    if(!empty($_POST['id'])){
+      if(!$order -> create()){
+	$this -> error($order -> getError());
+      }
+      if($order -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $order -> field('ordernum,issend,result') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //订单详情
+  public function editshoplist(){
+    $order_shop = D('index://ShopOrderShop');
+    $order = M('ShopOrder');
+    //根据id号查询单号
+    $ordernum = $order -> getFieldByid($this -> _get('id', 'intval'), 'ordernum');
+    //根据单号查询商品信息
+    $result = $order_shop -> shopbyordernum($ordernum);
+    $this -> assign('result', $result);
+    //订单号
+    $this -> assign('ordernum', $ordernum);
+    //订单状态
+    $order_status = $order -> field('ischeck,issend,paystatus') -> where(array('ordernum' => $ordernum)) -> find();
+    $this -> assign('order_status', $order_status);
+    //商品总价
+    $shop_price = $order_shop -> totalpaybyordernum($ordernum);
+    $this -> assign('shop_price', $shop_price);
+    //快递费用
+    $temp_send_price = $order -> table('yesow_shop_order as so') -> field('st.money') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.ordernum' => $ordernum)) -> find();
+    $this -> assign('send_price', $temp_send_price['money']);
+    //应付总额
+    $total_price = $order -> getFieldByordernum($ordernum, 'paytotal');
+    $this -> assign('total_price', $total_price);
+    //计算发票税率费用
+    $invoice_price = $total_price - $shop_price - $temp_send_price['money'];
+    $this -> assign('invoice_price', $invoice_price);
+    //查询收货信息
+    $goods_info = $order -> field('username,address,zipcode,tel,email,remark') -> where(array('ordernum' => $ordernum)) -> find();
+    $this -> assign('goods_info', $goods_info);
+    $this -> display();
+  }
+
   /* --------------------- 订单管理 --------------------- */
 }

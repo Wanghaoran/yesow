@@ -37,6 +37,8 @@
     $('.totalmoney').each(function(){
       totalprice += parseFloat($(this).html());
     });
+    //运费
+    totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
     //税
     if($('input[name="isbull"]:checked').val() == 1){
       $.ajax({
@@ -44,17 +46,14 @@
       success:function(data){
 	//添加税
 	totalprice += Math.round(totalprice * parseFloat(data));
-	//运费
-	totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
 	$('#tm').html(totalprice);
       }
     });
   }else{
-  	//运费
-	totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
-	$('#tm').html(totalprice);
-      }
-    }
+    $('#tm').html(totalprice);
+  }
+  
+}
 
   //弹出费率
   var seeinvoice = function(){
@@ -63,7 +62,11 @@
       url:'__APP__/public/ajaxgetinvoice',
       success:function(data){
 	$.each(data, function(i,ress){
-	  alertcontent += '购物满:' + ress.money + '元(税率:' + ress.ratio * 100 + '%)\r\n';
+	  if(i == 0){
+	    alertcontent += '购物满:' + ress.money + '及以下(税率:' + ress.ratio * 100 + '%)\r\n';
+	  }else{
+	    alertcontent += '购物满:' + ress.money + '元(税率:' + ress.ratio * 100 + '%)\r\n';
+	  } 
 	});
 	alert(alertcontent);
       },

@@ -103,11 +103,13 @@ class PublicAction extends Action {
 
   //ajax获取会员查看速查资料所需信息
   public function ajaxmembercompany(){
+    //查询设置的有效时间
+    $viewtime = M('CompanySetup') -> getFieldByname('viewtime', 'value');
     //如果存在会员包月，且没超过相应条数，则查询相关信息
     if($less_num = D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num')){
       //查询每天查看的数量
       $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_one_num');
-      echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
+      echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
       return;
     }
 
@@ -133,7 +135,8 @@ class PublicAction extends Action {
       $number = 0;
       $const = $level_info['rmb_one'];
     }
-    echo '您的会员等级为[' . $_SESSION['member_level_name'] . ']，今天可以查看 ' . $level_info['freecompany'] . ' 条免费信息。目前剩余 ' . $number . ' 条，本 页面将消费 ' . $const . ' 元请确认。 <br /><a onclick="quitview();">【取消】</a><a onclick="confirmview();">【确认查看】</a>';
+    
+    echo '您的会员等级为[' . $_SESSION['member_level_name'] . ']，今天可以查看 ' . $level_info['freecompany'] . ' 条免费信息。目前剩余 ' . $number . ' 条，本 页面将消费 ' . $const . ' 元。信息有效期为' . $viewtime . '小时。请确认。 <br /><a onclick="quitview();">【取消】</a><a onclick="confirmview();">【确认查看】</a>';
   }
 
   //ajax确认查看速查资料
@@ -891,6 +894,14 @@ class PublicAction extends Action {
       $this -> assign('header_child_site', $header_child_site);
       S('header_child_site', $header_child_site);
     }
+    //QQ客服
+    if(S('index_qqonline')){
+      $this -> assign('index_qqonline', S('index_qqonline'));
+    }else{
+      $index_qqonline = R('Public/getqqonline');
+      $this -> assign('index_qqonline', $index_qqonline);
+      S('index_qqonline', $index_qqonline);
+    }
     $this -> assign('index_search_hot', S('index_search_hot'));
   }
 
@@ -1007,8 +1018,8 @@ class PublicAction extends Action {
   //ajax获取当前金额的税率
   public function ajaxgetmoneyinvoice(){
     $money = $this -> _get('money');
-    $result = M('ShopInvoice') -> field('ratio') -> where(array('money' => array('elt', $money))) -> order('money DESC') -> find();
-    echo !empty($result['ratio']) ? $result['ratio'] : 0;
+    $result = D('index://ShopInvoice') -> getradio($money);
+    echo $result;
   
   }
 

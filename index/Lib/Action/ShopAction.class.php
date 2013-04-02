@@ -99,33 +99,36 @@ class ShopAction extends CommonAction {
     $shopcart = D('ShopCart');
     $order = D('ShopOrder');
     $shop_order = D('ShopOrderShop');
-    //生成订单号
-    $orderid = date('YmdHis') . mt_rand(100000,999999);
+    //生成或获取订单号
+    $orderid = !empty($_GET['oid']) ? $this -> _get('oid') : date('YmdHis') . mt_rand(100000,999999);
 
-    //查询购物车中的购物总额
-    $totalmoney = $shopcart -> totalpaymoney();    
-    //如果需要发票，则还需要加上发票费用
-    if($_POST['isbull'] == 1){
-      $ratio = M('ShopInvoice') -> field('ratio') -> where(array('money' => array('elt', $totalmoney))) -> order('money DESC') -> find();
-      $totalmoney += round($totalmoney * $ratio['ratio']);
+    //如果是新增订单，则进行生成订单操作
+    if(empty($_GET['oid'])){
+      //查询购物车中的购物总额
+      $totalmoney = $shopcart -> totalpaymoney();
+      //加上物流费用
+      $totalmoney += M('SendType') -> getFieldByid($this -> _post('sendid', 'intval'), 'money');   
+      //如果需要发票，则还需要加上发票费用
+      if($_POST['isbull'] == 1){
+	$ratio = D('ShopInvoice') -> getradio($totalmoney);
+	$totalmoney += round($totalmoney * $ratio);
+      }
+      //生成订单    
+      if(!$order -> create()){
+	R('Public/errorjump',array($order -> getError()));
+      }
+      $order -> ordernum = $orderid;
+      $order -> mid = session(C('USER_AUTH_KEY'));
+      $order -> paytotal = $totalmoney;
+      if(!$order -> add()){
+	R('Public/errorjump',array(L('SHOP_ORDER_CREATE_ERROR')));
+      }
+      //记录购买商品的标题、数量、单价
+      $shopcart -> writeordershop($orderid);
+      //清空购物车
+      $shopcart -> delshop('all');
     }
-    //加上物流费用就是支付总额
-    $totalmoney += M('SendType') -> getFieldByid($this -> _post('sendid', 'intval'), 'money');
-    //生成订单    
-    if(!$order -> create()){
-      R('Public/errorjump',array($order -> getError()));
-    }
-    $order -> ordernum = $orderid;
-    $order -> mid = session(C('USER_AUTH_KEY'));
-    $order -> paytotal = $totalmoney;
-    if(!$order -> add()){
-      R('Public/errorjump',array(L('SHOP_ORDER_CREATE_ERROR')));
-    }
-    //记录购买商品的标题、数量、单价
-    $shopcart -> writeordershop($orderid);
-    //清空购物车
-    $shopcart -> delshop('all');
-
+   
     //订单号
     $this -> assign('ordernum', $orderid);
     

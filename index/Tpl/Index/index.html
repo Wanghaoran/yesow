@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><!--{$index_seo.0.value}--!></title>
-<meta content="<!--{$index_seo.1.value}--!>" name="keywords">
-<meta name="description" content="<!--{$index_seo.2.value}--!>">
+<title><!--{$index_seo.0.value|str_replace="{site}", $childsite_name, ###}--!></title>
+<meta content="<!--{$index_seo.1.value|str_replace='{site}', $childsite_name, ###}--!>}--!>" name="keywords">
+<meta name="description" content="<!--{$index_seo.2.value|str_replace='{site}', $childsite_name, ###}--!>}--!>">
 <link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>

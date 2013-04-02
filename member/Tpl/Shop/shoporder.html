@@ -66,7 +66,7 @@
 					</td>
 					<td>
 					  <eq name="r.paystatus" value="0">
-					  <input type="button" value="付款" />
+					  <input type="button" value="付款" onclick="window.open('__ROOT__/shop/orderpay/oid/<!--{$r.ordernum}--!>')" />
 					  <else/>
 					  <span class="col_green">已付款</span>
 					  </eq>

@@ -55,7 +55,7 @@ class CompanyAction extends CommonAction {
     $result_company_type = M('CompanyType') -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_company_type', $result_company_type);
     //查询主营类别 - 二级
-    $result_company_category_two = M('CompanyCategory') -> table('yesow_company_category as cc') -> field('cc.id,cc.name,cct.name as cctname') -> where(array('cc.pid' => array('neq', 0))) -> join('yesow_company_category as cct ON cc.pid = cct.id') -> order('cc.id ASC,cct.sort ASC') -> select();
+    $result_company_category_two = M('CompanyCategory') -> table('yesow_company_category as cc') -> field('cc.id,cc.name,cct.name as cctname') -> where(array('cc.pid' => array('neq', 0))) -> join('yesow_company_category as cct ON cc.pid = cct.id') -> order('cct.sort ASC,cc.sort ASC') -> select();
 
     $this -> assign('result_company_category_two', $result_company_category_two);
     //如果会员已登录，则查出此会员的个人信息
@@ -578,6 +578,10 @@ class CompanyAction extends CommonAction {
       if(!empty($_GET['csaid']) && $_GET['csaid'] != 'null'){
 	$senior_where['csaid'] = $this -> _get('csaid', 'intval');
       }
+      //判断是否为分站数据
+      if($csid = D('admin://ChildSite') -> getid()){
+	$senior_where['csid'] = $csid;
+      }
     }else{
       if(!empty($_GET['type']) && $_GET['type'] != 'null'){
 	$senior_where['a' . $this -> _get('type')] = array('LIKE', '%' . $keyword . '%');
@@ -588,7 +592,13 @@ class CompanyAction extends CommonAction {
       if(!empty($_GET['csaid']) && $_GET['csaid'] != 'null'){
 	$senior_where['a.csaid'] = $this -> _get('csaid', 'intval');
       }
+      //判断是否为分站数据
+      if($csid = D('admin://ChildSite') -> getid()){
+	$senior_where['a.csid'] = $csid;
+      }
     }
+
+    
     
     //统计总数
     $count = $company -> table($sql . ' a') -> where($senior_where) -> count();

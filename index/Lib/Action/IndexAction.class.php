@@ -93,7 +93,13 @@ class IndexAction extends CommonAction {
   //最新IT商家
   private function newcompany(){
     $company = M('Company');
-    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'))) -> limit(20) -> select();
+    $where = array();
+    //判断是否是分站
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['csid'] = $csid;
+    }
+    $where['delaid'] = array('exp', 'is NULL');
+    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> where($where) -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
 
@@ -149,7 +155,13 @@ class IndexAction extends CommonAction {
   //推荐商家
   private function recommendcompany(){
     $company = M('Company');
-    $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'))) -> limit(28) -> select();
+    $where = array();
+    //判断是否是分站
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['csid'] = $csid;
+    }
+    $where['delaid'] = array('exp', 'is NULL');
+    $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where($where) -> limit(28) -> select();
     $this -> assign('recommend_company', $recommend_company);
   }
 
@@ -194,16 +206,11 @@ class IndexAction extends CommonAction {
       //查询SEO结果
       $system = M('System');
       $result = $system -> field('name,value') -> where(array('name' => array('exp', "in ('title','keywords','description')"))) -> select();
-      //查询分站名
-      $childsite_name = M('ChildSite') -> getFieldBydomain($_SERVER['HTTP_HOST'], 'name');
-      $childsite_name = !empty($childsite_name) ? $childsite_name : '中国';
-      //分站名替换
-      $index_seo = array();
-      foreach($result as $value){
-	$index_seo[] = str_replace('{site}', $childsite_name, $value);
-      }
       S('index_seo', $index_seo);
-      $this -> assign('index_seo', $index_seo);
+      $this -> assign('index_seo', $result);
+      //查询分站名
+      $childsite_name = D('admin://ChildSite') -> getname();
+      $this -> assign('childsite_name', $childsite_name);
     }
   }
 

@@ -2,8 +2,8 @@
 class PayAction extends Action {
     /* -------------------------- 商 城 ------------------------ */
 
-  //包月 - 支付宝异步通知页面
-  public function rmb_alipaynotify(){
+  //商城 - 支付宝异步通知页面
+  public function shop_alipaynotify(){
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
@@ -72,8 +72,8 @@ class PayAction extends Action {
     }
   }
 
-  //包月 - 支付宝同步通知页面
-  public function rmb_alipayreturn(){
+  //商城 - 支付宝同步通知页面
+  public function shop_alipayreturn(){
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();

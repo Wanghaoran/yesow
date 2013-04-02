@@ -32,7 +32,18 @@
 		<ul class="searchContent">
 				<li style="width:190px;">
 		  <label style="width:37px;">地区</label>
-		  <select class="combox" name="search_csid" ref="search_csaid6" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+		  
+		    
+		    <if condition="($_SESSION[C('USER_AUTH_KEY')] neq 1) AND ($domain neq 'yesow.com')">
+		    <span style="float:left;line-height:23px;"><!--{$child_name}--!> -  </span>
+		    <select class="combox" name="search_csaid">
+		      <option value="">请选择</option>
+		      <volist name="noadmin_area" id="na">
+		      <option value="<!--{$na.id}--!>"><!--{$na.name}--!></option>
+		      </volist>
+		    </select>
+		    <else/>
+		    <select class="combox" name="search_csid" ref="search_csaid6" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
 		    <option value="">请选择</option>
 		    <volist name="result_childsite" id="s_rc">
 		    <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
@@ -41,6 +52,8 @@
 		  <select class="combox" name="search_csaid" id="search_csaid6">
 		    <option value="">请选择</option>
 		  </select>
+		    </if>
+		  
 		  </li>
 		  
 		</ul>

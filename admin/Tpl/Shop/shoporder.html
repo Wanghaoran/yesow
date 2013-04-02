@@ -28,20 +28,30 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li class=""><a class="delete" href="__URL__/delrmborder/navTabId/rmborder" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择订单"><span>删除</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些订单吗?" warn="请选择订单"><span>删除</span></a></li>
 	    <li class="line">line</li>
-	    <li class=""><a class="icon" href="__URL__/passauditrmborder/navTabId/rmborder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>通过审核</span></a></li>
-	    <li class=""><a class="icon" href="__URL__/nopassauditrmborder/navTabId/rmborder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>不通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/passauditshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/nopassauditshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些订单吗?" warn="请选择订单"><span>不通过审核</span></a></li>
+	    <li class="line">line</li>
+	    <li><a class="edit" href="__URL__/editshoplist/id/{sid_role}" target="dialog" height="350" mask="true" warn="请选择订单"><span>订单详情</span></a></li>
+	    <li><a class="edit" href="__URL__/editsendshop/id/{sid_role}" target="dialog" mask="true" warn="请选择订单"><span>订单处理</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['company']['delrmborder'])">	    
-	    <li class=""><a class="delete" href="__URL__/delrmborder/navTabId/rmborder" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择订单"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['delshoporder'])">	    
+	    <li class=""><a class="delete" href="__URL__/delshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些订单吗?" warn="请选择订单"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['passauditrmborder'])">
+	    <if condition="isset($_SESSION['acc_arr']['shop']['passauditshoporder'])">
 	    <li class="line">line</li>	    
-	    <li class=""><a class="icon" href="__URL__/passauditrmborder/navTabId/rmborder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/passauditshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>通过审核</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['nopassauditrmborder'])">
-	    <li class=""><a class="icon" href="__URL__/nopassauditrmborder/navTabId/rmborder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>不通过审核</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['nopassauditrmborder'])">
+	    <li class=""><a class="icon" href="__URL__/nopassauditshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些订单吗?" warn="请选择订单"><span>不通过审核</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['editsendshop'])">
+	    <li><a class="edit" href="__URL__/editsendshop/id/{sid_role}" target="dialog" height="350" mask="true" warn="请选择订单"><span>订单处理</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['editshoplist'])">
+	    <li class="line">line</li>
+	    <li><a class="edit" href="__URL__/editshoplist/id/{sid_role}" target="dialog" mask="true" warn="请选择订单"><span>订单详情</span></a></li>
 	    </if>
 	    </if>
 	    
@@ -53,14 +63,14 @@
 		  <tr>
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="30">编号</th>
-			<th width="40">订单号</th>
+			<th width="30">订单号</th>
 			<th width="60">下单用户</th>
-			<th width="60">应付总额</th>
-			<th width="60">快递方式</th>
-			<th width="70">订单状态</th>
-			<th width="40">发货状态</th>
-			<th width="40">是否确认</th>
 			<th width="60">支付方式</th>
+			<th width="60">应付总额</th>
+			<th width="70">订单状态</th>
+			<th width="40">是否确认</th>
+			<th width="40">发货状态</th>
+			<th width="60">快递方式</th>
 			<th width="110">下单时间</th>
 
 		</tr>
@@ -72,25 +82,26 @@
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.ordernum}--!></td>
 			  <td><!--{$r.mname}--!></td>
+			  <td><!--{$r.paytype}--!></td>
 			  <td><!--{$r.paytotal}--!></td>
-			  <td><!--{$r.stname}--!></td>
 			  <switch name="r.paystatus">
 			  <case value="0"><td style="color:red;">未付款</td></case>
 			  <case value="1"><td style="color:blue;">已付款 <span style="color:red">未发货</span></td></case>
 			  <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
 			  <case value="3"><td style="color:green;">交易完成</td></case>
 			  </switch>
-			  <eq name="r.issend" value="1">
-			  <td style="color:blue">已发货</td>
-			  <else/>
-			  <td style="color:red">未发货</td>
-			  </eq>
 			  <eq name="r.ischeck" value="1">
 			  <td style="color:blue">已确认</td>
 			  <else/>
 			  <td style="color:red">未确认</td>
 			  </eq>
-			  <td><!--{$r.paytype}--!></td>
+			  <eq name="r.issend" value="1">
+			  <td style="color:blue">已发货</td>
+			  <else/>
+			  <td style="color:red">未发货</td>
+			  </eq>
+			  <td><!--{$r.stname}--!></td>
+			  
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			</tr>
 		</volist>
