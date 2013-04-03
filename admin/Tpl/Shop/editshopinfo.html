@@ -47,13 +47,15 @@
       <input type="text" class="textInput required" name="promotionprice" value="<!--{$result.promotionprice}--!>" />
       </p>
 
-      <p>
+      <p style="width:400px;">
       <label>小图上传：</label>
-      <input name="small_pic" type="file" />
+      <input name="small_pic" type="file" size="5" />
+      <!--{$result.big_pic|default="无小图"}--!>
       </p>
-      <p>
+      <p style="width:400px;">
       <label>大图上传：</label>
-      <input name="big_pic" type="file" />
+      <input name="big_pic" type="file" size="5" />
+      <!--{$result.small_pic|default="无大图"}--!>
       </p>
       <p>
       <label>人气指数：</label>

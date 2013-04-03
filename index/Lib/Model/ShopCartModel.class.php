@@ -42,7 +42,7 @@ class ShopCartModel extends Model {
   //查询当前用户的购物车
   public function usercart($mid){
     $mid = !empty($mid) ? $mid : session(C('USER_AUTH_KEY'));
-    return $this -> table('yesow_shop_cart as sc') -> field('sc.id as scid,s.id,s.title,s.promotionprice,sc.shopnum,sc.totalmoney') -> join('yesow_shop as s ON sc.sid = s.id') -> where(array('sc.mid' => $mid)) -> select();
+    return $this -> table('yesow_shop_cart as sc') -> field('sc.id as scid,s.id,s.title,s.issend,s.promotionprice,sc.shopnum,sc.totalmoney') -> join('yesow_shop as s ON sc.sid = s.id') -> where(array('sc.mid' => $mid)) -> select();
   }
 
   //计算当前购物车中应付总额

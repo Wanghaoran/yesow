@@ -1019,8 +1019,12 @@ class PublicAction extends Action {
   public function ajaxgetmoneyinvoice(){
     $money = $this -> _get('money');
     $result = D('index://ShopInvoice') -> getradio($money);
-    echo $result;
-  
+    //如果低于最低金额，则取最低金额所计算出来的值
+    if(!$result){
+      echo D('index://ShopInvoice') -> getlowest();
+    }else{
+      echo $result * $_GET['money'];
+    }
   }
 
 }

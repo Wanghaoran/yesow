@@ -84,14 +84,14 @@ $(function(){
 			  <volist name="shop_result" id="sr">
                         <tr>
 			  <td><!--{$sr.id}--!></td>
-			  <td><!--{$sr.shoptitle}--!></td>
+			  <td style="text-align:left;"> <!--{$sr.shoptitle}--!></td>
 			  <td><!--{$sr.price}--!>元</td>
                             <td><!--{$sr.num}--!></td>
                             <td><!--{$sr.totalmoney}--!>元</td>
 			  </tr>
 			  </volist>
 		      </table>
-		      <h3 style="width:99%;">商品总价：<span style="color:black;"><!--{$shop_price}--!></span>元   物流费用：<span style="color:black;"><!--{$send_price}--!></span> 元  发票税费：<span style="color:black;"><!--{$invoice_price}--!></span>元  总计 ：<span style="color:black;"><!--{$total_price}--!></span>元</h3>
+		      <h3 style="width:99%;">商品总价：<span style="color:black;"><!--{$shop_price}--!></span>元   物流费用：<span style="color:black;"><!--{$send_price|default=0}--!></span> 元  发票税费：<span style="color:black;"><!--{$invoice_price}--!></span>元  总计 ：<span style="color:black;"><!--{$total_price}--!></span>元</h3>
                     <div class="clear10"></div>
                 </div>
             </div>

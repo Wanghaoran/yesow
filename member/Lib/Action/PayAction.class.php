@@ -233,6 +233,8 @@ class PayAction extends Action {
 	  $data['status'] = 3;
 	  //如果更新成功，则写RMB表
 	  if($rmb_order -> where($where) -> save($data)){
+	    //标记为已充值
+	    $rmb_order -> where($where) -> save(array('ispay' => 1));
 	    //获取支付总额
 	    $total_pee = $payAmount / 100;
 	    //获取此订单的用户id
@@ -332,6 +334,8 @@ class PayAction extends Action {
 	    $data = array();
 	    $data['status'] = 3;
 	    if($rmb_order -> where($where) -> save($data)){
+	      //标记为已充值
+	      $rmb_order -> where($where) -> save(array('ispay' => 1));
 	      //获取支付总额
 	      $total_pee = $total_fee / 100;
 	      //获取此订单的用户id

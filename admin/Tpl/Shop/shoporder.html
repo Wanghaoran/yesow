@@ -33,7 +33,6 @@
 	    <li class=""><a class="icon" href="__URL__/passauditshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些订单吗?" warn="请选择订单"><span>通过审核</span></a></li>
 	    <li class=""><a class="icon" href="__URL__/nopassauditshoporder/navTabId/shoporder" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些订单吗?" warn="请选择订单"><span>不通过审核</span></a></li>
 	    <li class="line">line</li>
-	    <li><a class="edit" href="__URL__/editshoplist/id/{sid_role}" target="dialog" height="350" mask="true" warn="请选择订单"><span>订单详情</span></a></li>
 	    <li><a class="edit" href="__URL__/editsendshop/id/{sid_role}" target="dialog" mask="true" warn="请选择订单"><span>订单处理</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['shop']['delshoporder'])">	    
@@ -48,10 +47,6 @@
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['shop']['editsendshop'])">
 	    <li><a class="edit" href="__URL__/editsendshop/id/{sid_role}" target="dialog" height="350" mask="true" warn="请选择订单"><span>订单处理</span></a></li>
-	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['shop']['editshoplist'])">
-	    <li class="line">line</li>
-	    <li><a class="edit" href="__URL__/editshoplist/id/{sid_role}" target="dialog" mask="true" warn="请选择订单"><span>订单详情</span></a></li>
 	    </if>
 	    </if>
 	    
@@ -80,7 +75,7 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.ordernum}--!></td>
+			  <td><a href="__URL__/editshoplist/id/<!--{$r.id}--!>" target="dialog" title="订单详情" height="430" ><!--{$r.ordernum}--!></a></td>
 			  <td><!--{$r.mname}--!></td>
 			  <td><!--{$r.paytype}--!></td>
 			  <td><!--{$r.paytotal}--!></td>
@@ -100,7 +95,7 @@
 			  <else/>
 			  <td style="color:red">未发货</td>
 			  </eq>
-			  <td><!--{$r.stname}--!></td>
+			  <td><!--{$r.stname|default="免运产品"}--!></td>
 			  
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			</tr>

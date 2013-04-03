@@ -53,6 +53,12 @@ class ShopAction extends CommonAction {
     $shop_cart = D('ShopCart');
     //查询当前用户的订单
     $result = $shop_cart -> usercart();
+    //判断购物车中的商品是否全部都是免运费的
+    $nosendprice = 0;
+    foreach($result as $value){
+      $nosendprice += $value['issend'];
+    }
+    $this -> assign('nosendprice', $nosendprice);
     $this -> assign('result', $result);
     //查询用户相关信息
     $info = M('Member') -> field('fullname,address,zipcode,tel,email') -> find(session(C('USER_AUTH_KEY')));
@@ -111,7 +117,12 @@ class ShopAction extends CommonAction {
       //如果需要发票，则还需要加上发票费用
       if($_POST['isbull'] == 1){
 	$ratio = D('ShopInvoice') -> getradio($totalmoney);
-	$totalmoney += round($totalmoney * $ratio);
+	//如果低于最低金额，则取最低金额所计算出来的值
+	if(!$ratio){
+	  $totalmoney += D('ShopInvoice') -> getlowest();
+	}else{
+	  $totalmoney += $totalmoney * $ratio;
+	}
       }
       //生成订单    
       if(!$order -> create()){
@@ -125,8 +136,6 @@ class ShopAction extends CommonAction {
       }
       //记录购买商品的标题、数量、单价
       $shopcart -> writeordershop($orderid);
-      //清空购物车
-      $shopcart -> delshop('all');
     }
    
     //订单号
@@ -156,6 +165,8 @@ class ShopAction extends CommonAction {
 
   //人民币余额支付
   public function shop_rmb_pay(){
+    //清空购物车
+    D('ShopCart') -> delshop('all');
     //获取交易密码
     $pay_pwd = M('Member') -> getFieldByid(session(C('USER_AUTH_KEY')), 'traderspassword');
     //未设置交易密码的先去设置交易密码
@@ -194,6 +205,8 @@ class ShopAction extends CommonAction {
 
   //快钱支付
   public function shop_k99bill_pay(){
+    //清空购物车
+    D('ShopCart') -> delshop('all');
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();
@@ -307,6 +320,8 @@ class ShopAction extends CommonAction {
 
   //商城 - 财付通支付
   public function shop_tenpay_pay(){
+    //清空购物车
+    D('ShopCart') -> delshop('all');
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
@@ -398,6 +413,8 @@ class ShopAction extends CommonAction {
 
   //商城 - 支付宝支付
   public function shop_alipay_pay(){
+    //清空购物车
+    D('ShopCart') -> delshop('all');
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();

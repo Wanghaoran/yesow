@@ -38,14 +38,18 @@
       totalprice += parseFloat($(this).html());
     });
     //运费
-    totalprice += parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
+    var sendprice = parseFloat($("#sendid").find("option:selected").attr("sendmoney"));
+    if(!sendprice){
+      sendprice = 0;
+    }
+    totalprice += sendprice;
     //税
     if($('input[name="isbull"]:checked').val() == 1){
       $.ajax({
       url:'__APP__/public/ajaxgetmoneyinvoice/money/' + totalprice,
       success:function(data){
 	//添加税
-	totalprice += Math.round(totalprice * parseFloat(data));
+	totalprice += parseFloat(data);
 	$('#tm').html(totalprice);
       }
     });
@@ -63,7 +67,8 @@
       success:function(data){
 	$.each(data, function(i,ress){
 	  if(i == 0){
-	    alertcontent += '购物满:' + ress.money + '及以下(税率:' + ress.ratio * 100 + '%)\r\n';
+	    alertcontent += '不满:' + ress.money + '元的按' + ress.money + '元起收税\r\n';
+	    alertcontent += '购物满:' + ress.money + '元(税率:' + ress.ratio * 100 + '%)\r\n';
 	  }else{
 	    alertcontent += '购物满:' + ress.money + '元(税率:' + ress.ratio * 100 + '%)\r\n';
 	  } 
@@ -145,12 +150,16 @@
                         <td class="tdmid">*请根据您的需要选择开票情况，以免造成您经济上的损失。</td>
                     </tr>
                     <tr><td class="tdleft">送货方式：</td>
-                    	<td class="tdright">
+		      <td class="tdright">
+			<neq name="nosendprice" value="0">
 			  <select name="sendid" id="sendid" onchange="total();">
 			    <volist name="send" id="s">
 			    <option value="<!--{$s.id}--!>" sendmoney="<!--{$s.money}--!>"><!--{$s.name}--!>(￥<!--{$s.money}--!>元)</option>
 			    </volist>
 			  </select>
+			<else/>
+			免运产品
+			</neq>
                         </td>
                         <td class="tdmid">*请选择，不同的送货方式其费用不一样。</td></tr>
                     <tr><td class="tdleft">买家留言：</td><td class="tdright"><input type="text" class="text_gwcshrxx" name="remark" /></td><td class="tdmid">*请写下您对我们的特殊要求。</td></tr>

@@ -287,7 +287,7 @@ class ShopAction extends CommonAction {
       }
     }
     //结果
-    $result = $shop -> field('cid_one,cid_two,issend,marketprice,promotionprice,clickcount,remark,title,content') -> find($this -> _get('id', 'intval'));
+    $result = $shop -> field('cid_one,cid_two,issend,marketprice,promotionprice,big_pic,small_pic,clickcount,remark,title,content') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     //查询商品分类
     $result_shopclass = M('ShopClass') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
