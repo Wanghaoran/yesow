@@ -32,7 +32,7 @@
 	    <li><a class="edit" href="__URL__/editshopclass/id/{sid_role}" target="dialog" mask="true" warn="请选择类别"><span>编辑</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['shop']['addshopclass'])">
-	    <li><a class="add" href="__URL__/addshopclass/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li><a class="add" href="__URL__/addshopclass/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['shop']['delshopclass'])">
 	    <li class=""><a class="delete" href="__URL__/delshopclass/navTabId/shopclass" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
