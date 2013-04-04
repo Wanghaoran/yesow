@@ -35,7 +35,7 @@
 	    
 	    <li style="width:230px;">
 	    <label style="width:50px;">主营类别</label>
-	    <select class="combox" ref="bgsearch_ccid" refUrl="__APP__/public/ajaxgetcompanycategorytwo/id/{value}">
+	    <select class="combox" name="bgsearch_ccid_one" ref="bgsearch_ccid" refUrl="__APP__/public/ajaxgetcompanycategorytwo/id/{value}">
 	      <option value="">请选择</option>
 	      <volist name="result_company_category_one" id="rcco">
 	      <option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
@@ -47,16 +47,21 @@
 	    </li>
 	  </ul>
 	</div>
-    <ul class="rightTools">
+	<ul class="rightTools">
+	  <input type="hidden" name="issearch" value="true" />
       <li><div class="buttonActive"><div class="buttonContent"><button type="submit">搜 索</button></div></div></li>
     </form>
-    <empty name="result.ids">
+    <empty name="result">
     <li><a class="buttonDisabled" href="javascript:;"><span>下载EXECL文件</span></a></li>
     <else/>
-    <li><a class="button" href=""><span>下载EXECL文件</span></a></li>
+    <li><a class="button" href="__URL__/editdownexecl/keyword/<!--{$Think.post.company_keyword}--!>"><span>下载EXECL文件</span></a></li>
     </empty>
     </li>
-      <li><div class="buttonDisabled"><div class="buttonContent"><button>下载TXT文件</button></div></div></li>
+    <empty name="result">
+    <li><a class="buttonDisabled" href="javascript:;"><span>下载TXT文件</span></a></li>
+    <else/>
+    <li><a class="button" href="__URL__/editdowntxt/keyword/<!--{$Think.post.company_keyword}--!>"><span>下载TXT文件</span></a></li>
+    </empty>
     </ul>
   </div>
 </div>
@@ -66,7 +71,7 @@
 
 <div class="pageContent" style="padding:5px">
   <div class="panel" defH="340">
-    <h1>搜索结果</h1>
+    <h1>搜索结果 <span> 共<!--{$result.count}--!>条(耗时：<!--{$result.time}--!> S)</span></h1>
   <div>
 	<table class="table" width="100%">
 		<thead>

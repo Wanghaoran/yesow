@@ -1272,7 +1272,7 @@ class CompanyAction extends CommonAction {
   //后台数据检索
   public function backgroundsearch(){
     //处理检索
-    if(!empty($_POST['company_keyword'])){
+    if(!empty($_POST['issearch'])){
       
       $result = $this -> search_company($_POST['company_keyword'], 'updatetime DESC');
       $this -> assign('result', $result);
@@ -1287,7 +1287,7 @@ class CompanyAction extends CommonAction {
   }
 
   //后台速查搜索算法
-  public function search_company($keyword, $order=false){
+  public function search_company($keyword, $order=false, $limit=true){
     //最终输出结果
     $result = array();
     //初始化已审关键词表
@@ -1340,38 +1340,48 @@ class CompanyAction extends CommonAction {
     //如果分词后的结果和关键词相同，则不需要进行子查询
     if($keyword != $keyword_arr[0]){
       foreach($keyword_arr as $value){
-	$keyword_sql[] = "SELECT id,name,csid,csaid,ccid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
+	$keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";
       }
     }
     
     //根据组装好的各SQL语句，结合主SQL语句，进行查询
     $where_select = array();
-    $where_select['name'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['address'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['manproducts'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['mobilephone'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['email'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['linkman'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['companyphone'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['qqcode'] = array('LIKE', '%' . $keyword . '%');
-    $where_select['website'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.name'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.address'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.manproducts'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.mobilephone'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.email'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.linkman'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.companyphone'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.qqcode'] = array('LIKE', '%' . $keyword . '%');
+    $where_select['c.website'] = array('LIKE', '%' . $keyword . '%');
     $where_select['_logic'] = 'OR';
     $map['_complex'] = $where_select;
-    $map['delaid']  = array('exp','is NULL');
+    $map['c.delaid']  = array('exp','is NULL');
     
     //构建查询SQL
-    $sql = $company -> field('id,name,csid,csaid,ccid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount') -> where($map) -> union($keyword_sql) -> buildSql();
+    $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
 
     //高级查询条件
     $senior_where = array();
     if(!empty($_POST['bgsearch_csid'])){
-      $senior_where['csid'] = $this -> _post('bgsearch_csid', 'intval');
+      $senior_where['a.csid'] = $this -> _post('bgsearch_csid', 'intval');
     }
     if(!empty($_POST['bgsearch_csaid'])){
-      $senior_where['csaid'] = $this -> _post('bgsearch_csaid', 'intval');
+      $senior_where['a.csaid'] = $this -> _post('bgsearch_csaid', 'intval');
+    }
+    if(!empty($_POST['bgsearch_ccid_one'])){
+      //查询一级分类下的二级id
+      $ccid_two = M('CompanyCategory') -> field('id') -> where(array('pid' => $this -> _post('bgsearch_ccid_one'))) -> select();
+      $ccid_arr = array();
+      //整理结果数组
+      foreach($ccid_two as $value){
+	$ccid_arr[] = $value['id'];
+      }
+      $senior_where['a.ccid'] = array('IN', $ccid_arr);
     }
     if(!empty($_POST['bgsearch_ccid'])){
-      $senior_where['ccid'] = $this -> _post('bgsearch_ccid', 'intval');
+      $senior_where['a.ccid'] = $this -> _post('bgsearch_ccid', 'intval');
     }
 
     //记录总数
@@ -1380,7 +1390,7 @@ class CompanyAction extends CommonAction {
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
     } else {
-      $listRows = 13;
+      $listRows = 10;
     }
     $page = new Page($count, $listRows);
     //当前页数
@@ -1396,31 +1406,11 @@ class CompanyAction extends CommonAction {
     //记录查询时间
     G('start');
     //查询结果
-    $result['result'] = $company -> table($sql . ' a') -> order($order) -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
-
-    /*
-    //非法词过滤，过滤的字段：公司名称、主营、企业介绍
-    $illegal = M('IllegalWord');
-    //需要过滤的词的数组
-    $illegal_word_temp = $illegal -> field('name') -> order('id') -> select();
-    //需要替换的词的数组
-    $replace_word_temp = $illegal -> field('replace') -> order('id') -> select();
-    //整理这两个数组
-    $illegal_word = array();
-    $replace_word = array();
-    foreach($illegal_word_temp as $key => $value){
-      $illegal_word[] = $value['name'];
+    if($limit){
+      $result['result'] = $company -> table($sql . ' a') -> order($order) -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
+    }else{
+      $result['result'] = $company -> table($sql . ' a') -> order($order) -> where($senior_where) -> select();
     }
-    foreach($replace_word_temp as $key => $value){
-      $replace_word[] = $value['replace'];
-    }
-    //进行过滤
-    foreach($result['result'] as $key => $value){
-      $result['result'][$key]['name'] = str_replace($illegal_word, $replace_word, $result['result'][$key]['name']);
-      $result['result'][$key]['manproducts'] = str_replace($illegal_word, $replace_word, $result['result'][$key]['manproducts']);
-      $result['result'][$key]['content'] = str_replace($illegal_word, $replace_word, $result['result'][$key]['content']);
-    }
-    */
 
     //将查询时间写入结果数组
     $result['time'] = G('start', 'end');
@@ -1439,12 +1429,117 @@ class CompanyAction extends CommonAction {
 
   //搜索结果下载execl文件
   public function editdownexecl(){
+    //查询数据
+    $result = $this -> search_company($this -> _get('keyword'), 'a.updatetime DESC', false);
+    //导入execl操作类
+    vendor('PHPExcel/PHPExcel');
+    //实例化PHPExcel类
+    $objPHPExcel = new PHPExcel();
+    //设置保存格式，非2007
+    $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+    //设置当前的sheet
+    $objPHPExcel->setActiveSheetIndex(0);
+    //获得当前sheet的对象
+    $objActSheet=$objPHPExcel->getActiveSheet();
+    //设置当前sheet的名字
+    $objActSheet->setTitle('易搜后台数据导出');
 
+    /*合并单元格*/
+    $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
+
+    /*设置表头*/
+    $title='后台搜索关键词"' . $result['keyword'] . '"商家导出的数据信息';
+    $objActSheet->setCellValue('A1', $title);
+    $objActSheet->setCellValue('A2', '公司名称');
+    $objActSheet->setCellValue('B2', '主营产品');
+    $objActSheet->setCellValue('C2', '公司地址');
+    $objActSheet->setCellValue('D2', '公司电话');
+    $objActSheet->setCellValue('E2', '移动电话');
+    $objActSheet->setCellValue('F2', '联系人');
+    $objActSheet->setCellValue('G2', '电子邮件');
+    $objActSheet->setCellValue('H2', 'QQ');
+    $objActSheet->setCellValue('I2', '所在地');
+    $objActSheet->setCellValue('J2', '主营类别');
+    $objActSheet->setCellValue('K2', '更新时间');
+
+    /*设置水平居中*/
+    $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('B')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('C')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('D')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('E')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('F')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('G')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('H')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('I')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('J')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('K')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    /*设置字体*/
+    $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize(14); 
+    $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(16); 
+    $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true); 
+    $objPHPExcel->getActiveSheet()->getStyle('A2:K2')->getFont()->setBold(true);   
+    $objPHPExcel->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+    for($i = 3; $i <= $result['count'] + 2; $i++){//循环设置
+      $objActSheet->setCellValue('A'.$i, $result['result'][$i-3]['name']);//写公司名称
+      $objActSheet->setCellValue('B'.$i, $result['result'][$i-3]['manproducts']);//写主营产品
+      $objActSheet->setCellValue('C'.$i, $result['result'][$i-3]['address']);//写公司地址
+      $objActSheet->setCellValue('D'.$i, $result['result'][$i-3]['companyphone']);//写公司电话
+      $objActSheet->setCellValue('E'.$i, $result['result'][$i-3]['mobilephone']);//写移动电话
+      $objActSheet->setCellValue('F'.$i, $result['result'][$i-3]['linkman']);//写联系人
+      $objActSheet->setCellValue('G'.$i, $result['result'][$i-3]['email']);//写电子邮件
+      $objActSheet->setCellValue('H'.$i, $result['result'][$i-3]['qqcode']);//写QQ
+      $objActSheet->setCellValue('I'.$i, $result['result'][$i-3]['csname'] . '-' . $result['result'][$i-3]['csaname']);//写所在地
+      $objActSheet->setCellValue('J'.$i, $result['result'][$i-3]['ccname']);//写主营类别
+      $objActSheet->setCellValue('K'.$i, date('Y-m-d H:i:s', $result['result'][$i-3]['updatetime']));//写更新时间
+    }
+
+
+    /*生成下载*/
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type:application/force-download");
+    header("Content-Type:application/vnd.ms-execl");
+    header("Content-Type:application/octet-stream");
+    header("Content-Type:application/download");
+    $filename= date('YmdHis');
+    header("Content-Disposition:attachment;filename=$filename");
+    header("Content-Transfer-Encoding:binary");
+    $objWriter->save('php://output');
   }
 
   //搜索结果下载txt文件
   public function editdowntxt(){
-  
+    //查询数据
+    $result = $this -> search_company($this -> _get('keyword'), 'a.updatetime DESC', false);
+    //生成下载信息
+    $content_download = "后台搜索关键词\"{$result['keyword']}\"商家导出的数据信息\r\n";
+    $i = 1;
+    foreach($result['result'] as $value){
+      $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
+      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
+      $i++;
+    }
+    
+    header("Content-Type: application/force-download");
+    $filename = date('YmdHis');
+    header("Content-Disposition: attachment; filename={$filename}.txt");
+    echo $content_download;
   }
 
 
