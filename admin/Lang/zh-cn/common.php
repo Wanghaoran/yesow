@@ -14,6 +14,7 @@ $app_lang = array(
   'CREATE_TIME_EMPTY' => '发生时间不能为空',
   'COMPANY_EMPTY' => '消费单位不能为空',
   'AUDITKEYWORD_UNIQUE' => '关键词已存在，请勿重复添加',
+  'SEARCH_WHERE_EMPTY' => '请至少选择一项搜索条件',
 );
 
 return array_merge($common_lang, $app_lang);

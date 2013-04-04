@@ -1273,9 +1273,21 @@ class CompanyAction extends CommonAction {
   public function backgroundsearch(){
     //处理检索
     if(!empty($_POST['issearch'])){
-      
+      if(empty($_POST['company_keyword']) && empty($_POST['bgsearch_csid']) && empty($_POST['bgsearch_csaid']) && empty($_POST['bgsearch_ccid_one']) && empty($_POST['bgsearch_ccid'])){
+	$this -> error(L('SEARCH_WHERE_EMPTY'));
+      }
       $result = $this -> search_company($_POST['company_keyword'], 'updatetime DESC');
       $this -> assign('result', $result);
+      //如果搜索的条件中二级地区id，则需要检索出当前以及地区对应的二级地区
+      if(!empty($_POST['bgsearch_csaid'])){
+	$where_child_site_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $_POST['bgsearch_csid'])) -> select();
+	$this -> assign('where_child_site_area', $where_child_site_area);
+      }
+      //如果搜索条件中有二级主营，则检索出当前的二级主营类别
+      if(!empty($_POST['bgsearch_ccid'])){
+	$where_category = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $_POST['bgsearch_ccid_one'])) -> select();
+	$this -> assign('where_category', $where_category);
+      }
     }
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
@@ -1430,7 +1442,7 @@ class CompanyAction extends CommonAction {
   //搜索结果下载execl文件
   public function editdownexecl(){
     //查询数据
-    $result = $this -> search_company($this -> _get('keyword'), 'a.updatetime DESC', false);
+    $result = $this -> search_company($this -> _post('company_keyword'), 'a.updatetime DESC', false);
     //导入execl操作类
     vendor('PHPExcel/PHPExcel');
     //实例化PHPExcel类
@@ -1508,7 +1520,6 @@ class CompanyAction extends CommonAction {
       $objActSheet->setCellValue('K'.$i, date('Y-m-d H:i:s', $result['result'][$i-3]['updatetime']));//写更新时间
     }
 
-
     /*生成下载*/
     header("Pragma: public");
     header("Expires: 0");
@@ -1526,7 +1537,7 @@ class CompanyAction extends CommonAction {
   //搜索结果下载txt文件
   public function editdowntxt(){
     //查询数据
-    $result = $this -> search_company($this -> _get('keyword'), 'a.updatetime DESC', false);
+    $result = $this -> search_company($this -> _post('company_keyword'), 'a.updatetime DESC', false);
     //生成下载信息
     $content_download = "后台搜索关键词\"{$result['keyword']}\"商家导出的数据信息\r\n";
     $i = 1;

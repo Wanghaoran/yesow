@@ -11,7 +11,7 @@
   <div class="panel">
     <h1>后台信息检索</h1>
     <div>
-      <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+      <form rel="pagerForm" id="searchwhere" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 	<div class="searchBar">
 
 	  <ul class="searchContent">
@@ -25,11 +25,22 @@
 	    <select class="combox" name="bgsearch_csid" ref="bgsearch_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
 	      <option value="">请选择</option>
 	      <volist name="result_childsite" id="s_rc">
+	      <eq name="Think.post.bgsearch_csid" value="$s_rc.id">
+	      <option value="<!--{$s_rc.id}--!>" selected="selected"><!--{$s_rc.name}--!></option>
+	      <else/>
 	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </eq>
 	      </volist>
 	    </select>
 	    <select class="combox" name="bgsearch_csaid" id="bgsearch_csaid">
 	      <option value="">请选择</option>
+	      <volist name="where_child_site_area" id="wcsa">
+	      <eq name="Think.post.bgsearch_csaid" value="$wcsa.id">
+	      <option value="<!--{$wcsa.id}--!>" selected="selected"><!--{$wcsa.name}--!></option>
+	      <else/>
+	      <option value="<!--{$wcsa.id}--!>"><!--{$wcsa.name}--!></option>
+	      </eq>
+	      </volist>
 	    </select>
 	    </li>
 	    
@@ -38,11 +49,22 @@
 	    <select class="combox" name="bgsearch_ccid_one" ref="bgsearch_ccid" refUrl="__APP__/public/ajaxgetcompanycategorytwo/id/{value}">
 	      <option value="">请选择</option>
 	      <volist name="result_company_category_one" id="rcco">
+	      <eq name="Think.post.bgsearch_ccid_one" value="$rcco.id">
+	      <option value="<!--{$rcco.id}--!>" selected="selected"><!--{$rcco.name}--!></option>
+	      <else/>
 	      <option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
+	      </eq>
 	      </volist>
 	    </select>
 	    <select class="combox" name="bgsearch_ccid" id="bgsearch_ccid">
 	      <option value="">请选择</option>
+	      <volist name="where_category" id="wc">
+	      <eq name="Think.post.bgsearch_ccid" value="$wc.id">
+	      <option value="<!--{$wc.id}--!>" selected="selected"><!--{$wc.name}--!></option>
+	      <else/>
+	      <option value="<!--{$wc.id}--!>"><!--{$wc.name}--!></option>
+	      </eq>
+	      </volist>
 	    </select>
 	    </li>
 	  </ul>
@@ -54,13 +76,13 @@
     <empty name="result">
     <li><a class="buttonDisabled" href="javascript:;"><span>下载EXECL文件</span></a></li>
     <else/>
-    <li><a class="button" href="__URL__/editdownexecl/keyword/<!--{$Think.post.company_keyword}--!>"><span>下载EXECL文件</span></a></li>
+    <li><a class="button" href="javascript:document.getElementById('searchwhere').action='__URL__/editdownexecl';document.getElementById('searchwhere').submit();"><span>下载EXECL文件</span></a></li>
     </empty>
     </li>
     <empty name="result">
     <li><a class="buttonDisabled" href="javascript:;"><span>下载TXT文件</span></a></li>
     <else/>
-    <li><a class="button" href="__URL__/editdowntxt/keyword/<!--{$Think.post.company_keyword}--!>"><span>下载TXT文件</span></a></li>
+    <li><a class="button" href="javascript:document.getElementById('searchwhere').action='__URL__/editdowntxt';document.getElementById('searchwhere').submit();"><span>下载TXT文件</span></a></li>
     </empty>
     </ul>
   </div>
