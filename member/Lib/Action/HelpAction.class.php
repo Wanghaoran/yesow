@@ -1,5 +1,12 @@
 <?php
 class HelpAction extends Action {
+
+  public function _initialize(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+  }
+
   //帮助中心
   public function index(){
     //查询一级分类

@@ -131,6 +131,10 @@ class PublicAction extends Action {
 
   //登录
   public function login(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     //在线QQ客服
     if(S('member_qqonline')){
       $this -> assign('member_qqonline', S('member_qqonline'));

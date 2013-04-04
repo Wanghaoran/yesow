@@ -30,6 +30,18 @@ class ChildSiteModel extends Model {
     }
     return $cid;
   }
+
+  //根据域名获取模板名称
+  public function gettemplatename(){
+    if($_SERVER['HTTP_HOST'] == 'yesow.com' || $_SERVER['HTTP_HOST'] == 'www.yesow.com'){
+      return 'default';
+    }
+    $templatename = $this -> table('yesow_child_site as cs') -> field('cst.address') -> join('yesow_child_site_template as cst ON cs.tid = cst.id') -> where(array('cs.domain' => $$_SERVER['HTTP_HOST'])) -> find();
+    if(!$templatename){
+      return 'default';
+    }
+    return $templatename;
+  }
 }
 
 

@@ -6,12 +6,12 @@
 <meta name="Keywords" content="<!--{$result.manproducts}--!>,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT黄页,易搜,IT黄页"/>
 <meta name="description" content="<!--{$result.name}--!>主要经营<!--{$result.manproducts}--!>，期待结识更多的商家合作并共同发展"/>
 
-<link rel="stylesheet" href="__PUBLIC__/index/style/reset.css" />
-<link rel="stylesheet" href="__PUBLIC__/index/style/style.css" />
-<script type="text/javascript" src="__PUBLIC__/index/javascript/jquery.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/javascript/yesow.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/javascript/lhgdialog.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/javascript/dialog.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/dialog.js"></script>
 <script type="text/javascript"> 
 <!-- 
 document.oncontextmenu=function(e){return false;} 
@@ -248,7 +248,7 @@ var onedownload = function(){
 			  <div style="position:relative; background:#E7EBEE; padding:5px 0; margin-bottom:10px;">
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 			    <eq name="isview" value="0">
-			    <a onclick="clickview()"><img src="__PUBLIC__/index/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
+			    <a onclick="clickview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
 			    <else/>
 			    <a style="float:left;font-size:12px;color:blue;text-indent:10px;" href="__ROOT__/member.php/index/userupdeta" target="_blank">如想查看更多信息,请点击</a>
 			    </eq>
@@ -267,7 +267,7 @@ var onedownload = function(){
 				   });
 			       }
 			     </script>
-			    <a onclick="poplogin()"><img src="__PUBLIC__/index/style/images/btn_dlck.gif" width="88" height="20" border="0" /></a><a href="" class="btn_tuijian"></a>
+			    <a onclick="poplogin()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dlck.gif" width="88" height="20" border="0" /></a><a href="" class="btn_tuijian"></a>
 			    </if>
                             	<div class="isblock" id="isblock2" style="display:none;">   
                                 </div>
@@ -314,7 +314,7 @@ var onedownload = function(){
 			  <dd>评分：<!--{$rc.score}--!></dd>
 			  <dd>表情：
 			  <notempty name="rc.face">			  
-			  <img src="__PUBLIC__/index/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+			  <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
 			  <else/>
 			  无
 			  </notempty>
@@ -337,14 +337,14 @@ var onedownload = function(){
 				  <textarea class="txt_pl" id="content"></textarea>
 				  <p>表情:
 				  <input type="radio" name="face" value="" checked="checked"/>无
-				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/style/images/face/1.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/style/images/face/2.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/style/images/face/3.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/style/images/face/4.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/style/images/face/5.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/style/images/face/6.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/style/images/face/7.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/style/images/face/8.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/1.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/2.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/3.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/4.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/5.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/6.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/7.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/8.gif" width="20" height="20" border="0" />
 				  </p>
 
 				
@@ -421,7 +421,7 @@ var onedownload = function(){
 				<div class="clear"></div>
 			</div>
 			
-			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/image/bl_gg.gif" width="295" height="100" /></a></div>
+			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/bl_gg.gif" width="295" height="100" /></a></div>
 			
 			<div class="main09_r_tjqd">
 				<div class="huang_ui">
@@ -445,7 +445,7 @@ var onedownload = function(){
 				</ul>
 				<div class="clear"></div>
 			</div>
-			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/image/bl_gg.gif" width="295" height="100" /></a></div>
+			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/bl_gg.gif" width="295" height="100" /></a></div>
 			
 		</div>
 		<div class="clear"></div>

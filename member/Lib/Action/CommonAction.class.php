@@ -21,6 +21,9 @@ class CommonAction extends Action {
       $this -> assign('member_qqonline', $member_qqonline);
       S('member_qqonline', $member_qqonline);
     }
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
   }
 
   

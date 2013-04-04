@@ -10,6 +10,9 @@ class PublicAction extends Action {
   //成功跳转 前置方法
   public function _before_successjump(){
     $this -> assign('index_search_hot', S('index_search_hot'));
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
   }
 
   //成功跳转
@@ -31,6 +34,9 @@ class PublicAction extends Action {
   //成功跳转 前置方法
   public function _before_errorjump(){
     $this -> assign('index_search_hot', S('index_search_hot'));
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
   }
 
   //失败跳转
@@ -903,6 +909,9 @@ class PublicAction extends Action {
       S('index_qqonline', $index_qqonline);
     }
     $this -> assign('index_search_hot', S('index_search_hot'));
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
   }
 
   //权限不足 - 温馨提示页面

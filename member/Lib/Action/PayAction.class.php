@@ -72,6 +72,7 @@ class PayAction extends Action {
 	    }
 	  }
 	}
+	ob_end_clean();
 	echo "success";
 	exit();
       }
@@ -84,6 +85,7 @@ class PayAction extends Action {
 	if($old_status == 1){
 	  $rmb_order -> where($where) -> save($data);
 	}
+	ob_end_clean();
 	echo "success";
 	exit();
       }
@@ -96,10 +98,12 @@ class PayAction extends Action {
 	if($old_status == 2){
 	  $rmb_order -> where($where) -> save($data);
 	}
+	ob_end_clean();
 	echo "success";
 	exit();
       }
     }else{
+      ob_end_clean();
       echo "fail";
       exit();
     }
@@ -107,6 +111,10 @@ class PayAction extends Action {
 
   //支付宝同步通知页面
   public function alipayreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
@@ -147,6 +155,10 @@ class PayAction extends Action {
 
   //快钱同步返回页面
   public function k99billreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();
@@ -375,6 +387,10 @@ class PayAction extends Action {
 
   //财付通同步返回页面
   public function tenpayreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
@@ -505,6 +521,10 @@ class PayAction extends Action {
 
   //包月 - 支付宝同步通知页面
   public function monthly_alipayreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
@@ -638,6 +658,10 @@ class PayAction extends Action {
 
   //财付通同步返回页面
   public function monthly_tenpayreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
@@ -677,6 +701,10 @@ class PayAction extends Action {
 
   //快钱同步返回页面
   public function monthly_k99billreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();

@@ -2,6 +2,10 @@
 class RegisterAction extends Action {
   //注册
   public function index(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     //如果已登录则不能注册
     if(isset($_SESSION[C('USER_AUTH_KEY')])){
       $this -> redirect('Index/index');
@@ -48,6 +52,9 @@ class RegisterAction extends Action {
 
   //注册第三步
   public function three(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
     $this -> display();
   }
 
@@ -104,6 +111,10 @@ class RegisterAction extends Action {
 
   //邮箱验证
   public function checkmail(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $email = encode_pass($this -> _get('email'), C('KEY'), 'decode');
     $name = encode_pass($this -> _get('username'), C('KEY'), 'decode');
     $user_email = M('Member') -> getFieldByname($name, 'email');
@@ -121,6 +132,10 @@ class RegisterAction extends Action {
 
   //成功跳转
   public function successjump($title, $url="", $time=3){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $this -> assign('title', $title);
     if(empty($url)){
       if(!empty($_GET['a_c']) && !empty($_GET['m_d'])){
@@ -149,6 +164,10 @@ class RegisterAction extends Action {
 
   //失败跳转
   public function errorjump($title, $url="", $time=3){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $this -> assign('title', $title);
     if(empty($url)){
       if(!empty($_GET['a_c']) && !empty($_GET['m_d'])){
@@ -177,6 +196,10 @@ class RegisterAction extends Action {
 
   //密码找回
   public function forgetpassword(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     //如果已登录则不能找回密码
     if(isset($_SESSION[C('USER_AUTH_KEY')])){
       $this -> redirect('Index/index');
@@ -253,6 +276,10 @@ class RegisterAction extends Action {
 
   //通过邮箱重置密码
   public function passwordemail(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $member = M('Member');
     //先验证
     $question = $member -> getFieldByname($this -> _get('name'), 'passwordquestion');

@@ -199,7 +199,7 @@ class CompanyAction extends CommonAction {
       unset($_POST['id']);
       //向已审表插入数据
       $company = D('Company');
-      $_POST['auditaid'] = session(C('USER_AUTH_KEY'));
+      $_POST['auditaid'] = session('admin_name');
       if(!$company -> create()){
 	$this -> error($company -> getError());
       }
@@ -381,7 +381,7 @@ class CompanyAction extends CommonAction {
       $_POST['id'] = $companyaudit -> getFieldByid($this -> _post('id', 'intval'), 'cid');
       //更新已审表
       $company = D('Company');
-      $_POST['updateaid'] = session(C('USER_AUTH_KEY'));
+      $_POST['updateaid'] = session('admin_name');
       if(!$company -> create()){
 	$this -> error($company -> getError());
       }
@@ -762,7 +762,7 @@ class CompanyAction extends CommonAction {
       if(!empty($_FILES['image']['name'])){
 	$company -> pic = $this -> upload();
       }
-      $company -> updateaid = session(C('USER_AUTH_KEY'));
+      $company -> updateaid = session('admin_name');
       $company -> updatetime = time();
       if($company -> save()){
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
@@ -822,7 +822,7 @@ class CompanyAction extends CommonAction {
     }else{
       $where_update = array();
       $where_update['id'] = array('in', $_POST['ids']);
-      $data['delaid'] = session(C('USER_AUTH_KEY'));
+      $data['delaid'] = session('admin_name');
       $company = D('Company');
       if($company -> where($where_update) -> save($data)){
 	$this -> success(L('DATA_DELETE_SUCCESS'));
@@ -1352,7 +1352,7 @@ class CompanyAction extends CommonAction {
     //如果分词后的结果和关键词相同，则不需要进行子查询
     if($keyword != $keyword_arr[0]){
       foreach($keyword_arr as $value){
-	$keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";
+	$keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime,c.addtime FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";
       }
     }
     
@@ -1372,7 +1372,7 @@ class CompanyAction extends CommonAction {
     $map['c.delaid']  = array('exp','is NULL');
     
     //构建查询SQL
-    $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
+    $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
 
     //高级查询条件
     $senior_where = array();
@@ -1474,7 +1474,8 @@ class CompanyAction extends CommonAction {
     $objActSheet->setCellValue('J2', '主营类别');
     $objActSheet->setCellValue('K2', '更新时间');
 
-    /*设置水平居中*/
+    
+    //设置水平居中
     $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     $objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -1499,7 +1500,7 @@ class CompanyAction extends CommonAction {
     $objPHPExcel->getActiveSheet()->getStyle('K')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     $objPHPExcel->getActiveSheet()->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-    /*设置字体*/
+    //设置字体
     $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize(14); 
     $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(16); 
     $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true); 
@@ -1519,18 +1520,19 @@ class CompanyAction extends CommonAction {
       $objActSheet->setCellValue('J'.$i, $result['result'][$i-3]['ccname']);//写主营类别
       $objActSheet->setCellValue('K'.$i, date('Y-m-d H:i:s', $result['result'][$i-3]['updatetime']));//写更新时间
     }
-
-    /*生成下载*/
-    header("Pragma: public");
+    ob_end_clean();
+    //生成下载
+    header("Content-Type: application/vnd.ms-excel;charset=UTF-8");
+    header("Pragma: no-cache");
     header("Expires: 0");
-    header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-    header("Content-Type:application/force-download");
-    header("Content-Type:application/vnd.ms-execl");
-    header("Content-Type:application/octet-stream");
-    header("Content-Type:application/download");
+   // header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+   // header("Content-Type:application/force-download");
+    //header("Content-Type:application/vnd.ms-execl");
+    //header("Content-Type:application/octet-stream");
+    //header("Content-Type:application/download");
     $filename= date('YmdHis');
-    header("Content-Disposition:attachment;filename=$filename");
-    header("Content-Transfer-Encoding:binary");
+    header("Content-Disposition:attachment;filename=$filename" . '.xls');
+    //header("Content-Transfer-Encoding:binary");
     $objWriter->save('php://output');
   }
 
@@ -1543,7 +1545,7 @@ class CompanyAction extends CommonAction {
     $i = 1;
     foreach($result['result'] as $value){
       $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
-      $content_download .= "-------------------------------------\r\n({$i})商家导出信息\r\n-------------------------------------\r\n{$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n所在地:{$value['csname']} - {$value['csaname']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
+      $content_download .= "({$i}){$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     

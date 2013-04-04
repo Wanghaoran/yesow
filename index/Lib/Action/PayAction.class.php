@@ -74,6 +74,10 @@ class PayAction extends Action {
 
   //商城 - 支付宝同步通知页面
   public function shop_alipayreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
@@ -192,6 +196,10 @@ class PayAction extends Action {
 
   //财付通同步返回页面
   public function shop_tenpayreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
@@ -229,6 +237,10 @@ class PayAction extends Action {
 
   //快钱同步返回页面
   public function shop_k99billreturn(){
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
+
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();

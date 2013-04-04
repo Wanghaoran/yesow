@@ -466,7 +466,7 @@ class CompanyAction extends CommonAction {
     $result = array();
     //高级搜索,只检索出按更新时间排序的一页数据(20条)
     if(empty($keyword) || $keyword == '请输入您要搜索的内容'){
-      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where('delaid is NULL') -> order('updatetime DESC') -> limit(20) -> select();
+      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where('delaid=""') -> order('updatetime DESC') -> limit(20) -> select();
       $result['count'] = 20;
       return $result;
     }
@@ -522,9 +522,9 @@ class CompanyAction extends CommonAction {
       foreach($keyword_arr as $value){
 	//判断是否是下载详细数据
 	if(!$down){
-	  $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
+	  $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid = '' )";
 	}else{
-	  $keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.clickcount FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";	
+	  $keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.clickcount FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid = '' )";	
 	}
       }
     }
@@ -543,7 +543,7 @@ class CompanyAction extends CommonAction {
       $where_select['website'] = array('LIKE', '%' . $keyword . '%');
       $where_select['_logic'] = 'OR';
       $map['_complex'] = $where_select;
-      $map['delaid']  = array('exp','is NULL');
+      $map['delaid']  = '';
     }else{
       $where_select['c.name'] = array('LIKE', '%' . $keyword . '%');
       $where_select['c.address'] = array('LIKE', '%' . $keyword . '%');
@@ -556,7 +556,7 @@ class CompanyAction extends CommonAction {
       $where_select['c.website'] = array('LIKE', '%' . $keyword . '%');
       $where_select['_logic'] = 'OR';
       $map['_complex'] = $where_select;
-      $map['c.delaid']  = array('exp','is NULL');
+      $map['c.delaid']  = '';
     }
     
     //构建查询SQL

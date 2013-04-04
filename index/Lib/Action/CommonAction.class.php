@@ -66,5 +66,8 @@ class CommonAction extends Action {
       $this -> assign('index_shop_nav', $index_shop_nav);
       S('index_shop_nav', $index_shop_nav);   
     }
+    //根据域名判断分站 及 读取分站模板
+    $templatename = D('admin://ChildSite') -> gettemplatename();
+    $this -> assign('templatename', $templatename);
   }
 }
