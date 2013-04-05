@@ -98,7 +98,7 @@ class IndexAction extends CommonAction {
     if($csid = D('admin://ChildSite') -> getid()){
       $where['csid'] = $csid;
     }
-    $where['delaid'] = '';
+    $where['delaid'] = array('exp', 'is NULL');
     $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> where($where) -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
@@ -160,7 +160,7 @@ class IndexAction extends CommonAction {
     if($csid = D('admin://ChildSite') -> getid()){
       $where['csid'] = $csid;
     }
-    $where['delaid'] = '';
+    $where['delaid'] = array('exp', 'is NULL');
     $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where($where) -> limit(28) -> select();
     $this -> assign('recommend_company', $recommend_company);
   }
@@ -168,21 +168,21 @@ class IndexAction extends CommonAction {
   //在线QQ
   private function qqonlinecompany(){
     $company = M('Company');
-    $qqonline_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => '', 'csid' => 22)) -> limit(20) -> select();
+    $qqonline_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 22)) -> limit(20) -> select();
     $this -> assign('qqonline_company', $qqonline_company);
   }
 
   //商家风采
   private function showcompany(){
     $company = M('Company');
-    $show_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => '', 'csid' => 21)) -> limit(20) -> select();
+    $show_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 21)) -> limit(20) -> select();
     $this -> assign('show_company', $show_company);
   }
 
   //动感传媒
   private function mediacompany(){
     $company = M('Company');
-    $media_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' =>'', 'csid' => 17)) -> limit(20) -> select();
+    $media_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 17)) -> limit(20) -> select();
     $this -> assign('media_company', $media_company);
   }
 
