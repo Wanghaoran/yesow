@@ -722,7 +722,7 @@ class CompanyAction extends CommonAction {
     //记录总数
     $count = $company -> where($where) -> count('id');
     $where_del = $where;
-    $where_del['delaid'] = array('neq', 0);
+    $where_del['delaid'] = array('neq', '');
     //已删数据
     $count_del = $company -> where($where_del) -> count('id');
     import('ORG.Util.Page');
@@ -1352,7 +1352,7 @@ class CompanyAction extends CommonAction {
     //如果分词后的结果和关键词相同，则不需要进行子查询
     if($keyword != $keyword_arr[0]){
       foreach($keyword_arr as $value){
-	$keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime,c.addtime FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";
+	$keyword_sql[] = "SELECT c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.website,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime,c.addtime FROM yesow_company as c LEFT JOIN yesow_child_site as cs ON c.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON c.csaid = csa.id LEFT JOIN yesow_company_category as cc ON c.ccid = cc.id WHERE ( c.name LIKE '%{$value}%' OR c.address LIKE '%{$value}%' OR c.manproducts LIKE '%{$value}%' OR c.linkman LIKE '%{$value}%' ) AND ( c.delaid is NULL )";
       }
     }
     
@@ -1372,7 +1372,7 @@ class CompanyAction extends CommonAction {
     $map['c.delaid']  = array('exp','is NULL');
     
     //构建查询SQL
-    $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
+    $sql = $company -> table('yesow_company as c') -> field('c.id,c.name,c.address,c.manproducts,c.website,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.csid,c.csaid,c.ccid,c.clickcount,c.updatetime,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where($map) -> union($keyword_sql) -> buildSql();
 
     //高级查询条件
     $senior_where = array();
@@ -1543,9 +1543,13 @@ class CompanyAction extends CommonAction {
     //生成下载信息
     $content_download = "后台搜索关键词\"{$result['keyword']}\"商家导出的数据信息\r\n";
     $i = 1;
+    $company_category = M('CompanyCategory');
     foreach($result['result'] as $value){
       $updatetime = date('Y-m-d H:i:s', $value['updatetime']);
-      $content_download .= "({$i}){$value['name']}\r\n公司地址:{$value['address']}\r\n主营产品:{$value['manproducts']}\r\n公司电话:{$value['companyphone']}\r\n移动电话:{$value['mobilephone']}\r\n联系人:{$value['linkman']}\r\n电子邮件:{$value['email']}\r\nQQ:{$value['qqcode']}\r\n主营类别:{$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
+      //主营一级
+      $cc_pid = $company_category -> getFieldByid($value['ccid'], 'pid');
+      $cc_one = $company_category -> getFieldByid($cc_pid, 'name');
+      $content_download .= "({$i}){$value['name']}\r\n主营:{$value['manproducts']}\r\n地址:{$value['address']}\r\n电话:{$value['companyphone']}\r\n联系人:{$value['linkman']}\r\n手机:{$value['mobilephone']}\r\n邮件:{$value['email']}\r\n网址:{$value['website']}\r\nQQ:{$value['qqcode']}\r\n主营类别:{$cc_one} - {$value['ccname']}\r\n更新时间:{$updatetime}\r\n\r\n";
       $i++;
     }
     
