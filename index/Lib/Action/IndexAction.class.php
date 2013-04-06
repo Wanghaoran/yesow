@@ -23,6 +23,8 @@ class IndexAction extends CommonAction {
     $this -> seo();
     //图片幻灯
     $this -> imagetab();
+    //易搜商城
+    $this -> shop();
 
     $this -> display();
   }
@@ -208,10 +210,10 @@ class IndexAction extends CommonAction {
       $result = $system -> field('name,value') -> where(array('name' => array('exp', "in ('title','keywords','description')"))) -> select();
       S('index_seo', $index_seo);
       $this -> assign('index_seo', $result);
-      //查询分站名
-      $childsite_name = D('admin://ChildSite') -> getname();
-      $this -> assign('childsite_name', $childsite_name);
     }
+    //查询分站名
+    $childsite_name = D('admin://ChildSite') -> getname();
+    $this -> assign('childsite_name', $childsite_name);
   }
 
   private function imagetab(){
@@ -219,6 +221,24 @@ class IndexAction extends CommonAction {
     $article_pic = M('InfoArticlePic');
     $result_pic = $article_pic -> table('yesow_info_article_pic as iap') -> field('iap.aid,iap.address,ia.title as title') -> where(array('iap.isshow_index' => 1)) -> order('iap.addtime DESC') -> limit(6) -> join('yesow_info_article as ia ON iap.aid = ia.id') -> select();
     $this -> assign('result_pic', $result_pic);
+  }
+
+  //易搜商城
+  private function shop(){
+    if(S('index_shop')){
+      $this -> assign('index_shop', S('index_shop'));
+    }else{
+      //查询SEO结果
+      $shopclass = M('ShopClass');
+      $shop = M('Shop');
+      //查询一级分类
+      $index_shop = $shopclass -> field('id,name') -> where('pid=0') -> select();
+      foreach($index_shop as $key => $value){
+	$index_shop[$key]['shop'] = $shop -> field('id,small_pic') -> where(array('cid_one' => $value['id'])) -> order('addtime DESC') -> limit(5) -> select();
+      }
+      S('index_shop', $index_shop);
+      $this -> assign('index_shop', $index_shop);
+    }
   }
   
 }

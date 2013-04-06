@@ -773,7 +773,7 @@ class CompanyAction extends CommonAction {
     $id = !empty($id) ? $id : $this -> _get('id', 'intval');
     $this -> assign('id', $id);
     //结果
-    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,a.name as auditname,a2.name as updatename,a3.name as delname') -> join('yesow_admin as a ON c.auditaid = a.id') -> join('yesow_admin as a2 ON c.updateaid = a2.id') -> join('yesow_admin as a3 ON c.delaid = a3.id') -> where(array('c.id' => $id)) -> find();
+    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname') -> where(array('c.id' => $id)) -> find();
     $this -> assign('result_edit', $result_edit);
     //根据csid 查分站下地区列表
     $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();

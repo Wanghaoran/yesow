@@ -397,6 +397,16 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .cat_bod ul.cat_list li dl dt a.hot{color:#F60;}
 .cat_bod ul.cat_list li dl dd{ width:300px;}
 .cat_bod ul.cat_list li dl dd a{ display:inline-block;}
+
+.cat_bod ul.cat_list2{ width:930px; float:left;}
+.cat_bod ul.cat_list2 li{width:180px; float:left; padding:10px 0px 10px 6px;}
+.cat_bod ul.cat_list2 li dl{float:left;}
+.cat_bod ul.cat_list2 li dl dt{width:180px; height:20px;overflow:hidden;}
+.cat_bod ul.cat_list2 li dl dt a{ font-size:14px; font-weight:bold; color:#0043fe;}
+.cat_bod ul.cat_list2 li dl dt a.hot{color:#F60;}
+.cat_bod ul.cat_list2 li dl dd{ width:180px;}
+.cat_bod ul.cat_list2 li dl dd a{ display:inline-block;}
+
 #main09 .cat_bod{width:930px;}
 
 #cat_gg{ width:930px; height:100px; padding:5px;}
@@ -1002,3 +1012,15 @@ ul.ul_sjfc div.page{ height:40px; background:#fff;}
 		}
 .zfRadio_Checked{background:url(images/payradioyes.gif) no-repeat; }
 #zhifuradio label img{ text-align:center; vertical-align:middle; margin-left:20px;}
+
+ul.ul_sjml{ width:640px; min-height:143px; height:auto!important; height:143px;}
+ul.ul_sjml li{ float:left; width:309px; margin:10px 5px 0 6px; _margin:10px 5px 0 4px; height:155px; background:url(images/lilistbg.jpg) no-repeat; }
+ul.ul_sjml li h2{ text-align:center; width:309px; height:30px; font-size:16px; line-height:30px; padding-top:5px;font-weight:normal;}
+ul.ul_sjml li h3{ text-align:center; width:309px; height:15px; line-height:15px; font-size:12px; font-weight:normal;}
+ul.ul_sjml li h4{ text-align:left; width:300px; padding-left:9px; height:10px; line-height:10px;font-size:11px; font-weight:normal;}
+ul.ul_sjml li h4 span{ padding-right:20px;}
+ul.ul_sjml li h5 div.div_left{ float:left; font-size:12px; width:70px; padding:5px 0 5px 10px;}
+ul.ul_sjml li h5 div.div_right{ float:left; text-align:left; padding:5px 0 3px 0; font-size:12px; font-weight:normal; width:140px; height:70px; line-height:18px; overflow:hidden; word-break:break-all; padding-right:80px;}
+ul.ul_sjml li h6{ text-align:left; width:300px; padding-left:9px; height:15px; line-height:15px;font-size:11px; font-weight:normal; color:#e52836;}
+ul.ul_sjml li h6 span{ padding-right:20px;}
+ul.ul_sjml div.page{ height:40px; background:#fff;}

@@ -107,7 +107,7 @@ $(function(){
 	</div>
 	<div class="index_gg01">
 		<a href="#">
-			<img src="__PUBLIC__/index/<!--{$templatename}--!><!--{$templatename}--!>/image/gg1.jpg" width="950" height="90" />
+			<img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90" />
 		</a>
 	</div>
 	<!--第二模块-->
@@ -193,51 +193,33 @@ $(function(){
 				<div class="hui_ui_c">
 					<h3>易搜商城</h3>
 					<ul class="tab_btn">
-						<li class="hover"><a href="#">期刊杂志</a></li>
-						<li><a href="#">易搜平台</a></li>
-						<li><a href="#">网站建设</a></li>
-						<li><a href="#">域名空间</a></li>
-						<li><a href="#">精美礼物</a></li>
+					  <volist name="index_shop" id="is">
+					    <eq name="i" value="1">
+					    <li class="hover"><a target="_blank" href="__ROOT__/Shop/index/cid/<!--{$id.id}--!>"><!--{$is.name}--!></a></li>
+					    <else/>
+					    <li><a target="_blank" href="__ROOT__/Shop/index/cid/<!--{$id.id}--!>"><!--{$is.name}--!></a></li>
+					    </eq>
+					  </volist>
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="main03_m goods_img tab_bod">
-			<ul>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_01.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_01.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_01.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_01.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_01.gif" /></a></li>
-			</ul>
-			<ul class="none">
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_02.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_02.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_02.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_02.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_02.gif" /></a></li>
-			</ul>
-			<ul class="none">
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_03.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_03.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_03.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_03.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_03.gif" /></a></li>
-			</ul>
-			<ul class="none">
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_04.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_04.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_04.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_04.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_04.gif" /></a></li>
-			</ul>
-			<ul class="none">
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_05.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_05.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_05.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_05.gif" /></a></li>
-				<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/goods_05.gif" /></a></li>
-			</ul>
+		  <volist name="index_shop" id="is">
+		  <eq name="i" value="1">
+		    <ul>
+		      <volist name="is.shop" id="iss">
+		      <li><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><img src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$iss.small_pic}--!>" /></a></li>
+		      </volist>
+		    </ul>
+		  <else/>
+		    <ul class="none">
+		      <volist name="is.shop" id="iss">
+		        <li><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><img src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$iss.small_pic}--!>" /></a></li>
+		      </volist>
+		    </ul>
+		  </eq>
+		  </volist>
 			<div class="clear"></div>
 		</div>
 		<div class="main03_d"></div>

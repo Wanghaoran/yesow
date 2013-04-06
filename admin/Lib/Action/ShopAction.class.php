@@ -46,6 +46,7 @@ class ShopAction extends CommonAction {
       if($shopclass -> add()){
 	//delete cache
 	S('index_shop_nav', NULL, NULL, '', NULL, 'index');
+	S('index_shop', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -65,6 +66,7 @@ class ShopAction extends CommonAction {
     if($shopclass -> where($where_del) -> delete()){
       //delete cache
       S('index_shop_nav', NULL, NULL, '', NULL, 'index');
+      S('index_shop', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -81,6 +83,7 @@ class ShopAction extends CommonAction {
       if($shopclass -> save()){
 	//delete cache
 	S('index_shop_nav', NULL, NULL, '', NULL, 'index');
+	S('index_shop', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
@@ -233,6 +236,8 @@ class ShopAction extends CommonAction {
       }
       
       if($shop -> add()){
+	//del cache
+	S('index_shop', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -251,6 +256,8 @@ class ShopAction extends CommonAction {
     $where_del['id'] = array('in', $_POST['ids']);
     $shop = M('Shop');
     if($shop -> where($where_del) -> delete()){
+      //del cache
+      S('index_shop', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -281,6 +288,8 @@ class ShopAction extends CommonAction {
       }
 
       if($shop -> save()){
+	//del cache
+	S('index_shop', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));

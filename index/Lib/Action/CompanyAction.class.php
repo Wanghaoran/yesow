@@ -112,38 +112,38 @@ class CompanyAction extends CommonAction {
       //公司电话
       if($author['author_one'] == 0){
 	$result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
-	$result['companyphone'] .= ' <a href="javascript:noauthor(\'author_one\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['companyphone'] .= ' <a href="javascript:noauthor(\'author_one\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //手机
       if($author['author_two'] == 0){
 	$result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
-	$result['mobilephone'] .= ' <a href="javascript:noauthor(\'author_two\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['mobilephone'] .= ' <a href="javascript:noauthor(\'author_two\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //QQ
       if($author['author_three'] == 0){
 	$result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
-	$result['qqcode'] .= ' <a href="javascript:noauthor(\'author_three\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['qqcode'] .= ' <a href="javascript:noauthor(\'author_three\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //邮件
       if($author['author_four'] == 0){
 	$result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
-	$result['email'] .= ' <a href="javascript:noauthor(\'author_four\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['email'] .= ' <a href="javascript:noauthor(\'author_four\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //网址
       if($author['author_five'] == 0){
 	$result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
-	$result['website'] .= ' <a href="javascript:noauthor(\'author_five\');"><img src="__PUBLIC__/index/style/images/dd2.gif" /></a>';
+	$result['website'] .= ' <a href="javascript:noauthor(\'author_five\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //是否有查看权
       $this -> assign('isview', 1);
     }
     //如果没有登录，加一张提示图片到后面
     if(!isset($_SESSION[C('USER_AUTH_KEY')])){
-      $result['companyphone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
-	$result['mobilephone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
-	$result['qqcode'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
-	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
-	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/style/images/dd.gif" /></a>';
+      $result['companyphone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
+	$result['mobilephone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
+	$result['qqcode'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
+	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
+	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
     }
     //非法词过滤，过滤的字段：公司名称、主营、企业介绍
     $illegal = M('IllegalWord');
@@ -439,6 +439,11 @@ class CompanyAction extends CommonAction {
     //公司信息
     $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
     $this -> assign('company_info', $company_info);
+    $this -> display();
+  }
+
+  //商家名录
+  public function companylist(){
     $this -> display();
   }
 
