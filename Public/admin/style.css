@@ -1,0 +1,17 @@
+/*鍚庡彴棣栭〉*/
+.adminpage{ width:100%; background:url(images/adminbg.jpg) top repeat-x; padding-top:19px;}
+.admin_con{ width:980px; margin:0 auto;}
+.admin_logo{ width:330px; height:99px; padding-right:650px; background:url(images/admin_logo.jpg) no-repeat; text-indent:-9999em;}
+.admin_logo a{ display:block; width:330px; height:99px;}
+.admin_login{ width:220px; height:171px; padding:50px 90px 50px 670px; background:url(images/admin_login.jpg) no-repeat; font-size:14px;}
+.btn_loginbg{ width:75px; height:30px; background:url(images/btn_loginbg.jpg) no-repeat; color:#123356; cursor:pointer; border:none; font-size:16px; font-family:Microsoft YaHei;}
+table.table_login{ border:none; width:220px;}
+table.table_login td.login_left{ text-align:left; width:70px; height:30px;}
+table.table_login td.login_right{ text-align:left; width:150px; height:30px;}
+table.table_login td.login_right input.input1{ width:120px; border:#82a7c4 1px solid; height:20px; line-height:20px; vertical-align:middle}
+table.table_login td.login_right input.input2{ width:60px; border:#82a7c4 1px solid; height:20px; line-height:20px; vertical-align:middle}
+table.table_login td.login_center{ text-align:center; height:60px; vertical-align:middle;}
+.admin_body{ width:940px; padding:30px 20px; background:url(images/adminbodybg.jpg) repeat-x;}
+.admin_body p{ line-height:25px;}
+.admin_body p.p_right{ float:right; font-size:14px; margin-top:10px;}
+.admin_bottom{ height:50px; border-top:#ccc 1px solid; padding-top:20px; text-align:center;}

@@ -125,119 +125,23 @@
 				</div>
 				<div class="main_sjfc_c_bod tab_bod">
 					<ul class="ul_sjml">
-                    	<div>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
+					  <div>
+					    <volist name="result" id="r">
+					    <li>
+					    <h2><!--{$r.name}--!></h2>
+					    <h3>联系人：<!--{$r.linkman}--!></h3>
+					    <h4><span>电话：<!--{$r.companyphone}--!></span><span>地址：<!--{$r.address}--!></span></h4>
                                 <h5>
                                     <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
+				    <div class="div_right"><!--{$r.manproducts}--!></div>
                                     <div class="clear"></div>
                                 </h5>
                                 <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
+				  <span>更新时间：<!--{$r.updatetime|date="Y-m-d H:i:s", ###}--!></span>
+                                    <span>录入时间：<!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></span>
                                 </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
-                            <li>
-                                <h2>某某某有限公司</h2>
-                                <h3>联系人：某某某</h3>
-                                <h4><span>电话：8888-88888888</span><span>地址：地址地址地址地址</span></h4>
-                                <h5>
-                                    <div class="div_left">主营产品：</div>
-                                    <div class="div_right">本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司主要经营本公司</div>
-                                    <div class="clear"></div>
-                                </h5>
-                                <h6>
-                                    <span>更新时间：2013-04-04</span>
-                                    <span>录入时间：2013-04-04</span>
-                                </h6>
-                            </li>
+				</li>
+				</volist>
                         </div>
                         <div class="clear"></div>
                         <div class="page" style="padding-right:10px;">

@@ -444,6 +444,9 @@ class CompanyAction extends CommonAction {
 
   //商家名录
   public function companylist(){
+    //读取最新的8条速查数据
+    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.linkman,c.companyphone,c.manproducts,c.updatetime,c.addtime') -> order('c.addtime DESC') -> limit(8) -> select();
+    $this -> assign('result', $result);
     $this -> display();
   }
 
