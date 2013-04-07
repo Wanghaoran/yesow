@@ -444,8 +444,27 @@ class CompanyAction extends CommonAction {
 
   //商家名录
   public function companylist(){
-    //读取最新的8条速查数据
-    $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.linkman,c.companyphone,c.manproducts,c.updatetime,c.addtime') -> order('c.addtime DESC') -> limit(8) -> select();
+    $category = M('CompanyCategory');
+    //读取主营一级类别
+    $result_cate = $category -> field('id,name') -> order('sort ASC') -> where('pid=0') -> select();
+    //读取主营二级类别（8个）
+    foreach($result_cate as $key => $value){
+      $result_cate[$key]['two'] = $category -> field('id,name') -> order('sort ASC') -> where(array('pid' => $value['id'])) -> limit(8) -> select();
+    }
+    $this -> assign('result_cate', $result_cate);
+
+    //类别id
+    $cid = !empty($_GET['cid']) ? $_GET['cid'] : $result_cate[0]['two'][0]['id'];
+    //获得此类别名称
+    $cid_name = $category -> getFieldByid($cid, 'name');
+    $this -> assign('cid_name', $cid_name);
+    
+    //读取此分类的最新10条速查数据
+    $result = M('Company') -> table('yesow_company as c') -> field('c.id,c.name,c.linkman,c.address,c.companyphone,c.manproducts,c.updatetime,c.addtime') -> where(array('c.ccid' => $cid)) -> order('c.addtime DESC') -> limit(10) -> select();
+    //隐藏电话
+    foreach($result as $key => $value){
+      $result[$key]['companyphone'] = substr_replace($value['companyphone'], '*****', 8);
+    }
     $this -> assign('result', $result);
     $this -> display();
   }
