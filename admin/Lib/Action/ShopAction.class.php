@@ -486,6 +486,9 @@ class ShopAction extends CommonAction {
     $order = M('ShopOrder');
     //根据id号查询单号
     $ordernum = $order -> getFieldByid($this -> _get('id', 'intval'), 'ordernum');
+    //根据id查询快递方式
+    $stname = $order -> table('yesow_shop_order as so') -> field('st.name as stname') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('stname', $stname['stname']);
     //根据单号查询商品信息
     $result = $order_shop -> shopbyordernum($ordernum);
     $this -> assign('result', $result);

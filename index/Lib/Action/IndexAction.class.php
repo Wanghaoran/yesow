@@ -234,7 +234,7 @@ class IndexAction extends CommonAction {
       //查询一级分类
       $index_shop = $shopclass -> field('id,name') -> where('pid=0') -> select();
       foreach($index_shop as $key => $value){
-	$index_shop[$key]['shop'] = $shop -> field('id,small_pic') -> where(array('cid_one' => $value['id'])) -> order('addtime DESC') -> limit(5) -> select();
+	$index_shop[$key]['shop'] = $shop -> field('id,title,small_pic') -> where(array('cid_one' => $value['id'])) -> order('addtime DESC') -> limit(7) -> select();
       }
       S('index_shop', $index_shop);
       $this -> assign('index_shop', $index_shop);

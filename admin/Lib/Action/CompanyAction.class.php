@@ -493,11 +493,9 @@ class CompanyAction extends CommonAction {
 	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('name'), 'id');
 	$where['p.ccid'] = $ccid;
       }else if($_POST['key'] == 'auditname'){
-	$auditaid = M('Admin') -> getFieldByname($this -> _post('name'), 'id');
-	$where['cr.auditid'] = $auditaid;
+	$where['cr.auditid'] = array('LIKE', '%' . $this -> _post('name') . '%');
       }else if($_POST['key'] == 'reportname'){
-	$auditaid = M('Member') -> getFieldByname($this -> _post('name'), 'id');
-	$where['cr.mid'] = $auditaid;
+	$where['cr.mid'] = array('LIKE', '%' . $this -> _post('name') . '%');
       }
     }
     if(!empty($_POST['starttime'])){
@@ -697,11 +695,9 @@ class CompanyAction extends CommonAction {
 	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('search_name'), 'id');
 	$where['ccid'] = $ccid;
       }else if($_POST['search_key'] == 'auditname'){
-	$auditaid = M('Admin') -> getFieldByname($this -> _post('search_name'), 'id');
-	$where['auditaid'] = $auditaid;
+	$where['auditaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'updatename'){
-	$auditaid = M('Admin') -> getFieldByname($this -> _post('search_name'), 'id');
-	$where['updateaid'] = $auditaid;
+	$where['updateaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }
     }
     if(!empty($_POST['search_starttime'])){

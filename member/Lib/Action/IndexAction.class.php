@@ -15,6 +15,12 @@ class IndexAction extends CommonAction {
 
   //会员中心首页
   public function index(){
+    //获取中级会员充值金额
+    $level_money = M('MemberLevel') -> getFieldByname('中级会员', 'updatemoney');
+    $this -> assign('level_money', $level_money);
+    //获取前两个充值金额返送情况
+    $gaving = M('PayGaving') -> field('money,money*ratio as gaving') -> order('money ASC') -> limit(2) -> select();
+    $this -> assign('gaving', $gaving);
     $this -> display();
   }
 

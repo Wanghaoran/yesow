@@ -209,13 +209,13 @@ $(function(){
 		  <eq name="i" value="1">
 		    <ul>
 		      <volist name="is.shop" id="iss">
-		      <li><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><img src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$iss.small_pic}--!>" /></a></li>
+		      <li><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><img width="115" height="120" src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$iss.small_pic}--!>" /></a><div><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><!--{$iss.title}--!></a></div></li>
 		      </volist>
 		    </ul>
 		  <else/>
 		    <ul class="none">
 		      <volist name="is.shop" id="iss">
-		        <li><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><img src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$iss.small_pic}--!>" /></a></li>
+		      <li><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><img width="115" height="120" src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$iss.small_pic}--!>" /></a><div><a target="_blank" href="__ROOT__/shop/<!--{$iss.id}--!>"><!--{$iss.title}--!></a></div></li>
 		      </volist>
 		    </ul>
 		  </eq>

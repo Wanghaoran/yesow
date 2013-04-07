@@ -40,7 +40,7 @@
 					<td><!--{$r.ordernum}--!></td>
 					<td><!--{$r.paytotal}--!></td>
 					<td><!--{$r.paytype}--!></td>
-					<td><!--{$r.stname}--!></td>
+					<td><!--{$r.stname|default="免运产品"}--!></td>
 					<eq name="r.isbull" value="1">
                                         <td>有</td>
 					<else/>

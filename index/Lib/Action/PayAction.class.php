@@ -41,6 +41,7 @@ class PayAction extends Action {
       if($_POST['trade_status'] == 'WAIT_BUYER_PAY'){
 	$data['paystatus'] = 0;
 	$shop_order -> where($where) -> save($data);
+	ob_end_clean();
 	echo "success";
       
       }
@@ -51,6 +52,7 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功
 	if($shop_order -> where($where) -> save($data)){
+	  ob_end_clean();
 	  echo "success";
 	}
       }
@@ -58,6 +60,7 @@ class PayAction extends Action {
       else if($_POST['trade_status'] == 'WAIT_BUYER_CONFIRM_GOODS'){
 	$data['paystatus'] = 2;
 	$shop_order -> where($where) -> save($data);
+	ob_end_clean();
 	echo "success";
       
       }
@@ -65,9 +68,11 @@ class PayAction extends Action {
       else if($_POST['trade_status'] == 'TRADE_FINISHED'){
 	$data['paystatus'] = 3;
 	$shop_order -> where($where) -> save($data);
+	ob_end_clean();
 	echo "success";
       }
     }else{
+      ob_end_clean();
       echo "fail";
     }
   }
