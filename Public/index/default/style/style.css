@@ -114,8 +114,8 @@ p#hot_search{padding-top:10px;}
 
 
 /**第二模块**/
-#main02{ width:950px; height:480px; padding-top:5px;}
-#main02_l{ width:250px; height:480px; padding-right:5px; float:left; position:relative; z-index:3;}
+#main02{ width:950px; padding-top:5px;}
+#main02_l{ width:250px; padding-right:5px; float:left; position:relative; z-index:3;}
 #main02_lt,
 #main02_lc,
 #main02_ld{width:250px;background:url(images/main02_l.gif) no-repeat 0 0;}
@@ -208,7 +208,7 @@ p#hot_search{padding-top:10px;}
 #footer_nav p, #footer_nav p a{color:#FFF;font-size:15px;font-weight:bold;}
 
 .goods_img li{width:123px;height:140px;padding:5px 4px;float:left; overflow:hidden;}
-.goods_img li a{ display:block; width:117px; height:122px; float:left; overflow:hidden;}
+.goods_img li a{ display:block; width:119px; height:124px; float:left; overflow:hidden;}
 .goods_img li a img{ width:115px; height:120px; padding:1px; border:#ddd 1px solid;}
 .goods_img li div{ width:117px; height:20px; line-height:20px; overflow:hidden;}
 
@@ -226,7 +226,9 @@ p#hot_search{padding-top:10px;}
 .copy_r ul li a img{ width:92px; height:36px; float:left;}
 p.frind_link{padding:10px 5px 20px 5px;width:940px;text-align:center;}
 /**广告**/
-.index_gg01{ padding-top:5px;}
+.index_gg01{ padding-top:5px; width:950px; overflow:hidden;}
+.index_gg02{ padding-top:5px; width:695px; overflow:hidden;}
+.index_gg03{ padding-top:5px; width:250px; overflow:hidden;}
 
 /**名录**/
 #main07{ width:950px; padding-top:5px;}
@@ -1011,8 +1013,9 @@ ul.ul_sjml li h2{ text-align:center; width:309px; height:25px; font-size:16px; l
 ul.ul_sjml li h3{ text-align:center; width:309px; height:16px; line-height:16px; font-size:12px; font-weight:normal;}
 ul.ul_sjml li h4{ text-align:left; width:300px; padding:0 5px; height:14px; line-height:14px;font-size:11px; font-weight:normal; overflow:hidden;}
 ul.ul_sjml li h5 div.div_left{ float:left; font-size:12px; width:70px; padding:0px 0 5px 10px;}
-ul.ul_sjml li h5 div.div_right{ float:left; text-align:left; padding:0px 0 3px 0; font-size:12px; font-weight:normal; width:140px; height:60px; line-height:18px; overflow:hidden; word-break:break-all; padding-right:80px;}
+ul.ul_sjml li h5 div.div_right{ float:left; text-align:left; padding:0px 0 3px 0; font-size:12px; font-weight:normal; width:140px; height:60px; line-height:20px; overflow:hidden; word-break:break-all; padding-right:80px;}
 ul.ul_sjml li h5 div.div_tel{height:14px; line-height:14px;font-size:11px; font-weight:normal; padding-left:40px;}
 ul.ul_sjml li h6{ text-align:left; width:300px; padding-left:9px; height:15px; line-height:15px;font-size:11px; font-weight:normal; color:#e52836;}
 ul.ul_sjml li h6 span{ padding-right:10px;}
 ul.ul_sjml div.page{ height:40px; background:#fff;}
+

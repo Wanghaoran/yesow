@@ -1473,4 +1473,115 @@ class SystemAction extends CommonAction {
 
   /* ----------- 关于我们 ------------ */
 
+  /* ----------- 广告管理 ------------ */
+  //广告管理
+  public function advertiseset(){
+    if(!empty($_REQUEST['csid'])){
+      $advertisepage = M('AdvertisePage');
+      $where = array();
+
+      $where['csid'] = $this -> _request('csid', 'intval');
+      //记录总数
+      $count = $advertisepage -> where($where) -> count('id');
+      import('ORG.Util.Page');
+      if(! empty ( $_REQUEST ['listRows'] )){
+	$listRows = $_REQUEST ['listRows'];
+      } else {
+	$listRows = 15;
+      }
+      $page = new Page($count, $listRows);
+      //当前页数
+      $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+      $page -> firstRow = ($pageNum - 1) * $listRows;
+
+      $result = $advertisepage -> field('id,module_name,action_name,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+      $this -> assign('result', $result);
+
+      //每页条数
+      $this -> assign('listRows', $listRows);
+      //当前页数
+      $this -> assign('currentPage', $pageNum);
+      $this -> assign('count', $count);
+    }
+    //查出所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //增加广告页面
+  public function addadvertisepage(){
+    //处理增加
+    if(!empty($_POST['csid'])){
+      $advertisepage = M('AdvertisePage');
+      if(!$advertisepage -> create()){
+	$this -> error($advertisepage -> getError());
+      }
+      if($advertisepage -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查出所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  
+  }
+
+  //删除广告页面
+  public function deladvertisepage(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $advertisepage = M('AdvertisePage');
+    if($advertisepage -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑广告页面
+  public function editadvertisepage(){
+    $advertisepage = M('AdvertisePage');
+    if(!empty($_POST['csid'])){
+      if(!$advertisepage -> create()){
+	$this -> error($advertisepage -> getError());
+      }
+      if($advertisepage -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $advertisepage -> field('csid,module_name,action_name,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查出所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //广告位管理
+  public function editadvertiseinfo(){
+    $this -> display();
+  }
+
+  //增加广告位
+  public function addeditadvertiseinfo(){
+  
+  }
+
+  //删除广告位
+  public function deleditadvertiseinfo(){
+  
+  }
+
+  //编辑广告位
+  public function editeditadvertiseinfo(){
+  
+  }
+  /* ----------- 广告管理 ------------ */
+
 }
