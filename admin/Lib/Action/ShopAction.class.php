@@ -197,7 +197,7 @@ class ShopAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $shop -> table('yesow_shop as s') -> field('s.id,sc.name as scname,s.title,s.marketprice,s.promotionprice,s.issend,s.clickcount,s.addtime,s.updatetime') -> where($where) -> join('yesow_shop_class as sc ON s.cid_one = sc.id') -> order('s.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $shop -> table('yesow_shop as s') -> field('s.id,sc.name as scname,s.title,s.marketprice,s.promotionprice,s.issend,s.clickcount,s.addtime,s.updatetime') -> where($where) -> join('yesow_shop_class as sc ON s.cid_one = sc.id') -> order('s.updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //查询商品分类
     $result_shopclass = M('ShopClass') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
@@ -296,7 +296,7 @@ class ShopAction extends CommonAction {
       }
     }
     //结果
-    $result = $shop -> field('cid_one,cid_two,issend,marketprice,promotionprice,big_pic,small_pic,clickcount,remark,title,content') -> find($this -> _get('id', 'intval'));
+    $result = $shop -> field('cid_one,cid_two,issend,marketprice,promotionprice,big_pic,small_pic,clickcount,remark,title,keyword,content') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     //查询商品分类
     $result_shopclass = M('ShopClass') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();

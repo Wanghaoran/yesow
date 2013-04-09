@@ -208,9 +208,9 @@ p#hot_search{padding-top:10px;}
 #footer_nav p, #footer_nav p a{color:#FFF;font-size:15px;font-weight:bold;}
 
 .goods_img li{width:123px;height:140px;padding:5px 4px;float:left; overflow:hidden;}
-.goods_img li a{ display:block; width:115px; height:120px; float:left; overflow:hidden;}
-.goods_img li a img{ float:left; width:115px; height:120px;}
-.goods_img li div{ width:115px; height:20px; line-height:20px; overflow:hidden;}
+.goods_img li a{ display:block; width:117px; height:122px; float:left; overflow:hidden;}
+.goods_img li a img{ width:115px; height:120px; padding:1px; border:#ddd 1px solid;}
+.goods_img li div{ width:117px; height:20px; line-height:20px; overflow:hidden;}
 
 .footer_list{ padding:10px 5px;}
 .footer_list ul{ width:188px; float:left;}
@@ -400,13 +400,13 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .cat_bod ul.cat_list li dl dd a{ display:inline-block;}
 
 .cat_bod ul.cat_list2{ width:930px; float:left;}
-.cat_bod ul.cat_list2 li{width:180px; float:left; padding:10px 0px 10px 6px;}
+.cat_bod ul.cat_list2 li{width:180px; height:80px; overflow:hidden; float:left; padding:10px 0px 10px 6px;}
 .cat_bod ul.cat_list2 li dl{float:left;}
 .cat_bod ul.cat_list2 li dl dt{width:180px; height:20px;overflow:hidden;}
 .cat_bod ul.cat_list2 li dl dt a{ font-size:14px; font-weight:bold; color:#0043fe;}
 .cat_bod ul.cat_list2 li dl dt a.hot{color:#F60;}
-.cat_bod ul.cat_list2 li dl dd{ width:180px;}
-.cat_bod ul.cat_list2 li dl dd a{ display:inline-block;}
+.cat_bod ul.cat_list2 li dl dd{ width:180px; height:20px; line-height:20px;}
+.cat_bod ul.cat_list2 li dl dd a{ display:inline-block; width:48px; height:20px; line-height:20px; white-space:nowrap; overflow:hidden; vertical-align:middle;}
 
 #main09 .cat_bod{width:930px;}
 
@@ -917,9 +917,9 @@ ul.ul_scgw{ width:295px;}
 ul.ul_scgw li{ float:left;margin-bottom:5px; width:295px;}
 ul.ul_scgw li h2{ font-size:12px; font-weight:bold; color:#000; height:20px; line-height:20px; }
 ul.ul_scgw li h2 span{ float:right; padding-left:10px;}
-ul.ul_scgw li div.div_left{ float:left; width:102px; margin-right:20px;}
+ul.ul_scgw li div.div_left{ float:left; width:122px; margin-right:10px;}
 ul.ul_scgw li div.div_left img{ width:115px; height:120px; border:#d8d8d8 1px solid;}
-ul.ul_scgw li div.div_right{ float:left; width:160px;}
+ul.ul_scgw li div.div_right{ float:left; width:140px;}
 ul.ul_scgw li div.div_right p{ height:60px; overflow:hidden; line-height:15px; color:#666;}
 ul.ul_scgw li div.div_right h5{ font-size:12px; color:#666; text-align:left; height:20px; line-height:20px;}
 ul.ul_scgw li.libox{ background:#f8f8e8; width:280px; height:30px; line-height:30px; border:#d8d8d8 1px dashed; padding:5px 0 5px 10px;}
@@ -1006,13 +1006,13 @@ ul.ul_sjfc div.page{ height:40px; background:#fff;}
 #zhifuradio label img{ text-align:center; vertical-align:middle; margin-left:20px;}
 
 ul.ul_sjml{ width:640px; min-height:143px; height:auto!important; height:143px;}
-ul.ul_sjml li{ float:left; width:309px; margin:10px 5px 0 6px; _margin:10px 5px 0 4px; height:155px; background:url(images/lilistbg.jpg) no-repeat; }
-ul.ul_sjml li h2{ text-align:center; width:309px; height:30px; font-size:16px; line-height:30px; padding-top:5px;font-weight:normal;}
-ul.ul_sjml li h3{ text-align:center; width:309px; height:15px; line-height:15px; font-size:12px; font-weight:normal;}
-ul.ul_sjml li h4{ text-align:left; width:300px; padding-left:9px; height:10px; line-height:10px;font-size:11px; font-weight:normal;}
-ul.ul_sjml li h4 span{ padding-right:20px;}
-ul.ul_sjml li h5 div.div_left{ float:left; font-size:12px; width:70px; padding:5px 0 5px 10px;}
-ul.ul_sjml li h5 div.div_right{ float:left; text-align:left; padding:5px 0 3px 0; font-size:12px; font-weight:normal; width:140px; height:70px; line-height:18px; overflow:hidden; word-break:break-all; padding-right:80px;}
+ul.ul_sjml li{ float:left; width:309px; margin:10px 5px 0 6px; _margin:10px 0px 0 4px; height:155px; background:url(images/lilistbg.jpg) no-repeat; }
+ul.ul_sjml li h2{ text-align:center; width:309px; height:25px; font-size:16px; line-height:25px; padding-top:5px;font-weight:normal;}
+ul.ul_sjml li h3{ text-align:center; width:309px; height:16px; line-height:16px; font-size:12px; font-weight:normal;}
+ul.ul_sjml li h4{ text-align:left; width:300px; padding:0 5px; height:14px; line-height:14px;font-size:11px; font-weight:normal; overflow:hidden;}
+ul.ul_sjml li h5 div.div_left{ float:left; font-size:12px; width:70px; padding:0px 0 5px 10px;}
+ul.ul_sjml li h5 div.div_right{ float:left; text-align:left; padding:0px 0 3px 0; font-size:12px; font-weight:normal; width:140px; height:60px; line-height:18px; overflow:hidden; word-break:break-all; padding-right:80px;}
+ul.ul_sjml li h5 div.div_tel{height:14px; line-height:14px;font-size:11px; font-weight:normal; padding-left:40px;}
 ul.ul_sjml li h6{ text-align:left; width:300px; padding-left:9px; height:15px; line-height:15px;font-size:11px; font-weight:normal; color:#e52836;}
-ul.ul_sjml li h6 span{ padding-right:20px;}
+ul.ul_sjml li h6 span{ padding-right:10px;}
 ul.ul_sjml div.page{ height:40px; background:#fff;}

@@ -392,8 +392,17 @@ class CompanyAction extends CommonAction {
     if(M('AuditSearchKeyword') -> getFieldByname($result['keyword'], 'id')){
       $search_data['status'] = 1;    
     }
-    $search_keyword -> create($search_data);
-    $search_keyword -> add();
+    //如果这个词已经记录，则更新这条数据，而不是新增
+    if($skid = $search_keyword -> getFieldBykeyword($result['keyword'], 'id')){
+      $search_data['id'] = $skid;
+      $search_data['count'] = array('exp','count+1');
+      $search_keyword -> create($search_data);
+      $search_keyword -> save();
+    }else{
+      $search_data['count'] = 1;
+      $search_keyword -> create($search_data);
+      $search_keyword -> add();
+    }
 
     //如果是包月会员，则记录此次搜索
     if(D('Monthly') -> ismonthly()){

@@ -47,12 +47,12 @@
       <input type="text" class="textInput required" name="promotionprice" value="<!--{$result.promotionprice}--!>" />
       </p>
 
-      <p style="width:400px;">
+      <p style="width:405px;">
       <label>小图上传：</label>
       <input name="small_pic" type="file" size="5" />
       <!--{$result.big_pic|default="无小图"}--!>
       </p>
-      <p style="width:400px;">
+      <p style="width:405px;">
       <label>大图上传：</label>
       <input name="big_pic" type="file" size="5" />
       <!--{$result.small_pic|default="无大图"}--!>
@@ -60,6 +60,10 @@
       <p>
       <label>人气指数：</label>
       <input type="text" class="textInput required" name="clickcount" value="<!--{$result.clickcount}--!>" />
+      </p>
+      <p>
+      <label>关键字：</label>
+      <input type="text" class="textInput" name="keyword" value="<!--{$result.keyword}--!>" />
       </p>
       <p style="width:800px;height:100%">
       <label>简介：</label>

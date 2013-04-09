@@ -52,7 +52,7 @@ return array(
   /*
   //重新定义__ROOT__常量，线上项目需要设置此项
   'TMPL_PARSE_STRING' => array(
-    '__ROOT__' => 'http://www.yesow.com',
+    '__ROOT__' => 'http://' . $_SERVER['HTTP_HOST'];
   ),
    */
 );
