@@ -31,6 +31,16 @@ class ChildSiteModel extends Model {
     return $cid;
   }
 
+  //根据域名获取分站id，用于判断广告
+  public function getidc(){
+    if($_SERVER['HTTP_HOST'] == 'yesow.com' || $_SERVER['HTTP_HOST'] == 'www.yesow.com'){
+      $cid = $this -> getFieldBydomain('yesow.com', 'id');
+    }else{
+      $cid = $this -> getFieldBydomain($_SERVER['HTTP_HOST'], 'id');
+    }
+    return $cid;
+  }
+
   //根据域名获取模板名称
   public function gettemplatename(){
     if($_SERVER['HTTP_HOST'] == 'yesow.com' || $_SERVER['HTTP_HOST'] == 'www.yesow.com'){

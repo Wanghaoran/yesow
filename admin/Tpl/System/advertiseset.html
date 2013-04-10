@@ -70,7 +70,7 @@
 			  <td><!--{$r.remark}--!></td>
 			  <td><!--{$r.module_name}--!></td>
 			  <td><!--{$r.action_name}--!></td>		  
-			  <td>广告位管理</td>		  
+			  <td><a rel="editadvertiseinfo" target="ajax" href="__URL__/editadvertiseinfo/pid/<!--{$r.id}--!>" style="color:green;">广告位管理</a></td>		  
 			</tr>
 		</volist>
 		</tbody>
@@ -86,7 +86,7 @@
 
 	</div>
 	
-	<div id="jbsxBox3" class="unitBox" style="margin-left:520px;">
+	<div id="editadvertiseinfo" class="unitBox" style="margin-left:520px;">
 
 	  <include file="System:editadvertiseinfo" />
 

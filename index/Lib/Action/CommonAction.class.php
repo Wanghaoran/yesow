@@ -69,5 +69,8 @@ class CommonAction extends Action {
     //根据域名判断分站 及 读取分站模板
     $templatename = D('admin://ChildSite') -> gettemplatename();
     $this -> assign('templatename', $templatename);
+    //获得此页面的广告位
+    $ad_arr = D('index://AdvertisePage') -> getad();
+    //dump($ad_arr);
   }
 }

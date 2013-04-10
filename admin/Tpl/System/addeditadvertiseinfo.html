@@ -1,0 +1,47 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/advertiseset" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+	  <div class="pageFormContent" layoutH="58">
+	      <div class="unit">
+		<label>广告位名称：</label>
+		<input type="text" class="required" name="name" />
+	      </div>
+	      <div class="unit">
+		<label>广告位标识符：</label>
+		<input type="text" class="required" name="namenote" />
+	      </div>
+	      <div class="unit">
+		<label>宽度：</label>
+		<input type="text" class="required" name="width" />
+	      </div>
+	      <div class="unit">
+		<label>高度：</label>
+		<input type="text" class="required" name="height" />
+	      </div>
+	      <div class="unit">
+		<label>链接：</label>
+		<input type="text" class="" name="link" />
+	      </div>
+	      <div class="unit">
+		<label>广告图片：</label>
+		<input type="file" name="address" />
+	      </div>
+	      <div class="unit">
+		<label>是否开启：</label>
+		<input type="radio" name="isopen" value="1" checked="checked" />开启
+		<input type="radio" name="isopen" value="0" />关闭
+	      </div>
+	      <input type="hidden" name="pid" value="<!--{$Think.get.pid}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -4,6 +4,20 @@
  */
 class SystemAction extends CommonAction {
 
+  public function ad_upload(){//广告管理文件上传
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('AD_PIC_PATH') ;//设置上传目录
+    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> saveRule = 'uniqid';
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info[0]['savename'];
+    }else{
+      return $upload;
+    }
+  }
+
   //节点管理
   public function node(){
     $node = M('Node');
@@ -1506,7 +1520,9 @@ class SystemAction extends CommonAction {
     //查出所有分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    $this -> display();
+
+    //右侧广告位管理页面
+    $this -> editadvertiseinfo($_POST['pid']);
   }
 
   //增加广告页面
@@ -1564,23 +1580,78 @@ class SystemAction extends CommonAction {
   }
 
   //广告位管理
-  public function editadvertiseinfo(){
+  public function editadvertiseinfo($pid){
+    $pid = !empty($pid) ? $pid : $_GET['pid'];
+    if(!empty($pid)){
+      $advertise = M('Advertise');
+      $where_ad = array();
+      $where_ad['pid'] = $pid;
+      $ad_result = $advertise -> field('id,name,namenote,width,height,isopen,address') -> order('namenote') -> where($where_ad) -> select();
+      $this -> assign('ad_result', $ad_result);
+    }
     $this -> display();
   }
 
   //增加广告位
   public function addeditadvertiseinfo(){
-  
+    //处理增加
+    if(!empty($_POST['name'])){
+      $advertise = M('Advertise');
+      if(!$advertise -> create()){
+	$this -> error($advertise -> getError());
+      }
+      if(!empty($_FILES['address']['name'])){
+	$advertise -> address = $this -> ad_upload();
+      }
+      if($advertise -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      } 
+    }
+    $this -> display();
   }
 
   //删除广告位
   public function deleditadvertiseinfo(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $advertise = M('Advertise');
+    if($advertise -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //编辑广告位
   public function editeditadvertiseinfo(){
-  
+    $advertise = M('Advertise');
+    //处理编辑
+    if(!empty($_POST['name'])){
+      if(!$advertise -> create()){
+	$this -> error($advertise -> getError());
+      }
+      if(!empty($_FILES['address']['name'])){
+	$advertise -> address = $this -> ad_upload();
+      }
+      if($advertise -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $advertise -> field('name,namenote,width,height,link,isopen') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //查看广告图片
+  public function seeadimage(){
+    $advertise = M('Advertise');
+    $result = $advertise -> field('address,width,height') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   }
   /* ----------- 广告管理 ------------ */
 

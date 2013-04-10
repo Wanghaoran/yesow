@@ -49,6 +49,12 @@ return array(
   'SHOP_PIC_PATH' => './Upload/shop/',
   //商品图片显示
   'SHOP_PIC_PATH_SAVE' => __ROOT__ . '/Upload/shop/', 
+
+  //广告图片保存路径
+  'AD_PIC_PATH' => './Upload/ad/',
+  //广告图片显示
+  'AD_PIC_PATH_SAVE' => __ROOT__ . '/Upload/ad/', 
+
   /*
   //重新定义__ROOT__常量，线上项目需要设置此项
   'TMPL_PARSE_STRING' => array(

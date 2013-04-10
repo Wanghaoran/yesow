@@ -26,7 +26,7 @@ $(function(){
 	<!--咨询文章分页-->
 	<div id="main11">
 		<div id="main11_l">
-			<div class="main11_l_t">
+			<div class="main11_l_t" style=" overflow:hidden;">
 			  <div id="KinSlideshow" style="visibility:hidden;">
 			    <volist name="result_pic" id="rp">
 			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="295" height="295" /></a>
@@ -44,8 +44,13 @@ $(function(){
 				<ul class="bl_list main11_l_d">
 				  <volist name="result_hot_point" id="rhp">
 					<li>
-						<div class="bl_list_img">
-						  <img src="<!--{$rhp.address|default='__PUBLIC__/index/<!--{$templatename}--!>/image/nopicture.gif'}--!>" width="80" height="60" />
+					<div class="bl_list_img">
+					  <empty name="rhp.address">
+					  <img src="__PUBLIC__/index/default/image/nopicture.gif" width="80" height="60" />
+					  <else/>
+					  <img src="<!--{$rhp.address}--!>" width="80" height="60" />
+					  </empty>
+						  
 						</div>
 						<a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" >[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!></a>
 						</li>
@@ -61,8 +66,13 @@ $(function(){
 				</div>
 				<div class="cat_bod">
 					<div class="main11_cat_bod_l">
-						<div class="cat_first_image">
-						  <img src="<!--{$rtc.firstarticle.address|default='__PUBLIC__/index/<!--{$templatename}--!>/image/nopicture.gif'}--!>" width="125" height="100" />
+					  <div class="cat_first_image">
+					    <empty name="rtc.firstarticle.address">
+					    <img src="__PUBLIC__/index/default/image/nopicture.gif" width="125" height="100" />
+					    <else/>
+					     <img src="<!--{$rtc.firstarticle.address}--!>" width="125" height="100" />
+					    </empty>
+						 
 						</div>
 						<div class="cat_first_info">
 						<h3><a href="__ROOT__/article/<!--{$rtc.firstarticle.id}--!>" target="_blank"><!--{$rtc.firstarticle.title}--!></a></h3>

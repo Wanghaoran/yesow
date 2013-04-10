@@ -409,12 +409,10 @@ class CompanyAction extends CommonAction {
       D('MemberMonthlyDetail') -> writelog('搜索', '在主站搜索一次[<span style="color:blue">' . $_GET['keyword'] . '</span>]');
     }
 
-    //右侧固定排名(取点击量最低的前20名)
-    $fixed_result = $this -> search_company($_GET['keyword'], false, false, 'clickcount ASC', 20);
+    //右侧固定排名 和 右侧热点排名
+    $fixed_result = $this -> search_company($_GET['keyword'], false, false, 'clickcount ASC', 20, $result['keyword_arr']);
     $this -> assign('fixed_result', $fixed_result);
-    //右侧热点排名(取点击率最高的前20名)
-    $hot_result = $this -> search_company($_GET['keyword'], false, false, 'clickcount DESC', 20);
-    $this -> assign('hot_result', $hot_result);
+
     $this -> display();
   }
 
@@ -497,7 +495,10 @@ class CompanyAction extends CommonAction {
   //keyword 搜索关键词
   //page 是否需要分页
   //down 是否是下载全部资料
-  public function search_company($keyword ,$page=true, $down=false, $order=false, $limit=false){
+  //order order 条件
+  //limit limit条件
+  //key_arr 是否已经有了分好词的关键词词组
+  public function search_company($keyword ,$page=true, $down=false, $order=false, $limit=false, $key_arr=false){
     //最终输出结果
     $result = array();
     //高级搜索,只检索出按更新时间排序的一页数据(20条)
@@ -506,10 +507,15 @@ class CompanyAction extends CommonAction {
       $result['count'] = 20;
       return $result;
     }
-    //初始化已审关键词表
-    $auditkeyword = M('AuditSearchKeyword');
+
     //初始化速查主表
     $company = M('Company');
+
+    //如果已经传入了处理好的分词数组，则不需要再处理
+    if(!$key_arr){
+      //初始化已审关键词表
+    $auditkeyword = M('AuditSearchKeyword');
+    
     //删除关键词两边的空格
     $keyword = trim($keyword);
     //将关键词进行转码用于分词
@@ -551,6 +557,13 @@ class CompanyAction extends CommonAction {
     
     //生成排序后数组
     usort($keyword_arr, 'keyword_sort');
+    }else{
+      $keyword_arr = $key_arr;
+    }
+    
+
+
+
     //进行分词后关键词的SQL组装
     $keyword_sql = array();
     //如果分词后的结果和关键词相同，则不需要进行子查询

@@ -1,9 +1,6 @@
 
-	<form id="pagerForm" onsubmit="return divSearch(this, 'jbsxBox3');" action="demo/pagination/list3.html" method="post">
-	<input type="hidden" name="pageNum" value="1" />
-	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
-	<input type="hidden" name="orderField" value="${param.orderField}" />
-	<input type="hidden" name="orderDirection" value="${param.orderDirection}" />
+	<form id="pagerForm" onsubmit="return divSearch(this, 'jbsxBox3');" action="__ACTION__" method="post">
+	  <input type="hidden" name="pid" value="<!--{$Think.request.pid}--!>" />
 	</form>
 
 
@@ -11,12 +8,12 @@
 <div class="panelBar">
 		<ul class="toolBar">
 		  <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-		  <li><a class="add" href="__URL__/addeditadvertiseinfo" target="dialog" mask="true"><span>添加广告位</span></a></li>
+		  <li><a class="add" href="__URL__/addeditadvertiseinfo/pid/<!--{$Think.request.pid}--!>" target="dialog" mask="true"><span>添加广告位</span></a></li>
 		  <li class=""><a class="delete" href="__URL__/deleditadvertiseinfo/navTabId/advertiseset" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择广告位"><span>删除广告位</span></a></li>
 		  <li><a class="edit" href="__URL__/editeditadvertiseinfo/id/{sid_role}" target="dialog" mask="true" warn="请选择广告位"><span>编辑广告位</span></a></li>
 		  <else/>
 		  <if condition="isset($_SESSION['acc_arr']['system']['addeditadvertiseinfo'])">
-		   <li><a class="add" href="__URL__/addeditadvertiseinfo" target="dialog" mask="true"><span>添加广告位</span></a></li>
+		   <li><a class="add" href="__URL__/addeditadvertiseinfo/pid/<!--{$Think.request.pid}--!>" target="dialog" mask="true"><span>添加广告位</span></a></li>
 		  </if>
 		  <if condition="isset($_SESSION['acc_arr']['system']['deleditadvertiseinfo'])">
 		  <li class=""><a class="delete" href="__URL__/deleditadvertiseinfo/navTabId/advertiseset" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择广告位"><span>删除广告位</span></a></li>
@@ -36,29 +33,35 @@
 			<th width="60">广告位标识符</th>
 			<th width="40">宽度</th>
 			<th width="40">高度</th>
+			<th width="30">状态</th>
 			<th width="60">操作</th>
 
 
 		</tr>
 		</thead>
 		<tbody>
-		<volist name="result" id="r">
+		<volist name="ad_result" id="r">
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.remark}--!></td>
-			  <td><!--{$r.module_name}--!></td>
-			  <td><!--{$r.action_name}--!></td>		  
-			  <td><!--{$r.action_name}--!></td>		  
-			  <td>广告位管理</td>		  
+			  <td><!--{$r.name}--!></td>
+			  <td><!--{$r.namenote}--!></td>
+			  <td><!--{$r.width}--!></td>		  
+			  <td><!--{$r.height}--!></td>
+			  <eq name="r.isopen" value="1">
+			  <td style="color:green">启用</td>
+			  <else/>
+			  <td style="color:red">关闭</td>
+			  </eq>
+			  <empty name="r.address">		  
+			  <td></td>
+			  <else/>
+			  <td><a href="__URL__/seeadimage/id/<!--{$r.id}--!>" target="dialog">查看图片</a></td>
+			  </empty>		  
 			</tr>
 		</volist>
 		</tbody>
 	</table>
 	<div class="panelBar">
-		<div class="pages">
-		  <span>共<!--{$count}--!>条</span>
-		</div>
-		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="5" currentPage="<!--{$currentPage}--!>"></div>
 	</div>
 </div>
