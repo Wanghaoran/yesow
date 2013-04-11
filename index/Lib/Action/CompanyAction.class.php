@@ -409,10 +409,9 @@ class CompanyAction extends CommonAction {
       D('MemberMonthlyDetail') -> writelog('搜索', '在主站搜索一次[<span style="color:blue">' . $_GET['keyword'] . '</span>]');
     }
 
-    //右侧固定排名 和 右侧热点排名
-    $fixed_result = $this -> search_company($_GET['keyword'], false, false, 'clickcount ASC', 20, $result['keyword_arr']);
+    //右侧固定排名 和 右侧热点排名 读取数据更新消息
+    $fixed_result = M('TiteNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(20) -> select();
     $this -> assign('fixed_result', $fixed_result);
-
     $this -> display();
   }
 
@@ -562,8 +561,6 @@ class CompanyAction extends CommonAction {
     }
     
 
-
-
     //进行分词后关键词的SQL组装
     $keyword_sql = array();
     //如果分词后的结果和关键词相同，则不需要进行子查询
@@ -646,7 +643,6 @@ class CompanyAction extends CommonAction {
 	$senior_where['a.csid'] = $csid;
       }
     }
-
     
     
     //统计总数

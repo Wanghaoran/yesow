@@ -515,15 +515,14 @@
 				<div class="huang_ui">
 					<div class="huang_ui_r">
 						<div class="huang_ui_c">
-							<h2>右侧固定排名TOP20</h2>
+							<h2>数据更新消息</h2>
 						</div>
 					</div>
 				</div>
 				<ul class="top_list">
-				  <volist name="fixed_result.result" id="frr">
+				  <volist name="fixed_result" id="hrr">
 				  <li>
-				  <h3><a href="__ROOT__/company/<!--{$frr.id}--!>" target="_blank" class="a_title"><!--{$frr.name}--!></a><a href="#" class="a_weizhi">[等候此位]</a></h3>
-				  <P><!--{$frr.manproducts}--!></P>
+				  <P><a href="#" class="a_weizhi">[<!--{$hrr.name}--!>]</a><!--{$hrr.title}--!></P>
 				  </li>	
 				  </volist>
              		
@@ -537,15 +536,14 @@
 				<div class="huang_ui">
 					<div class="huang_ui_r">
 						<div class="huang_ui_c">
-							<h2>右侧热点排名TOP20</h2>
+							<h2>数据更新消息</h2>
 						</div>
 					</div>
 				</div>
 				<ul class="top_list">
-				  <volist name="fixed_result.result" id="hrr">
+				  <volist name="fixed_result" id="hrr">
 				  <li>
-				  <h3><a href="__ROOT__/company/<!--{$hrr.id}--!>" target="_blank" class="a_title"><!--{$hrr.name}--!></a><a href="#" class="a_weizhi">[等候此位]</a></h3>
-				  <P><!--{$hrr.manproducts}--!></P>
+				  <P><a href="#" class="a_weizhi">[<!--{$hrr.name}--!>]</a><!--{$hrr.title}--!></P>
 				  </li>	
 				  </volist>
 				</ul>

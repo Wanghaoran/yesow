@@ -29,6 +29,7 @@ class InfoAction extends CommonAction {
       $result_one_column[$key]['fristarticle'][0]['pic'] = $article_pic -> getFieldByaid($result_one_column[$key]['fristarticle'][0]['id'], 'address');
     }
     $this -> assign('result_one_column', $result_one_column);
+
     $this -> display();
   }
 
@@ -109,7 +110,7 @@ class InfoAction extends CommonAction {
     $this -> assign('title1', M('InfoOneColumn') -> field('id,name') -> find($title['classid']));
     $this -> assign('title2', M('InfoTwoColumn') -> field('id,name') -> find($title['colid']));
     //文章
-    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.title,ia.source,m.name as mname,a.name as aname,ia.addtime,content') -> join('yesow_member as m ON ia.authorid = m.id') -> join('yesow_admin as a ON ia.auditid = a.id') -> where(array('ia.id' => $id)) -> find();
+    $result = $infoarticle -> table('yesow_info_article as ia') -> field('ia.title,ia.source,ia.keyword,m.name as mname,a.name as aname,ia.addtime,content') -> join('yesow_member as m ON ia.authorid = m.id') -> join('yesow_admin as a ON ia.auditid = a.id') -> where(array('ia.id' => $id)) -> find();
     $this -> assign('result', $result);
     //点击量加一
     $infoarticle -> where(array('id' => $id)) -> setInc('hits');
