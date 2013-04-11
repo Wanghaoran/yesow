@@ -51,7 +51,7 @@ $(function(){
 				</div>
 			</div>
 		</div>
-		<div id="main01_c">
+		<div id="main01_c" style="height:250px; overflow:hidden;">
 			<div id="KinSlideshow" style="visibility:hidden;_width:330px;">
 			    <volist name="result_pic" id="rp">
 			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="330" height="255" /></a>
@@ -104,10 +104,14 @@ $(function(){
 			</div>
 		</div>
 		<div class="clear"></div>
-	</div>
+	      </div>
+	      <notempty name="ad_arr.tlgg1">
 	<div class="index_gg01">
-	  <a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="245" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="145" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="245" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="300" height="90"/></a>
+	  <volist name="ad_arr.tlgg1" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
 	</div>
+	</notempty>
 	<!--第二模块-->
 	<div id="main02">
 		<!--弹出导航-->
@@ -129,9 +133,13 @@ $(function(){
 				</ul>
 			</div>
 			<div id="main02_ld"></div>
+			<notempty name="ad_arr.left">
 			<div class="index_gg03">
-			  <a href="#"><img width="120" height="90" style="margin-right:5px;" src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg"></a><a href="#"><img width="125" height="90" src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg"></a>
-			</div>
+			  <volist name="ad_arr.left" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
+	</div>
+	</notempty>
 		</div>
 		<div id="main02_r">
 			<div class="main02_r_tit">
@@ -146,10 +154,13 @@ $(function(){
 			    </volist>
 			  </ul>				
 			</div>
-
+			<notempty name="ad_arr.right">
 			<div class="index_gg02">
-			  <a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="245" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="150" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="290" height="90"/></a>
-			</div>
+			  <volist name="ad_arr.right" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
+	</div>
+	</notempty>
 			<div class="main02_r_fot">
 				<div class="main02_r_fot_item">
 					<div class="main02_r_fot_item_tit">
@@ -324,10 +335,14 @@ $(function(){
 			</div>
 		</div>
 		<div class="clear"></div>
-	</div>
+	      </div>
+	      <notempty name="ad_arr.foot">
 	<div class="index_gg01">
-	  <a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="245" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="145" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="245" height="90" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="300" height="90"/></a>
+	  <volist name="ad_arr.foot" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
 	</div>
+	</notempty>
 
 	<div id="main06" class="tab">
 		<div class="hui_ui">

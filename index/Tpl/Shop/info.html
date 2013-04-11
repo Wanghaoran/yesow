@@ -53,6 +53,39 @@
        }
     });
   }
+
+$(document).ready(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+      $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+      });
+    });
+
+function submitcommit(){
+    if($('#content')[0].value == ''){
+      alert('评论内容不能为空');
+      }else if($('#verify')[0].value == ''){
+      alert('验证码不能为空');
+      }else{
+      var p = $('#content')[0].value;
+      var m = $('#verify')[0].value;
+      var f = $("input:checked[name='face']").val();
+      $.ajax({
+	type: "POST",
+	url: "__URL__/commit",
+	dataType: "json",
+	data: "content=" + p + "&code=" + m + "&sid=<!--{$Think.get.id}--!>&face=" + f,
+	success: function(msg){
+	  if(msg.status == 0){
+	    alert('错误提示：' + msg.message);
+	    }else{
+	    alert('成功提示：' + msg.message);
+	    location.reload();
+	    }
+	}
+	});
+    }
+  }
 </script>
 </head>
 <body id="body_index">
@@ -153,15 +186,48 @@
                                     </ul>
                                     <div class="clear"></div>
                                 </div>
-                                <div class="clear10"></div>
+				<div class="clear10"></div>
+				<div class="comment_list">
+				<h3>评论列表</h3>
+				<ul class="comment_list_ul">
+				  <volist name="result_comment" id="rc">
+				  <li>
+				  <p class="comment_list_head"><!--{$rc.floor}--!> 楼 <!--{$rc.name|default='游客'}--!> 在 <!--{$rc.addtime|date="Y-m-d", ###}--!> 发表了评论:<span style="float:right">表情:
+				    <notempty name="rc.face">			  
+				    <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+				    <else/>
+				    无
+				    </notempty>
+				  </span></p>
+				  <p class="comment_list_bod"><!--{$rc.content|nl2br}--!>
+				  </p>
+				  </li>
+				  </volist>
+
+				</ul>
+				<div class="page">
+				  <!--{$show}--!>
+				</div>			
+			</div>
                                 <div class="hlwllgbox">
-                                	<h2>商品评论</h2>
+				  <h2>商品评论</h2>
                                     <div class="scgw_left">
-                                    	<textarea class="textarea_scgw"></textarea>
+				      <textarea class="textarea_scgw" id="content"></textarea>
+				      <p>表情:
+				  <input type="radio" name="face" value="" checked="checked"/>无
+				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/1.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/2.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/3.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/4.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/5.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/6.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/7.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/8.gif" width="20" height="20" border="0" />
+				  </p>
                                     </div>
                                     <div class="scgw_right">
-                                    <input type="text" class="input_gmsl" style=" margin-bottom:10px"/>
-                                    <input type="button" class="tijiao" value="提交评论"/>
+                                    <div class="fl"><input type="text" class="input_gmsl" id="verify" style=" margin-bottom:10px" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div>
+                                    <input type="button" class="tijiao" value="提交评论" onclick="submitcommit();"/>
                                     </div>
 				    <div class="clear"></div>
                                 </div>

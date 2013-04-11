@@ -15,7 +15,10 @@ class ChildSiteModel extends Model {
   //根据域名获取分站名
   public function getname(){
     $childsite_name = $this -> getFieldBydomain($_SERVER['HTTP_HOST'], 'name');
-    $childsite_name = !empty($childsite_name) ? $childsite_name : '中国';
+    //如果不存在，则读取主站名称
+    if(!$childsite_name){
+      $childsite_name = $this -> getFieldBydomain('yesow.com', 'name');
+    }
     return $childsite_name;
   }
 
@@ -31,7 +34,7 @@ class ChildSiteModel extends Model {
     return $cid;
   }
 
-  //根据域名获取分站id，用于判断广告
+  //根据域名获取分站id，用于判断广告和在线QQ
   public function getidc(){
     if($_SERVER['HTTP_HOST'] == 'yesow.com' || $_SERVER['HTTP_HOST'] == 'www.yesow.com'){
       $cid = $this -> getFieldBydomain('yesow.com', 'id');

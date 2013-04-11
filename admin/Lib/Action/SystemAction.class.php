@@ -1647,7 +1647,7 @@ class SystemAction extends CommonAction {
   }
 
   //查看广告图片
-  public function seeadimage(){
+  public function editseeadimage(){
     $advertise = M('Advertise');
     $result = $advertise -> field('address,width,height') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);

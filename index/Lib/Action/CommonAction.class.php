@@ -43,7 +43,12 @@ class CommonAction extends Action {
       S('header_child_site', $header_child_site);
     }
     //QQ客服
-    if(S('index_qqonline')){
+    $qqonline_cache = S('index_qqonline');
+    if($qqonline_cache && $qqonline_cache['childsite_name'] != $_SERVER['HTTP_HOST']){
+      $index_qqonline = R('Public/getqqonline');
+      $this -> assign('index_qqonline', $index_qqonline);
+      S('index_qqonline', $index_qqonline);
+    }else if($qqonline_cache){
       $this -> assign('index_qqonline', S('index_qqonline'));
     }else{
       $index_qqonline = R('Public/getqqonline');
@@ -71,6 +76,6 @@ class CommonAction extends Action {
     $this -> assign('templatename', $templatename);
     //获得此页面的广告位
     $ad_arr = D('index://AdvertisePage') -> getad();
-    //dump($ad_arr);
+    $this -> assign('ad_arr', $ad_arr);
   }
 }

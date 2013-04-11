@@ -901,7 +901,6 @@ class CompanyAction extends CommonAction {
     if($comapnycomment -> where($where_del) -> delete()){
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
-      dump($comapnycomment -> getLastSql());
       $this -> error(L('DATA_DELETE_ERROR'));
     }
   }

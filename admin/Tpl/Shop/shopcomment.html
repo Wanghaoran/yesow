@@ -39,26 +39,26 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="edit" href="__URL__/editcompanycomment/id/{sid_role}" target="dialog" mask="true" warn="请选择评论"><span>编辑</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delcompanycomment/navTabId/companycomment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择评论"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editshopcomment/id/{sid_role}" target="dialog" mask="true" warn="请选择评论"><span>编辑</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delshopcomment/navTabId/shopcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择评论"><span>删除</span></a></li>
 	    <li class="line">line</li>
-	    <li class=""><a class="icon" href="__URL__/passauditcompanycomment/navTabId/companycomment" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些评论吗?" warn="请选择评论"><span>通过审核</span></a></li>
-	    <li class=""><a class="icon" href="__URL__/nopassauditcompanycomment/navTabId/companycomment" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些评论吗?" warn="请选择评论"><span>不通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/passauditshopcomment/navTabId/shopcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些评论吗?" warn="请选择评论"><span>通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/nopassauditshopcomment/navTabId/shopcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些评论吗?" warn="请选择评论"><span>不通过审核</span></a></li>
 	    
 	    <li class="line">line</li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['company']['editcompanycomment'])">
-	    <li><a class="edit" href="__URL__/editcompanycomment/id/{sid_role}" target="dialog" mask="true" warn="请选择评论"><span>编辑</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['editshopcomment'])">
+	    <li><a class="edit" href="__URL__/editshopcomment/id/{sid_role}" target="dialog" mask="true" warn="请选择评论"><span>编辑</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['delcompanycomment'])">
-	    <li class=""><a class="delete" href="__URL__/delcompanycomment/navTabId/companycomment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择评论"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['delshopcomment'])">
+	    <li class=""><a class="delete" href="__URL__/delshopcomment/navTabId/shopcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择评论"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['passauditcompanycomment'])">
+	    <if condition="isset($_SESSION['acc_arr']['shop']['passauditshopcomment'])">
 	    <li class="line">line</li>
-	    <li class=""><a class="icon" href="__URL__/passauditcompanycomment/navTabId/companycomment" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些评论吗?" warn="请选择评论"><span>通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/passauditshopcomment/navTabId/shopcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些评论吗?" warn="请选择评论"><span>通过审核</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['nopassauditcompanycomment'])">
-	    <li class=""><a class="icon" href="__URL__/nopassauditcompanycomment/navTabId/companycomment" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些评论吗?" warn="请选择评论"><span>不通过审核</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['shop']['nopassauditshopcomment'])">
+	    <li class=""><a class="icon" href="__URL__/nopassauditshopcomment/navTabId/shopcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些评论吗?" warn="请选择评论"><span>不通过审核</span></a></li>
 	    </if>
 	    </if>
 		</ul>
@@ -69,9 +69,8 @@
 		  <tr>
 		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 		    <th width="30">编号</th>
-		    <th width="120">公司名称</th>
+		    <th width="120">商品标题</th>
 		    <th width="40">楼层</th>
-		    <th width="40">评分</th>
 		    <th width="20">表情</th>
 		    <th width="200">评论内容</th>
 		    <th width="60">评论者</th>
@@ -84,12 +83,11 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
-			  <td><a href="__ROOT__/company/<!--{$r.cid}--!>" target="_blank" style="color:blue;"><!--{$r.cname}--!></a></td>			 
-			  <td><!--{$r.floor}--!></td>			 
-			  <td><!--{$r.score}--!></td>			 
-			  <td><img src="__PUBLIC__/index/default/style/images/face/<!--{$r.face}--!>.gif"></td>			 
-			  <td><!--{$r.content}--!></td>			 			 
-			  <td><!--{$r.mname|default="游客"}--!></td>			 
+			  <td><a href="__ROOT__/shop/<!--{$r.sid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>			 
+			  <td><!--{$r.floor}--!></td>
+ 			  <td><img src="__PUBLIC__/index/default/style/images/face/<!--{$r.face}--!>.gif"></td>			  
+			  <td><!--{$r.content}--!></td>			  
+			  <td><!--{$r.name|default="游客"}--!></td>			 
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>			 
 			  <eq name="r.status" value="0">
 			  <td style="color:red;">未审未过</td>

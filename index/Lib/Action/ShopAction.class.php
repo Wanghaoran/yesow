@@ -50,7 +50,48 @@ class ShopAction extends CommonAction {
     //查询4个同类商品
     $result_like = $shop -> field('id,title,small_pic,marketprice,promotionprice') -> where(array('cid_one' => $result['cid_one'], 'id' => array('neq', $result['id']))) -> order('addtime DESC') -> limit(4) -> select();
     $this -> assign('result_like', $result_like);
+
+    $id = $this -> _get('id', 'intval');
+    $comment = M('ShopComment');
+    //读取评论
+    $comment_where = "cc.sid={$id} AND cc.status=2";
+    //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
+    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
+      $mid = session(C('USER_AUTH_KEY'));
+      $where_setup = "cc.sid={$id} AND cc.mid={$mid}";
+      $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
+    }
+    import("ORG.Util.Page");// 导入分页类
+    $count = $comment -> table('yesow_shop_comment as cc') -> where($comment_where) -> count('id');
+    $page = new Page($count, 10);//每页10条
+    $page->setConfig('header','条评论');
+    $show = $page -> show();
+    $result_comment = $comment -> table('yesow_shop_comment as cc') -> field('m.name,cc.content,cc.addtime,cc.floor,cc.score,cc.face') -> where($comment_where) -> join('yesow_member as m ON cc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
+    $this -> assign('result_comment', $result_comment);
+    $this -> assign('show', $show);
+
+
     $this -> display();
+  }
+
+  //提交评论
+  public function commit(){
+    if($this -> _post('code', 'md5') != $_SESSION['verify']){
+      $this -> error(L('VERIFY_ERROR'));
+    }
+    $commit = D('ShopComment');
+    $data['sid'] = $this -> _post('sid', 'intval');
+    $data['mid'] = isset($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+    $data['content'] = $this -> _post('content');
+    $data['face'] = $this -> _post('face');
+    if(!$commit -> create($data)){
+      $this -> error($commit -> getError());
+    }
+    if($commit -> add()){
+      $this -> success(L('ARTICLE_COMMIT_ADD_SUCCESS'));
+    }else{
+      $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
+    }
   }
 
   //购物车

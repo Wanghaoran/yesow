@@ -503,7 +503,7 @@ class CompanyAction extends CommonAction {
     $result = array();
     //高级搜索,只检索出按更新时间排序的一页数据(20条)
     if(empty($keyword) || $keyword == '请输入您要搜索的内容'){
-      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where('delaid=""') -> order('updatetime DESC') -> limit(20) -> select();
+      $result['result'] = M('Company') -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime') -> where('delaid is NULL') -> order('updatetime DESC') -> limit(20) -> select();
       $result['count'] = 20;
       return $result;
     }

@@ -992,9 +992,13 @@ class PublicAction extends Action {
   public function getqqonline(){
     $qqonline = M('Qqonline');
     $result = M('QqonlineType') -> field('id,name') -> select();
+    //先获取分站id
+    $csid = D('admin://ChildSite') -> getidc();
     foreach($result as $key => $value){
-      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'], 'csid' => 18)) -> select();
+      $result[$key]['qq'] = $qqonline -> field('qqcode,nickname') -> where(array('tid' => $value['id'], 'csid' => $csid)) -> select();
     }
+    //将分站域名写入结果数组，用来判断是否刷新缓存
+    $result['childsite_name'] = $_SERVER['HTTP_HOST'];
     return $result;
   }
 
