@@ -377,18 +377,16 @@
 		<a href="__ROOT__">易搜首页</a> &gt;
 		<span>搜索</span> 
 	</div>
-    <div class="clear5"></div>
-    <ul class="ul_adimg">
-    	<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li class="last"><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-    </ul>
-    <div class="clear5"></div>
+	<notempty name="ad_arr.top">
+	<div class="index_gg01">
+	  <volist name="ad_arr.top" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
+	</div>
+	</notempty>
 	<!--咨询文章详情页-->
 	<div id="main13">
-		<div id="main13_l">
+		<div id="main13_l" style="overflow:hidden;">
 		  <div class="comment_list">
 		    <form action="__ACTION__" method="get" >
             	<div id="mid_search">
@@ -475,7 +473,7 @@
 				});
 			      }
 			    </script>
-			    <p>4、如果搜索结果对您有用您可以点击[<a href="javascript:poplogin();">结果首页下载</a>]或[<a href="javascript:poplogin();">全部下载</a>]。</p>
+			    <p>4、如果搜索结果对您有用您可以点击[<a href="javascript:poplogin();">批量下载</a>]或[<a href="javascript:poplogin();">全部下载</a>]。</p>
 			    </if>
                         </div>
                     </li>
@@ -510,7 +508,7 @@
 				</div>			
 			</div>
 		</div>
-		<div id="main13_r">
+		<div id="main13_r" style="overflow:hidden;">
 			<div class="main09_r_rmsj">
 				<div class="huang_ui">
 					<div class="huang_ui_r">
@@ -529,9 +527,13 @@
 				</ul>
 				<div class="clear"></div>
 			</div>
-			<div class="clear5"></div>
-            <div class="div_adbox">广告图</div>
-            <div class="clear5"></div>
+            <notempty name="ad_arr.right">
+	<div class="index_gg01">
+	  <volist name="ad_arr.right" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
+	</div>
+	</notempty>
 			<div class="main09_r_rmsj">
 				<div class="huang_ui">
 					<div class="huang_ui_r">
@@ -554,9 +556,13 @@
 		<div class="clear"></div>
 	</div>
 	<!--咨询文章详情页-->
+	<notempty name="ad_arr.foot">
 	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
+	  <volist name="ad_arr.foot" id="adt">
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  </volist>
 	</div>
+	</notempty>
 	<include file="Index:footer" />
 </div>
 </body>
