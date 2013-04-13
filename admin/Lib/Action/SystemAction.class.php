@@ -1655,4 +1655,71 @@ class SystemAction extends CommonAction {
   }
   /* ----------- 广告管理 ------------ */
 
+  /* ----------- 友情链接管理 ------------ */
+  //友链申请管理
+  public function applylink(){
+    $this -> display();
+  }
+
+  //编辑友联申请
+  public function editapplylink(){
+  
+  }
+
+  //删除友联申请
+  public function delapplylink(){
+  
+  }
+
+  //通过审核友链
+  public function passauditapplylink(){
+  
+  }
+
+  //不通过审核友链
+  public function nopassauditapplylink(){
+  
+  }
+
+  //网站类型管理
+  public function websitetype(){
+  
+  }
+
+  //添加网站类型
+  public function addwebsitetype(){
+  
+  }
+
+  //编辑网站类型
+  public function editwebsitetype(){
+  
+  }
+
+  //删除网站类型
+  public function delwebsitetype(){
+  
+  }
+
+  //友情链接管理
+  public function friendlink(){
+  
+  }
+
+  //添加友情链接
+  public function addfriendlink(){
+  
+  }
+
+  //删除友情链接
+  public function delfriendlink(){
+  
+  }
+
+  //编辑友情链接
+  public function editfriendlink(){
+  
+  }
+  /* ----------- 友情链接管理 ------------ */
+
 }
