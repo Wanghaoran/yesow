@@ -74,6 +74,17 @@ class CompanyAction extends CommonAction {
 
   //速查详情页
   public function info(){
+    //如果已登录，并且资料填写不完全，则需要去填写资料，才能查看
+    if(session(C('USER_AUTH_KEY'))){
+      //如果以下几项有没有填的，则跳到资料填写页
+      $info = M('Member') -> field('nickname,tel,password,passwordquestion,passwordanswer,email,fullname,idnumber,sex,qqcode,address,unit') -> find(session(C('USER_AUTH_KEY')));
+      foreach($info as $value){
+	if(!(bool)$value){
+	  echo '<script>alert("您的会员资料还未填写完整,请先填写会员资料");location.href="'. __ROOT__ . '/member.php/index/edituserinfo"</script>';
+	  exit();
+	}
+      }
+    }
     $company = M('Company');
     $comment = M('CompanyComment');
     $id = $this -> _get('id', 'intval');

@@ -115,11 +115,24 @@ class InfoAction extends CommonAction {
     //点击量加一
     $infoarticle -> where(array('id' => $id)) -> setInc('hits');
     //读取最近更新
-    $recent_updates = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> where('ia.status=2') -> order('addtime DESC') -> limit(10) -> select();
+    $recent_updates = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> where('ia.status=2') -> order('addtime DESC') -> limit(15) -> select();
     $this -> assign('recent_updates', $recent_updates);
     //读取热门点击
-    $hot_clicks = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> where('ia.status=2') -> order('hits DESC') -> limit(10) -> select();
+    $hot_clicks = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> where('ia.status=2') -> order('hits DESC') -> limit(15) -> select();
     $this -> assign('hot_clicks', $hot_clicks);
+    //读取相关文章
+    $key_arr = explode(' ', $result['keyword']);
+    $about_where = '';
+    foreach($key_arr as $value){
+      if(empty($about_where)){
+	$about_where .="(( ia.keyword LIKE '%{$value}%' )";
+      }else{
+	$about_where .=" OR ( ia.keyword LIKE '%{$value}%' )";
+      }
+    }
+    $about_where .= ") AND (ia.id != {$id})";
+    $about_article = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> where($about_where) -> order('addtime DESC') -> limit(15) -> select();
+    $this -> assign('about_article', $about_article);
     //读取评论
     $comment_where = array();
     $comment_where['iac.aid'] = $id;

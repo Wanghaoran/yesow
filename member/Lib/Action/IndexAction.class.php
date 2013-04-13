@@ -15,6 +15,14 @@ class IndexAction extends CommonAction {
 
   //会员中心首页
   public function index(){
+    //如果以下几项有没有填的，则跳到资料填写页
+    $info = M('Member') -> field('nickname,tel,password,passwordquestion,passwordanswer,email,fullname,idnumber,sex,qqcode,address,unit') -> find(session(C('USER_AUTH_KEY')));
+    foreach($info as $value){
+      if(!(bool)$value){
+	echo '<script>alert("您的会员资料还未填写完整,请先填写会员资料");location.href="'. __ROOT__ . '/member.php/index/edituserinfo"</script>';
+	exit();
+      }
+    }
     //获取中级会员充值金额
     $level_money = M('MemberLevel') -> getFieldByname('中级会员', 'updatemoney');
     $this -> assign('level_money', $level_money);

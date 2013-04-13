@@ -198,13 +198,23 @@
 	      <div class="unit">
 		<label>性别：</label>
 		<select class="combox" name="sex">
-		  <eq name="result.sex" value="1">
-		  <option value="1" selected="selected">男</option>
-		  <option value="0">女</option>
-		  <else/>
+		  <switch name="result.sex">
+		  <case value="0">
+		  <option value="0" selected="selected">未选择</option>
 		  <option value="1">男</option>
-		  <option value="0" selected="selected">女</option>
-		  </eq>
+		  <option value="2">女</option>
+		  </case>
+		  <case value="1">
+		  <option value="0">未选择</option>
+		  <option value="1" selected="selected">男</option>
+		  <option value="2">女</option>
+		  </case>
+		  <case value="1">
+		  <option value="0">未选择</option>
+		  <option value="1">男</option>
+		  <option value="2" selected="selected">女</option>
+		  </case>
+		  </switch>
 		</select>
 	      </div>
 	      <div class="unit">
