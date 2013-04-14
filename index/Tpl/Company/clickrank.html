@@ -18,14 +18,13 @@
 		<span>点击排名</span> 
 	</div>
     <div class="clear5"></div>
-    <ul class="ul_adimg">
-    	<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li class="last"><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-    </ul>
-    <div class="clear5"></div>
+<notempty name="ad_arr.top">
+  <div class="index_gg01">
+    <volist name="ad_arr.top" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
 	<!--咨询文章详情页-->
 	<div id="main13">
 		<div id="main13_m" style="padding-right:10px;">
@@ -84,9 +83,13 @@
 		<div class="clear"></div>
 	</div>
 	<!--咨询文章详情页-->
-	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-	</div>
+	<notempty name="ad_arr.foot">
+  <div class="index_gg01">
+    <volist name="ad_arr.foot" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
 	
 	<include file="Index:footer" />
 </div>

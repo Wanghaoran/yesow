@@ -216,7 +216,7 @@ class IndexAction extends CommonAction {
     $this -> assign('childsite_name', $childsite_name);
   }
 
-  private function imagetab(){
+  public function imagetab(){
     //图片幻灯
     $article_pic = M('InfoArticlePic');
     $result_pic = $article_pic -> table('yesow_info_article_pic as iap') -> field('iap.aid,iap.address,ia.title as title') -> where(array('iap.isshow_index' => 1)) -> order('iap.addtime DESC') -> limit(6) -> join('yesow_info_article as ia ON iap.aid = ia.id') -> select();

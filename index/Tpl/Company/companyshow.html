@@ -10,7 +10,14 @@
 </head>
 <body id="qudao_index">
 <div id="warp_body">
-    <include file="Index:header" />
+  <include file="Index:header" />
+    <notempty name="ad_arr.top">
+  <div class="index_gg01">
+    <volist name="ad_arr.top" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
 	<div id="mbx">
 		<span>您的位置:</span>
 		<a href="__ROOT__">易搜首页</a> &gt;
@@ -108,7 +115,7 @@
                         <div class="page" style="padding-right:10px;">
                             <span>共72条数据</span>
                             <a href="#">1</a>
-                            <a href="#">2</a>
+			    <a href="#">2</a>
                             <a href="#">3</a>
                             <a href="#">4</a>
                             <a href="#">5</a>
@@ -310,7 +317,13 @@
 				</ul>
 				<div class="clear"></div>			
 			</div>
-            <div class="bl_gg"><a href=""><img src="image/bl_gg.gif" width="295" height="100" /></a></div>
+            <notempty name="ad_arr.right">
+  <div class="bl_gg">
+    <volist name="ad_arr.right" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
             <div class="main12_r_item2">
 				<div class="huang_ui">
 					<div class="huang_ui_r">
@@ -333,13 +346,23 @@
 				</ul>
 				<div class="clear"></div>			
 			</div>
-            <div class="bl_gg"><a href=""><img src="__PUBLIC/index/image/bl_gg.gif" width="295" height="100" /></a></div>
+			<notempty name="ad_arr.right1">
+  <div class="bl_gg">
+    <volist name="ad_arr.right1" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
 		</div>
 		<div class="clear"></div>
 	</div>
-	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC/index/image/gg1.jpg" width="950" height="90"></a>
-	</div>
+		<notempty name="ad_arr.food">
+  <div class="index_gg01">
+    <volist name="ad_arr.food" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
 	<include file="Index:footer" />
 </div>
 </body>

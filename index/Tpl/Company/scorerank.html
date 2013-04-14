@@ -18,14 +18,13 @@
 		<span>点击排名</span> 
 	</div>
     <div class="clear5"></div>
-    <ul class="ul_adimg">
-    	<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-        <li class="last"><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
-    </ul>
-    <div class="clear5"></div>
+<notempty name="ad_arr.top">
+  <div class="index_gg01">
+    <volist name="ad_arr.top" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
     <div class="boxzhengfu">
         	<span class="span_zf1">正负排名公告说明：</span>以下正负排名是根据易搜网友和登陆会员给各公司的评价和打分构成，每个人每条评论可以评分一次，评分的标准是正10分和负10分，所有网友的评分之和为您的企业总分，总分为正的前100名排在正分榜，为负的最低100名排在负分榜。如果您想将您的企业排在一个最好的位置，您可以将您的企业名片找到后发给您的客户和网友去评分即可！感谢合作！！<span class="span_zf2">(注：此排名并不代表企业信誉！)</span>
         </div>
@@ -85,9 +84,13 @@
 		<div class="clear"></div>
 	</div>
 	<!--咨询文章详情页-->
-	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-	</div>
+	<notempty name="ad_arr.foot">
+  <div class="index_gg01">
+    <volist name="ad_arr.foot" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </volist>
+  </div>
+  </notempty>
 	<include file="Index:footer" />
 </div>
 </body>

@@ -18,6 +18,27 @@ class CompanyAction extends CommonAction {
 
   //渠道黄页首页
   public function index(){
+    //速查表通用查询条件
+    $where = array();
+    $where['c.delaid']  = array('exp', 'is NULL');
+    //判断是否为分站数据
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['c.csid'] = $csid;
+    }
+    $category = M('CompanyCategory');
+    //读取主营一级类别
+    $result_cate = $category -> field('id,name') -> order('sort ASC') -> where('pid=0') -> select();
+    //读取主营二级类别（8个）
+    foreach($result_cate as $key => $value){
+      $result_cate[$key]['two'] = $category -> field('id,name') -> order('sort ASC') -> where(array('pid' => $value['id'])) -> limit(11) -> select();
+    }
+    $this -> assign('result_cate', $result_cate);
+    //读取最新渠道（16条最新添加的速查信息）
+    $company = M('Company');
+    $new_company = $company -> table('yesow_company as c') -> field('c.id,c.name,cc.pid,ccc.name as cname,cs.name as csname,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> join('yesow_company_category as ccc ON cc.pid = ccc.id') -> where($where) -> order('c.addtime DESC') -> limit(16) -> select();
+    $this -> assign('new_company', $new_company);
+    //图片幻灯
+    R('Index/imagetab');
     $this -> display();
   }
 
