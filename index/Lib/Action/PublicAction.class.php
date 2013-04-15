@@ -1020,6 +1020,17 @@ class PublicAction extends Action {
     return $result;
   }
 
+  //获取友情链接
+  public function getfriendlink(){
+    //先获取分站id
+    $csid = D('admin://ChildSite') -> getidc();
+    $link = M('Link');
+    $result = $link -> field('name,website') -> where(array('csid' => $csid)) -> order('sort ASC') -> select();
+    //将分站域名写入结果数组，用来判断是否刷新缓存
+    $result['childsite_name'] = $_SERVER['HTTP_HOST'];
+    return $result;
+  }
+
   //ajax获取购物开票税率
   public function ajaxgetinvoice(){
     //查询开票税率
@@ -1039,5 +1050,6 @@ class PublicAction extends Action {
       echo $result * $_GET['money'];
     }
   }
+
 
 }

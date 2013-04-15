@@ -1658,67 +1658,289 @@ class SystemAction extends CommonAction {
   /* ----------- 友情链接管理 ------------ */
   //友链申请管理
   public function applylink(){
+    $applylink = M('LinkApply');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['la.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $applylink -> table('yesow_link_apply as la') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $applylink -> table('yesow_link_apply as la') -> field('la.id,la.linktype,cs.name as csname,lwt.name as lwtname,la.name,la.website,la.linkman,la.tel,la.email,la.addtime,la.ischeck') -> join('yesow_child_site as cs ON la.csid = cs.id') -> join('yesow_link_website_type as lwt ON la.tid = lwt.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('la.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
   }
 
   //编辑友联申请
   public function editapplylink(){
-  
+    $applylink = M('LinkApply');
+    //处理编辑
+    if(!empty($_POST['name'])){
+      if(!$applylink -> create()){
+	$this -> error($applylink -> getError());
+      }
+      if($applylink -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $applylink -> field('csid,tid,linktype,name,website,logo,linkman,tel,email,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询网站类型
+    $LinkWebsiteType = M('LinkWebsiteType');
+    $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
   }
 
   //删除友联申请
   public function delapplylink(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $applylink = M('LinkApply');
+    if($applylink -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //通过审核友链
   public function passauditapplylink(){
-  
+    $applylink = M('LinkApply');
+    $link = M('Link');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($applylink -> where($where_audit) -> save($data_audit)){
+      //将已审核数据填入友情链接表
+      $id_arr = explode(',', $this -> _post('ids'));
+      foreach($id_arr as $value){
+	$insert_data = $applylink -> field('csid,tid,linktype,name,website,logo') -> find($value);
+	$link -> add($insert_data);
+      }
+      //删除缓存
+      S('index_friend_link', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
   }
 
   //不通过审核友链
   public function nopassauditapplylink(){
-  
+    $applylink = M('LinkApply');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($applylink -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
   }
 
   //网站类型管理
   public function websitetype(){
-  
+    $LinkWebsiteType = M('LinkWebsiteType');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $LinkWebsiteType -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $LinkWebsiteType -> field('id,name,sort,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
   }
 
   //添加网站类型
   public function addwebsitetype(){
-  
+    //处理添加
+    if(!empty($_POST['name'])){
+      $LinkWebsiteType = M('LinkWebsiteType');
+      if(!$LinkWebsiteType -> create()){
+	$this -> error($LinkWebsiteType -> getError());
+      }
+      if($LinkWebsiteType -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
   }
 
   //编辑网站类型
   public function editwebsitetype(){
-  
+    $LinkWebsiteType = M('LinkWebsiteType');
+    if(!empty($_POST['name'])){
+      if(!$LinkWebsiteType -> create()){
+	$this -> error($LinkWebsiteType -> getError());
+      }
+      if($LinkWebsiteType -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $LinkWebsiteType -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   }
 
   //删除网站类型
   public function delwebsitetype(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $LinkWebsiteType = M('LinkWebsiteType');
+    if($LinkWebsiteType -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //友情链接管理
   public function friendlink(){
-  
+    $link = M('Link');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['l.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $link -> table('yesow_link as l') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $link -> table('yesow_link as l') -> field('l.id,l.name,cs.name as csname,t.name as tname,l.linktype,l.website,l.sort') -> join('yesow_child_site as cs ON l.csid = cs.id') -> join('yesow_link_website_type as t ON l.tid = t.id') -> order('l.csid DESC,l.sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
   }
 
   //添加友情链接
   public function addfriendlink(){
-  
+    //处理添加
+    if(!empty($_POST['name'])){
+      $link = M('Link');
+      if(!$link -> create()){
+	$this -> error($link -> getError());
+      }
+      if($link -> add()){
+	//删除缓存
+	S('index_friend_link', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询网站类型
+    $LinkWebsiteType = M('LinkWebsiteType');
+    $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
   }
 
   //删除友情链接
   public function delfriendlink(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $link = M('Link');
+    if($link -> where($where_del) -> delete()){
+      //删除缓存
+      S('index_friend_link', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   //编辑友情链接
   public function editfriendlink(){
-  
+    $link = M('Link');
+    if(!empty($_POST['name'])){
+      if(!$link -> create()){
+	$this -> error($link -> getError());
+      }
+      if($link -> save()){
+	//删除缓存
+	S('index_friend_link', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $link -> field('csid,tid,linktype,name,website,logo,sort') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询网站类型
+    $LinkWebsiteType = M('LinkWebsiteType');
+    $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+
+    $this -> display();
   }
   /* ----------- 友情链接管理 ------------ */
 

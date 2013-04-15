@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><!--{$result.name}--!>_<!--{$result.csaname}--!>IT商家联系方式_易搜_<!--{$result.csname}--!>IT商家信息详情页</title>
-<meta name="Keywords" content="<!--{$result.manproducts}--!>,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT黄页,易搜,IT黄页"/>
+<meta name="Keywords" content="<!--{$result.keyword|str_replace=' ', ',', ###}--!>,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT黄页,易搜,IT黄页"/>
 <meta name="description" content="<!--{$result.name}--!>主要经营<!--{$result.manproducts}--!>，期待结识更多的商家合作并共同发展"/>
 
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
@@ -405,6 +405,13 @@ var onedownload = function(){
 			</div>
 		</div>
 		<div id="main09_r">
+		  <notempty name="ad_arr.right">
+  <div class="bl_gg">
+    <volist name="ad_arr.right" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </volist>
+  </div>
+  </notempty>
 			<div class="main09_r_rmsj">
 				<div class="huang_ui">
 					<div class="huang_ui_r">
@@ -421,7 +428,13 @@ var onedownload = function(){
 				<div class="clear"></div>
 			</div>
 			
-			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/bl_gg.gif" width="295" height="100" /></a></div>
+			<notempty name="ad_arr.right1">
+  <div class="bl_gg">
+    <volist name="ad_arr.right1" id="adt">
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </volist>
+  </div>
+  </notempty>
 			
 			<div class="main09_r_tjqd">
 				<div class="huang_ui">
@@ -445,7 +458,7 @@ var onedownload = function(){
 				</ul>
 				<div class="clear"></div>
 			</div>
-			<div class="bl_gg"><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/bl_gg.gif" width="295" height="100" /></a></div>
+			
 			
 		</div>
 		<div class="clear"></div>

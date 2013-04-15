@@ -42,7 +42,7 @@ class CommonAction extends Action {
       $this -> assign('header_child_site', $header_child_site);
       S('header_child_site', $header_child_site);
     }
-    //QQ客服
+    //QQ客服 - 根据域名分析缓存
     $qqonline_cache = S('index_qqonline');
     if($qqonline_cache && $qqonline_cache['childsite_name'] != $_SERVER['HTTP_HOST']){
       $index_qqonline = R('Public/getqqonline');
@@ -70,6 +70,19 @@ class CommonAction extends Action {
       $index_shop_nav = R('Public/getshopnav');
       $this -> assign('index_shop_nav', $index_shop_nav);
       S('index_shop_nav', $index_shop_nav);   
+    }
+    //友情链接 - 根据域名分析缓存
+    $friendlink_cache = S('index_friend_link');
+    if($friendlink_cache && $friendlink_cache['childsite_name'] != $_SERVER['HTTP_HOST']){
+      $index_friend_link = R('Public/getfriendlink');
+      $this -> assign('index_friend_link', $index_friend_link);
+      S('index_friend_link', $index_friend_link);
+    }else if($friendlink_cache){
+      $this -> assign('index_friend_link', S('index_friend_link'));
+    }else{
+      $index_friend_link = R('Public/getfriendlink');
+      $this -> assign('index_friend_link', $index_friend_link);
+      S('index_friend_link', $index_friend_link);
     }
     //根据域名判断分站 及 读取分站模板
     $templatename = D('admin://ChildSite') -> gettemplatename();

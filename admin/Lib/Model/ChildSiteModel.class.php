@@ -41,6 +41,9 @@ class ChildSiteModel extends Model {
     }else{
       $cid = $this -> getFieldBydomain($_SERVER['HTTP_HOST'], 'id');
     }
+    if(!$cid){
+      $cid = $this -> getFieldBydomain('yesow.com', 'id');
+    }
     return $cid;
   }
 

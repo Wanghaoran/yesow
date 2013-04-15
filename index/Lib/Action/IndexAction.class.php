@@ -240,5 +240,30 @@ class IndexAction extends CommonAction {
       $this -> assign('index_shop', $index_shop);
     }
   }
+
+  //申请友链
+  public function applylink(){
+    if(!empty($_POST['name'])){
+      $applylink = D('LinkApply');
+      if(!$applylink -> create()){
+	R('Public/errorjump',array($applylink -> getError()));
+      }
+      if($applylink -> add()){
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");location.href="'.__ACTION__.'";</script>';
+	exit();
+      }else{
+	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询网站类型
+    $LinkWebsiteType = M('LinkWebsiteType');
+    $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
   
 }

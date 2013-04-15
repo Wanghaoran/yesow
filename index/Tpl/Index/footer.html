@@ -1,4 +1,4 @@
-	<div id="footer">
+<div id="footer">
 <div id="footer_nav">
   <p>
   <volist name="index_footer_nav" id="ifn">
@@ -39,16 +39,16 @@
 		<div class="clear"></div>
 	      </div>
 	      <p class="frind_link">
-			友情连接：
-			<a href="#">友情连接01</a> -
-			<a href="#">友情连接02</a> -
-			<a href="#">友情连接03</a> -
-			<a href="#">友情连接04</a> -
-			<a href="#">友情连接05</a> -
-			<a href="#">友情连接06</a> -
-			<a href="#">申请连接</a>
+	      友情连接：
+	      <volist name="index_friend_link" id="ifl">
+	      <if condition="is_array($ifl)">
+	      <a href="<!--{$ifl.website}--!>" target="_blank"><!--{$ifl.name}--!></a> -
+	      </if>
+	      </volist>
+			<a href="__ROOT__/index/applylink" target="_blank">申请连接</a>
 		</p>
 	      </div>
+	      
 	      <div style="display:none">
 	  <script src="http://s15.cnzz.com/stat.php?id=5190161&web_id=5190161&online=2" language="JavaScript"></script>
 	</div>

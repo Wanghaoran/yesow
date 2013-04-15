@@ -1019,3 +1019,21 @@ ul.ul_sjml li h6{ text-align:left; width:300px; padding-left:9px; height:15px; l
 ul.ul_sjml li h6 span{ padding-right:10px;}
 ul.ul_sjml div.page{ height:40px; background:#fff;}
 
+/*申请友链*/
+.sqylbox{width:600px; margin:10px auto;}
+.sqylbox h2{ color:#f65e0b; font-size:14px; font-weight:800; height:30px; line-height:30px; margin-top:10px;}
+.sqylbox ul li{ float:left; width:600px;line-height:25px;}
+table.sqyl{ border:none; border-collapse:collapse; width:600px;}
+table.sqyl td{border:none; border-collapse:collapse; height:30px;}
+table.sqyl td.left_td{ text-align:left; width:80px;}
+table.sqyl td img{vertical-align:middle; margin-top:5px;}
+select.select_sqyl{width:100px; height:22px; line-height:22px;}
+input.inputtext_sqyl{ width:218px; height:20px; line-height:20px; border:#7f9db9 1px solid; background:#f6f6f6}
+textarea.textarea_sqyl{width:368px; height:100px; margin-top:5px; line-height:20px; border:#7f9db9 1px solid;background:#f6f6f6}
+.div_btnsqyl{ width:300px; margin:10px auto;}
+.div_btnsqyl input{ float:left;}
+
+.kssj_tjqq{ padding-top:10px;}
+.fileInput{width:202px;height:22px; border:#999 1px solid; overflow:hidden;position:relative;}
+.upfile{position:absolute;top:-100px;}
+.upFileBtn{width:202px;cursor:pointer; height:22px; line-height:22px; border:none;}
