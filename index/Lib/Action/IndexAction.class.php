@@ -183,8 +183,13 @@ class IndexAction extends CommonAction {
 
   //动感传媒
   private function mediacompany(){
-    $company = M('Company');
-    $media_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 17)) -> limit(20) -> select();
+    //先获取分站id
+    $csid = D('admin://ChildSite') -> getidc();
+    $where = array();
+    $where['csid'] = $csid;
+    $where['ischeck'] = 1;
+    $mediashow = M('MediaShow');
+    $media_company = $mediashow -> field('id,name') -> limit(20) -> where($where) -> order('sort ASC') -> select();
     $this -> assign('media_company', $media_company);
   }
 
@@ -264,6 +269,74 @@ class IndexAction extends CommonAction {
     $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_website_type', $result_website_type);
     $this -> display();
+  }
+
+  //动感传媒
+  public function companyshow(){
+    //先获取分站id
+    $csid = D('admin://ChildSite') -> getidc();
+    $where = array();
+    $where['csid'] = $csid;
+    $where['ischeck'] = 1;
+    $mediashow = M('MediaShow');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $mediashow -> where($where) -> count('id');
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $mediashow -> field('id,name,remark,image') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //动感传媒详细页
+  public function companyshowinfo(){
+    $id = $this -> _get('id', 'intval');
+    $mediashow = M('MediaShow');
+    $result = $mediashow -> field('content') -> find($id);
+    $this -> assign('result', $result);
+
+    $comment = M('MediaShowComment');
+ 
+    //读取评论
+    $comment_where = "msc.msid={$id} AND msc.status=2";
+    //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
+    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
+      $sid = session(C('USER_AUTH_KEY'));
+      $where_setup = "msc.msid={$id} AND msc.mid={$sid}";
+      $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
+    }
+    import("ORG.Util.Page");// 导入分页类
+    $count = $comment -> table('yesow_media_show_comment as msc') -> where($comment_where) -> count();
+    $page = new Page($count, 10);//每页10条
+    $page->setConfig('header','条评论');
+    $show = $page -> show();
+    $result_comment = $comment -> table('yesow_media_show_comment as msc') -> field('m.name,msc.content,msc.addtime,msc.floor,msc.face') -> where($comment_where) -> join('yesow_member as m ON msc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
+    $this -> assign('result_comment', $result_comment);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //动感传媒提交评论
+  public function companyshowcomment(){
+    if($this -> _post('code', 'md5') != $_SESSION['verify']){
+      $this -> error(L('VERIFY_ERROR'));
+    }
+    $commit = D('MediaShowComment');
+    $data['msid'] = $this -> _post('msid', 'intval');
+    $data['mid'] = isset($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+    $data['content'] = $this -> _post('content');
+    $data['face'] = $this -> _post('face');
+    if(!$commit -> create($data)){
+      $this -> error($commit -> getError());
+    }
+    if($commit -> add()){
+      $this -> success(L('ARTICLE_COMMIT_ADD_SUCCESS'));
+    }else{
+      $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
+    }
   }
   
 }

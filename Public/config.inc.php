@@ -55,6 +55,11 @@ return array(
   //广告图片显示
   'AD_PIC_PATH_SAVE' => __ROOT__ . '/Upload/ad/', 
 
+  //动感传媒图片保存路径
+  'MEDIA_PIC_PATH' => './Upload/media/',
+  //动感传媒图片显示
+  'MEDIA_PIC_PATH_SAVE' => __ROOT__ . '/Upload/media/',
+
   /*
   //重新定义__ROOT__常量，线上项目需要设置此项
   'TMPL_PARSE_STRING' => array(

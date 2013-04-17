@@ -618,4 +618,261 @@ class ShopAction extends CommonAction {
   }
 
   /* --------------------- 订单管理 --------------------- */
+
+
+  /* --------------------- 动感传媒管理 --------------------- */
+
+  //动感传媒管理
+  public function mediashow(){
+    $mediashow = M('MediaShow');
+    //处理搜索
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['ms.starttime'] = array(array('egt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['ms.endtime'] = array('elt', $endtime);
+    }
+    if(!empty($_POST['name'])){
+      $where['ms.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    if(!empty($_POST['csid'])){
+      $where['ms.csid'] = $this -> _post('csid', 'intval');
+    }
+    //记录总数
+    $count = $mediashow -> table('yesow_media_show as ms')  -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.linkman,ms.companyphone,ms.starttime,ms.endtime,cc.name as ccname,ms.sort,ms.ischeck') -> join('yesow_company_category as cc ON ms.ccid_one = cc.id') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('ms.csid DESC,ms.sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //添加动感传媒
+  public function addmediashow(){
+    if(!empty($_POST['name'])){
+      $mediashow = D('MediaShow');
+      if(!$mediashow -> create()){
+	$this -> error($mediashow -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('Public/media_pic_upload');
+	$mediashow -> image = $up_data[0]['savename'];
+      }
+      if($mediashow -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询主营类别 - 一级
+    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_one', $result_company_category_one);
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除动感传媒
+  public function delmediashow(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $mediashow = D('MediaShow');
+    if($mediashow -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑动感传媒
+  public function editmediashow(){
+    $mediashow = D('MediaShow');
+    if(!empty($_POST['name'])){
+      if(!$mediashow -> create()){
+	$this -> error($mediashow -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('Public/media_pic_upload');
+	$mediashow -> image = $up_data[0]['savename'];
+      }
+      if($mediashow -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $mediashow -> field('csid,ccid_one,ccid_two,name,address,linkman,mobliephone,companyphone,qqcode,keyword,image,imagealt,remark,starttime,endtime,content,sort') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询主营类别 - 一级
+    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_one', $result_company_category_one);
+    //查询所有分站
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前一级类别的二级列表
+    $result_company_category_two = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $result['ccid_one'])) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_two', $result_company_category_two);
+    $this -> display();
+  }
+
+  //查看动感传媒图片
+  public function editshowimage(){
+    $image = M('MediaShow') -> getFieldByid($this -> _get('id', 'intval'), 'image');
+    $this -> assign('image', $image);
+    $this -> display();
+  }
+
+  //通过审核动感传媒
+  public function passauditmediashow(){
+    $mediashow = M('MediaShow');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($mediashow -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核动感传媒
+  public function nopassauditmediashow(){
+    $mediashow = M('MediaShow');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($mediashow -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //动感传媒评论管理
+  public function mediashowcomment(){
+    $mediashowcomment = M('MediaShowComment');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['content'])){
+      $where['msc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where['msc.mid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['msc.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['msc.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $mediashowcomment -> table('yesow_media_show_comment as msc') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    //结果
+    $result = $mediashowcomment -> table('yesow_media_show_comment as msc') -> field('msc.id,msc.msid,ms.name as msname,msc.floor,msc.content,m.name as mname,msc.addtime,msc.status,msc.face') -> where($where) -> order('msc.status ASC,msc.addtime DESC') -> join('yesow_media_show as ms ON msc.msid = ms.id') -> join('yesow_member as m ON msc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //编辑动感传媒评论
+  public function editmediashowcomment(){
+    $comment = D('index://MediaShowComment');
+    //处理更新
+    if(!empty($_POST['floor'])){
+      if(!$comment -> create()){
+	$this -> error($comment -> getError());
+      }
+      if($comment -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $comment -> table('yesow_media_show_comment as msc') -> field('ms.name as msname,m.name as mname,msc.floor,msc.content,msc.face') -> join('yesow_media_show as ms ON msc.msid = ms.id') -> join('yesow_member as m ON msc.mid = m.id') -> where(array('msc.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除动感传媒评论
+  public function delmediashowcomment(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $mediashowcomment = M('MediaShowComment');
+    if($mediashowcomment -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核动感传媒评论
+  public function passauditmediashowcomment(){
+    $comment = M('MediaShowComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 2);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核动感传媒评论
+  public function nopassauditmediashowcomment(){
+    $comment = M('MediaShowComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 1);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+  /* --------------------- 动感传媒管理 --------------------- */
 }

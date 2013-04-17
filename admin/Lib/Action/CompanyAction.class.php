@@ -864,7 +864,7 @@ class CompanyAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     //结果
-    $result = $comapnycomment -> table('yesow_company_comment as cc') -> field('cc.id,cc.cid,c.name as cname,cc.floor,cc.score,cc.content,m.name as mname,cc.addtime,cc.status,cc.face') -> where($where) -> order('cc.status ASC,cc.addtime DESC') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_member as m ON cc.mid = m.id') -> select();
+    $result = $comapnycomment -> table('yesow_company_comment as cc') -> field('cc.id,cc.cid,c.name as cname,cc.floor,cc.score,cc.content,m.name as mname,cc.addtime,cc.status,cc.face') -> where($where) -> order('cc.status ASC,cc.addtime DESC') -> join('yesow_company as c ON cc.cid = c.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> join('yesow_member as m ON cc.mid = m.id') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
