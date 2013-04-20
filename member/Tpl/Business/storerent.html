@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>旺铺管理 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">商家服务</div>
+                    <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="wpgl">
+                        <div class="wpgl_title">
+                            <ul class="ul_wpgl">
+                                <li class="choice">旺铺管理</li>    
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+			<div class="wpgl_con">
+			  <form action="__ACTION__" method="post">
+			  <div class="wpgl_search">
+			      搜索：<input type="text" name="title" />
+			      <input type="submit" value="搜索" />
+			      <input type="button" onclick="location.href='__URL__/addstorerent'" value="添加旺铺" />
+			    </div>
+			    </form>
+			    
+                            <div class="clear"></div>
+                            <table class="table_wpgl1">
+			      <tr><th>所在地</th><th width="280">旺铺名称</th><th>类别</th><th>发布时间</th><th>审核通过</th><th>点击量</th><th>管理操作</th></tr>
+			      <volist name="result" id="r">
+                                <tr>
+				  <td><!--{$r.csname}--!></td>
+				  <td><a href="__ROOT__/hire/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+				  <td><!--{$r.srtname}--!></td>
+				  <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
+				  <eq name="r.ischeck" value="1">
+				  <td><span class="span_blue">已审</span></td>
+				  <else/>
+				  <td><span class="span_red">未审</span></td>
+				  </eq>
+				  <td><!--{$r.clickcount}--!></td>
+                                    <td><a href="#">修改</a> | <a href="#">删除</a></td>
+				  </tr>
+				  </volist>
+                            </table> 
+                            <div class="clear"></div>	
+                            <div class="page" style="padding-right:10px;">
+			      <!--{$show}--!>
+                            </div>
+                            <div class="clear"></div>	
+                        </div>
+                    </div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

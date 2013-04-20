@@ -60,6 +60,11 @@ return array(
   //动感传媒图片显示
   'MEDIA_PIC_PATH_SAVE' => __ROOT__ . '/Upload/media/',
 
+  //旺铺出租图片保存路径
+  'STORE_PIC_PATH' => './Upload/store/',
+  //旺铺出租图片显示
+  'STORE_PIC_PATH_SAVE' => __ROOT__ . '/Upload/store/',
+
   /*
   //重新定义__ROOT__常量，线上项目需要设置此项
   'TMPL_PARSE_STRING' => array(

@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>旺铺租转详情页</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script>
+  $(document).ready(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+      $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+      });
+    });
+
+ function submitcommit(){
+    if($('#content')[0].value == ''){
+      alert('评论内容不能为空');
+      }else if($('#verify')[0].value == ''){
+      alert('验证码不能为空');
+      }else{
+      var p = $('#content')[0].value;
+      var m = $('#verify')[0].value;
+      var f = $("input:checked[name='face']").val();
+      $.ajax({
+	type: "POST",
+	url: "__URL__/storerentcomment",
+	dataType: "json",
+	data: "content=" + p + "&code=" + m + "&srid=<!--{$Think.get.id}--!>&face=" + f,
+	success: function(msg){
+	  if(msg.status == 0){
+	    alert('错误提示：' + msg.message);
+	    }else{
+	    alert('成功提示：' + msg.message);
+	    location.reload();
+	    }
+	}
+	});
+    }
+  }
+
+
+</script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header"/>
+	<div id="mbx">
+    	<span style="float:right; font-weight:normal;">搜索：<input type="text" value="请输入关键字" style="color:#999; width:125px; margin-left:10px; height:18px; line-height:18px; border:#9fa0cc 1px solid;" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}"/><input type="button" value="搜索" /></span>
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<span>出租旺铺</span> 
+	</div>
+    <!--广告方位-->
+    <div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116"/></a>
+	</div>
+	<!--人才招聘   旺铺转租-->
+	<div id="main16">
+		<div id="main16_t">
+        	<!--左边-->
+			<div class="main16_t_l">
+				<div class="cat_header">
+					<h3>推荐信息</h3>
+					<a href="#" class="more" >更多</a>
+				</div>
+				<div class="cat_bod">
+					<ul class="tjxx_ul">
+						<li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+					</ul>
+                    <div class="clear"></div>		
+				</div>
+			</div>
+            <!--人才招聘   旺铺转租  中间右边合并-->
+			<div class="main16_t_all">
+                    <div class="huang_ui">
+                        <div class="huang_ui_r">
+                            <div class="huang_ui_c">
+                                <h3>出租旺铺</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_czwp">
+                        <div class="czwpbox1">
+			  <span class="span_czwp4">人气指数：<!--{$result.clickcount}--!></span>
+				<span class="span_czwp1">[<a href="#"><!--{$result.name}--!></a>]</span>
+				<span class="span_czwp2"><a href="#"><!--{$result.title}--!></a></span>
+				<span class="span_czwp3"><a href="#"><a href="#">[<!--{$result.csname}--!>地区]</a></a></span> 
+                        </div>
+                        <div class="clear"></div>
+			<div class="czwpbox2"><!--{$result.content|nl2br}--!></div>
+                        <div class="clear"></div>
+                        <div class="czwpbox3">
+			  <div class="left">
+			    <empty name="result.image">
+			    <img src="__PUBLIC__/Images/storerent/<!--{$result.systemimage}--!>" width="213" height="160" border="0" />
+			    <else/>
+			    <img src="<!--{$Think.config.STORE_PIC_PATH_SAVE}--!><!--{$result.image}--!>" width="213" height="160" border="0" />
+			    </empty>
+			  </div>
+                            <div class="left">
+                            	<ul>
+				  <li>更新日期：<!--{$result.updatetime|date="Y-m-d H:i:s", ###}--!></li>
+                                    <li>到期日期：<!--{$result.endtime|date="Y-m-d H:i:s", ###}--!></li>
+				    <li>联系人：<!--{$result.linkman}--!></li>
+				    <li>联系电话：<!--{$result.tel}--!></li>
+				    <li>联系地址：<!--{$result.address}--!></li>
+				    <li>E-mail：<!--{$result.email}--!></li>
+				    <li>所属省市：<!--{$result.csname}--!> - <!--{$result.csaname}--!></li>
+                                </ul>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>	
+                        <!--相关链接-->	
+                        <div class="xgljbox">
+                        	<h2>相关链接</h2>
+                            <div class="clear"></div>
+			    <ul class="ul_list1">
+			      <volist name="about_left" id="al">
+			      <li><a>[<!--{$al.name}--!>]</a><a href="__URL__/storerentinfo/id/<!--{$al.id}--!>"><div><!--{$al.title}--!></div></a><a>[<!--{$al.csname}--!>地区]</a></li>
+			      </volist>
+                            </ul>
+                            <ul class="ul_list2">
+			      <volist name="about_right" id="ar">
+			      <li><a>[<!--{$ar.name}--!>]</a><a href="__URL__/storerentinfo/id/<!--{$ar.id}--!>"><div><!--{$ar.title}--!></div></a><a>[<!--{$ar.csname}--!>地区]</a></li>
+			      </volist>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                        <!--网友评论-->
+                        <div class="xgljbox">
+                        	<h2>网友评论</h2>
+				<ul class="ul_wypl">
+				  <volist name="result_comment" id="rc">
+                                  <li>
+                                      <dl>
+					<dt><!--{$rc.content|nl2br}--!></dt>
+                                      <dd style="width:200px;">留言者：<!--{$rc.name|default="游客"}--!></dd>
+                                      <dd style="width:250px;">留言日期：<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></dd>
+                                      <dd>表情：<img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" /></dd>
+                                                </dl>
+					</li>
+				   </volist>
+                                </ul>
+                                <div class="clear"></div>
+                                <div class="page" style="padding-right:10px;">
+				  <!--{$show}--!>
+                                </div>
+                                <div class="clear"></div>
+                        </div>
+                        <!--我要评论-->
+                        <div class="xgljbox">
+                        	<h2>我要评论</h2>
+                            <div class="ul_pldetail">
+                                <div style="float:left;">
+                                <textarea class="txt_pldetail" id="content"></textarea><span>&nbsp;*&nbsp;</span>
+                                <br/>
+				<p>表情:
+				<input type="radio" name="face" value="" checked="checked"/>无
+		<input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/1.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/2.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/3.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/4.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/5.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/6.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/7.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/8.gif" width="20" height="20" border="0" />
+		</p>
+                                </div>
+                                <div style="float:left">
+                                <input type="text" class="div_input4" id="verify" /><img id="code" src="/yesow/admin.php/public/verify" title="点击更换图像" border="0" /><br/><a onclick="submitcommit();" class="btn_fbpl" style="margin-top:10px; float:left;">提交评论</a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                <div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!--人才招聘   旺铺转租结束-->
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

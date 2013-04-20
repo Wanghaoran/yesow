@@ -230,6 +230,7 @@ span.fontnormal{ font-weight:normal;}
 
 .user_p3{float:left; width:150px; height:30px; line-height:30px; text-align:right;}
 
+
 /*频道列表*/
 .boxpindao_list{ width:720px; margin:10px auto;}
 .boxpindao_list ul li{ float:left; width:700px; background:url(images/user/dot.gif) left center no-repeat; height:30px; line-height:30px; padding-left:18px; text-align:left; margin-left:5px; border-bottom:#ddd 1px dashed;}
@@ -429,3 +430,31 @@ ul.memberqx li.check_no{ background:url(images/user/checkboxbg2.jpg) left center
 table.table_gwc{ float:left;width:740px; border:#e4e4e4 1px solid; border-collapse:collapse; margin:10px auto;}
 table.table_gwc th{border:none; font-size:12px; font-weight:bold; background:url(images/user/tabletitlebg.jpg) repeat-x; border:#e4e4e4 1px solid; border-collapse:collapse; height:30px; line-height:30px; text-align:center;}
 table.table_gwc td{border:none; border:#e4e4e4 1px solid; border-collapse:collapse; height:25px; line-height:25px; text-align:center;}
+
+/**旺铺管理**/
+.wpgl{ width:687px; height:auto; margin:0 auto;}
+.wpgl_title{ height:31px; line-height:31px; width:687px; border-bottom:#ff8b01 1px solid; text-align:center; margin-top:20px;}
+	ul.ul_wpgl li{ float:left; width:141px; height:25px; line-height:25px; padding-top:5px; border:#e4e3e3 1px solid; border-bottom:none; background:#f3f3f3; color:#8b8b8b; font-size:14px; font-weight:bold;}
+	ul.ul_wpgl li.choice{ width:141px; height:26px; line-height:26px; padding-top:5px; background:url(images/user/btn_buzhou.gif) top center no-repeat; border:none; color:#fff;}
+	ul.ul_wpgl li.li_img{ width:39px; height:31px; background:url(images/user/icon_buzhou.gif) no-repeat; border:none;}
+.wpgl_con{ width:687px;  margin:10px auto;}
+.wpgl_search{ width:687px; text-align:right; height:30px; line-height:30px;}
+.wpgl_search input{ vertical-align:middle; margin-right:5px;}
+.table_wpgl1{ width:685px; border:#c6c6c6 1px solid; border-collapse:collapse; margin:10px auto; color:#0a0a0a; text-align:center;}
+.table_wpgl1 th{border:#c6c6c6 1px solid; border-collapse:collapse; font-size:14px; font-weight:bold; height:30px; line-height:30px;}
+.table_wpgl1 td{border:#c6c6c6 1px solid; border-collapse:collapse; height:25px;}
+.table_wpgl1 td span.span_blue{ color:#1300ff;}
+.table_wpgl1 td span.span_red{ color:#f61000;}
+
+table.table_wpgl2{ width:685px; border:none;}
+table.table_wpgl2 td{ height:25px; line-height:25px;}
+table.table_wpgl2 td.td_left{ width:80px; text-align:right;}
+table.table_wpgl2 td.td_right{text-align:left;}
+table.table_wpgl2 td div.btn_td{width:350px; margin:10px auto;}
+input.inputtext_wpgl1{line-height:20px; height:20px;border: #8a98a3 1px solid; width:570px;}
+input.inputtext_wpgl2{line-height:20px; height:20px;border: #8a98a3 1px solid; width:228px;}
+textarea.textarea_wpgl1{line-height:20px; height:20px;border: #8a98a3 1px solid; width:570px; height:80px; margin-top:2px;}
+.upload1 {position: relative; width: 260px; height:22px}
+.ipt_text {line-height:20px; width: 174px; height: 20px; border: #8a98a3 1px solid; }
+.btn_picupfile {line-height:24px; width:70px; height:24px; border: #8a98a3 1px solid}
+.upload_file1 {position: absolute; filter: alpha(opacity:0); line-height: 20px; width: 260px; height: 20px; TOP: 0px; left: 0px; opacity: 0}

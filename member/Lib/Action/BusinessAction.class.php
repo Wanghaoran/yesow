@@ -211,4 +211,53 @@ class BusinessAction extends CommonAction {
   public function businessneeds(){
     $this -> display();
   }
+
+  //旺铺管理
+  public function storerent(){
+    $storerent = M('StoreRent');
+    $where = array();
+    $where['sr.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    //处理搜索
+    if(!empty($_POST['title'])){
+      $where['sr.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $storerent -> table('yesow_store_rent as sr') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $storerent -> table('yesow_store_rent as sr') -> field('cs.name as csname,sr.id,sr.title,srt.name as srtname,sr.addtime,sr.ischeck,sr.clickcount') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sr.updatetime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //添加旺铺
+  public function addstorerent(){
+    //处理添加
+    if(!empty($_POST['title'])){
+      $storerent = D('admin://StoreRent');
+      if(!$storerent -> create()){
+	R('Register/errorjump',array($storerent -> getError()));
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('admin://Public/store_pic_upload');
+	$storerent -> image = $up_data[0]['savename'];
+      }
+      $storerent -> mid = !empty($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+      if($storerent -> add()){
+	R('Register/successjump',array(L('DATA_ADD_SUCCESS'), U('Business/storerent')));
+      }else{
+	R('Register/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    //查询店铺类别
+    $result_store_type = M('StoreRentType') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_store_type', $result_store_type);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
 }

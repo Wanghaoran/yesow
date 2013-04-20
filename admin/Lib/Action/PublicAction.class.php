@@ -283,11 +283,26 @@ class PublicAction extends Action {
     }
   }
 
-  //商品图片文件上传
+  //动感传媒图片文件上传
   public function media_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
     $upload -> savePath = C('MEDIA_PIC_PATH') ;//设置上传目录
+    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> saveRule = 'uniqid';
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info;
+    }else{
+      return $upload;
+    }
+  }
+
+  //旺铺出租图片文件上传
+  public function store_pic_upload(){
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('STORE_PIC_PATH') ;//设置上传目录
     $upload -> autoSub = false;//设置使用子目录保存上传文件
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){

@@ -1,0 +1,126 @@
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/pop-ico.js"></script>
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/storerent" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>发布类别：</label>
+	  <volist name="result_store_type" id="rst">
+	  <eq name="result.tid" value="$rst.id">
+	  <input type="radio" name="tid" value="<!--{$rst.id}--!>" checked="checked" /><!--{$rst.name}--!>
+	  <else/>
+	  <input type="radio" name="tid" value="<!--{$rst.id}--!>" /><!--{$rst.name}--!>
+	  </eq>
+	  </volist>
+	 </div>
+
+	      <div class="unit">
+		<label>所在地区：</label>
+	    <select class="combox" name="csid" ref="storerent_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <option value="">请选择</option>
+	      <volist name="result_childsite" id="s_rc">
+	      <eq name="result.csid" value="$s_rc.id">
+	      <option value="<!--{$s_rc.id}--!>" selected="selected"><!--{$s_rc.name}--!></option>
+	      <else/>
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    <select class="combox" name="csaid" id="storerent_csaid">
+	      <volist name="result_childsitearea" id="rcsa">
+	      <eq name="result.csaid" value="$rcsa.id">
+	      <option value="<!--{$rcsa.id}--!>" selected="selected"><!--{$rcsa.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rcsa.id}--!>"><!--{$rcsa.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+
+	    <label style="width:80px;">结束时间：</label>
+	    <input type="text" readonly="true" class="date textInput readonly" name="endtime" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" />
+	 </div>
+	<div class="unit">
+	  <label>发布标题：</label>
+	  <input type="text" class="textInput required" name="title" size="60" value="<!--{$result.title}--!>" />
+	</div>
+	<div class="unit">
+	  <label>关键字：</label>
+	  <input type="text" class="textInput required" name="keyword" size="60" value="<!--{$result.keyword}--!>" />
+	</div>
+
+
+	<div class="unit">
+		<label>选择图片：</label>
+		<!-- 头像选择 start -->
+                    <div class="cmt-ico" style="position: relative">
+                            <a class="head-ico show-ico-btn" title="选择图片："><img
+                                    class="focus-ico"
+				    alt="选择图片：" src="__PUBLIC__/Images/storerent/<!--{$result.systemimage}--!>" width="40" height="40">
+				  </a>
+				  <input type="hidden" name="headico" value="01.jpg" />
+                            <!-- 弹出窗口  start-->
+                            <div class="pop-ico" style="display: none">
+                                <div class="ico-title">
+                                    <span>选择图片：</span>
+                                    <a title="关闭窗口" class="hide-ico-btn">x</a>
+                                </div>
+                                <div class="ico-list">
+                                    <a data-src="01.jpg" class="cur"><img src="__PUBLIC__/Images/storerent/01.jpg" width="40" height="40"></a>
+                                    <a data-src="02.jpg"><img src="__PUBLIC__/Images/storerent/02.jpg" width="40" height="40"></a>
+                                    <a data-src="03.jpg"><img src="__PUBLIC__/Images/storerent/03.jpg" width="40" height="40"></a>
+                                    <a data-src="04.jpg"><img src="__PUBLIC__/Images/storerent/04.jpg" width="40" height="40"></a>
+                                    <a data-src="05.jpg"><img src="__PUBLIC__/Images/storerent/05.jpg" width="40" height="40"></a>
+                                    <a data-src="06.jpg"><img src="__PUBLIC__/Images/storerent/06.jpg" width="40" height="40"></a>
+				    <a data-src="07.jpg"><img src="__PUBLIC__/Images/storerent/07.jpg" width="40" height="40"></a>
+                                    <a data-src="08.jpg"><img src="__PUBLIC__/Images/storerent/08.jpg" width="40" height="40"></a>
+                                    <a data-src="09.jpg"><img src="__PUBLIC__/Images/storerent/09.jpg" width="40" height="40"></a>
+                                </div>
+                            </div>
+                            <!-- 弹出窗口  end-->
+                    </div>
+		    <!-- 头像选择 end -->
+
+		    <label>自传图片：</label>
+		    <input type="file" name="rentimage" />
+		    <notempty name="result.image">
+		    <a href="__URL__/editrstoreentimage/id/<!--{$Think.get.id}--!>" target="_blank">点击查看</a>
+		    </notempty>
+	</div>
+
+
+	<div class="unit">
+		<label>发布内容：</label>
+		<textarea name="content"  rows="5" cols="57" ><!--{$result.content}--!></textarea>
+	      </div>
+	      <div class="divider"></div>
+	      <div class="unit">
+	  <label>联系人：</label>
+	  <input type="text" class="textInput" name="linkman" value="<!--{$result.linkman}--!>" />
+	  <label style="width:80px;">联系QQ：</label>
+	  <input type="text" class="textInput" name="qqcode" value="<!--{$result.qqcode}--!>" />
+	</div>
+	<div class="unit">
+	  <label>E-mail：</label>
+	  <input type="text" class="textInput" name="email" value="<!--{$result.email}--!>" />
+	  <label style="width:80px;">联系电话：</label>
+	  <input type="text" class="textInput" name="tel" value="<!--{$result.tel}--!>" />
+	</div>
+	<div class="unit">
+	  <label>联系地址：</label>
+	  <input type="text" class="textInput" name="address" size="57" value="<!--{$result.address}--!>" />
+	</div>
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

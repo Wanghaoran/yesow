@@ -1342,4 +1342,370 @@ class ContentAction extends CommonAction {
   }
 
   /* ----------- 帮助中心 ------------ */
+
+  /* ----------- 旺铺租转管理 ------------ */
+  //旺铺类别管理
+  public function storerenttype(){
+    $storetype = M('StoreRentType');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $storetype -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $storetype -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加旺铺类别
+  public function addstorerenttype(){
+    //处理添加
+    if(!empty($_POST['name'])){
+      $storetype = M('StoreRentType');
+      if(!$storetype -> create()){
+	$this -> error($storetype -> getError());
+      }
+      if($storetype -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除旺铺类别
+  public function delstorerenttype(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $storetype = M('StoreRentType');
+    if($storetypes -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑旺铺类别
+  public function editstorerenttype(){
+    $storetype = M('StoreRentType');
+    if(!empty($_POST['name'])){
+      if(!$storetype -> create()){
+	$this -> error($storetype -> getError());
+      }
+      if($storetype -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $storetype -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //旺铺租转管理
+  public function storerent(){
+    $rent = M('StoreRent');
+
+    //处理搜索
+    if(!empty($_POST['search_name'])){
+      if($_POST['search_key'] == 'title'){
+	$where['sr.title'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'csid'){
+	$csid = M('ChildSite') -> getFieldByname($this -> _post('search_name'), 'id');
+	$where['sr.csid'] = $csid;
+      }else if($_POST['search_key'] == 'mid'){
+	$mid = M('Member') -> getFieldByname($this -> _post('search_name'), 'id');
+	$where['sr.mid'] = $mid;
+      }
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['sr.addtime'] = array(array('egt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['sr.endtime'] = array('elt', $endtime);
+    }
+
+    //记录总数
+    $count = $rent -> table('yesow_store_rent as sr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $time = time();
+    $result = $rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname,m.name as mname,sr.addtime,sr.updatetime,sr.ischeck,sr.clickcount,tmp.id as tmpid,tmp.endtime,tmp.sort') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> join('yesow_member as m ON sr.mid = m.id') -> join("LEFT JOIN (SELECT * FROM yesow_store_rent_sort WHERE starttime <= {$time} AND endtime >= {$time} ORDER BY id DESC) as tmp ON sr.id = tmp.srid") -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sr.updatetime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //增加旺铺租转
+  public function addstorerent(){
+    //处理新增
+    if(!empty($_POST['title'])){
+      $rent = D('StoreRent');
+      if(!$rent -> create()){
+	$this -> error($rent -> getError());
+      }
+      if(!empty($_FILES['rentimage']['name'])){
+	$up_data = R('Public/store_pic_upload');
+	$rent -> image = $up_data[0]['savename'];
+      }
+      if($rent -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询店铺类别
+    $result_store_type = M('StoreRentType') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_store_type', $result_store_type);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除旺铺租转
+  public function delstorerent(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $rent = M('StoreRent');
+    if($rent -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑旺铺租转
+  public function editstorerent(){
+    $rent = D('StoreRent');
+    if(!empty($_POST['title'])){
+      if(!$rent -> create()){
+	$this -> error($rent -> getError());
+      }
+      if(!empty($_FILES['rentimage']['name'])){
+	$up_data = R('Public/store_pic_upload');
+	$rent -> image = $up_data[0]['savename'];
+      }
+      if($rent -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    //查数据
+    $result = $rent -> field('tid,csid,csaid,title,keyword,systemimage,image,content,linkman,qqcode,address,email,tel,endtime') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询店铺类别
+    $result_store_type = M('StoreRentType') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_store_type', $result_store_type);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    $this -> display();
+  }
+
+  //旺铺租转推荐设置
+  public function editrecommendstorerent(){
+    $rent_sort = D('StoreRentSort');
+    if(!empty($_POST['sort'])){
+      //如果此旺铺已经有推荐记录，则先删除原来的推荐记录
+      if($rent_sort -> where(array('srid' => $_POST['srid'])) -> select()){
+	$rent_sort -> where(array('srid' => $_POST['srid'])) -> delete();
+      }
+      if(!$rent_sort -> create()){
+	$this -> error($rent_sort -> getError());
+      }
+      if($rent_sort -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $time = time();
+    $where = array();
+    $where['srid'] = $this -> _get('id', 'intval');
+    $where['starttime'] = array('elt', $time);
+    $where['endtime'] = array('egt', $time);
+    $result = $rent_sort -> field('starttime,endtime,sort') -> where(array('srid' => $this -> _get('id', 'intval'))) -> order('id DESC') -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //通过审核旺铺租转
+  public function passauditstorerent(){
+    $rent = M('StoreRent');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($rent -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核旺铺租转
+  public function nopassauditstorerent(){
+    $rent = M('StoreRent');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($rent -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    } 
+  }
+
+  //查看旺铺租转图片
+  public function editrstoreentimage(){
+    $rent = M('StoreRent');
+    $image = $rent -> getFieldByid($this -> _get('id', 'intval'), 'image');
+    $this -> assign('image', $image);
+    $this -> display();
+  }
+
+  //旺铺租转评论管理
+  public function storerentcomment(){
+    $comment = M('StoreRentComment');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['content'])){
+      $where['src.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where['src.mid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['src.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['src.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $comment -> table('yesow_store_rent_comment as src') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    //结果
+    $result = $comment -> table('yesow_store_rent_comment as src') -> field('src.id,src.srid,sr.title,src.floor,src.content,m.name as mname,src.addtime,src.status,src.face') -> where($where) -> order('src.status ASC,src.addtime DESC') -> join('yesow_store_rent as sr ON src.srid = sr.id') -> join('yesow_member as m ON src.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //编辑旺铺租转评论
+  public function editstorerentcomment(){
+    $comment = D('index://StoreRentComment');
+    //处理更新
+    if(!empty($_POST['floor'])){
+      if(!$comment -> create()){
+	$this -> error($comment -> getError());
+      }
+      if($comment -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $comment -> table('yesow_store_rent_comment as src') -> field('sr.title,m.name as mname,src.floor,src.content,src.face') -> join('yesow_store_rent as sr ON src.srid = sr.id') -> join('yesow_member as m ON src.mid = m.id') -> where(array('src.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除旺铺租转评论
+  public function delstorerentcomment(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $comment = M('StoreRentComment');
+    if($comment -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核旺铺租转评论
+  public function passauditstorerentcomment(){
+    $comment = M('StoreRentComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 2);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核旺铺租转评论
+  public function nopassauditstorerentcomment(){
+    $comment = M('StoreRentComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 1);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+  /* ----------- 旺铺租转管理 ------------ */
 }

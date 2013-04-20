@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>出租招聘列表页</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header"/>
+	<div id="mbx">
+    	<span style="float:right; font-weight:normal;">搜索：<input type="text" value="请输入关键字" style="color:#999; width:125px; margin-left:10px; height:18px; line-height:18px; border:#9fa0cc 1px solid;" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}"/><input type="button" value="搜索" /></span>
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/hire">出租招聘</a> &gt;
+		<span>旺铺租转</span> 
+	</div>
+    <!--广告方位-->
+    <div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116"/></a>
+	</div>
+	<!--人才招聘   旺铺转租-->
+	<div id="main16">
+		<div id="main16_t">
+        	<!--左边-->
+			<div class="main16_t_l">
+				<div class="cat_header">
+					<h3>推荐信息</h3>
+					<a href="#" class="more" >更多</a>
+				</div>
+				<div class="cat_bod">
+					<ul class="tjxx_ul">
+						<li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+					</ul>
+                    <div class="clear"></div>		
+				</div>
+			</div>
+            <!--人才招聘   旺铺转租  中间右边合并-->
+			<div class="main16_t_all">
+                    <div class="huang_ui">
+                        <div class="huang_ui_r">
+                            <div class="huang_ui_c">
+                                <h3>出租旺铺</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_czwp">
+                        <table class="table_detail">
+			  <tr><th>标题</th><th>发布时间</th><th>类型</th><th>所在地区</th></tr>
+			  <volist name="result_sort" id="rs">
+			  <tr>
+			    <td><a href="__URL__/storerentinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
+			    <td><!--{$rs.addtime|date="Y-m-d", ###}--!></td>
+			    <td width="80"><a href="#" class="fenlei"><!--{$rs.name}--!></a></td>
+			    <td width="80">[<a href="#" class="fenlei"><!--{$rs.csname}--!></a>]</td>
+			  </tr>
+			  </volist>
+			  <volist name="result" id="r">
+			  <tr>
+			    <td><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			    <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
+			    <td width="80"><a href="#" class="fenlei"><!--{$r.name}--!></a></td>
+			    <td width="80">[<a href="#" class="fenlei"><!--{$r.csname}--!></a>]</td>
+			  </tr>
+			  </volist>
+                        </table>
+                        <div class="clear"></div>
+                        <div class="page" style="padding-right:10px;">
+			  <!--{$show}--!>
+                        </div>
+                        <div class="clear"></div>		
+                    </div>
+                <div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!--人才招聘   旺铺转租结束-->
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

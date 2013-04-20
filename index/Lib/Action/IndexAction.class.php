@@ -183,10 +183,11 @@ class IndexAction extends CommonAction {
 
   //动感传媒
   private function mediacompany(){
-    //先获取分站id
-    $csid = D('admin://ChildSite') -> getidc();
     $where = array();
-    $where['csid'] = $csid;
+    //先获取分站id
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['csid'] = $csid;
+    }
     $where['ischeck'] = 1;
     $mediashow = M('MediaShow');
     $media_company = $mediashow -> field('id,name') -> limit(20) -> where($where) -> order('sort ASC') -> select();
@@ -273,10 +274,11 @@ class IndexAction extends CommonAction {
 
   //动感传媒
   public function companyshow(){
-    //先获取分站id
-    $csid = D('admin://ChildSite') -> getidc();
     $where = array();
-    $where['csid'] = $csid;
+    //先获取分站id
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['csid'] = $csid;
+    }
     $where['ischeck'] = 1;
     $mediashow = M('MediaShow');
 

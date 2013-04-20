@@ -90,5 +90,8 @@ class CommonAction extends Action {
     //获得此页面的广告位
     $ad_arr = D('index://AdvertisePage') -> getad();
     $this -> assign('ad_arr', $ad_arr);
+    //查询分站名
+    $childsite_name = D('admin://ChildSite') -> getname();
+    $this -> assign('childsite_name', $childsite_name);
   }
 }

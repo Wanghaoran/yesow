@@ -9,7 +9,7 @@
 	<div class="searchBar">
 		<ul class="searchContent">
 			<li>
-				<label>分类名称：</label>
+				<label>类别名称：</label>
 				<input type="text" name="name" />
 				</li>
 		</ul>
@@ -26,18 +26,18 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addhelpclass" target="dialog" mask="true"><span>新增</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delhelpclass/navTabId/helpclass" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择分类名称"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/edithelpclass/id/{sid_role}" target="dialog" mask="true" warn="请选择分类名称"><span>编辑</span></a></li>
+	    <li><a class="add" href="__URL__/addstorerenttype" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delstorerenttype/navTabId/storerenttype" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择分类名称"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editstorerenttype/id/{sid_role}" target="dialog" mask="true" warn="请选择分类名称"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['content']['addhelpclass'])">
-	    <li><a class="add" href="__URL__/addhelpclass" target="dialog" mask="true"><span>新增</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['addstorerenttype'])">
+	    <li><a class="add" href="__URL__/addstorerenttype" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['content']['delhelpclass'])">
-	    <li class=""><a class="delete" href="__URL__/delhelpclass/navTabId/helpclass" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择分类名称"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['delstorerenttype'])">
+	    <li class=""><a class="delete" href="__URL__/delstorerenttype/navTabId/storerenttype" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择分类名称"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['content']['edithelpclass'])">
-	    <li><a class="edit" href="__URL__/edithelpclass/id/{sid_role}" target="dialog" mask="true" warn="请选择分类名称"><span>编辑</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['editstorerenttype'])">
+	    <li><a class="edit" href="__URL__/editstorerenttype/id/{sid_role}" target="dialog" mask="true" warn="请选择分类名称"><span>编辑</span></a></li>
 	    </if>
 	    </if>
 		</ul>
@@ -48,7 +48,7 @@
 		  <tr>
 		    <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
-			<th width="60">分类名称</th>
+			<th width="60">类别名称</th>
 			<th width="20">排序</th>
 			<th width="120">备注</th>
 

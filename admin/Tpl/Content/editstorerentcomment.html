@@ -1,0 +1,50 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/storerentcomment" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>旺铺名称：</label>
+		<input type="text" class="required" readonly="readonly" value="<!--{$result.title}--!>" size="40" />
+	</div>
+	<div class="unit">
+		<label>评论者：</label>
+		<input type="text" class="required" readonly="readonly" value="<!--{$result.mname|default='游客'}--!>" />
+	</div>
+	<div class="unit">
+		<label>楼层：</label>
+		<input type="text" class="required digits" name="floor" value="<!--{$result.floor}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>表情：</label>
+		<eq name="result.face" value="">
+		<input type="radio" name="face" value="" checked="checked" />无
+		<else/>
+		<input type="radio" name="face" value="" />无
+		</eq>
+		<for start="1" end="8" comparison="elt">
+		<eq name="result.face" value="$i">
+		<input type="radio" name="face" value="<!--{$i}--!>" checked="checked" /><img src="__PUBLIC__/index/default/style/images/face/<!--{$i}--!>.gif" />
+		<else/>
+		<input type="radio" name="face" value="<!--{$i}--!>" /><img src="__PUBLIC__/index/default/style/images/face/<!--{$i}--!>.gif" />
+		</eq>
+		</for>
+	      </div>
+	      <div class="unit">
+		<label>评论内容：</label>
+		<textarea name="content" class="required" rows="5" cols="57" ><!--{$result.content}--!></textarea>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>
