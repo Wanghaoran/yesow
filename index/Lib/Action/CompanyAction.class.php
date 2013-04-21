@@ -198,13 +198,36 @@ class CompanyAction extends CommonAction {
     $result['content'] = str_replace($illegal_word, $replace_word, $result['content']);
 
     $this -> assign('result', $result);
-    //最新更新同行
-    $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where(array('c.ccid' => $result['ccid'])) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site as cs ON c.csid = cs.id') -> select();
+    //最新同类更新
+    $where_counterparts = array();
+    //判断是否是分站
+    if($counterparts_csid = D('admin://ChildSite') -> getid()){
+      $where_counterparts['c.csid'] = $counterparts_csid;
+    }
+    $where_counterparts['c.ccid'] = $result['ccid'];
+    $result_counterparts = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where($where_counterparts) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site_area as cs ON c.csaid = cs.id') -> select();
     $this -> assign('result_counterparts', $result_counterparts);
+    //相关更新同行
+    $key_arr = explode(' ', $result['keyword']);
+    $where_about = array();
+    foreach($key_arr as $value){
+      if(empty($where_about)){
+	$where_about['_string'] .="(( c.keyword LIKE '%{$value}%' )";
+      }else{
+	$where_about['_string'] .=" OR ( c.keyword LIKE '%{$value}%' )";
+      }
+    }
+    $where_about['_string'] .= ") AND (c.id != {$id})";
+    //判断是否是分站
+    if($about_csid = D('admin://ChildSite') -> getid()){
+      $where_about['c.csid'] = $about_csid;
+    }
+    $result_about_company = $company -> table('yesow_company as c') -> field('c.id,c.name,c.updatetime,cs.name as csname') -> where($where_about) -> limit(15) -> order('c.updatetime DESC') -> join('yesow_child_site_area as cs ON c.csaid = cs.id') -> select();
+    $this -> assign('result_about_company', $result_about_company);
     //读取评论
-    $comment_where = "cc.cid={$id} AND cc.status=2";
+    $comment_where = "cc.cid={$id} and cc.status=2";
     //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
-    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
+    if(m('membersetup') -> getfieldbyname('viewcomment', 'value') == 1 && isset($_session[c('user_auth_key')])){
       $sid = session(C('USER_AUTH_KEY'));
       $where_setup = "cc.cid={$id} AND cc.mid={$sid}";
       $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';

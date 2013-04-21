@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><!--{$result.name}--!>_<!--{$result.csaname}--!>IT商家联系方式_易搜_<!--{$result.csname}--!>IT商家信息详情页</title>
-<meta name="Keywords" content="<!--{$result.keyword|str_replace=' ', ',', ###}--!>,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT黄页,易搜,IT黄页"/>
+<meta name="Keywords" content="易搜,IT渠道,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT,<!--{$result.one_ccname}--!>,<!--{$result.ccname}--!>,IT黄页"/>
 <meta name="description" content="<!--{$result.name}--!>主要经营<!--{$result.manproducts}--!>，期待结识更多的商家合作并共同发展"/>
 
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
@@ -416,12 +416,12 @@ var onedownload = function(){
 				<div class="huang_ui">
 					<div class="huang_ui_r">
 						<div class="huang_ui_c">
-							<h3>最新更新同行</h3>
+							<h3>相关更新同行</h3>
 						</div>
 					</div>
 				</div>
 				<ul class="bl_list">
-				  <volist name="result_counterparts" id="rc">
+				  <volist name="result_about_company" id="rc">
 				  <li><a href="__ROOT__/company/<!--{$rc.id}--!>"><span>[<b><!--{$rc.csname}--!></b>]</span><!--{$rc.name|msubstr=0,11}--!></a><span class="time"><!--{$rc.updatetime|date="Y-m-d", ###}--!></span></li>
 				  </volist>
 				</ul>
@@ -440,21 +440,14 @@ var onedownload = function(){
 				<div class="huang_ui">
 					<div class="huang_ui_r">
 						<div class="huang_ui_c">
-							<h3>推荐商家</h3>
+							<h3>最新同类更新</h3>
 						</div>
 					</div>
 				</div>
 				<ul class="bl_list">
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>				
+				  <volist name="result_counterparts" id="rc">
+				  <li><a href="__ROOT__/company/<!--{$rc.id}--!>"><span>[<b><!--{$rc.csname}--!></b>]</span><!--{$rc.name|msubstr=0,11}--!></a><span class="time"><!--{$rc.updatetime|date="Y-m-d", ###}--!></span></li>
+				  </volist>		  
 				</ul>
 				<div class="clear"></div>
 			</div>
