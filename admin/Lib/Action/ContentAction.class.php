@@ -1708,4 +1708,176 @@ class ContentAction extends CommonAction {
     }
   }
   /* ----------- 旺铺租转管理 ------------ */
+
+  /* ----------- 二手滞销管理 ------------ */
+
+  //发布类别管理
+  public function sellusedtype(){
+    $type = M('SellUsedType');
+    $where['pid'] = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    //记录总数
+    $count = $type -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    //结果
+    $result = $type -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //添加发布类别
+  public function addsellusedtype(){
+     $type = M('SellUsedType');
+    //处理添加
+    if(!empty($_POST['name'])){
+      if(!$type -> create()){
+	$this -> error($type -> getError());
+      }
+      if($type -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查上级分类
+    $pname = $type -> getFieldByid($this -> _get('id', 'intval'), 'name');
+    $this -> assign('pname', $pname);
+    $this -> display();
+  }
+
+  //删除发布类别
+  public function delsellusedtype(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $type = M('SellUsedType');
+    if($type -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑发布类别
+  public function editsellusedtype(){
+    $type = M('SellUsedType');
+    if(!empty($_POST['name'])){
+      if(!$type -> create()){
+	$this -> error($type -> getError());
+      }
+      if($type -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $type -> field('name,pid,sort,remark') -> find($this -> _get('id', 'intval'));
+    $pname = $type -> getFieldByid($result['pid'], 'name');
+    $this -> assign('pname', $pname);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //产品成色管理
+  public function sellusedcolor(){
+    $color = M('SellUsedColor');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $color -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $color -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加产品成色
+  public function addsellusedcolor(){
+    //处理添加
+    if(!empty($_POST['name'])){
+      $color = M('SellUsedColor');
+      if(!$color -> create()){
+	$this -> error($color -> getError());
+      }
+      if($color -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除产品成色
+  public function delsellusedcolor(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $color = M('SellUsedColor');
+    if($color -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑产品成色
+  public function editsellusedcolor(){
+    $color = M('SellUsedColor');
+    if(!empty($_POST['name'])){
+      if(!$color -> create()){
+	$this -> error($color -> getError());
+      }
+      if($color -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $color -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //二手滞销管理
+  public function sellused(){
+  
+  }
+  /* ----------- 二手滞销管理 ------------ */
 }

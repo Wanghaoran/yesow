@@ -7,6 +7,23 @@
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+  var delstorerent = function(id){
+    if(confirm('确定要删除此条旺铺信息吗?')){
+      $.ajax({
+	url: '__URL__/delstorerent/id/' + id,
+	success: function(ress){
+	  if(ress){
+	    alert('删除成功!');
+	    location.reload();
+	  }else{
+	    alert('删除失败!');
+	  }
+	}
+      });
+    }   
+  }
+</script>
 </head>
 <body id="body_user">
   <include file="Index:header" />
@@ -49,7 +66,7 @@
 				  <td><span class="span_red">未审</span></td>
 				  </eq>
 				  <td><!--{$r.clickcount}--!></td>
-                                    <td><a href="#">修改</a> | <a href="#">删除</a></td>
+				  <td><a href="__URL__/editstorerent/id/<!--{$r.id}--!>">修改</a> | <a href="javascript:delstorerent(<!--{$r.id}--!>);">删除</a></td>
 				  </tr>
 				  </volist>
                             </table> 

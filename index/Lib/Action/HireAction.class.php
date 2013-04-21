@@ -32,6 +32,7 @@ class HireAction extends CommonAction {
       $sort_num_down = 5 - $sort_num;
       $this -> assign('sort_num_down', $sort_num_down);
     }
+    
     //非推荐读取的数量
     $not_sort_num = 17 - $sort_num;
     //再读取其他商家
@@ -44,7 +45,9 @@ class HireAction extends CommonAction {
     $where = array();
     $where['sr.ischeck'] = 1;
     $where['sr.endtime'] = array('egt', $time);
-    $where['sr.id'] = array('not in', $del_id_arr);
+    if(!empty($del_id_arr)){
+      $where['sr.id'] = array('not in', $del_id_arr);
+    }
     $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> limit($not_sort_num) -> order('updatetime DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     /* ---------------- 旺铺出租 ---------------- */
@@ -86,8 +89,9 @@ class HireAction extends CommonAction {
     $where = array();
     $where['sr.ischeck'] = 1;
     $where['sr.endtime'] = array('egt', $time);
-    $where['sr.id'] = array('not in', $del_id_arr);
-
+    if(!empty($del_id_arr)){
+      $where['sr.id'] = array('not in', $del_id_arr);
+    }
     import("ORG.Util.Page");// 导入分页类
     //推荐数量
     $sort_count = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> where($where_sort) -> count();

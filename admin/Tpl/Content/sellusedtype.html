@@ -27,18 +27,18 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addcompanycategory/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delcompanycategory/navTabId/companycategory" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editcompanycategory/id/{sid_role}" target="dialog" mask="true" warn="请选择类别"><span>编辑</span></a></li>
+	    <li><a class="add" href="__URL__/addsellusedtype/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delsellusedtype/navTabId/sellusedtype" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editsellusedtype/id/{sid_role}" target="dialog" mask="true" warn="请选择类别"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['company']['addcompanycategory'])">
-	    <li><a class="add" href="__URL__/addcompanycategory/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['addsellusedtype'])">
+	    <li><a class="add" href="__URL__/addsellusedtype/id/<!--{$Think.request.id}--!>" target="dialog" mask="true"><span>新增</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['delcompanycategory'])">
-	    <li class=""><a class="delete" href="__URL__/delcompanycategory/navTabId/companycategory" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['delsellusedtype'])">
+	    <li class=""><a class="delete" href="__URL__/delsellusedtype/navTabId/sellusedtype" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择类别"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['editcompanycategory'])">
-	    <li><a class="edit" href="__URL__/editcompanycategory/id/{sid_role}" target="dialog" mask="true" warn="请选择类别"><span>编辑</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['content']['editsellusedtype'])">
+	    <li><a class="edit" href="__URL__/editsellusedtype/id/{sid_role}" target="dialog" mask="true" warn="请选择类别"><span>编辑</span></a></li>
 	    </if>
 	    </if>
 		</ul>
@@ -64,7 +64,7 @@
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
 			  <td><!--{$r.sort}--!></td>
-			  <td><a href="__ACTION__/id/<!--{$r.id}--!>" target="navTab" rel="companycategory" style="color:blue;">子分类</a></td>			  
+			  <td><a href="__ACTION__/id/<!--{$r.id}--!>" target="navTab" rel="sellusedtype" style="color:blue;">子分类</a></td>			  
 			  <td><!--{$r.remark}--!></td>
 			</tr>
 		</volist>

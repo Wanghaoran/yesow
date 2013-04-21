@@ -260,4 +260,42 @@ class BusinessAction extends CommonAction {
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
+
+  //编辑旺铺
+  public function editstorerent(){
+    $storerent = D('admin://StoreRent');
+    //处理编辑
+    if(!empty($_POST['title'])){
+      if(!$storerent -> create()){
+	R('Register/errorjump',array($storerent -> getError()));
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('admin://Public/store_pic_upload');
+	$storerent -> image = $up_data[0]['savename'];
+      }
+      $storerent -> mid = !empty($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+      if($storerent -> save()){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Business/storerent')));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+      }
+    }
+    $result = $storerent -> field('tid,endtime,title,keyword,csid,csaid,systemimage,content,linkman,tel,qqcode,email,address') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询店铺类别
+    $result_store_type = M('StoreRentType') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_store_type', $result_store_type);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    $this -> display();
+  }
+
+  //删除旺铺
+  public function delstorerent(){
+    echo M('StoreRent') -> delete($this -> _get('id', 'intval'));
+  }
 }
