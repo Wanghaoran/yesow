@@ -1,0 +1,86 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/sellused" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>发布类别：</label>
+	  <select class="combox" name="tid_one" ref="sellused_tid_two" refUrl="__APP__/public/ajaxgetselltid/id/{value}">
+	      <option value="">请选择</option>
+	      <volist name="result_type_one" id="rto">
+	      <option value="<!--{$rto.id}--!>"><!--{$rto.name}--!></option>
+	      </volist>
+	    </select>
+	    <select class="combox" name="tid_two" id="sellused_tid_two">
+	      <option value="">请选择</option>
+	    </select>
+
+	    <label style="width:80px;">所属地区：</label>
+	    <select class="combox" name="csid" ref="sellused_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <option value="">请选择</option>
+	      <volist name="result_childsite" id="s_rc">
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </volist>
+	    </select>
+	    <select class="combox" name="csaid" id="sellused_csaid">
+	      <option value="">请选择</option>
+	    </select>
+
+	 </div>
+
+	 <div class="unit">
+	   <label>结束时间：</label>
+	   <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+
+	   <label style="width:80px;">产品成色：</label>
+	    <select class="combox" name="cid">
+	      <option value="">请选择</option>
+	      <volist name="result_color" id="rc">
+	      <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+	      </volist>
+	    </select>
+	 </div>
+	<div class="unit">
+	  <label>商品名称：</label>
+	  <input type="text" class="textInput required" name="title" size="60" />
+	</div>
+	<div class="unit">
+	  <label>关键字：</label>
+	  <input type="text" class="textInput required" name="keyword" size="60" />
+	</div>
+	<div class="unit">
+	  <label>产品图片：</label>
+	  <input type="file" name="image" />
+	</div>
+	<div class="unit">
+	  <label>期望价格：</label>
+	  <input type="text" class="textInput" name="price" />
+	  <label style="width:80px;">电子邮件：</label>
+	  <input type="text" class="textInput" name="email" />
+	</div>
+	<div class="unit">
+	  <label>联系人：</label>
+	  <input type="text" class="textInput" name="linkman" />
+	  <label style="width:80px;">联系电话：</label>
+	  <input type="text" class="textInput" name="tel" />
+	</div>
+	<div class="unit">
+	  <label>联系地址：</label>
+	  <input type="text" class="textInput required" name="address" size="60" />
+	</div>
+	<div class="unit">
+		<label>相关说明：</label>
+		<textarea name="content"  rows="5" cols="57" ></textarea>
+	      </div>
+	    </div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

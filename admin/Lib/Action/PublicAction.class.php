@@ -312,4 +312,31 @@ class PublicAction extends Action {
       return $upload;
     }
   }
+
+  //ajax获取二手滞销发布类别 - 二级
+  public function ajaxgetselltid(){
+    $result_temp = M('SellUsedType') -> field('id,name') -> where(array('pid' => $this -> _get('id', 'intval'))) -> select();
+    $result = array();
+    $result[] = array('', '请选择');
+    //格式化结果集
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['name']);
+    }
+    echo json_encode($result);
+  }
+
+  //二手滞销图片文件上传
+  public function sellused_pic_upload(){
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('SELLUSED_PIC_PATH') ;//设置上传目录
+    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> saveRule = 'uniqid';
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info;
+    }else{
+      return $upload;
+    }
+  }
 }

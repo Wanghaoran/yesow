@@ -1877,7 +1877,194 @@ class ContentAction extends CommonAction {
 
   //二手滞销管理
   public function sellused(){
-  
+    $sellused = M('SellUsed');
+    $where = array();
+    $time = time();
+
+    //处理搜索
+    if(!empty($_POST['search_name'])){
+      if($_POST['search_key'] == 'title'){
+	$where['su.title'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'csid'){
+	$csid = M('ChildSite') -> getFieldByname($this -> _post('search_name'), 'id');
+	$where['su.csid'] = $csid;
+      }else if($_POST['search_key'] == 'mid'){
+	$mid = M('Member') -> getFieldByname($this -> _post('search_name'), 'id');
+	$where['su.mid'] = $mid;
+      }
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['su.addtime'] = array(array('egt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['su.endtime'] = array('elt', $endtime);
+    }
+
+    //记录总数
+    $count = $sellused -> table('yesow_sell_used as su') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $sellused -> table('yesow_sell_used as su') -> field('su.id,cs.name as csname,su.title,sut.name as sutname,su.price,su.linkman,m.name as mname,su.addtime,su.ischeck,su.clickcount,tmp.id as tmpid,tmp.endtime,tmp.sort') -> join('yesow_child_site as cs ON su.csid = cs.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_member as m ON su.mid = m.id') -> join("LEFT JOIN (SELECT * FROM yesow_sell_used_sort WHERE starttime <= {$time} AND endtime >= {$time} ORDER BY id DESC) as tmp ON su.id = tmp.suid") -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('su.updatetime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加二手滞销
+  public function addsellused(){
+    //处理新增
+    if(!empty($_POST['title'])){
+      $sellused = D('SellUsed');
+      if(!$sellused -> create()){
+	$this -> error($sellused -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('Public/sellused_pic_upload');
+	$sellused -> image = $up_data[0]['savename'];
+      }
+      if($sellused -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询一级发布类别
+    $result_type_one = M('SellUsedType') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_type_one', $result_type_one);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询产品成色
+    $result_color = M('SellUsedColor') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_color', $result_color);
+    $this -> display();
+  }
+
+  //删除二手滞销
+  public function delsellused(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $sellused = M('SellUsed');
+    if($sellused -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑二手滞销
+  public function editsellused(){
+    $sellused = D('SellUsed');
+    //处理编辑
+    if(!empty($_POST['title'])){
+      if(!$sellused -> create()){
+	$this -> error($sellused -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('Public/sellused_pic_upload');
+	$sellused -> image = $up_data[0]['savename'];
+      }
+      if($sellused -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $sellused -> field('tid_one,tid_two,csid,csaid,endtime,cid,title,keyword,image,price,tel,linkman,email,address,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询一级发布类别
+    $result_type_one = M('SellUsedType') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_type_one', $result_type_one);
+    //查询当前发布类别的下级类别
+    $result_type_two = M('SellUsedType') -> field('id,name') -> where(array('pid' => $result['tid_one'])) -> order('sort ASC') -> select();
+    $this -> assign('result_type_two', $result_type_two);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    //查询产品成色
+    $result_color = M('SellUsedColor') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_color', $result_color);
+    $this -> display();
+  }
+
+  //查看二手图片
+  public function editshowsellimage(){
+    $sellused = M('SellUsed');
+    $image = $sellused -> getFieldByid($this -> _get('id', 'intval'), 'image');
+    $this -> assign('image', $image);
+    $this -> display();
+  }
+
+  //通过审核二手滞销
+  public function passauditsellused(){
+    $sellused = M('SellUsed');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($sellused -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核二手滞销
+  public function nopassauditsellused(){
+    $sellused = M('SellUsed');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($sellused -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //二手滞销推荐设置
+  public function editrecommendsellused(){
+    $sell_sort = D('SellUsedSort');
+    if(!empty($_POST['sort'])){
+      //如果此旺铺已经有推荐记录，则先删除原来的推荐记录
+      if($sell_sort -> where(array('suid' => $_POST['suid'])) -> select()){
+	$sell_sort -> where(array('suid' => $_POST['suid'])) -> delete();
+      }
+      if(!$sell_sort -> create()){
+	$this -> error($sell_sort -> getError());
+      }
+      if($sell_sort -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $time = time();
+    $where = array();
+    $where['suid'] = $this -> _get('id', 'intval');
+    $where['starttime'] = array('elt', $time);
+    $where['endtime'] = array('egt', $time);
+    $result = $sell_sort -> field('starttime,endtime,sort') -> where(array('suid' => $this -> _get('id', 'intval'))) -> order('id DESC') -> find();
+    $this -> assign('result', $result);
+    $this -> display();
   }
   /* ----------- 二手滞销管理 ------------ */
 }

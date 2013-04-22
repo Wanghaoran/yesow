@@ -1,0 +1,112 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/sellused" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>发布类别：</label>
+	  <select class="combox" name="tid_one" ref="sellused_tid_two" refUrl="__APP__/public/ajaxgetselltid/id/{value}">
+	      <volist name="result_type_one" id="rto">
+	      <eq name="result.tid_one" value="$rto.id">
+	      <option value="<!--{$rto.id}--!>" selected="selected"><!--{$rto.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rto.id}--!>"><!--{$rto.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    <select class="combox" name="tid_two" id="sellused_tid_two">
+	      <volist name="result_type_two" id="rtt">
+	      <eq name="result.tid_two" value="$rtt.id">
+	      <option value="<!--{$rtt.id}--!>" selected="selected"><!--{$rtt.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rtt.id}--!>"><!--{$rtt.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+
+	    <label style="width:80px;">所属地区：</label>
+	    <select class="combox" name="csid" ref="sellused_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <volist name="result_childsite" id="s_rc">
+	      <eq name="result.csid" value="$s_rc.id">
+	      <option value="<!--{$s_rc.id}--!>" selected="selected"><!--{$s_rc.name}--!></option>
+	      <else/>
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    <select class="combox" name="csaid" id="sellused_csaid">
+	      <volist name="result_childsitearea" id="rcsa">
+	      <eq name="result.csaid" value="$rcsa.id">
+	      <option value="<!--{$rcsa.id}--!>" selected="selected"><!--{$rcsa.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rcsa.id}--!>"><!--{$rcsa.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+
+	 </div>
+
+	 <div class="unit">
+	   <label>结束时间：</label>
+	   <input type="text" readonly="true" class="date textInput readonly" name="endtime" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" />
+
+	   <label style="width:80px;">产品成色：</label>
+	    <select class="combox" name="cid">
+	      <option value="">请选择</option>
+	      <volist name="result_color" id="rc">
+	      <eq name="result.cid" value="$rc.id">
+	      <option value="<!--{$rc.id}--!>" selected="selected" ><!--{$rc.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	 </div>
+	<div class="unit">
+	  <label>商品名称：</label>
+	  <input type="text" class="textInput required" name="title" size="60" value="<!--{$result.title}--!>" />
+	</div>
+	<div class="unit">
+	  <label>关键字：</label>
+	  <input type="text" class="textInput required" name="keyword" size="60" value="<!--{$result.keyword}--!>" />
+	</div>
+	<div class="unit">
+	  <label>产品图片：</label>
+	  <input type="file" name="image" />
+	  <notempty name="result.image">
+	  <a href="__URL__/editshowsellimage/id/<!--{$Think.get.id}--!>" target="_blank">点击查看</a>
+	  </notempty>
+	</div>
+	<div class="unit">
+	  <label>期望价格：</label>
+	  <input type="text" class="textInput" name="price" value="<!--{$result.price}--!>" />
+	  <label style="width:80px;">电子邮件：</label>
+	  <input type="text" class="textInput" name="email" value="<!--{$result.email}--!>" />
+	</div>
+	<div class="unit">
+	  <label>联系人：</label>
+	  <input type="text" class="textInput" name="linkman" value="<!--{$result.linkman}--!>" />
+	  <label style="width:80px;">联系电话：</label>
+	  <input type="text" class="textInput" name="tel" value="<!--{$result.tel}--!>" />
+	</div>
+	<div class="unit">
+	  <label>联系地址：</label>
+	  <input type="text" class="textInput required" name="address" size="60" value="<!--{$result.address}--!>" />
+	</div>
+	<div class="unit">
+		<label>相关说明：</label>
+		<textarea name="content"  rows="5" cols="57" ><!--{$result.content}--!></textarea>
+	      </div>
+	    </div>
+	    <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

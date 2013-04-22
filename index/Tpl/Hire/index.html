@@ -126,7 +126,11 @@
 				<li><a href="__URL__/storerentinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.title}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
 				</volist>
 				<volist name="result" id="r" offset="0" length="$sort_num_down">
+				<if condition="time() - $r['updatetime'] elt 24*60*60">
+				<li><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" class="new" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+				<else/>
 				<li><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+				</if>
 				</volist>
 			      <else/>
 			        <volist name="result_sort" id="rs" offset="0" length="5">
@@ -139,15 +143,23 @@
                         <div class="czzpgg_right">
 			  <ul class="ul_czzpgg2">
 			    <elt name="sort_num" value="5" >
-			      <volist name="result" id="r" offset="$sort_num_down" length="12">
-			      <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    <volist name="result" id="r" offset="$sort_num_down" length="12">
+			    <if condition="time() - $r['updatetime'] elt 24*60*60">
+			    <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    <else/>
+			    <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    </if>
 			      </volist>
 			    <else/>
 			      <volist name="result_sort" id="rs" offset="5">
 			        <li><span class="span_left"><!--{$rs.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/storerentinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.title}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
 			      </volist>
 			      <volist name="result" id="r">
+			      <if condition="time() - $r['updatetime'] elt 24*60*60">
 			      <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			      <else/>
+			      <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			      </if>
 			      </volist>
 			    </elt>
                             </ul>
@@ -251,7 +263,7 @@
                     <div class="huang_ui">
                         <div class="huang_ui_r">
                             <div class="huang_ui_c">
-                            	<div class="czzp_title"><a href="#" class="more" >更多</a></div>
+                            	<div class="czzp_title"><a href="__URL__/sellusedlist" class="more" target="_blank" >更多</a></div>
                                 <h3>二手交易</h3>
                             </div>
                         </div>
@@ -261,28 +273,47 @@
                         	<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/img_ad3.jpg" width="199" height="132" border="0" /></a>
                             <br/>
                             <ul class="ul_czzpgg1">
-                            	<li><a href="#" class="tuijian"><div>百威软件浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><a href="#" class="tuijian"><div>百威软件百威软件浙江分公司浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><a href="#" class="new"><div>百威软件浙江百威软件浙江分公司分公司</div>[<span>杭州</span>]</a></li>
-                                <li><a href="#" class="new"><div>百威软件浙江百威软件浙江分公司分公司</div>[<span>杭州</span>]</a></li>
-                                <li><a href="#" class="new"><div>百威软件浙江分公百威软件浙江分公司司</div>[<span>杭州</span>]</a></li>
+                            	<elt name="sellused_sort_num" value="5" >
+			        <volist name="result_sellused_sort" id="rs">
+				<li><a href="__URL__/sellusedinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.title}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
+				</volist>
+				<volist name="result_sellused" id="r" offset="0" length="$sellused_sort_num_down">
+				<if condition="time() - $r['updatetime'] elt 24*60*60">
+				<li><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" class="new" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+				<else/>
+				<li><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+				</if>
+				</volist>
+			      <else/>
+			        <volist name="result_sellused_sort" id="rs" offset="0" length="5">
+				  <li><a href="__URL__/sellusedinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.title}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
+			        </volist>
+			      </elt>
                             </ul>
                             <div class="clear"></div>	
                         </div>
                         <div class="czzpgg_right">
-                        	<ul class="ul_czzpgg2">
-                            	<li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#" class="new"><div>百威软件浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#" class="new"><div>百威软件百威软件浙江分公司浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#" class="new"><div>百威软件浙江百威软件浙江分公司分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#" class="new"><div>百威软件浙江百威软件浙江分公司分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#" class="new"><div>百威软件浙江分公百威软件浙江分公司司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件百威软件浙江分公司浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件浙江百威软件浙江分公司分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件浙江百威软件浙江分公司分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件浙江分公百威软件浙江分公司司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件浙江分公司</div>[<span>杭州</span>]</a></li>
-                                <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="#"><div>百威软件百威软件浙江分公司浙江分公司</div>[<span>杭州</span>]</a></li>
+			  <ul class="ul_czzpgg2">
+			    <elt name="sellused_sort_num" value="5" >
+			    <volist name="result_sellused" id="r" offset="$sellused_sort_num_down" length="12">
+			    <if condition="time() - $r['updatetime'] elt 24*60*60">
+			    <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    <else/>
+			    <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    </if>
+			      </volist>
+			    <else/>
+			      <volist name="result_sellused_sort" id="rs" offset="5">
+			        <li><span class="span_left"><!--{$rs.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/sellusedinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.title}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
+			      </volist>
+			      <volist name="result_sellused" id="r">
+			      <if condition="time() - $r['updatetime'] elt 24*60*60">
+			      <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			      <else/>
+			      <li><span class="span_left"><!--{$r.name}--!>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank"><div><!--{$r.title}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			      </if>
+			      </volist>
+			    </elt>
                             </ul>
                             <div class="clear"></div>	
                         </div>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>出租招聘列表页</title>
+<title>二手滞销列表页</title>
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
@@ -11,14 +11,13 @@
 <body id="body_index">
 <div id="warp_body">
   <include file="Index:header"/>
-  <div id="mbx">
-    <form action="__ACTION__" method="post">
+	<div id="mbx">
+    	<form action="__ACTION__" method="post">
       <span style="float:right; font-weight:normal;">搜索：<input type="text" name="keyword" style="color:#999; width:125px; margin-left:10px; height:18px; line-height:18px; border:#9fa0cc 1px solid;"/><input type="submit" value="搜索" /></span>
       </form>
 		<span>您的位置:</span>
 		<a href="__ROOT__">易搜首页</a> &gt;
-		<a href="__ROOT__/hire">出租招聘</a> &gt;
-		<span>旺铺租转</span> 
+		<span>二手滞销</span> 
 	</div>
     <!--广告方位-->
     <div class="index_gg01">
@@ -54,16 +53,16 @@
                     <div class="huang_ui">
                         <div class="huang_ui_r">
                             <div class="huang_ui_c">
-                                <h3>出租旺铺</h3>
+                                <h3>二手滞销</h3>
                             </div>
                         </div>
                     </div>
                     <div class="div_czwp">
                         <table class="table_detail">
-			  <tr><th>标题</th><th>发布时间</th><th>类型</th><th>所在地区</th></tr>
-			  <volist name="result_sort" id="rs">
+                        	<tr><th>标题</th><th>发布时间</th><th>类型</th><th>所在地区</th></tr>
+                            <volist name="result_sort" id="rs">
 			  <tr>
-			    <td><a href="__URL__/storerentinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
+			    <td><a href="__URL__/sellusedinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
 			    <td><!--{$rs.addtime|date="Y-m-d", ###}--!></td>
 			    <td width="80"><a href="#" class="fenlei"><!--{$rs.name}--!></a></td>
 			    <td width="80">[<a href="#" class="fenlei"><!--{$rs.csname}--!></a>]</td>
@@ -71,7 +70,7 @@
 			  </volist>
 			  <volist name="result" id="r">
 			  <tr>
-			    <td><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			    <td><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
 			    <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
 			    <td width="80"><a href="#" class="fenlei"><!--{$r.name}--!></a></td>
 			    <td width="80">[<a href="#" class="fenlei"><!--{$r.csname}--!></a>]</td>

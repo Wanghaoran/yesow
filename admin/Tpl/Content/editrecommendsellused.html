@@ -1,0 +1,30 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/sellused" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		  <div class="unit">
+		    <label>开始时间：</label>
+		    <input type="text" readonly="true" class="date textInput required readonly" name="starttime" value="<!--{$result.starttime|default=''|date='Y-m-d', ###}--!>" />
+		  </div>
+		  <div class="unit">
+		    <label>结束时间：</label>
+		    <input type="text" readonly="true" class="date textInput required readonly" name="endtime" value="<!--{$result.endtime|default=''|date='Y-m-d', ###}--!>" />
+		  </div>
+	<div class="unit">
+	  <label>排名指数：</label>
+	  <input type="text" class="textInput required" name="sort" value="<!--{$result.sort}--!>" />
+	</div>
+	<input type="hidden" name="suid" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

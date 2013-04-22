@@ -47,17 +47,17 @@
 	    
 	    <li class="line">line</li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['company']['editmediashowcomment'])">
+	    <if condition="isset($_SESSION['acc_arr']['shop']['editmediashowcomment'])">
 	    <li><a class="edit" href="__URL__/editmediashowcomment/id/{sid_role}" target="dialog" mask="true" warn="请选择评论"><span>编辑</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['delmediashowcomment'])">
+	    <if condition="isset($_SESSION['acc_arr']['shop']['delmediashowcomment'])">
 	    <li class=""><a class="delete" href="__URL__/delmediashowcomment/navTabId/mediashowcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择评论"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['passauditmediashowcomment'])">
+	    <if condition="isset($_SESSION['acc_arr']['shop']['passauditmediashowcomment'])">
 	    <li class="line">line</li>
 	    <li class=""><a class="icon" href="__URL__/passauditmediashowcomment/navTabId/mediashowcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些评论吗?" warn="请选择评论"><span>通过审核</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['nopassauditmediashowcomment'])">
+	    <if condition="isset($_SESSION['acc_arr']['shop']['nopassauditmediashowcomment'])">
 	    <li class=""><a class="icon" href="__URL__/nopassauditmediashowcomment/navTabId/mediashowcomment" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些评论吗?" warn="请选择评论"><span>不通过审核</span></a></li>
 	    </if>
 	    </if>

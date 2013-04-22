@@ -65,6 +65,11 @@ return array(
   //旺铺出租图片显示
   'STORE_PIC_PATH_SAVE' => __ROOT__ . '/Upload/store/',
 
+  //二手滞销图片保存路径
+  'SELLUSED_PIC_PATH' => './Upload/sellused/',
+  //二手滞销图片显示
+  'SELLUSED_PIC_PATH_SAVE' => __ROOT__ . '/Upload/sellused/',
+
   /*
   //重新定义__ROOT__常量，线上项目需要设置此项
   'TMPL_PARSE_STRING' => array(
