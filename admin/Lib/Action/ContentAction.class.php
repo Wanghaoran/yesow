@@ -886,6 +886,7 @@ class ContentAction extends CommonAction {
 	}
 	//删除缓存
 	S('index_yesow_notice', NULL, NULL, '', NULL, 'index');
+	S('index_yesow_notice', NULL, NULL, '', NULL, 'member');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -922,6 +923,7 @@ class ContentAction extends CommonAction {
       $notice -> save();
       //删除缓存
       S('index_yesow_notice', NULL, NULL, '', NULL, 'index');
+      S('index_yesow_notice', NULL, NULL, '', NULL, 'member');
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }
     //查询公告数据
@@ -951,6 +953,7 @@ class ContentAction extends CommonAction {
     if($notice -> where($where_del) -> delete()){
       //删除缓存
       S('index_yesow_notice', NULL, NULL, '', NULL, 'index');
+      S('index_yesow_notice', NULL, NULL, '', NULL, 'member');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
@@ -2065,6 +2068,109 @@ class ContentAction extends CommonAction {
     $result = $sell_sort -> field('starttime,endtime,sort') -> where(array('suid' => $this -> _get('id', 'intval'))) -> order('id DESC') -> find();
     $this -> assign('result', $result);
     $this -> display();
+  }
+
+  //二手滞销评论管理
+  public function sellusedcomment(){
+    $comment = M('SellUsedComment');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['content'])){
+      $where['suc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where['suc.mid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['suc.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['suc.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $comment -> table('yesow_sell_used_comment as suc') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    //结果
+    $result = $comment -> table('yesow_sell_used_comment as suc') -> field('suc.id,suc.suid,su.title,suc.floor,suc.content,m.name as mname,suc.addtime,suc.status,suc.face') -> where($where) -> order('suc.status ASC,suc.addtime DESC') -> join('yesow_sell_used as su ON suc.suid = su.id') -> join('yesow_member as m ON suc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //编辑二手滞销评论
+  public function editsellusedcomment(){
+    $comment = D('index://SellUsedComment');
+    //处理更新
+    if(!empty($_POST['floor'])){
+      if(!$comment -> create()){
+	$this -> error($comment -> getError());
+      }
+      if($comment -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $comment -> table('yesow_sell_used_comment as suc') -> field('su.title,m.name as mname,suc.floor,suc.content,suc.face') -> join('yesow_sell_used as su ON suc.suid = su.id') -> join('yesow_member as m ON suc.mid = m.id') -> where(array('suc.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除二手滞销评论
+  public function delsellusedcomment(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $comment = M('SellUsedComment');
+    if($comment -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核二手滞销评论
+  public function passauditsellusedcomment(){
+    $comment = M('SellUsedComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 2);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核二手滞销评论
+  public function nopassauditsellusedcomment(){
+    $comment = M('SellUsedComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 1);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
   }
   /* ----------- 二手滞销管理 ------------ */
 }

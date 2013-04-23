@@ -7,6 +7,41 @@
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script>
+  $(document).ready(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+      $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+      });
+    });
+
+ function submitcommit(){
+    if($('#content')[0].value == ''){
+      alert('评论内容不能为空');
+      }else if($('#verify')[0].value == ''){
+      alert('验证码不能为空');
+      }else{
+      var p = $('#content')[0].value;
+      var m = $('#verify')[0].value;
+      var f = $("input:checked[name='face']").val();
+      $.ajax({
+	type: "POST",
+	url: "__URL__/sellusedcomment",
+	dataType: "json",
+	data: "content=" + p + "&code=" + m + "&suid=<!--{$Think.get.id}--!>&face=" + f,
+	success: function(msg){
+	  if(msg.status == 0){
+	    alert('错误提示：' + msg.message);
+	    }else{
+	    alert('成功提示：' + msg.message);
+	    location.reload();
+	    }
+	}
+	});
+    }
+  }
+
+</script>
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -101,50 +136,26 @@
                         <div class="xgljbox">
                         	<h2>网友评论</h2>
                             <ul class="ul_wypl">
+                                 <volist name="result_comment" id="rc">
                                   <li>
                                       <dl>
-                                      <dt>百度在中文处理方面的确有很大优势！<br />
-                        				很好！</dt>
-                                      <dd style="width:200px;">留言者：yesow</dd>
-                                      <dd style="width:250px;">留言日期：2013-02-08 03:12:08</dd>
-                                      <dd>评分：8</dd>
-                                      <dd>表情：<img src="style/images/f2.gif" width="20" height="20" border="0" /></dd>
+					<dt><!--{$rc.content|nl2br}--!></dt>
+                                      <dd style="width:200px;">留言者：<!--{$rc.name|default="游客"}--!></dd>
+                                      <dd style="width:250px;">留言日期：<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></dd>
+				      <dd>表情:
+				      <notempty name="rc.face">
+				      <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+				      <else/>
+				      无
+				      </notempty>
+				      </dd>
                                                 </dl>
-                                    </li><li>
-                                                <dl>
-                                      <dt>测试回复</dt>
-                                      <dd style="width:200px;">留言者：yesow</dd>
-                                      <dd style="width:250px;">留言日期：2013-02-08 03:12:08</dd>
-                                      <dd>评分：8</dd>
-                                      <dd>表情：<img src="style/images/f2.gif" width="20" height="20" border="0" /></dd>
-                                                </dl>
-                                    </li><li>
-                                                <dl>
-                                      <dt>回复个看看吧</dt>
-                                      <dd style="width:200px;">留言者：游客</dd>
-                                      <dd style="width:250px;">留言日期：2013-02-09 01:16:47</dd>
-                                      <dd>评分：10</dd>
-                                      <dd>表情：<img src="style/images/f5.gif" width="20" height="20" border="0" /></dd>
-                                                </dl>
-                                    </li><li>
-                                                <dl>
-                                      <dt>回复啊！</dt>
-                                      <dd style="width:200px;">留言者：yesow</dd>
-                                      <dd style="width:250px;">留言日期：2013-03-05 15:39:22</dd>
-                                      <dd>评分：10</dd>
-                                      <dd>表情：<img src="style/images/f4.gif" width="20" height="20" border="0" /></dd>
-                                                </dl>
-                                    </li> 
+					</li>
+				   </volist>
                                 </ul>
                                 <div class="clear"></div>
                                 <div class="page" style="padding-right:10px;">
-                                                <span>共72条数据</span>
-                                                <a href="#">1</a>
-                                                <a href="#">2</a>
-                                                <a href="#">3</a>
-                                                <a href="#">4</a>
-                                                <a href="#">5</a>
-                                                <a href="#">下一页</a>
+				  <!--{$show}--!>
                                 </div>
                                 <div class="clear"></div>
                         </div>
@@ -168,7 +179,7 @@
 				</p>
                                 </div>
                                 <div style="float:left">
-                                <input type="text" class="div_input4" id="verify" /><img id="code" src="/yesow/admin.php/public/verify" title="点击更换图像" border="0" /><br/><a onclick="submitcommit();" class="btn_fbpl" style="margin-top:10px; float:left;">提交评论</a>
+                                 <input type="text" class="div_input4" id="verify" /><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /><br/><a onclick="submitcommit();" class="btn_fbpl" style="margin-top:10px; float:left;">提交评论</a>
                                 </div>
                                 <div class="clear"></div>
                             </div>

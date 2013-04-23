@@ -19,12 +19,12 @@
 
   function submitcommit(){
     //console();
-    if($('#content')[0].value == ''){
+    if($('#content_content')[0].value == ''){
       alert('评论内容不能为空');
       }else if($('#verify')[0].value == ''){
       alert('验证码不能为空');
       }else{
-      var p = $('#content')[0].value;
+      var p = $('#content_content')[0].value;
       var m = $('#verify')[0].value;
       $.ajax({
 	type: "POST",
@@ -94,7 +94,7 @@
 				<div class="articlt_comment_body">
 					<div class="article_comment_l">
 						<div class="article_comment_content">
-							<textarea class="article_comment_bod" id="content"></textarea>
+							<textarea class="article_comment_bod" id="content_content"></textarea>
 						</div>
 					</div>
 					<div class="article_comment_r">

@@ -58,7 +58,8 @@
 	  <!--{$result.content|stripslashes}--!>
         </div>
         <div class="clear10"></div>
-    	<div class="dgcmbox">
+	<div class="dgcmbox">
+	  <div class="dgcmb1">
             <h3>网友评论</h3>
 	    <ul class="ul_dgcm">
 	      <volist name="result_comment" id="rc">
@@ -75,7 +76,10 @@
             <div class="clear"></div>
             <div class="page" style="padding-right:10px;">
 	      <!--{$show}--!>
-            </div>
+	    </div>
+	  </div>
+	  <div class="clear10"></div>
+            <div class="dgcmb1">
             <h3>我要评论</h3>
             <div class="div_pinglun">
                 <div style="float:left;">
@@ -97,8 +101,9 @@
                 <input type="text" class="div_input4" id="verify" /><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /><br/><a onclick="submitcommit();" class="btn_fbpl" style="margin-top:10px; float:left;">提交评论</a>
                 </div>
                 <div class="clear"></div>
+	      </div>
+	      <div class="clear10"></div>
             </div>
-            <div class="clear"></div>
         </div>
 	</div>
     <div class="clear10"></div>

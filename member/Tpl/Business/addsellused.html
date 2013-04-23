@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加二手滞销 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<link type="text/css" href="__PUBLIC__/index/default/datepicker/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="__PUBLIC__/index/default/datepicker/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/index/default/datepicker/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/datepicker/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#sdate").datepicker()
+})
+</script>
+<script>
+  var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#memdizhi').html(_nstr).show();
+	  }else{
+	  $('#memdizhi').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+
+  var getselltid = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetselltid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#tid_two').html(_nstr).show();
+	  }else{
+	  $('#tid_two').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">商家需求</div>
+                    <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="wpgl">
+                        <div class="wpgl_title">
+                            <ul class="ul_wpgl">
+                                <li class="choice">添加二手信息</li>    
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+			<div class="wpgl_con">
+			  <form action="__ACTION__" method="post" enctype="multipart/form-data" >
+                            <table class="table_wpgl2">
+                            	<tr>
+                                	<td class="td_left">发布类别：</td>
+                                    <td colspan="3" class="td_right">
+				      <select name="tid_one" onchange="getselltid($(this).val());">
+					<option value="">请选择</option>
+					<volist name="result_type_one" id="rto">
+					<option value="<!--{$rto.id}--!>"><!--{$rto.name}--!></option>
+					</volist>
+				      </select>
+				      &nbsp;
+				      <select name="tid_two" id="tid_two">
+					<option value="">请选择</option>
+				      </select>
+				      <font color="#FF0000">*</font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">到期时间：</td><td colspan="3" class="td_right"><input type="text" id="sdate" name="endtime" class="inputclass1 Wdate" readonly="readonly"><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">所属地区：</td>
+                                    <td colspan="3" class="td_right">
+                                   <select class="prov" name="csid" id="province" onchange="getchildsitearea($(this).val());">
+				      <option value="">请选择</option>
+				      <volist name="result_childsite" id="rcs">
+				      <option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+				      </volist>
+				    </select> 
+				    <select class="city" name="csaid" id="memdizhi">
+				      <option value="">请选择</option>
+				    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">商品名称：</td><td colspan="3" class="td_right"><input type="text" class="inputtext_wpgl1" name="title" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">关键词：</td><td colspan="3" class="td_right"><input type="text" class="inputtext_wpgl1" name="keyword" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">产品成色：</td>
+                                    <td colspan="3" class="td_right">
+				      <select name="cid">
+					<option value="">请选择</option>
+					<volist name="result_color" id="rc">
+					<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+					</volist>
+				      </select>
+				      <font color="#FF0000">*</font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">产品图片：</td>
+                                    <td colspan="3" class="td_right">
+                                    <div class=upload1><INPUT id=file_text class=ipt_text type=text> <INPUT class="btn_picupfile" value="上 传" type=button> <INPUT class=upload_file1 onchange="document.getElementById('file_text').value=this.value" size=26 type=file name="image" > </div>
+                                    </td>
+				  </tr>
+				  <tr>
+                                	<td class="td_left">期望价格：</td><td colspan="3" class="td_right"><input type="text" class="inputclass1" name="price" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">联系人：</td><td colspan="3" class="td_right"><input type="text" class="inputtext_wpgl1" name="linkman" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                    <td class="td_left">联系电话：</td><td colspan="3" class="td_right"><input type="text" class="inputtext_wpgl1" name="tel" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                    <td class="td_left">电子邮件：</td><td colspan="3" class="td_right"><input type="text" class="inputtext_wpgl1" name="email" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">联系地址：</td><td colspan="3" class="td_right"><input type="text" class="inputtext_wpgl1" name="address" /><font color="#FF0000">*</font></td>
+                                </tr>
+                                <tr>
+                                	<td class="td_left">相关说明：</td>
+                                    <td colspan="3" class="td_right">
+                                    <textarea class="textarea_wpgl1" name="content"></textarea><font color="#FF0000">*</font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td colspan="4"><div class="btn_td"><input type="submit" class="BtnC" value="发布" /><input type="button" class="BtnC" value="放弃并返回前页" /></div></td>
+                                </tr>
+			      </table>
+			      </form>
+                        </div>
+                    </div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

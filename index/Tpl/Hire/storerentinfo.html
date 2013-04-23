@@ -149,7 +149,13 @@
 					<dt><!--{$rc.content|nl2br}--!></dt>
                                       <dd style="width:200px;">留言者：<!--{$rc.name|default="游客"}--!></dd>
                                       <dd style="width:250px;">留言日期：<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></dd>
-                                      <dd>表情：<img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" /></dd>
+				      <dd>表情：
+				      <notempty name="rc.face">
+				      <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+				      <else/>
+				      无
+				      </notempty>
+				      </dd>
                                                 </dl>
 					</li>
 				   </volist>

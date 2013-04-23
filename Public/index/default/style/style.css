@@ -991,11 +991,11 @@ dl.gjpm_list dd input{ float:right; vertical-align:middle; margin:0 10px 0 0;}
 .main_sjfc_c_bod{width:640px; padding:4px; border:1px solid #F60; border-top:0;}
 ul.ul_sjfc{ width:640px; min-height:143px; height:auto!important; height:143px; background:url(images/ul_sjfcbg.jpg) repeat-y;}
 ul.ul_sjfc li{ float:left; width:320px; height:143px;}
-ul.ul_sjfc li div.left_img{ float:left; width:80px; height:80px; padding:10px;}
+ul.ul_sjfc li div.left_img{ float:left; width:80px; height:80px; padding:32px 10px 10px 10px;}
 ul.ul_sjfc li div.left_img a img{ width:80px; height:80px; border:0;}
 ul.ul_sjfc li div.right_div{ float:left; width:220px; height:120px;margin-top:10px;}
 ul.ul_sjfc li div.right_div h4{ font-size:14px; font-weight:bold; color:#e94718; height:20px; line-height:20px; width:220px; overflow:hidden; word-break:break-all; }
-ul.ul_sjfc li div.right_div p{ font-size:14px; color:#7d7d7d;line-height:20px; height:60px; overflow:hidden;}
+ul.ul_sjfc li div.right_div p{ font-size:12px; color:#7d7d7d;line-height:20px; height:60px; padding-right:10px; overflow:hidden;}
 ul.ul_sjfc li div.right_div input{ float:left; margin-right:5px;}
 ul.ul_sjfc div.page{ height:40px; background:#fff;}
 
@@ -1042,6 +1042,8 @@ textarea.textarea_sqyl{width:368px; height:100px; margin-top:5px; line-height:20
 .upFileBtn{width:202px;cursor:pointer; height:22px; line-height:22px; border:none;}
 .dgcmbox{ width:930px; margin:0 auto; padding:10px;}
 .dgcmbox h3{ font-size:14px; font-weight:800; color:#d00808; padding-left:10px;}
+.dgcmb1{ width:928px; margin:0 auto; border:#d0d0d0 1px solid;}
+.dgcmb1 h3{ font-size:14px; font-weight:800; color:#d00808; padding-left:10px; height:40px; line-height:40px;}
 #main12_dgcm{width:310px; float:left;}
 #main12_dgcm .bl_list{ width:300px;}
 textarea.txt_dgcm{ width:675px; height:80px; border:#ccc 1px solid;}

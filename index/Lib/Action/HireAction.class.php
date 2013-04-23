@@ -300,27 +300,44 @@ class HireAction extends CommonAction {
     $about_right = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where(array('su.csid' => $result['csid'], 'su.id' => array('neq', $result['id']))) -> order('su.updatetime DESC') -> limit(10) -> select();
     $this -> assign('about_right', $about_right);
 
-
-    /*
-    $comment = M('StoreRentComment');
+    $comment = M('SellUsedComment');
     //读取评论
-    $comment_where = "src.srid={$id} AND src.status=2";
+    $comment_where = "suc.suid={$id} AND suc.status=2";
     //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
     if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
       $sid = session(C('USER_AUTH_KEY'));
-      $where_setup = "src.srid={$id} AND src.mid={$sid}";
+      $where_setup = "suc.suid={$id} AND suc.mid={$sid}";
       $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
     }
     import("ORG.Util.Page");// 导入分页类
-    $count = $comment -> table('yesow_store_rent_comment as src') -> where($comment_where) -> count();
+    $count = $comment -> table('yesow_sell_used_comment as suc') -> where($comment_where) -> count();
     $page = new Page($count, 10);//每页10条
     $page->setConfig('header','条评论');
     $show = $page -> show();
-    $result_comment = $comment -> table('yesow_store_rent_comment as src') -> field('m.name,src.content,src.addtime,src.floor,src.face') -> where($comment_where) -> join('yesow_member as m ON src.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
+    $result_comment = $comment -> table('yesow_sell_used_comment as suc') -> field('m.name,suc.content,suc.addtime,suc.floor,suc.face') -> where($comment_where) -> join('yesow_member as m ON suc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
 
-     */
     $this -> display();
+  }
+
+  //二手滞销提交评论
+  public function sellusedcomment(){
+    if($this -> _post('code', 'md5') != $_SESSION['verify']){
+      $this -> error(L('VERIFY_ERROR'));
+    }
+    $commit = D('SellUsedComment');
+    $data['suid'] = $this -> _post('suid', 'intval');
+    $data['mid'] = isset($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+    $data['content'] = $this -> _post('content');
+    $data['face'] = $this -> _post('face');
+    if(!$commit -> create($data)){
+      $this -> error($commit -> getError());
+    }
+    if($commit -> add()){
+      $this -> success(L('ARTICLE_COMMIT_ADD_SUCCESS'));
+    }else{
+      $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
+    }
   }
 }

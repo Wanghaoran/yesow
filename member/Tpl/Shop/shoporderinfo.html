@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商城购物订单详情 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">易搜商城购物</div>
+                    <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="wpgl">
+                        <div class="wpgl_title">
+                            <ul class="ul_wpgl">
+                                <li class="choice">商城购物订单详情</li>    
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="wpgl_con">
+                           <div class="scgwdd_top">
+			     <div class="scgwdd_tright">订单状态：
+			       <eq name="order_status.ischeck" value="1">
+			       <span style="color:green;"> 已确认</span>
+			       <else/>
+			       <span style="color:red;"> 未确认</span>
+			       </eq>
+			       <eq name="order_status.issend" value="1">
+			       <span style="color:green;margin-left:10px;"> 已发货</span>
+			       <else/>
+			       <span style="color:red;margin-left:10px;"> 未发货</span>
+			       </eq>
+			       <eq name="order_status.paystatus" value="0">
+			       <span style="color:red;margin-left:10px;"> 未付款</span>
+			       <else/>
+			       <span style="color:green;margin-left:10px;"> 已付款</span>
+			       </eq>
+			     </div>
+					<div class="scgwdd_tleft">订单号：<!--{$ordernum}--!></div>
+                           </div>
+                            <div class="clear"></div>
+                            <table class="table_wpgl1">
+			      <tr><th width="450" class="wpgl1_left">商城名称</th><th>数量</th><th>单价</th><th>总价</th></tr>
+			      <volist name="result" id="r">
+			      <tr>
+				<td class="wpgl1_left"><!--{$r.shoptitle}--!></td>
+				<td><!--{$r.num}--!></td>
+				<td><!--{$r.price}--!></td>
+				<td><!--{$r.totalmoney}--!></td>
+			      </tr>
+			      </volist>
+                               
+                               
+                            </table> 
+                            <div class="clear"></div>
+                            <ul class="ul_price1">
+                            	<li class="li_price1">应付总额：<span class="span_hongse"><!--{$total_price}--!></span>元</li>
+                                <li>商品总价：<span class="span_hongse"><!--{$shop_price}--!></span>元</li>
+                                <li>快递方式：<span class="span_hongse"><!--{$stname|default="免运产品"}--!></span></li>
+                                <li>快递费用：<span class="span_hongse"><!--{$send_price|default=0}--!></span>元</li>
+                                <li>发票费用：<span class="span_hongse"><!--{$invoice_price}--!></span>元</li>
+                            </ul>	
+                            <div class="clear"></div>	
+                            <ul class="ul_price2">
+                            	<li><span>收货人姓名：</span><!--{$goods_info.username}--!></li>
+                                <li><span>邮编：</span><!--{$goods_info.zipcode}--!></li>
+                                <li><span>联系电话：</span><!--{$goods_info.tel}--!></li>
+                                <li><span>邮箱：</span><!--{$goods_info.email}--!></li>
+				<li class="li_price2"><span>收货地址：</span><!--{$goods_info.address}--!></li>
+				<li class="li_price2"><span>留言：</span><!--{$goods_info.remark}--!></li>
+                            </ul>
+                            <div class="clear10"></div>	
+                            <div class="btn_price"><input type="button" value="返回" onclick="history.go(-1);" class="rmb_fanhui"/></div>
+                            <div class="clear10"></div>
+                            <div class="div_attention">
+                            *注：本页信息只供查看，无法修改，如发现有问题，请致电0571-88396114&nbsp;&nbsp;88396195客服咨询热线！
+                            </div>
+                            <div class="clear10"></div>
+                        </div>
+                    </div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

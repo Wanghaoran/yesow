@@ -458,3 +458,23 @@ textarea.textarea_wpgl1{line-height:20px; height:20px;border: #8a98a3 1px solid;
 .ipt_text {line-height:20px; width: 174px; height: 20px; border: #8a98a3 1px solid; }
 .btn_picupfile {line-height:24px; width:70px; height:24px; border: #8a98a3 1px solid}
 .upload_file1 {position: absolute; filter: alpha(opacity:0); line-height: 20px; width: 260px; height: 20px; TOP: 0px; left: 0px; opacity: 0}
+
+table.table_wpgl1 th.wpgl1_left{ text-align:left; padding-left:10px;}
+table.table_wpgl1 td.wpgl1_left{ text-align:left; padding-left:10px;}
+.scgwdd_top{ width:687px; text-align:right; height:30px; line-height:30px;}
+.scgwdd_tleft{ float:left; color:#f70400;}
+.scgwdd_tright{ float:right;}
+.span_lvse{ color:#069b19;}
+.span_hongse{ color:#f70400;}
+
+ul.ul_price1{ width:687px;}
+ul.ul_price1 li{ float:left; height:25px; line-height:25px; width:135px; text-align:left;}
+ul.ul_price1 li.li_price1{ float:right; width:auto;}
+
+ul.ul_price2{ width:687px; margin-top:20px;}
+ul.ul_price2 li{ float:left; width:340px; text-align:left; height:25px; line-height:25px;}
+ul.ul_price2 li span{ font-weight:bold;}
+ul.ul_price2 li.li_price2{ width:680px;}
+.btn_price{ width:100px; margin:0 auto;}
+.div_attention{ width:687px; color:#f70400; font-weight:bold; text-align:left;}
+

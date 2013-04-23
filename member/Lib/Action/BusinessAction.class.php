@@ -298,4 +298,101 @@ class BusinessAction extends CommonAction {
   public function delstorerent(){
     echo M('StoreRent') -> delete($this -> _get('id', 'intval'));
   }
+
+  //二手管理
+  public function sellused(){
+    $sellused = M('SellUsed');
+    $where = array();
+    $where['su.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    //处理搜索
+    if(!empty($_POST['title'])){
+      $where['su.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $sellused -> table('yesow_sell_used as su') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $sellused -> table('yesow_sell_used as su') -> field('su.id,cs.name as csname,su.title,sut.name as tname,su.price,su.linkman,su.addtime,su.ischeck,su.clickcount') -> join('yesow_child_site as cs ON su.csid = cs.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('su.updatetime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //添加二手滞销
+  public function addsellused(){
+    //处理添加
+    if(!empty($_POST['title'])){
+      $sellused = D('admin://SellUsed');
+      if(!$sellused -> create()){
+	R('Register/errorjump',array($sellused -> getError()));
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('admin://Public/sellused_pic_upload');
+	$sellused -> image = $up_data[0]['savename'];
+      }
+      $sellused -> mid = !empty($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+      if($sellused -> add()){
+	R('Register/successjump',array(L('DATA_ADD_SUCCESS'), U('Business/sellused')));
+      }else{
+	R('Register/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    //查询一级发布类别
+    $result_type_one = M('SellUsedType') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_type_one', $result_type_one);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询产品成色
+    $result_color = M('SellUsedColor') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_color', $result_color);
+    $this -> display();
+  }
+
+  //删除二手
+  public function delsellused(){
+    echo M('SellUsed') -> delete($this -> _get('id', 'intval'));
+  }
+
+  //编辑二手
+  public function editsellused(){
+    $sellused = D('admin://SellUsed');
+    //处理编辑
+    if(!empty($_POST['title'])){
+      if(!$sellused -> create()){
+	R('Register/errorjump',array($sellused -> getError()));
+      }
+      if(!empty($_FILES['image']['name'])){
+	$up_data = R('admin://Public/sellused_pic_upload');
+	$sellused -> image = $up_data[0]['savename'];
+      }
+      $sellused -> mid = !empty($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+      if($sellused -> save()){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Business/sellused')));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+      }
+    }
+    $result = $sellused -> field('tid_one,tid_two,endtime,csid,csaid,cid,title,keyword,image,price,tel,linkman,email,address,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询一级发布类别
+    $result_type_one = M('SellUsedType') -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_type_one', $result_type_one);
+    //查询当前类别下的二级类别
+    $result_type_two = M('SellUsedType') -> field('id,name') -> where(array('pid' => $result['tid_one'])) -> order('sort ASC') -> select();
+    $this -> assign('result_type_two', $result_type_two);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    //查询产品成色
+    $result_color = M('SellUsedColor') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_color', $result_color);
+    $this -> display();
+  }
+
 }

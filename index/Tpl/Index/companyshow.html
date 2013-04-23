@@ -21,8 +21,11 @@
 			<div class="main12_c_tab tab">
 				<div class="huang_ui">
 					<div class="huang_ui_r">
-						<div class="huang_ui_c">
-                        	<div style="float:right; margin-top:4px;"><input type="text" id="key" name="key" value=" 请输入关键词" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}" style="color:#999999; border:#84b2d4 1px solid; height:18px; line-height:18px; vertical-align:middle;"><input type="button" class="icon_search" /></div>
+					  <div class="huang_ui_c">
+					    <form action="__ACTION__" method="post">
+					      <div style="float:right; margin-top:4px;"><input type="text" id="key" name="keyword" style="color:#999999; border:#84b2d4 1px solid; height:18px; line-height:18px; vertical-align:middle;"><input type="submit" class="icon_search" value="" /></div>
+					      </form>
+
 							<ul class="tab_btn">
 								<li class="hover"><a href="#">动感传媒</a></li>
 							</ul>
@@ -38,11 +41,14 @@
 				    <div class="div_dgcm2">
 				      <volist name="result" id="r" mod="2">
 				      <li>
-				      <div class="left_img"><a href="#"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></div>
+				      <div class="left_img"><a href="__URL__/companyshowinfo/id/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></div>
 				      <div class="right_div">
-					<h4><a href="__URL__/companyshowinfo/id/<!--{$r.id}--!>" target="_blank" style="color:red;"><!--{$r.name}--!></a></h4>
+					<h4><a href="__URL__/companyshowinfo/id/<!--{$r.id}--!>" target="_blank" style="color:#ff6000;"><!--{$r.name}--!></a></h4>
 					<p><!--{$r.remark}--!></p>
-					<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1368986123&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1368986123:44" alt="点击这里给我留言" title="点击这里给我留言"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1368986123&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1368986123:44" alt="点击这里给我留言" title="点击这里给我留言"></a>
+					<volist name="r.qqarr" id="rq" offset="0" length='2'>
+					<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$rq}--!>&site=qq&menu=yes">
+					  <img border="0" src="http://wpa.qq.com/pa?p=2:<!--{$rq}--!>:44" alt="点击这里给我留言" title="点击这里给我留言"></a>
+					  </volist>
 				      </div>
 				      </li>
 				      <eq name="mod" value="1"><div class="clear"></div></eq>
@@ -68,16 +74,9 @@
 					</div>
 				</div>
 				<ul class="bl_list">
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称这里是测试的商家名称</a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>				
+				  <volist name="result_hot" id="rh">
+				  <li><a href="__URL__/companyshowinfo/id/<!--{$rh.id}--!>" target="_blank"><span>[<b><!--{$rh.csname}--!></b>]</span><!--{$rh.name}--!></a><span class="time"><!--{$rh.updatetime|date="Y-m-d", ###}--!></span></li>
+				  </volist>
 				</ul>
 				<div class="clear"></div>			
 			</div>
@@ -86,25 +85,17 @@
 				<div class="huang_ui">
 					<div class="huang_ui_r">
 						<div class="huang_ui_c">
-							<h3>推荐渠道</h3>
+							<h3>最新评论</h3>
 						</div>
 					</div>
 				</div>
 				<ul class="bl_list">
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称这里是测试的商家名称这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>				
+				  <volist name="result_comment" id="rc">
+				  <li><a href="__URL__/companyshowinfo/id/<!--{$rc.id}--!>" target="_blank"><span>[<b><!--{$rc.csname}--!></b>]</span><!--{$rc.content}--!></a><span class="time"><!--{$rc.addtime|date="Y-m-d", ###}--!></span></li>
+				  </volist>
 				</ul>
 				<div class="clear"></div>			
 			</div>
-            <div class="bl_gg"><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/bl_gg.gif" width="295" height="100" /></a></div>
 		</div>
 		<div class="clear"></div>
 	</div>

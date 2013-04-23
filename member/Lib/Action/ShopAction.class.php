@@ -35,9 +35,44 @@ class ShopAction extends CommonAction {
     $count = $shop_order -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count('id');
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $shop_order -> table('yesow_shop_order as so') -> field('so.ordernum,so.paytotal,so.paytype,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> select();
+    $result = $shop_order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,so.paytotal,so.paytype,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //商城购物订单详情
+  public function shoporderinfo(){
+    $order_shop = D('index://ShopOrderShop');
+    $order = M('ShopOrder');
+    //根据id号查询单号
+    $ordernum = $order -> getFieldByid($this -> _get('id', 'intval'), 'ordernum');
+    //根据id查询快递方式
+    $stname = $order -> table('yesow_shop_order as so') -> field('st.name as stname') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('stname', $stname['stname']);
+    //根据单号查询商品信息
+    $result = $order_shop -> shopbyordernum($ordernum);
+    $this -> assign('result', $result);
+    //订单号
+    $this -> assign('ordernum', $ordernum);
+    //订单状态
+    $order_status = $order -> field('ischeck,issend,paystatus') -> where(array('ordernum' => $ordernum)) -> find();
+    $this -> assign('order_status', $order_status);
+    //商品总价
+    $shop_price = $order_shop -> totalpaybyordernum($ordernum);
+    $this -> assign('shop_price', $shop_price);
+    //快递费用
+    $temp_send_price = $order -> table('yesow_shop_order as so') -> field('st.money') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.ordernum' => $ordernum)) -> find();
+    $this -> assign('send_price', $temp_send_price['money']);
+    //应付总额
+    $total_price = $order -> getFieldByordernum($ordernum, 'paytotal');
+    $this -> assign('total_price', $total_price);
+    //计算发票税率费用
+    $invoice_price = $total_price - $shop_price - $temp_send_price['money'];
+    $this -> assign('invoice_price', $invoice_price);
+    //查询收货信息
+    $goods_info = $order -> field('username,address,zipcode,tel,email,remark') -> where(array('ordernum' => $ordernum)) -> find();
+    $this -> assign('goods_info', $goods_info);
     $this -> display();
   }
 
