@@ -10,7 +10,7 @@ class ShopCommentModel extends Model {
   );
 
   public function getfloor(){
-    $floor = $this -> field('floor') -> where(array('cid' => $_POST['cid'])) -> order('floor DESC') -> find();
+    $floor = $this -> field('floor') -> where(array('sid' => $_POST['sid'])) -> order('floor DESC') -> find();
     return (intval($floor['floor']) + 1);
   }
 }

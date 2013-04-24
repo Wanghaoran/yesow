@@ -134,9 +134,14 @@ class InfoAction extends CommonAction {
     $about_article = $infoarticle -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,ia.addtime') -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> where($about_where) -> order('addtime DESC') -> limit(15) -> select();
     $this -> assign('about_article', $about_article);
     //读取评论
-    $comment_where = array();
-    $comment_where['iac.aid'] = $id;
-    $comment_where['iac.status'] = 2;
+    $comment_where = '';
+    $comment_where = "iac.aid={$id} AND iac.status=2";
+    //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
+    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
+      $mid = session(C('USER_AUTH_KEY'));
+      $where_setup = "iac.aid={$id} AND iac.mid={$mid}";
+      $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
+    }
     import("ORG.Util.Page");// 导入分页类
     $count = $comment -> table('yesow_info_article_comment as iac') -> where($comment_where) -> count('id');
     $page = new Page($count, 10);//每页10条
