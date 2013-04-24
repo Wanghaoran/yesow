@@ -1,1 +1,5 @@
+<if condition="strrchr($result['address'], '.') == '.swf'">
+<embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$result.address}--!>" width="<!--{$result.width}--!>" height="<!--{$result.height}--!>"></embed>
+<else/>
 <img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$result.address}--!>" width="<!--{$result.width}--!>" height="<!--{$result.height}--!>" />
+</if>
