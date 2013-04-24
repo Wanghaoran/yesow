@@ -154,7 +154,7 @@ class ShopAction extends CommonAction {
   //RMB余额支付
   public function monthly_rmb_pay(){
     //获取交易密码
-    $pay_pwd = M('Member') -> getFieldByid(session(C('USER_AUTH_KEY')), 'traderspassword');
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
     //未设置交易密码的先去设置交易密码
     if(!$pay_pwd){
       R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR')));

@@ -56,8 +56,13 @@ class IndexAction extends CommonAction {
     $this -> assign('result_similarnotice', $result_similarnotice);
     //读取评论
     $comment_where = array();
-    $comment_where['nc.nid'] = $id;
-    $comment_where['nc.status'] = 2;
+    $comment_where = "nc.nid={$id} and nc.status=2";
+    //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
+    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
+      $sid = session(C('USER_AUTH_KEY'));
+      $where_setup = "nc.nid={$id} AND nc.mid={$sid}";
+      $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
+    }
     import("ORG.Util.Page");// 导入分页类
     $count = $notice -> table('yesow_notice_comment as nc') -> where($comment_where) -> count('id');
     $page = new Page($count, 5);//每页5条
@@ -319,11 +324,32 @@ class IndexAction extends CommonAction {
     $mediashow = M('MediaShow');
     //点击量加一
     $mediashow -> where(array('id' => $id)) -> setInc('clickcount');
-    $result = $mediashow -> field('content') -> find($id);
+    $result = $mediashow -> field('content,keyword') -> find($id);
     $this -> assign('result', $result);
 
+    //相关文章
+    $key_arr = explode(' ', $result['keyword']);
+    $about_where = '';
+    foreach($key_arr as $value){
+      if(empty($about_where)){
+	$about_where .="(( ms.keyword LIKE '%{$value}%' )";
+      }else{
+	$about_where .=" OR ( ms.keyword LIKE '%{$value}%' )";
+      }
+    }
+    $about_where .= ") AND (ms.id != {$id})";
+    $about_article = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.updatetime') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where($about_where) -> order('ms.updatetime DESC') -> limit(10) -> select();
+    $this -> assign('about_article', $about_article);
+
+    //今日更新
+    $today_update = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.updatetime') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where(array('ms.id' => array('neq', $id))) -> order('ms.updatetime DESC') -> limit(10) -> select();
+    $this -> assign('today_update', $today_update);
+
+    //热门文章
+    $hot_article = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.updatetime') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where(array('ms.id' => array('neq', $id))) -> order('ms.clickcount DESC') -> limit(10) -> select();
+    $this -> assign('hot_article', $hot_article);
+
     $comment = M('MediaShowComment');
- 
     //读取评论
     $comment_where = "msc.msid={$id} AND msc.status=2";
     //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
@@ -340,6 +366,7 @@ class IndexAction extends CommonAction {
     $result_comment = $comment -> table('yesow_media_show_comment as msc') -> field('m.name,msc.content,msc.addtime,msc.floor,msc.face') -> where($comment_where) -> join('yesow_member as m ON msc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
+
     $this -> display();
   }
 

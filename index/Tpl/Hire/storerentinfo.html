@@ -96,10 +96,17 @@
 			  <span class="span_czwp4">人气指数：<!--{$result.clickcount}--!></span>
 				<span class="span_czwp1">[<a href="#"><!--{$result.name}--!></a>]</span>
 				<span class="span_czwp2"><a href="#"><!--{$result.title}--!></a></span>
-				<span class="span_czwp3"><a href="#"><a href="#">[<!--{$result.csname}--!>地区]</a></a></span> 
+				<span class="span_czwp3"><a href="#"><a href="#">[<!--{$result.csname}--!>地区]</a></a></span>
+				<notempty name="result.qqcode">
+				<span>
+				  <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$result.qqcode}--!>&site=qq&menu=yes">
+				    <img border="0" src="http://wpa.qq.com/pa?p=2:<!--{$result.qqcode}--!>:44" alt="点击这里给我留言" title="点击这里给我留言">
+				</a>
+			      </span>
+				</notempty>	
                         </div>
                         <div class="clear"></div>
-			<div class="czwpbox2"><!--{$result.content|nl2br}--!></div>
+			<div class="czwpbox2" style="font-size:14px;font-weight:bold;"><!--{$result.content|nl2br}--!></div>
                         <div class="clear"></div>
                         <div class="czwpbox3">
 			  <div class="left">

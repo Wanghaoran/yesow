@@ -53,7 +53,7 @@
                     <div class="huang_ui">
                         <div class="huang_ui_r">
                             <div class="huang_ui_c">
-                                <h3>二手滞销</h3>
+			      <h3><a href="__URL__/sellusedlist">二手滞销</a></h3>
                             </div>
                         </div>
                     </div>
@@ -64,16 +64,16 @@
 			  <tr>
 			    <td><a href="__URL__/sellusedinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
 			    <td><!--{$rs.addtime|date="Y-m-d", ###}--!></td>
-			    <td width="80"><a href="#" class="fenlei"><!--{$rs.name}--!></a></td>
-			    <td width="80">[<a href="#" class="fenlei"><!--{$rs.csname}--!></a>]</td>
+			    <td width="80"><a href="__URL__/sellusedlist/tid/<!--{$rs.tid_one}--!>" class="fenlei"><!--{$rs.name}--!></a></td>
+			    <td width="80">[<a href="__URL__/sellusedlist/csid/<!--{$rs.csid}--!>" class="fenlei"><!--{$rs.csname}--!></a>]</td>
 			  </tr>
 			  </volist>
 			  <volist name="result" id="r">
 			  <tr>
 			    <td><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
 			    <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
-			    <td width="80"><a href="#" class="fenlei"><!--{$r.name}--!></a></td>
-			    <td width="80">[<a href="#" class="fenlei"><!--{$r.csname}--!></a>]</td>
+			    <td width="80"><a href="__URL__/sellusedlist/tid/<!--{$r.tid_one}--!>" class="fenlei"><!--{$r.name}--!></a></td>
+			    <td width="80">[<a href="__URL__/sellusedlist/csid/<!--{$r.csid}--!>" class="fenlei"><!--{$r.csname}--!></a>]</td>
 			  </tr>
 			  </volist>
                         </table>

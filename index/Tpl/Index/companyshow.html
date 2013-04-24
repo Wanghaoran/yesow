@@ -45,10 +45,12 @@
 				      <div class="right_div">
 					<h4><a href="__URL__/companyshowinfo/id/<!--{$r.id}--!>" target="_blank" style="color:#ff6000;"><!--{$r.name}--!></a></h4>
 					<p><!--{$r.remark}--!></p>
+					<notempty name="r.qqarr">
 					<volist name="r.qqarr" id="rq" offset="0" length='2'>
 					<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$rq}--!>&site=qq&menu=yes">
 					  <img border="0" src="http://wpa.qq.com/pa?p=2:<!--{$rq}--!>:44" alt="点击这里给我留言" title="点击这里给我留言"></a>
-					  </volist>
+					</volist>
+					</notempty>
 				      </div>
 				      </li>
 				      <eq name="mod" value="1"><div class="clear"></div></eq>

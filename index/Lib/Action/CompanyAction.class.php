@@ -227,7 +227,7 @@ class CompanyAction extends CommonAction {
     //读取评论
     $comment_where = "cc.cid={$id} and cc.status=2";
     //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
-    if(m('membersetup') -> getfieldbyname('viewcomment', 'value') == 1 && isset($_session[c('user_auth_key')])){
+    if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
       $sid = session(C('USER_AUTH_KEY'));
       $where_setup = "cc.cid={$id} AND cc.mid={$sid}";
       $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
@@ -407,6 +407,10 @@ class CompanyAction extends CommonAction {
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $_GET['keyword'] = safeEncoding($_GET['keyword']);
+
+    //右侧固定排名 和 右侧热点排名 读取数据更新消息
+    $fixed_result = M('TiteNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(20) -> select();
+    $this -> assign('fixed_result', $fixed_result);
    
     //高级搜索,只检索出按更新时间排序的一页数据
     if(empty($_GET['keyword']) || $_GET['keyword'] == '请输入您要搜索的内容'){
@@ -464,9 +468,6 @@ class CompanyAction extends CommonAction {
       D('MemberMonthlyDetail') -> writelog('搜索', '在主站搜索一次[<span style="color:blue">' . $_GET['keyword'] . '</span>]');
     }
 
-    //右侧固定排名 和 右侧热点排名 读取数据更新消息
-    $fixed_result = M('TiteNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(20) -> select();
-    $this -> assign('fixed_result', $fixed_result);
     $this -> display();
   }
 

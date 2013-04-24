@@ -67,5 +67,6 @@ return array(
   'COMPANY_MANPRODUCTS_EMPTY' => '主营产品不能为空',
   'COMPANY_KEYWORD_EMPTY' => '关键字不能为空',
   'MONEY_ERROR' => '充值金额错误',
+  'TRADERSPASSWORD_EMPTY_ERROR' => '您还未设置交易密码,请先到会员中心设置',
 
 );

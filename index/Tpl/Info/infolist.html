@@ -48,13 +48,12 @@ $(function(){
 					<li>
 					<div class="bl_list_img">
 					  <empty name="rhp.address">
-					  <img src="__PUBLIC__/index/default/image/nopicture.gif" width="80" height="60" />
+					  <a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" style="height:100%;" ><img src="__PUBLIC__/index/default/image/nopicture.gif" width="80" height="60" title="[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!>" /></a>
 					  <else/>
-					  <img src="<!--{$rhp.address}--!>" width="80" height="60" />
+					  <a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" style="height:100%;" ><img src="<!--{$rhp.address}--!>" width="80" height="60" title="[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!>" /></a>
 					  </empty>
 						  
 						</div>
-						<a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" >[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!></a>
 						</li>
 						</volist>
 				</ul>
@@ -92,7 +91,7 @@ $(function(){
 						<ul class="main11_cat_bod_r_list">
 						  <li class="title"><!--{$rtc.name}--!> 热评文章</li>
 						  <volist name="rtc.hotcomments" id="rtch">
-						  <li><a href="__ROOT__/article/<!--{$rtca.id}--!>"><!--{$rtch.title}--!></a></li>
+						  <li><a href="__ROOT__/article/<!--{$rtch.id}--!>"><!--{$rtch.title}--!></a></li>
 						  </volist>
 						</ul>
 					</div><!--main11_cat_bod_r-->

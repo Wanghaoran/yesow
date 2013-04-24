@@ -118,6 +118,12 @@ class HireAction extends CommonAction {
     if(!empty($_POST['keyword'])){
       $where_sort['sr.title'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
     }
+    if(!empty($_GET['tid'])){
+      $where_sort['sr.tid'] = $this -> _get('tid', 'intval');
+    }
+    if(!empty($_GET['csid'])){
+      $where_sort['sr.csid'] = $this -> _get('csid', 'intval');
+    }
 
     //先读取一遍，用于确定排除的id
     $id_arr = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> field('srs.srid as id') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> where($where_sort) -> select();
@@ -141,6 +147,12 @@ class HireAction extends CommonAction {
     if(!empty($_POST['keyword'])){
       $where['sr.title'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
     }
+    if(!empty($_GET['tid'])){
+      $where['sr.tid'] = $this -> _get('tid', 'intval');
+    }
+    if(!empty($_GET['csid'])){
+      $where['sr.csid'] = $this -> _get('csid', 'intval');
+    }
     import("ORG.Util.Page");// 导入分页类
     //推荐数量
     $sort_count = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> where($where_sort) -> count();
@@ -152,14 +164,14 @@ class HireAction extends CommonAction {
     $show = $page -> show();
     $this -> assign('show', $show);
 
-    $result_sort = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> field('sr.id,sr.title,srt.name,cs.name as csname,sr.addtime') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where_sort) -> order('srs.sort DESC') -> select();
+    $result_sort = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> field('sr.id,sr.tid,sr.csid,sr.title,srt.name,cs.name as csname,sr.addtime') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where_sort) -> order('srs.sort DESC') -> select();
     $this -> assign('result_sort', $result_sort);
 
     //自定义分页条件
     $limit_row = $page -> firstRow - $sort_count <= 0 ? 0 : $page -> firstRow - $sort_count;
     $limit_lits = count($result_sort) == 0 ? $page -> listRows : $page -> listRows - count($result_sort);
 
-    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname,sr.addtime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where) -> order('sr.updatetime DESC') -> select();
+    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.tid,sr.csid,sr.title,srt.name,cs.name as csname,sr.addtime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where) -> order('sr.updatetime DESC') -> select();
     $this -> assign('result', $result);
 
     $this -> display();
@@ -171,7 +183,7 @@ class HireAction extends CommonAction {
     $store_rent = M('StoreRent');
     //点击量加一
     $store_rent -> where(array('id' => $id)) -> setInc('clickcount');
-    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.csid,sr.title,sr.tid,srt.name,cs.name as csname,csa.name as csaname,sr.clickcount,sr.linkman,sr.tel,sr.address,sr.email,sr.updatetime,sr.endtime,sr.content,sr.systemimage,sr.image') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> join('yesow_child_site_area as csa ON sr.csaid = csa.id') -> where(array('sr.id' => $id)) -> find();
+    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.csid,sr.title,sr.tid,srt.name,cs.name as csname,csa.name as csaname,sr.clickcount,sr.linkman,sr.tel,sr.address,sr.email,sr.qqcode,sr.updatetime,sr.endtime,sr.content,sr.systemimage,sr.image') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> join('yesow_child_site_area as csa ON sr.csaid = csa.id') -> where(array('sr.id' => $id)) -> find();
     $this -> assign('result', $result);
     //左侧相关链接，读取类别相同的数据，以更新时间倒序排序
     $about_left = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where(array('sr.tid' => $result['tid'], 'sr.id' => array('neq', $result['id']))) -> order('sr.updatetime DESC') -> limit(10) -> select();
@@ -241,6 +253,12 @@ class HireAction extends CommonAction {
     if(!empty($_POST['keyword'])){
       $where_sort['su.title'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
     }
+    if(!empty($_GET['tid'])){
+      $where_sort['su.tid_one'] = $this -> _get('tid', 'intval');
+    }
+    if(!empty($_GET['csid'])){
+      $where_sort['su.csid'] = $this -> _get('csid', 'intval');
+    }
 
     //先读取一遍，用于确定排除的id
     $id_arr = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('sus.suid as id') -> join('yesow_sell_used as su ON sus.suid = su.id') -> where($where_sort) -> select();
@@ -261,6 +279,13 @@ class HireAction extends CommonAction {
     if(!empty($_POST['keyword'])){
       $where['su.title'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
     }
+    if(!empty($_GET['tid'])){
+      $where['su.tid_one'] = $this -> _get('tid', 'intval');
+    }
+    if(!empty($_GET['csid'])){
+      $where['su.csid'] = $this -> _get('csid', 'intval');
+    }
+
     import("ORG.Util.Page");// 导入分页类
     //推荐数量
     $sort_count = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> join('yesow_sell_used as su ON sus.suid = su.id') -> where($where_sort) -> count();
@@ -272,14 +297,14 @@ class HireAction extends CommonAction {
     $show = $page -> show();
     $this -> assign('show', $show);
 
-    $result_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname,su.addtime') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where_sort) -> order('sus.sort DESC') -> select();
+    $result_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.tid_one,su.csid,su.title,sut.name,cs.name as csname,su.addtime') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where_sort) -> order('sus.sort DESC') -> select();
     $this -> assign('result_sort', $result_sort);
 
     //自定义分页条件
     $limit_row = $page -> firstRow - $sort_count <= 0 ? 0 : $page -> firstRow - $sort_count;
     $limit_lits = count($result_sort) == 0 ? $page -> listRows : $page -> listRows - count($result_sort);
 
-    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname,su.addtime') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where) -> order('su.updatetime DESC') -> select();
+    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.tid_one,su.csid,su.title,sut.name,cs.name as csname,su.addtime') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where) -> order('su.updatetime DESC') -> select();
     $this -> assign('result', $result);
 
     $this -> display();
@@ -291,7 +316,7 @@ class HireAction extends CommonAction {
     $sell_used = M('SellUsed');
     //点击量加一
     $sell_used -> where(array('id' => $id)) -> setInc('clickcount');
-    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.csid,su.title,su.tid_one,sut.name,cs.name as csname,csa.name as csaname,su.clickcount,su.linkman,su.tel,su.address,su.email,su.updatetime,su.endtime,su.content,su.image') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> join('yesow_child_site_area as csa ON su.csaid = csa.id') -> where(array('su.id' => $id)) -> find();
+    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.csid,su.title,su.tid_one,sut.name,cs.name as csname,csa.name as csaname,su.price,su.clickcount,su.linkman,su.tel,su.address,su.email,su.updatetime,su.endtime,su.content,su.image') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> join('yesow_child_site_area as csa ON su.csaid = csa.id') -> where(array('su.id' => $id)) -> find();
     $this -> assign('result', $result);
     //左侧相关链接，读取类别相同的数据，以更新时间倒序排序
     $about_left = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where(array('su.tid_one' => $result['tid_one'], 'su.id' => array('neq', $result['id']))) -> order('su.updatetime DESC') -> limit(10) -> select();

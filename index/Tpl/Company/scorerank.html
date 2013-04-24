@@ -23,7 +23,11 @@
 <notempty name="ad_arr.top">
   <div class="index_gg01">
     <volist name="ad_arr.top" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
+    <else/>
     <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </if>
     </volist>
   </div>
   </notempty>
@@ -89,7 +93,11 @@
 	<notempty name="ad_arr.foot">
   <div class="index_gg01">
     <volist name="ad_arr.foot" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
+    <else/>
     <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+    </if>
     </volist>
   </div>
   </notempty>
