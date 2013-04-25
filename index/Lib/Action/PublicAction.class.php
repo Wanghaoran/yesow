@@ -147,9 +147,9 @@ class PublicAction extends Action {
 
   //ajax确认查看速查资料
   public function ajaxconfirmview(){
-    //如果账户余额小于0，则直接退出
-    if($_SESSION['rmb_total'] < 0){
-      echo 0;
+    //如果账户余额小于0,并且不是包月会员，则直接退出
+    if($_SESSION['rmb_total'] < 0 && !D('Monthly') -> ismonthly()){
+      echo 4;
       return ;
     }
     $isfree = false;//是否是免费查看

@@ -92,9 +92,11 @@ body {
 	  location.reload();
 	  }else if(ress == 3){
 	  location.reload();
+	  }else if(ress == 4){
+	  alert('您的账户余额已低于0元,无权进行任何操作！');
+	  window.open('__ROOT__/index.php/public/authorprompt/mod/nomoney');
 	  }else{
 	  alert('扣款失败！账户余额不足！');
-	  window.open('__ROOT__/index.php/public/authorprompt/mod/nomoney');
 	  }
       }
     });

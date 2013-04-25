@@ -211,18 +211,20 @@ class ShopAction extends CommonAction {
 
   //人民币余额支付
   public function shop_rmb_pay(){
-    //清空购物车
-    D('ShopCart') -> delshop('all');
+    
     //获取交易密码
-    $pay_pwd = M('Member') -> getFieldByid(session(C('USER_AUTH_KEY')), 'traderspassword');
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
     //未设置交易密码的先去设置交易密码
     if(!$pay_pwd){
-      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR')));
+      R('Public/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
     }
     //交易密码错误
     if($pay_pwd != $_GET['pwd']){
-      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR')));
+      R('Public/errorjump',array(L('TRADERSPASSWORD_ERROR'), U('shop/shopcart')));
     }
+    //清空购物车
+    D('ShopCart') -> delshop('all');
+
     //根据订单号查询总价格
     $const = M('ShopOrder') -> getFieldbyordernum($_GET['orderid'], 'paytotal');
     //扣费

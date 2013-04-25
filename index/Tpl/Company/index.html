@@ -25,7 +25,7 @@ $(function(){
 	  <if condition="strrchr($adt['address'], '.') == '.swf'">
 	   <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
 	  <else/>
-	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
 	  </if>
 	  </volist>
 	</div>
@@ -202,7 +202,7 @@ $(function(){
 						<volist name="new_company" id="nc">
 						<li>
 						<a href="__ROOT__/company/<!--{$nc.id}--!>" target="_blank">
-						  <span class="category">[<b><!--{$nc.cname}--!></b>]</span>&nbsp;<!--{$nc.name}--!><span class="address">【<!--{$nc.csname}--!>】</span>
+						  <span class="category">[<b><!--{$nc.cname}--!></b>]</span>&nbsp;<div class="title_text"><!--{$nc.name}--!></div><span class="address">【<!--{$nc.csname}--!>】</span>
 						  &nbsp;<span class="time"><!--{$nc.addtime|date="Y-m-d", ###}--!></span>
 						</a>
 						</li>
@@ -322,6 +322,7 @@ $(function(){
 				      <form action="__ROOT__/member.php/public/checklogin" method="post">
 				      <input type="text" name="name" class="username"/>
 				      <input type="password" name="password" class="password"/>
+				      <input type="hidden" name="type" value="notmember" />
 				      <button type="submit" name="submit" ></button>
 				      <p class="clear">
 				      <b>登陆后，您可以……</b>
@@ -394,7 +395,7 @@ $(function(){
 	  <if condition="strrchr($adt['address'], '.') == '.swf'">
 	  <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
 	  <else/>
-	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
 	  </if>
 	  </volist>
 	</div>
@@ -430,7 +431,7 @@ $(function(){
 	  <if condition="strrchr($adt['address'], '.') == '.swf'">
 	  <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
 	  <else/>
-	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-right:5px;"/></a>
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
 	  </if>
 	  </volist>
 	</div>

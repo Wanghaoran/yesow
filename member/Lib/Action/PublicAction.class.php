@@ -175,6 +175,9 @@ class PublicAction extends Action {
       $data['lastest_login_time'] = $result['last_login_time'];
       $data['login_count'] = array('exp', 'login_count+1');
       $member -> save($data);
+      if($_POST['type'] == 'notmember'){
+	R('Register/successjump',array(L('LOGIN_SUCCESS')));
+      }
       R('Register/successjump',array(L('LOGIN_SUCCESS'), U('Index/index')));
     }else{
       R('Register/errorjump',array(L('NAME_ERROR')));
