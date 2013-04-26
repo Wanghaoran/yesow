@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>二手滞销列表页</title>
+<title>易搜<!--{$childsite_name}--!>IT二手买卖区_易搜二手买卖列表页_易搜-<!--{$childsite_name}--!>IT服务中心</title>
+<meta name="Keywords" content="<!--{$childsite_name}--!>二手,二手求购,二手信息,二手转让,二手求购,<!--{$childsite_name}--!>IT信息,<!--{$childsite_name}--!>IT,易搜"/>
+<meta name="Description" content="易搜-<!--{$childsite_name}--!>IT二手买卖专区，是<!--{$childsite_name}--!>地区最受人关注的IT行业附加服务区，是一个专为IT爱好者提供寻找二手求购、二手信息、二手转让、二手求购IT产品的电子商务服务平台。"/>
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
@@ -62,7 +64,7 @@
                         	<tr><th>标题</th><th>发布时间</th><th>类型</th><th>所在地区</th></tr>
                             <volist name="result_sort" id="rs">
 			  <tr>
-			    <td><a href="__URL__/sellusedinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
+			    <td><a href="__ROOT__/sellused/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
 			    <td><!--{$rs.addtime|date="Y-m-d", ###}--!></td>
 			    <td width="80"><a href="__URL__/sellusedlist/tid/<!--{$rs.tid_one}--!>" class="fenlei"><!--{$rs.name}--!></a></td>
 			    <td width="80">[<a href="__URL__/sellusedlist/csid/<!--{$rs.csid}--!>" class="fenlei"><!--{$rs.csname}--!></a>]</td>
@@ -70,7 +72,11 @@
 			  </volist>
 			  <volist name="result" id="r">
 			  <tr>
-			    <td><a href="__URL__/sellusedinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			    <if condition="time() - $r['updatetime'] elt 24*60*60">
+			    <td><a href="__ROOT__/sellused/<!--{$r.id}--!>" target="_blank" class="new"><!--{$r.title}--!></a></td>
+			    <else/>
+			    <td><a href="__ROOT__/sellused/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			    </if>
 			    <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
 			    <td width="80"><a href="__URL__/sellusedlist/tid/<!--{$r.tid_one}--!>" class="fenlei"><!--{$r.name}--!></a></td>
 			    <td width="80">[<a href="__URL__/sellusedlist/csid/<!--{$r.csid}--!>" class="fenlei"><!--{$r.csname}--!></a>]</td>

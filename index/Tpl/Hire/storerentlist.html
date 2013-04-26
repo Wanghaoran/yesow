@@ -2,7 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>出租招聘列表页</title>
+<title>易搜<!--{$childsite_name}--!>IT旺铺租转区_易搜旺铺租转列表页_易搜-<!--{$childsite_name}--!>IT服务中心</title>
+<meta name="Keywords" content="<!--{$childsite_name}--!>旺铺,旺铺出租,旺铺信息,旺铺转让,旺铺求租,<!--{$childsite_name}--!>IT信息,<!--{$childsite_name}--!>IT,易搜"/>
+<meta name="Description" content="易搜-<!--{$childsite_name}--!>IT旺铺租转专区，是<!--{$childsite_name}--!>地区最受人关注的IT行业附加服务区，是一个专为中国IT商家提供寻找旺铺转让、出租、求购的电子商务服务平台。"/>
+
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
@@ -63,7 +66,7 @@
 			  <tr><th>标题</th><th>发布时间</th><th>类型</th><th>所在地区</th></tr>
 			  <volist name="result_sort" id="rs">
 			  <tr>
-			    <td><a href="__URL__/storerentinfo/id/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
+			    <td><a href="__ROOT__/storerent/<!--{$rs.id}--!>" target="_blank" class="tuijian"><!--{$rs.title}--!></a></td>
 			    <td><!--{$rs.addtime|date="Y-m-d", ###}--!></td>
 			    <td width="80"><a href="__URL__/storerentlist/tid/<!--{$rs.tid}--!>" class="fenlei"><!--{$rs.name}--!></a></td>
 			    <td width="80">[<a href="__URL__/storerentlist/csid/<!--{$rs.csid}--!>" class="fenlei"><!--{$rs.csname}--!></a>]</td>
@@ -71,7 +74,11 @@
 			  </volist>
 			  <volist name="result" id="r">
 			  <tr>
-			    <td><a href="__URL__/storerentinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			    <if condition="time() - $r['updatetime'] elt 24*60*60">
+			    <td><a href="__ROOT__/storerent/<!--{$r.id}--!>" target="_blank" class="new"><!--{$r.title}--!></a></td>
+			    <else/>
+			    <td><a href="__ROOT__/storerent/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			    </if>
 			    <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
 			    <td width="80"><a href="__URL__/storerentlist/tid/<!--{$r.tid}--!>" class="fenlei"><!--{$r.name}--!></a></td>
 			    <td width="80">[<a href="__URL__/storerentlist/csid/<!--{$r.csid}--!>" class="fenlei"><!--{$r.csname}--!></a>]</td>

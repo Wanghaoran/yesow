@@ -44,7 +44,7 @@ class InfoAction extends CommonAction {
     //面包屑
     $this -> assign('title', $conf['name']);
     //热门看点
-    $result_hot_point = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,iap.address as address') -> where(array('ia.classid' => $id, 'ia.status' => 2)) -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> join('(SELECT aid,address FROM yesow_info_article_pic GROUP BY aid) as iap ON iap.aid = ia.id') -> order('ia.hits DESC') -> limit($conf['hotpointnum']) -> select();
+    $result_hot_point = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,itc.name as cname,iap.address as address,ia.content') -> where(array('ia.classid' => $id, 'ia.status' => 2)) -> join('yesow_info_two_column as itc ON ia.colid = itc.id') -> join('(SELECT aid,address FROM yesow_info_article_pic GROUP BY aid) as iap ON iap.aid = ia.id') -> order('ia.hits DESC') -> limit($conf['hotpointnum']) -> select();
     $this -> assign('result_hot_point', $result_hot_point);
     //幻灯展示,先查此一级分类下的文章id,因为图片表中没有一级分类字段
     $aid_tmp = $article -> field('id') -> where(array('classid' => $id)) -> select();
@@ -61,7 +61,7 @@ class InfoAction extends CommonAction {
       $result_two_column[$key]['articlelist'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,ita.name as tname') -> where(array('ia.colid' => $value['id'], 'ia.status' => 2)) -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> limit('1,' . ($conf['listpagernum'] - 1)) -> order('addtime DESC') -> select();
       //每个分类下的头一篇图文文章
       $result_two_column[$key]['firstarticle'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,content,iap.address') -> where(array('ia.colid' => $value['id'], 'ia.status' => 2)) -> join('yesow_info_article_pic as iap ON ia.id = iap.aid') -> order('ia.addtime DESC') -> find();
-      $result_two_column[$key]['firstarticle']['content'] = msubstr(strip_tags($result_two_column[$key]['firstarticle']['content']), 0, 135);
+      $result_two_column[$key]['firstarticle']['content'] = msubstr(strip_tags($result_two_column[$key]['firstarticle']['content']), 0, 90);
       //分类热评  暂时做成以点击量排序
       $result_two_column[$key]['hotcomments'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title') -> join('(SELECT aid,COUNT(id) as count FROM yesow_info_article_comment GROUP BY aid) as ctc ON ia.id = ctc.aid') -> where(array('ia.colid' => $value['id'], 'ia.status' => 2)) -> order('ctc.count DESC') -> limit($conf['hotcommentnum']) -> select();
     }

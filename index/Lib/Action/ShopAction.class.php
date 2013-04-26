@@ -220,7 +220,7 @@ class ShopAction extends CommonAction {
     }
     //交易密码错误
     if($pay_pwd != $_GET['pwd']){
-      R('Public/errorjump',array(L('TRADERSPASSWORD_ERROR'), U('shop/shopcart')));
+      R('Public/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/shop/orderpay/oid/' . $_GET['orderid']));
     }
     //清空购物车
     D('ShopCart') -> delshop('all');

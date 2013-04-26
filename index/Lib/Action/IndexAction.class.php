@@ -324,7 +324,7 @@ class IndexAction extends CommonAction {
     $mediashow = M('MediaShow');
     //点击量加一
     $mediashow -> where(array('id' => $id)) -> setInc('clickcount');
-    $result = $mediashow -> field('content,keyword') -> find($id);
+    $result = $mediashow -> table('yesow_media_show as ms') -> field('ms.name,ms.content,ms.keyword,cs.name as csname,ms.linkman,ms.mobliephone,ms.companyphone') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where(array('ms.id' => $id)) -> find();
     $this -> assign('result', $result);
 
     //相关文章

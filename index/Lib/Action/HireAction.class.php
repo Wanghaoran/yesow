@@ -171,7 +171,7 @@ class HireAction extends CommonAction {
     $limit_row = $page -> firstRow - $sort_count <= 0 ? 0 : $page -> firstRow - $sort_count;
     $limit_lits = count($result_sort) == 0 ? $page -> listRows : $page -> listRows - count($result_sort);
 
-    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.tid,sr.csid,sr.title,srt.name,cs.name as csname,sr.addtime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where) -> order('sr.updatetime DESC') -> select();
+    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.tid,sr.csid,sr.title,srt.name,cs.name as csname,sr.addtime,sr.updatetime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where) -> order('sr.updatetime DESC') -> select();
     $this -> assign('result', $result);
 
     $this -> display();
@@ -183,13 +183,13 @@ class HireAction extends CommonAction {
     $store_rent = M('StoreRent');
     //点击量加一
     $store_rent -> where(array('id' => $id)) -> setInc('clickcount');
-    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.csid,sr.title,sr.tid,srt.name,cs.name as csname,csa.name as csaname,sr.clickcount,sr.linkman,sr.tel,sr.address,sr.email,sr.qqcode,sr.updatetime,sr.endtime,sr.content,sr.systemimage,sr.image') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> join('yesow_child_site_area as csa ON sr.csaid = csa.id') -> where(array('sr.id' => $id)) -> find();
+    $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.csid,sr.title,sr.tid,srt.name,cs.name as csname,csa.name as csaname,sr.clickcount,sr.keyword,sr.linkman,sr.tel,sr.address,sr.email,sr.qqcode,sr.updatetime,sr.endtime,sr.content,sr.systemimage,sr.image') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> join('yesow_child_site_area as csa ON sr.csaid = csa.id') -> where(array('sr.id' => $id)) -> find();
     $this -> assign('result', $result);
     //左侧相关链接，读取类别相同的数据，以更新时间倒序排序
-    $about_left = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where(array('sr.tid' => $result['tid'], 'sr.id' => array('neq', $result['id']))) -> order('sr.updatetime DESC') -> limit(10) -> select();
+    $about_left = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where(array('sr.tid' => $result['tid'], 'sr.id' => array('neq', $result['id']), 'ischeck' => 1)) -> order('sr.updatetime DESC') -> limit(10) -> select();
     $this -> assign('about_left', $about_left);
     //右侧相关链接，读取地区相同的数据，以更新时间倒序排序
-    $about_right = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where(array('sr.csid' => $result['csid'], 'sr.id' => array('neq', $result['id']))) -> order('sr.updatetime DESC') -> limit(10) -> select();
+    $about_right = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where(array('sr.csid' => $result['csid'], 'sr.id' => array('neq', $result['id']), 'ischeck' => 1)) -> order('sr.updatetime DESC') -> limit(10) -> select();
     $this -> assign('about_right', $about_right);
 
     $comment = M('StoreRentComment');
@@ -304,7 +304,7 @@ class HireAction extends CommonAction {
     $limit_row = $page -> firstRow - $sort_count <= 0 ? 0 : $page -> firstRow - $sort_count;
     $limit_lits = count($result_sort) == 0 ? $page -> listRows : $page -> listRows - count($result_sort);
 
-    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.tid_one,su.csid,su.title,sut.name,cs.name as csname,su.addtime') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where) -> order('su.updatetime DESC') -> select();
+    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.tid_one,su.csid,su.title,sut.name,cs.name as csname,su.addtime,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where) -> order('su.updatetime DESC') -> select();
     $this -> assign('result', $result);
 
     $this -> display();
@@ -316,13 +316,13 @@ class HireAction extends CommonAction {
     $sell_used = M('SellUsed');
     //点击量加一
     $sell_used -> where(array('id' => $id)) -> setInc('clickcount');
-    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.csid,su.title,su.tid_one,sut.name,cs.name as csname,csa.name as csaname,su.price,su.clickcount,su.linkman,su.tel,su.address,su.email,su.updatetime,su.endtime,su.content,su.image') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> join('yesow_child_site_area as csa ON su.csaid = csa.id') -> where(array('su.id' => $id)) -> find();
+    $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.csid,su.title,su.tid_one,sut.name,cs.name as csname,csa.name as csaname,su.price,su.clickcount,su.keyword,su.linkman,su.tel,su.address,su.email,su.updatetime,su.endtime,su.content,su.image') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> join('yesow_child_site_area as csa ON su.csaid = csa.id') -> where(array('su.id' => $id)) -> find();
     $this -> assign('result', $result);
     //左侧相关链接，读取类别相同的数据，以更新时间倒序排序
-    $about_left = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where(array('su.tid_one' => $result['tid_one'], 'su.id' => array('neq', $result['id']))) -> order('su.updatetime DESC') -> limit(10) -> select();
+    $about_left = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where(array('su.tid_one' => $result['tid_one'], 'su.id' => array('neq', $result['id']), 'su.ischeck' => 1)) -> order('su.updatetime DESC') -> limit(10) -> select();
     $this -> assign('about_left', $about_left);
     //右侧相关链接，读取地区相同的数据，以更新时间倒序排序
-    $about_right = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where(array('su.csid' => $result['csid'], 'su.id' => array('neq', $result['id']))) -> order('su.updatetime DESC') -> limit(10) -> select();
+    $about_right = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where(array('su.csid' => $result['csid'], 'su.id' => array('neq', $result['id']), 'su.ischeck' => 1)) -> order('su.updatetime DESC') -> limit(10) -> select();
     $this -> assign('about_right', $about_right);
 
     $comment = M('SellUsedComment');

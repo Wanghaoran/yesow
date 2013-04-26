@@ -342,12 +342,12 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .huang_ui .tab_btn li a:hover, .huang_ui .tab_btn li.hover a{ background:url(images/qudao.gif) no-repeat 0 -90px; text-decoration:none; font-weight:bold; color:#333;}
 
 .main_08_c_bod{width:350px; height:482px; padding:4px; border:1px solid #F60; border-top:0;}
-.main_08_c_bod ul li{width:350px; height:20px; padding-top:5px; overflow:hidden;}
-.main_08_c_bod ul li a span.category{float:left;}
-.main_08_c_bod ul li a span.category b{color:#f60; }
-.main_08_c_bod ul li a span.address{color:#018FFF; float:left;}
-.main_08_c_bod ul li a span.time{ float:left;}
-.main_08_c_bod ul li a div.title_text{ float:left; width:150px; height:20px; overflow:hidden;}
+.main_08_c_bod ul li{width:350px; height:20px; line-height:20px; padding-top:5px; overflow:hidden;}
+.main_08_c_bod ul li span.category{ height:20px; line-height:20px; }
+.main_08_c_bod ul li span.category b{color:#f60;width:53px;height:20px; line-height:20px; display:inline-block;}
+.main_08_c_bod ul li span.address{color:#018FFF; height:20px; line-height:20px;}
+.main_08_c_bod ul li span.time{height:20px; line-height:20px; }
+.main_08_c_bod ul li a.title_text{  width:140px; height:20px; line-height:20px; overflow:hidden; display:inline-block; vertical-align:middle;}
 .main_08_c_bod ul li.first{padding:5px 0; height:60px; border-bottom:1px solid #eee;}
 .main_08_c_bod ul li.first h3 a{ font-weight:bold; font-size:12px; color:#C00;}
 .main_08_c_bod ul li.first p{ text-indent:2em;}
@@ -414,6 +414,7 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 .cat_bod ul.cat_list2 li dl dd a{ display:inline-block; width:48px; height:20px; line-height:20px; white-space:nowrap; overflow:hidden; vertical-align:middle;}
 
 #main09 .cat_bod{width:930px;}
+
 
 #cat_gg{ width:930px; height:100px; padding:5px;}
 #cat_gg a{width:310px; float:left;}
@@ -494,8 +495,9 @@ ul.bl_list li span.time{ display:block; width:80px; float:left; text-align:right
 .main11_l_t{ width:295px; height:295px; background:#ccc;}
 .main11_l_d{padding-top:5px;}
 .main11_l_d .huang_ui_c{width:275px;}
-ul.main11_l_d li{padding:5px 0;}
+ul.main11_l_d li{padding:5px 0; height:60px;}
 ul.main11_l_d li .bl_list_img{ width:80px; padding-right:5px; float:left;}
+ul.main11_l_d li .bl_list_text{ width:180px; height:60px; line-height:20px; overflow:hidden;}
 ul.main11_l_d li a{float:left;}
 
 #main11_r{ width:650px; float:left;}
@@ -871,7 +873,7 @@ h4.h4_sqxz input{ vertical-align:middle;}
 .sqb_box ul li div.tab_left2{ float:left; width:70px; text-align:right;}
 .sqb_box ul li div.tab_right1{ float:left; width:90px; text-align:left;}
 .sqb_box ul li div.tab_right2{ float:left; width:260px;}
-.sqb_box ul li div.tab_right3{ float:left; width:60px;}
+.sqb_box ul li div.tab_right3{ float:left; width:65px;}
 .sqb_box ul li div.tab_right4{ float:left; width:150px;}
 .sqb_box ul li div.div_star{ float:left; width:20px;}
 select.select_jmsqb1{ border:#7f9db9 1px solid; height:22px; width:75px; padding:0; margin:0;}
@@ -928,7 +930,7 @@ ul.ul_scgw li h2 span{ float:right; padding-left:10px;}
 ul.ul_scgw li div.div_left{ float:left; width:122px; margin-right:10px;}
 ul.ul_scgw li div.div_left img{ width:115px; height:120px; border:#d8d8d8 1px solid;}
 ul.ul_scgw li div.div_right{ float:left; width:140px;}
-ul.ul_scgw li div.div_right p{ height:60px; overflow:hidden; line-height:15px; color:#666;}
+ul.ul_scgw li div.div_right p{ height:100px; overflow:hidden; line-height:25px; color:#666;}
 ul.ul_scgw li div.div_right h5{ font-size:12px; color:#666; text-align:left; height:20px; line-height:20px;}
 ul.ul_scgw li.libox{ background:#f8f8e8; width:280px; height:30px; line-height:30px; border:#d8d8d8 1px dashed; padding:5px 0 5px 10px;}
 ul.ul_scgw li.libox span.linethrough{text-decoration:line-through}
@@ -996,7 +998,7 @@ dl.gjpm_list dd input{ float:right; vertical-align:middle; margin:0 10px 0 0;}
 .main12_c_tab .huang_ui_c{width:620px;}
 .main_sjfc_c_bod{width:640px; padding:4px; border:1px solid #F60; border-top:0;}
 ul.ul_sjfc{ width:640px; min-height:143px; height:auto!important; height:143px; background:url(images/ul_sjfcbg.jpg) repeat-y;}
-ul.ul_sjfc li{ float:left; width:320px; height:143px;}
+ul.ul_sjfc li{ float:left; width:320px; height:143px; overflow:hidden;}
 ul.ul_sjfc li div.left_img{ float:left; width:80px; height:100px; padding:12px 10px 10px 10px;}
 ul.ul_sjfc li div.left_img a img{ width:80px; height:100px; border:0;}
 ul.ul_sjfc li div.right_div{ float:left; width:220px; height:120px;margin-top:10px;}
@@ -1108,7 +1110,7 @@ table.table_detail th{ font-size:14px; font-weight:normal; border-bottom:#c1c1c1
 table.table_detail td{ font-size:12px; border-bottom:#c1c1c1 1px dotted; border-collapse:collapse; text-align:left; height:30px; line-height:30px;}
 table.table_detail td a{ color:#000;}
 table.table_detail td a.tuijian{display:inline-block; height:30px; line-height:30px; background:url(images/icon_tuijian.gif) no-repeat right center; padding-right:26px; _background:url(images/icon_tuijian.gif) no-repeat right 10px; text-decoration:none;}
-table.table_detail td a.new{display:inline-block; height:30px; line-height:30px; background:url(images/icon_tuijian.gif) no-repeat right center; padding-right:26px; _background:url(images/new.gif) no-repeat right 10px; text-decoration:none;}
+table.table_detail td a.new{display:inline-block; height:30px; line-height:30px; background:url(images/new.gif) no-repeat right center; padding-right:26px; _background:url(images/new.gif) no-repeat right 10px; text-decoration:none;}
 table.table_detail td a.fenlei{ color:#0004f1;}
 
 .czwpbox1{width:680px; height:30px; border-bottom:#fb0019 1px dashed; margin:10px auto; padding:20px 0;}
