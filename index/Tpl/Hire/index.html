@@ -20,9 +20,17 @@
 		<span>出租招聘</span> 
 	</div>
     <!--广告方位-->
-    <div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116"/></a>
+    <notempty name="ad_arr.top">
+	<div class="index_gg01">
+	  <volist name="ad_arr.top" id="adt">
+	  <if condition="strrchr($adt['address'], '.') == '.swf'">
+	  <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
+	  <else/>
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+	  </if>
+	  </volist>
 	</div>
+	</notempty>
 	<!--人才招聘   旺铺转租-->
 	<div id="main16">
 		<div id="main16_t">
@@ -216,9 +224,17 @@
 	</div>
 	<!--人才招聘   旺铺转租结束-->
 	<!--广告方位-->
-    <div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116"/></a>
+    <notempty name="ad_arr.middle">
+	<div class="index_gg01">
+	  <volist name="ad_arr.middle" id="adt">
+	  <if condition="strrchr($adt['address'], '.') == '.swf'">
+	  <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
+	  <else/>
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+	  </if>
+	  </volist>
 	</div>
+	</notempty>
 	<!--二手交易  库存滞销-->
 	<div id="main16">
 		<div id="main16_t">

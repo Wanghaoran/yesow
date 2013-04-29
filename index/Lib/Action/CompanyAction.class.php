@@ -528,6 +528,9 @@ class CompanyAction extends CommonAction {
       $result[$key]['companyphone'] = substr_replace($value['companyphone'], '*****', 8);
     }
     $this -> assign('result', $result);
+
+    //数据更新消息
+    R('Index/gettitlenotice');
     $this -> display();
   }
 

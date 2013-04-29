@@ -133,8 +133,7 @@ class CompanyAction extends CommonAction {
       }else if($_POST['search_key'] == 'website'){
 	$where['website'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'category'){
-	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('search_name'), 'id');
-	$where['ccid'] = $ccid;
+	$where['manproducts'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'addname'){
 	$where['addname'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }
@@ -316,8 +315,7 @@ class CompanyAction extends CommonAction {
       }else if($_POST['search_key'] == 'website'){
 	$where['website'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'category'){
-	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('search_name'), 'id');
-	$where['ccid'] = $ccid;
+	$where['manproducts'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'addname'){
 	$where['addname'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }
@@ -490,8 +488,7 @@ class CompanyAction extends CommonAction {
       }else if($_POST['key'] == 'website'){
 	$where['p.website'] = array('LIKE', '%' . $this -> _post('name') . '%');
       }else if($_POST['key'] == 'category'){
-	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('name'), 'id');
-	$where['p.ccid'] = $ccid;
+	$where['p.manproducts'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['key'] == 'auditname'){
 	$where['cr.auditid'] = array('LIKE', '%' . $this -> _post('name') . '%');
       }else if($_POST['key'] == 'reportname'){
@@ -692,8 +689,7 @@ class CompanyAction extends CommonAction {
       }else if($_POST['search_key'] == 'website'){
 	$where['website'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'category'){
-	$ccid = M('CompanyCategory') -> getFieldByname($this -> _post('search_name'), 'id');
-	$where['ccid'] = $ccid;
+	$where['manproducts'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'auditname'){
 	$where['auditaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'updatename'){

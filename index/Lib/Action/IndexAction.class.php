@@ -25,6 +25,10 @@ class IndexAction extends CommonAction {
     $this -> imagetab();
     //易搜商城
     $this -> shop();
+    //旺铺出租
+    R('Public/getstorerent_rent');
+    //旺铺求租
+    R('Public/getstorerent_price');
 
     $this -> display();
   }
@@ -76,7 +80,7 @@ class IndexAction extends CommonAction {
   }
 
   //获取标题公告
-  private function gettitlenotice(){
+  public function gettitlenotice(){
     if(S('index_title_notice')){
       $this -> assign('index_title_notice', S('index_title_notice'));
     }else{

@@ -1,6 +1,19 @@
 <?php
 //代理加盟
 class AgentAction extends CommonAction {
+  
+  //index 前置方法
+  public function _before_index(){
+    $where = array();
+    //判断是否是分站
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['csid'] = $csid;
+    }
+    $where['delaid'] = array('exp', 'is NULL');
+    $new_company = M('Company') -> field('id,name') -> where($where) -> order('updatetime DESC') -> limit(6) -> select();
+    $this -> assign('new_company', $new_company);
+  }
+
   public function index(){
     $agent = M('AgentJoin');
     $id = !empty($_GET['id']) ? $this -> _get('id', 'intval') : '';
@@ -15,6 +28,11 @@ class AgentAction extends CommonAction {
     $this -> assign('info', $info);
     $this -> assign('result', $result);
     $this -> display();
+  }
+
+  //add 前置方法
+  public function _before_add(){
+    $this -> _before_index();
   }
 
   //加盟申请

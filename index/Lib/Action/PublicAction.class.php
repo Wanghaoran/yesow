@@ -1051,5 +1051,27 @@ class PublicAction extends Action {
     }
   }
 
+  //获取旺铺出租
+  public function getstorerent_rent(){
+    $where = array();
+    $time = time();
+    $where['sr.ischeck'] = 1;
+    $where['sr.endtime'] = array('egt', $time);
+    $where['sr.tid'] = 6;
+    $storerent_rent = M('StoreRent') -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,sr.updatetime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> order('sr.updatetime DESC') -> limit(7) -> where($where) -> select();
+    $this -> assign('storerent_rent', $storerent_rent);
+  }
+
+  //获取旺铺求租
+  public function getstorerent_price(){
+    $where = array();
+    $time = time();
+    $where['sr.ischeck'] = 1;
+    $where['sr.endtime'] = array('egt', $time);
+    $where['sr.tid'] = 10;
+    $storerent_rent = M('StoreRent') -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,srt.name,sr.updatetime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> order('sr.updatetime DESC') -> limit(7) -> where($where) -> select();
+    $this -> assign('storerent_price', $storerent_price);
+  }
+
 
 }

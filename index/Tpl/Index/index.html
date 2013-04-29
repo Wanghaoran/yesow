@@ -295,23 +295,15 @@ $(function(){
 				</ul>
 			</div></div></div>
 			<div class="main04_item_bod tab_bod">
-				<ul>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺出租分类标题文字。</a><span>2012-12-12</span></li>
+			  <ul>
+			    <volist name="storerent_rent" id="srr">
+			    <li><a href="__ROOT__/storerent/<!--{$srr.id}--!>">[<b><!--{$srr.name}--!></b>] <!--{$srr.title}--!></a><span><!--{$srr.updatetime|date="Y-m-d", ###}--!></span></li>
+			    </volist>
 				</ul>
 				<ul class="none">
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 旺铺求租分类标题文字。</a><span>2012-12-12</span></li>
+					<volist name="storerent_price" id="srp">
+			    <li><a href="__ROOT__/storerent/<!--{$srp.id}--!>">[<b><!--{$srp.name}--!></b>] <!--{$srp.title}--!></a><span><!--{$srp.updatetime|date="Y-m-d", ###}--!></span></li>
+			    </volist>
 				</ul>
 			</div>
 		</div>

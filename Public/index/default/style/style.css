@@ -1,3 +1,5 @@
+@charset "utf-8";
+/* CSS Document */
 body{ background:#F2F2F2;}
 a{ cursor:pointer;}
 a:link {color:#333; text-decoration:none;}
@@ -423,7 +425,8 @@ font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 #mbx{padding:5px 0;}
 #mbx a{font-weight:bold;}
 #mbx span{ font-weight:bold;}
-#mbx span input{ vertical-align:middle; height:22px;}
+#mbx span input{ vertical-align:middle;}
+#mbx span input.btn_search{ width:66px; height:24px; line-height:20px; margin-left:10px; font-size:12px; font-weight:normal;}
 /**关键排名**/
 #main09{}
 #main09_l{ float:left; width:650px; padding-right:5px;}
@@ -859,7 +862,7 @@ ul.ul_parter li span.littlespan{ font-size:12px; padding:5px 0 0 18px;}
 #page_navigation a.jp-disabled, a.jp-disabled:hover {cursor: default; background: none;}
 #page_navigation span { margin: 0 5px; }
 ul.ul_zxjms{ padding:10px;}
-ul.ul_zxjms li{ float:left; width:170px; height:20px; line-height:20px; text-align:left;}
+ul.ul_zxjms li{ float:left; width:170px; height:20px; line-height:20px; text-align:left; overflow:hidden;}
 
 h4.h4_sqxz{ text-align:center; color:#666; height:40px; line-height:40px;}
 h4.h4_sqxz span{ margin-right:15px;}
@@ -1156,3 +1159,27 @@ ul.ul_pldetail li div.div_right input.div_input4{ width:58px; height:19px; line-
 ul.ul_pldetail li h5.h5_text{ float:left; width:520px; height:40px; line-height:40px; text-align:center; font-size:14px; font-weight:bold; color:#333;}
 a.btn_fbpl{ float:right; margin-top:5px; background:url(images/addedit_btn.gif) bottom center no-repeat;font-size:14px; font-weight:bold; display:block;width:90px; height:30px; line-height:30px; text-align:center; color:#fff; margin-top:0px;}
 textarea.txt_pldetail{ width:425px; height:80px; border:#ccc 1px solid;}
+
+ul.ul_notice{ width:620px; padding:5px;}
+ul.ul_notice li{ width:620px; height:25px; line-height:25px; border-bottom:#d5d5d5 1px dashed; overflow:hidden;}
+ul.ul_notice li a{ color:#000; text-decoration:none;}
+ul.ul_notice li a:hover{ color:#000; text-decoration:none;}
+
+ul.ul_datenews{ width:280px; padding:4px; border:1px solid #f60; border-top:0;}
+ul.ul_datenews li{ width:280px; height:50px; line-height:25px; border-bottom:#d5d5d5 1px dashed; overflow:hidden;}
+
+ul.ul_result{width:620px; padding:10px;}
+ul.ul_result li{width:620px; border-bottom:#d5d5d5 1px dashed; margin-bottom:5px;}
+ul.ul_result li h4.h4_result{ text-align:left; font-size:14px; font-weight:bold;}
+ul.ul_result li h4.h4_result a{ text-align:none;}
+ul.ul_result li div.result_content{ width:620px; height:60px; line-height:20px; overflow:hidden; color:#9f9f9f;}
+ul.ul_result li div.result_content a{color:#9f9f9f; text-decoration:none;}
+
+ul.ul_hotlook{ width:285px; padding:4px; border:1px solid #f60; border-top:0;}
+ul.ul_hotlook li{ width:275px; height:57px; padding:5px 0 5px 5px;}
+ul.ul_hotlook li a img{ float:left; border:#a09aa8 1px solid;}
+ul.ul_hotlook li div{ float:left; width:130px; padding-left:5px; height:57px; line-height:19px; overflow:hidden;}
+ul.ul_hotlook li div a{ color:#000; text-decoration:none;}
+ul.ul_hotlook li div a:hover{ color:#000; text-decoration:none;}
+
+

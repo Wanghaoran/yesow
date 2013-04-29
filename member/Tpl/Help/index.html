@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>帮助中心 —易搜会员中心</title>
+<title><!--{$cid_name}--!>_易搜使用帮助中心栏目页_易搜-<!--{$childsite_name}--!>IT服务中心</title>
+<meta content="易搜,IT商家,<!--{$cid_name}--!>,IT渠道,<!--{$childsite_name}--!>IT,IT服务,IT黄页" name="keywords">
+<meta name="description" content="易搜-<!--{$childsite_name}--!>IT服务中心速查使用帮助是专为<!--{$childsite_name}--!>IT商家提供相关资源的电子商务服务平台，在易搜IT商家渠道黄页您可以找到最新的<!--{$childsite_name}--!>IT行业信息资源，易搜<!--{$cid_name}--!>欢迎您的光临惠顾。">
 <link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
@@ -18,9 +20,9 @@
 	      <ul>
 		<volist name="result_class" id="rc">
 		<eq name="cid" value="$rc.id">
-		<li class="li_choose"><a href="__ACTION__/cid/<!--{$rc.id}--!>"><!--{$rc.name}--!></a></li>
+		<li class="li_choose"><a href="__ROOT__/member.php/help/<!--{$rc.id}--!>"><!--{$rc.name}--!></a></li>
 		<else/>
-		<li><a href="__ACTION__/cid/<!--{$rc.id}--!>"><!--{$rc.name}--!></a></li>
+		<li><a href="__ROOT__/member.php/help/<!--{$rc.id}--!>"><!--{$rc.name}--!></a></li>
 		</eq>
 		</volist>
                 </ul>
@@ -29,21 +31,20 @@
             	<div id="main_l">
                 	<div id="main_l_tit"><h3>帮助中心</h3></div>
                     <ul class="help_left">
-		      <volist name="result_arcitle" id="rq">
-		      <eq name="aid" value="$rq.id">
-		      <li class="hover"><a href="__ACTION__/cid/<!--{$cid}--!>/aid/<!--{$rq.id}--!>"><!--{$rq.title}--!></a></li>
-		      <else/>
-		      <li><a href="__ACTION__/cid/<!--{$cid}--!>/aid/<!--{$rq.id}--!>"><!--{$rq.title}--!></a></li>
-		      </eq>
+		      <volist name="result_title" id="ra">
+		      <li><a href="__ROOT__/member.php/help/<!--{$cid}--!>/<!--{$ra.id}--!>"><!--{$ra.title}--!></a></li>
 		      </volist>
 
                     </ul>
                 </div>
 				<div id="main_rhelp">
-				  <div class="main_rhelp_tit">>&nbsp;<!--{$result_content.title}--!></div>
+				  <div class="main_rhelp_tit">>&nbsp;<!--{$cid_name}--!></div>
                     <div class="clear"></div>
-                    <div class="main_rhelp_con">
-		      <!--{$result_content.content|stripslashes}--!>
+		    <div class="main_rhelp_con">
+		      <volist name="result_article" id="ra">
+		      <p><b><!--{$ra.title}--!></b></p>
+		      <!--{$ra.content}--!>
+		      </volist>
                     </div>
                 </div>
                 <div class="clear"></div>
