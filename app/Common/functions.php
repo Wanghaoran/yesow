@@ -913,5 +913,43 @@ function safeEncoding($string,$outEncoding ='UTF-8')
        	return iconv($encoding,$outEncoding,$string);    
 }
 
+//递归遍历、整理数组
+function arr_foreach($arr) {
+	static $str;
+	if (!is_array($arr)) {
+	return $arr;
+	}
+	foreach ($arr as $key => $val ) {
+
+	if (is_array($val)) {
+
+		arr_foreach($val);
+	} else {
+
+	  $str[] = $val;
+	}
+	}
+	return implode($str);
+}
+
+//请求字符串安全过滤
+function safefilter($string, $type){
+  $getfilter="'|\b(alert|confirm|prompt)\b|<[^>]*?>|^\\+\/v(8|9)|\\b(and|or)\\b.+?(>|<|=|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
+  $postfilter="^\\+\/v(8|9)|\\b(and|or)\\b.{1,6}?(=|>|<|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|<\\s*img\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
+  $cookiefilter="\\b(and|or)\\b.{1,6}?(=|>|<|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
+  if($type == 'get'){
+      if (preg_match("/".$getfilter."/is",$string)==1){   
+         print "<div style=\"position:fixed;top:0px;width:100%;height:100%;background-color:white;color:green;font-weight:bold;border-bottom:5px solid #999;\"><br>您的提交带有不合法参数,谢谢合作!</div>";
+         exit();
+	}
+  }else if($type == 'post'){
+     if (preg_match("/".$postfilter."/is",$string)==1){   
+         print "<div style=\"position:fixed;top:0px;width:100%;height:100%;background-color:white;color:green;font-weight:bold;border-bottom:5px solid #999;\"><br>您的提交带有不合法参数,谢谢合作!</div>";
+         exit();
+	}
+  }
+  return $string;
+}
+
 
 

@@ -7,6 +7,23 @@
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+  var getdata = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxinfotwocolumn/code/' + val,
+      success: function(res){
+	var _wstr = '<option value="" >请选择</option>';
+	if(res.twocolumn){
+	$.each(res.twocolumn, function(i,json){
+	  _wstr += '<option value="'+json.id+'" >'+json.name+'</option>';
+	});
+      };
+      $('#twocolumn').html(_wstr);
+      },
+      dataType:'json'
+    });
+  }
+</script>
 </head>
 <body id="body_user">
   <include file="Index:header" />
@@ -28,7 +45,17 @@
 									</volist>
 								</select>
 							</td>
-							<td>栏目：<input class="category w80" name="colid" type="text" /></td>
+							<td>栏目：
+							 <select class="" name="classid" onchange="getdata($(this).val());" >
+							   <option value="" >请选择</option>
+							   <volist name="result_one_col" id="roc">
+							   <option value="<!--{$roc.id}--!>"><!--{$roc.name}--!></option>
+							   </volist>
+							 </select>
+							 <select class="" name="colid" id="twocolumn" >
+							   <option value="" >请选择</option>
+							 </select>
+						       </td>
 							<td><button class="user_search_btn" onclick="document.getElemetById('search').submit()" name="submit">搜索</button></td>
 							</form>
 						</tr>
@@ -37,11 +64,9 @@
 					<table class="table_list">
 						<tbody>
 							<tr class="top_tools">
-								<th colspan="7"><h3>咨询文章管理</h3><button class="add_art" onclick="location='__URL__/addarticle';">发文章</button></th>
-								<th colspan="3" style="text-align:right">
-									<button class="del_art">删除</button>
-									<button class="all_art">全选</button>
-								</th>
+							  <th colspan="7"><h3>咨询文章管理</h3><button class="add_art" onclick="location='__URL__/addarticle';">发文章</button></th>
+							  <th colspan="3" style="text-align:right"></th>
+							  
 							</tr>
 							<tr class="title">
 								<td>类型</td>
@@ -64,15 +89,12 @@
 								<td>0</td>
 								<td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
 								<td><!--{$r.checktime|date="Y-m-d", ###}--!></td>
-								<eq name="r.status" value="0">
-			  <td style="color:red;">未审未过</td>
-			  </eq>
-			  <eq name="r.status" value="1">
-			  <td style="color:green;">已审未过</td>
-			  </eq>
-			  <eq name="r.status" value="2">
-			  <td style="color:blue;">已审已过</td>
-			  </eq>
+
+								<eq name="r.status" value="2">
+								<td style="color:blue;">已审</td>
+								<else/>
+								<td style="color:red;">未审</td>
+								</eq>
 								<td><a href="__URL__/editarticle/id/<!--{$r.id}--!>" >编辑</a></td>
 								<td><input type="checkbox" ></td>
 							      </tr>

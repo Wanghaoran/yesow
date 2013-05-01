@@ -56,23 +56,16 @@ $(function(){
 						</div>
 					</div>
 					<div class="main08_l_d_bod tab_bod">
-					<ul>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
+					  <ul>
+					    <volist name="new_notice" id="nn">
+					    <li><a href="__ROOT__/notice/<!--{$nn.id}--!>" target="_blank">[<b><!--{$nn.titleattribute}--!></b>]<!--{$nn.title}--!></a><span><!--{$nn.addtime|date="Y-m-d", ###}--!></span></li>
+					    </volist>
 					</ul>
 					<ul class="none">
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
+					  <volist name="new_title" id="nt">
+					  <li><a>[<b><!--{$nt.tname}--!></b>]<!--{$nt.title}--!></a><span><!--{$nt.addtime|date="Y-m-d", ###}--!></span></li>
+					  </volist>
+
 					</ul>
 				</div>
 				</div>				
@@ -84,9 +77,9 @@ $(function(){
 					<div class="huang_ui_r">
 						<div class="huang_ui_c">
 							<ul class="tab_btn">
-								<li class="hover"><a href="#">推荐渠道</a></li>
-								<li><a href="#">最新渠道</a></li>
-								<li><a href="#">渠道新闻</a></li>
+								<li class="hover"><a href="#">最新商家</a></li>
+								<li><a href="#">最高人气</a></li>
+								<li><a href="#">最新评论</a></li>
 							</ul>
 						</div>
 					</div>
@@ -94,110 +87,8 @@ $(function(){
 				<div class="main_08_c_bod tab_bod">
 					<ul>
 						<li class="first">
-							<h3><a href="#">这个是标题文字</a></h3>
-							<p>这个是这里的一些介绍的文字，后台调入，字数需要控制，在两行之内就可以了。</p>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-					</ul>
-					<ul class="none">
-						<li class="first">
-							<h3><a href="#">这个是标题文字1</a></h3>
-							<p>这个是这里的一些介绍的文字，后台调入，字数需要控制，在两行之内就可以了。</p>
+							<h3><a href="#">易搜最新商家</a></h3>
+							<p>这里展示的是易搜最近添加入库的商家信息</p>
 						</li>
 						<volist name="new_company" id="nc">
 						<li>
@@ -206,109 +97,37 @@ $(function(){
 						  &nbsp;<span class="time"><!--{$nc.addtime|date="Y-m-d", ###}--!></span>
 						
 						</li>
+						</volist>
+
+					</ul>
+					<ul class="none">
+						<li class="first">
+							<h3><a href="#">易搜最高人气</a></h3>
+							<p>这里展示的是易搜最具人气的公司</p>
+						</li>
+						<volist name="hot_company" id="hc">
+						<li>
+						
+						  <span class="category">[<b><!--{$hc.cname}--!></b>]</span>&nbsp;<a href="__ROOT__/company/<!--{$hc.id}--!>" target="_blank" class="title_text"><!--{$hc.name}--!></a><span class="address">【<!--{$hc.csname}--!>】</span>
+						  &nbsp;<span class="time"><!--{$hc.addtime|date="Y-m-d", ###}--!></span>
+						
+						</li>
 						</volist>					
 					</ul>
 					<ul class="none">
 						<li class="first">
-							<h3><a href="#">这个是标题文字</a></h3>
-							<p>这个是这里的一些介绍的文字，后台调入，字数需要控制，在两行之内就可以了。</p>
-						</li>
+							<h3><a href="#">易搜最新评论</a></h3>
+							<p>这里是易搜速查信息的最新评论</p>
+							</li>
+							<volist name="new_comment" id="nc">
 						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
+						
+						  <span class="category">[<b>速查评论</b>]</span>&nbsp;<a href="__ROOT__/company/<!--{$nc.cid}--!>" target="_blank" class="title_text"><!--{$nc.content}--!></a><span class="address">【评论】</span>
+						  &nbsp;<span class="time"><!--{$nc.addtime|date="Y-m-d", ###}--!></span>
+						
 						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<span class="category">[<b>整机类</b>]</span>&nbsp;杭州百度科技有限公司2<span class="address">【杭州】</span>
-								&nbsp;<span class="time">2012-02-02</span>
-							</a>
-						</li>
+						</volist>
+						
 					</ul>
 				</div>
 			</div>
@@ -360,28 +179,24 @@ $(function(){
 					<div class="hui_ui">
 						<div class="hui_ui_r">
 							<div class="hui_ui_c">
-								<h3><a href="#">市场招商</a></h3>
+								<h3><a href="#">正负排行</a></h3>
 								<ul class="tab_btn">
-									<li class="hover"><a href="#">诚招代理</a></li>
-									<li><a href="#">优惠政策</a></li>
+									<li class="hover"><a href="#">正分排行</a></li>
+									<li><a href="#">负分排行</a></li>
 								</ul>
 							</div>
 						</div>
 					</div>
 				<div class="main08_r_d_bod tab_bod">
-					<ul>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
+				  <ul>
+				    <volist name="score_top5" id="st5">
+				    <li><a href="__ROOT__/company/<!--{$st5.cid}--!>" target="_blank">[<b><!--{$st5.csname}--!></b>]<!--{$st5.cname}--!></a><span><!--{$st5.addtime|date="Y-m-d", ###}--!></span></li>
+				    </volist>
 					</ul>
 					<ul class="none">
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
-						<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>
+					<volist name="score_last5" id="sl5">
+				    <li><a href="__ROOT__/company/<!--{$sl5.cid}--!>" target="_blank">[<b><!--{$sl5.csname}--!></b>]<!--{$sl5.cname}--!></a><span><!--{$sl5.addtime|date="Y-m-d", ###}--!></span></li>
+				    </volist>
 					</ul>
 				</div>
 			</div>			

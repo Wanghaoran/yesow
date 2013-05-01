@@ -101,9 +101,11 @@ class BusinessAction extends CommonAction {
 	}
 	$where['ia.id'] = array('in', $result_childsite_infoarticle);
       }
+      if(!empty($_POST['classid'])){
+	$where['ia.classid'] = $this -> _post('classid', 'intval');
+      }
       if(!empty($_POST['colid'])){
-	$colid = M('InfoTwoColumn') -> getFieldByname($this -> _post('colid'), 'id');
-	$where['ia.colid'] = intval($colid);
+	$where['ia.colid'] = $this -> _post('colid', 'intval');
       }
     }
     $infoarticle = M('InfoArticle');
@@ -118,6 +120,9 @@ class BusinessAction extends CommonAction {
     //查所有分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
+    //查所有一级分类
+    $result_one_col = M('InfoOneColumn') -> field('id,name') -> order('sort') -> select();
+    $this -> assign('result_one_col', $result_one_col);
     $this -> display();
   }
 

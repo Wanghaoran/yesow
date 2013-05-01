@@ -33,12 +33,31 @@ class CompanyAction extends CommonAction {
       $result_cate[$key]['two'] = $category -> field('id,name') -> order('sort ASC') -> where(array('pid' => $value['id'])) -> limit(11) -> select();
     }
     $this -> assign('result_cate', $result_cate);
-    //读取最新渠道（16条最新添加的速查信息）
+    //读取最新商家（16条最新添加的速查信息）
     $company = M('Company');
     $new_company = $company -> table('yesow_company as c') -> field('c.id,c.name,cc.pid,ccc.name as cname,cs.name as csname,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> join('yesow_company_category as ccc ON cc.pid = ccc.id') -> where($where) -> order('c.addtime DESC') -> limit(16) -> select();
     $this -> assign('new_company', $new_company);
+    //读取最高人气
+    $hot_company = $company -> table('yesow_company as c') -> field('c.id,c.name,cc.pid,ccc.name as cname,cs.name as csname,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> join('yesow_company_category as ccc ON cc.pid = ccc.id') -> where($where) -> order('c.clickcount DESC') -> limit(16) -> select();
+    $this -> assign('hot_company', $hot_company);
+    //读取最新评论
+    $new_comment = M('CompanyComment') -> field('cid,content,addtime') -> order('addtime DESC') -> limit(16) -> where(array('status' => 2)) -> select();
+    $this -> assign('new_comment', $new_comment);
+    //正分排行
+    $score_top5 = M('CompanyComment') -> table('yesow_company_comment as cc') -> field('c.name as cname,cs.name as csname,cc.cid,SUM(cc.score) as count,c.addtime') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> group('cc.cid') -> where('cc.status = 2') -> order('count DESC') -> limit(5) -> select();
+    $this -> assign('score_top5', $score_top5);
+    //负分排行
+    $score_last5 = M('CompanyComment') -> table('yesow_company_comment as cc') -> field('c.name as cname,cs.name as csname,cc.cid,SUM(cc.score) as count,c.addtime') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> group('cc.cid') -> where('cc.status = 2') -> order('count ASC') -> limit(5) -> select();
+    $this -> assign('score_last5', $score_last5);
+
     //图片幻灯
     R('Index/imagetab');
+    //系统推荐 - 最新公告
+    $new_notice = M('Notice') -> field('id,title,titleattribute,addtime') -> order('addtime DESC') -> limit(7) -> select();
+    $this -> assign('new_notice', $new_notice);
+    //系统推荐 - 最新更新
+    $new_title = M('TitleNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name as tname,tn.addtime') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(7) -> select();
+    $this -> assign('new_title', $new_title);
     $this -> display();
   }
 

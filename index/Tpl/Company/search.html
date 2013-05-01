@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><!--{$Think.get.keyword}--!>_搜索结果_易搜速查中心</title>
+<title><!--{$Think.get.keyword|safefilter="get"}--!>_搜索结果_易搜速查中心</title>
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
@@ -73,10 +73,10 @@
 		      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
 			if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 			  $.ajax({
-			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 			    success: function(ress){
 			      if(ress != 1){
-				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>');
 				}else{
 				  alert('余额不足！');	
 				}
@@ -88,10 +88,10 @@
 		      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.num + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
 			if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 			  $.ajax({
-			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 			    success: function(ress){
 			      if(ress != 1){
-				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>');
 				}else{
 				  alert('余额不足！');	
 			      }
@@ -105,9 +105,9 @@
 		  if(confirm('尊敬的包月会员，您今日可免费下载的条数为' + msg.see_num + ',您还剩余' + msg.less_num + '条,此次下载将消耗' + msg.num + '条，请确认')){
 		  if(confirm('即将下载' + msg.less_num + '条数据，确认后立即扣除条数，请确认！')){
 		    $.ajax({
-		      url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 		      success: function(ress){
-			location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+			location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>');
 		      }
 		    });
 		  }
@@ -118,10 +118,10 @@
 		      if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,足够本次扣费,本次下载后,还有余额:' + msg.balance + '元,请确认?')){
 			if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 			  $.ajax({
-			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			    url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 			    success: function(ress){
 			      if(ress != 1){
-				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>');
 				}else{
 				  alert('余额不足！');	
 				}
@@ -133,10 +133,10 @@
 		        if(confirm('易搜友情提示:您本次下载所需的费用为:' + msg.consts + '元,您的帐户余额为:' + msg.money + '元,不够本次扣费,本次您最多能下载' + msg.num + '条数据,本次下载后,还有余额' + msg.balance + '元,请确认?')){
 			  if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 			    $.ajax({
-			      url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+			      url: '__APP__/public/doindexdownload_log/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 			      success: function(ress){
 			        if(ress != 1){
-				  location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>');
+				  location.href='__APP__/public/doindexdownload_down/id_str/' + msg.id_string + '/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>');
 				  }else{
 				    alert('余额不足！');	
 			        }
@@ -161,7 +161,7 @@
     });
 
     $.ajax({ 
-      url:'__APP__/public/batch/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+      url:'__APP__/public/batch/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
       success:function(data){ 
 	api.content(data); 
       },
@@ -184,9 +184,9 @@
 		if(confirm('即将下载' + msg.num + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 		  //执行下载并扣费
 		  $.ajax({
-		    url: '__APP__/public/doalldownload_log/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
+		    url: '__APP__/public/doalldownload_log/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
 		    success: function(ress){
-		      location.href='__APP__/public/doalldownload_down/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>';
+		      location.href='__APP__/public/doalldownload_down/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>';
 		    }
 		  });
 		  
@@ -198,10 +198,10 @@
 	      if(confirm('即将下载' + msg.listnum + '条数据，即将扣除' + msg.consts + '元，确认后立即扣除款项，请确认！')){
 		//执行下载并扣费
 		$.ajax({
-		    url: '__APP__/public/doalldownload_log/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
+		    url: '__APP__/public/doalldownload_log/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
 		    success: function(ress){
 		      if(ress != 1){
-			location.href='__APP__/public/doalldownload_down/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>/num/' + msg.listnum;
+			location.href='__APP__/public/doalldownload_down/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>') + '/type/<!--{$Think.get.type|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>/num/' + msg.listnum;
 		      }else{
 		      alert('余额不足！');
 		    }
@@ -255,7 +255,7 @@
 		    //执行下载并扣费
 		    //请求内容
 		    $.ajax({
-		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 		      success: function(ress){
 			if(window.clipboardData){
 			  window.clipboardData.setData("text",ress);
@@ -273,7 +273,7 @@
 		    //执行下载并扣费
 		    //请求内容
 		    $.ajax({
-		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 		      success: function(ress){
 			if(window.clipboardData){
 			  window.clipboardData.setData("text",ress);
@@ -292,7 +292,7 @@
 	     }else if(msg.type == 2){
 	     if(confirm('尊敬的包月会员，您今日可免费下载的条数为' + msg.see_num + ',您还剩余' + msg.less_num + '条,此次下载将消耗' + msg.num + '条，请确认')){
 	       $.ajax({
-		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 		      success: function(ress){
 			if(window.clipboardData){
 			  window.clipboardData.setData("text",ress);
@@ -313,7 +313,7 @@
 		    //执行下载并扣费
 		    //请求内容
 		    $.ajax({
-		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 		      success: function(ress){
 			if(window.clipboardData){
 			  window.clipboardData.setData("text",ress);
@@ -331,7 +331,7 @@
 		    //执行下载并扣费
 		    //请求内容
 		    $.ajax({
-		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+		      url: "__APP__/public/doajaxbatchcopy/cid/" + msg.id_string + "/keyword/" + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
 		      success: function(ress){
 			if(window.clipboardData){
 			  window.clipboardData.setData("text",ress);
@@ -359,7 +359,7 @@
     });
 
     $.ajax({ 
-      url:'__APP__/public/batch/keyword/' + encodeURIComponent('<!--{$Think.get.keyword}--!>'),
+      url:'__APP__/public/batch/keyword/' + encodeURIComponent('<!--{$Think.get.keyword|safefilter="get"}--!>'),
       success:function(data){ 
 	api.content(data); 
       },
@@ -395,7 +395,7 @@
 		    <form action="__ACTION__" method="get" >
             	<div id="mid_search">
                     
-		      <input type="text" name="keyword" id="s" class="input" value="<!--{$Think.get.keyword}--!>" />
+		      <input type="text" name="keyword" id="s" class="input" value="<!--{$Think.get.keyword|safefilter="get"}--!>" />
                         <input type="submit" value="搜索一下" id="go" />
                 </div>
 		<div class="clear30"></div>
@@ -452,7 +452,7 @@
 			<if condition="(empty($_GET['keyword'])) OR ($_GET['keyword'] == '请输入您要搜索的内容')">
 			<li class="li_text">请输入搜索关键词,默认检索出<span id="result_num" class="f_color"><!--{$count|default="0"}--!></span>个结果</li>
 			<else/>
-			<li class="li_text">共有<span id="result_num" class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
+			<li class="li_text">共有<span id="result_num" class="f_color"><!--{$count|default="0"}--!></span>个结果符合<span class="f_color"><!--{$Think.get.keyword|safefilter="get"}--!></span>用时 <!--{$time}--!> s&nbsp;&nbsp;最后检测&nbsp;&nbsp;<!--{$Think.now}--!></li>
 			</if>
 		    
                     <li>

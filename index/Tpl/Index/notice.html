@@ -30,7 +30,7 @@
 	type: "POST",
 	url: "__URL__/commit",
 	datatype: "json",
-	data: "content=" + p + "&code=" + m + "&nid=<!--{$Think.get.id}--!>",
+	data: "content=" + p + "&code=" + m + "&nid=<!--{$Think.get.id|intval}--!>",
 	success: function(msg){
 	  msg = jQuery.parseJSON(msg);
 	  if(msg.status == 0){

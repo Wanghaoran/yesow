@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜公告列表</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+
+</head>
+<body id="body_index">
+  <div id="warp_body">
+    <include file="Index:header"/>  
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<span>公告列表页</span> 
+	</div>
+    <div class="clear5"></div>
+    <ul class="ul_adimg">
+    	<li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+        <li class="last"><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/ad_img.jpg" width="186" height="75" border="0" /></a></li>
+    </ul>
+    <div class="clear5"></div>
+	<!--咨询文章详情页-->
+	<div id="main13">
+		<div id="main13_l">
+		  <div class="cat_header">
+				<h3>易搜公告</h3>
+			</div>
+		  <div class="cat_bod">
+		    <ul class="ul_notice">
+		      <volist name="result" id="r">
+		      <li><a href="__ROOT__/notice/<!--{$r.id}--!>" target="_blank">[<!--{$r.titleattribute}--!>]<!--{$r.title}--!></a></li>
+		      </volist>
+                </ul>
+				<div class="clear"></div>
+				<div class="page" style="padding-right:10px;">
+				  <!--{$show}--!>
+				</div>
+                <div class="clear"></div>
+			</div>
+		</div>
+		<div id="main13_r">
+			<div class="main09_r_rmsj">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h2>数据更新消息</h2>
+						</div>
+					</div>
+				</div>
+				<ul class="ul_datenews">
+				  <volist name="index_title_notice" id="itn">
+				  <li>[<!--{$itn.tname}--!>]<!--{$itn.title}--!></li>
+				  </volist>
+				</ul>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--咨询文章详情页-->
+	<div class="index_gg01">
+		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
+	</div>
+	<include file="Index:footer" />
+</div>
+</body>
+<script type="text/javascript">
+    $("#ul_mytable li").css("background","#fff");
+    $("#ul_mytable li:even").css("background","#ebebeb");
+    </script>
+</html>
+

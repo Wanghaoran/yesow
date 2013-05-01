@@ -29,13 +29,32 @@ class IndexAction extends CommonAction {
     R('Public/getstorerent_rent');
     //旺铺求租
     R('Public/getstorerent_price');
-
+    //二手出售
+    R('Public/getsellused_sell');
+    //二手求购
+    R('Public/getsellused_buy');
+    //最新渠道动态
+    R('Public/getnewarticle');
     $this -> display();
   }
 
   //站点公告列表
   public function noticelist(){
-  
+    //数据更新消息
+    R('Index/gettitlenotice');
+    $notice = M('Notice');
+
+    import("ORG.Util.Page");
+    $count = $notice -> count('id');
+    $page = new Page($count,17);
+    $show = $page -> show();
+
+    //公告列表
+    $result = $notice -> field('id,title,titleattribute') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+
+    $this -> display();
   }
 
   //站点公告详情

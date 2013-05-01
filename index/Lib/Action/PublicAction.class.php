@@ -1073,5 +1073,37 @@ class PublicAction extends Action {
     $this -> assign('storerent_price', $storerent_price);
   }
 
+  //获取二手出售
+  public function getsellused_sell(){
+    $where = array();
+    $time = time();
+    $where['su.ischeck'] = 1;
+    $where['su.endtime'] = array('egt', $time);
+    $where['su.tid_two'] = 5;//转让
+    $sellused_sell = M('SellUsed') -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> order('su.updatetime DESC') -> limit(7) -> where($where) -> select();
+    $this -> assign('sellused_sell', $sellused_sell);
+  }
+
+  //获取二手求购
+  public function getsellused_buy(){
+    $where = array();
+    $time = time();
+    $where['su.ischeck'] = 1;
+    $where['su.endtime'] = array('egt', $time);
+    $where['su.tid_two'] = 11;//求购
+    $sellused_buy = M('SellUsed') -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> order('su.updatetime DESC') -> limit(7) -> where($where) -> select();
+    $this -> assign('sellused_buy', $sellused_buy);
+  }
+
+  //获取最新渠道动态
+  public function getnewarticle(){
+    $where = array();
+    $where['ia.classid'] = 1;
+    $where['ia.status'] = 2;
+    $new_article = M('InfoArticle') -> table('yesow_info_article as ia') -> field('ia.id,ia.title,ioc.name') -> join('yesow_info_one_column as ioc ON ia.classid = ioc.id') -> where($where) -> order('addtime DESC') -> limit(10) -> select();
+    $this -> assign('new_article', $new_article);
+  }
+
+
 
 }

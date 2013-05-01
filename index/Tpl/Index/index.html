@@ -83,17 +83,10 @@ $(function(){
 				  </volist>
 				      </ul>
 				      <!-- 数据更新消息 end -->
-				<ul class="none">
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
-					<li><span>[<a href="#">公告</a>] </span><a href="#">3感谢信---至易搜WWW.YESOW.COM</a></li>
+				      <ul class="none">
+					<volist name="new_article" id="na">
+					<li><span>[<a><!--{$na.name}--!></a>] </span><a href="__ROOT__/article/<!--{$na.id}--!>" target="_blank"><!--{$na.title}--!></a></li>
+					</volist>
 				</ul>
 			<div class="clear"></div>
 			</div>
@@ -297,12 +290,12 @@ $(function(){
 			<div class="main04_item_bod tab_bod">
 			  <ul>
 			    <volist name="storerent_rent" id="srr">
-			    <li><a href="__ROOT__/storerent/<!--{$srr.id}--!>">[<b><!--{$srr.name}--!></b>] <!--{$srr.title}--!></a><span><!--{$srr.updatetime|date="Y-m-d", ###}--!></span></li>
+			    <li><a href="__ROOT__/storerent/<!--{$srr.id}--!>" target="_blank">[<b><!--{$srr.name}--!></b>] <!--{$srr.title}--!></a><span><!--{$srr.updatetime|date="Y-m-d", ###}--!></span></li>
 			    </volist>
 				</ul>
 				<ul class="none">
 					<volist name="storerent_price" id="srp">
-			    <li><a href="__ROOT__/storerent/<!--{$srp.id}--!>">[<b><!--{$srp.name}--!></b>] <!--{$srp.title}--!></a><span><!--{$srp.updatetime|date="Y-m-d", ###}--!></span></li>
+			    <li><a href="__ROOT__/storerent/<!--{$srp.id}--!>" target="_blank">[<b><!--{$srp.name}--!></b>] <!--{$srp.title}--!></a><span><!--{$srp.updatetime|date="Y-m-d", ###}--!></span></li>
 			    </volist>
 				</ul>
 			</div>
@@ -320,22 +313,14 @@ $(function(){
 			</div></div></div>
 			<div class="main04_item_bod tab_bod">
 				<ul>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手出售分类标题文字。</a><span>2012-12-12</span></li>
+				  <volist name="sellused_sell" id="sus">
+				  <li><a href="__ROOT__/sellused/<!--{$sus.id}--!>" target="_blank">[<b><!--{$sus.name}--!></b>] <!--{$sus.title}--!></a><span><!--{$sus.updatetime|date="Y-m-d", ###}--!></span></li>
+				  </volist>
 				</ul>
 				<ul class="none">
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 二手求购分类标题文字。</a><span>2012-12-12</span></li>
+				  <volist name="sellused_buy" id="sub">
+				  <li><a href="__ROOT__/sellused/<!--{$sub.id}--!>" target="_blank">[<b><!--{$sub.name}--!></b>] <!--{$sub.title}--!></a><span><!--{$sub.updatetime|date="Y-m-d", ###}--!></span></li>
+				  </volist>
 				</ul>
 			</div>
 		</div>
