@@ -16,6 +16,14 @@ class HelpAction extends Action {
       $this -> assign('member_qqonline', $member_qqonline);
       S('member_qqonline', $member_qqonline);
     }
+    //底部关于我们
+    if(S('member_footer_nav')){
+      $this -> assign('member_footer_nav', S('member_footer_nav'));
+    }else{
+      $member_footer_nav = R('Public/getfooternav');
+      $this -> assign('member_footer_nav', $member_footer_nav);
+      S('member_footer_nav', $member_footer_nav);
+    }
   }
 
   //帮助中心

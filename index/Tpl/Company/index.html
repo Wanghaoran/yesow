@@ -33,11 +33,11 @@ $(function(){
     <!--渠道首页-->
 	<div id="main08">
 		<div id="main08_l">
-			<div id="main08_l_t">
-				<div id="main01_c" style="height:300px; width:300px; overflow:hidden;">
+			<div id="main08_l_t" style="height:231px;">
+				<div id="main01_c" style="height:231px; width:300px; overflow:hidden;">
 			<div id="KinSlideshow" style="visibility:hidden;_width:300px;">
 			    <volist name="result_pic" id="rp">
-			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="300" height="300" /></a>
+			    <a href="__ROOT__/article/<!--{$rp.aid}--!>" target="_blank"><img src="<!--{$rp.address}--!>" alt="<!--{$rp.title}--!>" width="300" height="231" /></a>
 		    </volist>
                 </div>
 		</div>
@@ -87,10 +87,10 @@ $(function(){
 				<div class="main_08_c_bod tab_bod">
 					<ul>
 						<li class="first">
-							<h3><a href="#">易搜最新商家</a></h3>
-							<p>这里展示的是易搜最近添加入库的商家信息</p>
+						<h3><a href="__ROOT__/company/<!--{$new_company.0.id}--!>" target="_blank"><!--{$new_company.0.name}--!></a></h3>
+							<p><!--{$new_company.0.manproducts}--!></p>
 						</li>
-						<volist name="new_company" id="nc">
+						<volist name="new_company" id="nc" offset="1" length='16'>
 						<li>
 						
 						  <span class="category">[<b><!--{$nc.cname}--!></b>]</span>&nbsp;<a href="__ROOT__/company/<!--{$nc.id}--!>" target="_blank" class="title_text"><!--{$nc.name}--!></a><span class="address">【<!--{$nc.csname}--!>】</span>
@@ -102,10 +102,10 @@ $(function(){
 					</ul>
 					<ul class="none">
 						<li class="first">
-							<h3><a href="#">易搜最高人气</a></h3>
-							<p>这里展示的是易搜最具人气的公司</p>
+							<h3><a href="__ROOT__/company/<!--{$hot_company.0.id}--!>" target="_blank"><!--{$hot_company.0.name}--!></a></h3>
+							<p><!--{$hot_company.0.manproducts}--!></p>
 						</li>
-						<volist name="hot_company" id="hc">
+						<volist name="hot_company" id="hc" offset="1" length='16'>
 						<li>
 						
 						  <span class="category">[<b><!--{$hc.cname}--!></b>]</span>&nbsp;<a href="__ROOT__/company/<!--{$hc.id}--!>" target="_blank" class="title_text"><!--{$hc.name}--!></a><span class="address">【<!--{$hc.csname}--!>】</span>
@@ -116,13 +116,13 @@ $(function(){
 					</ul>
 					<ul class="none">
 						<li class="first">
-							<h3><a href="#">易搜最新评论</a></h3>
-							<p>这里是易搜速查信息的最新评论</p>
+						<h3><a href="__ROOT__/company/<!--{$new_comment.0.cid}--!>" target="_blank"><!--{$new_comment.0.name}--!></a></h3>
+						<p><!--{$new_comment.0.content}--!></p>
 							</li>
-							<volist name="new_comment" id="nc">
+							<volist name="new_comment" id="nc" offset="1" length='16'>
 						<li>
 						
-						  <span class="category">[<b>速查评论</b>]</span>&nbsp;<a href="__ROOT__/company/<!--{$nc.cid}--!>" target="_blank" class="title_text"><!--{$nc.content}--!></a><span class="address">【评论】</span>
+						<span class="category">[<b><!--{$nc.cname}--!></b>]</span>&nbsp;<a href="__ROOT__/company/<!--{$nc.cid}--!>" target="_blank" class="title_text"><!--{$nc.content}--!></a><span class="address">【评论】</span>
 						  &nbsp;<span class="time"><!--{$nc.addtime|date="Y-m-d", ###}--!></span>
 						
 						</li>
@@ -168,11 +168,6 @@ $(function(){
 					<li id="main08_r_t_li_08"><a href="#">我要下载</a></li>
 				</ul>
 				<div class="clear"></div>
-			</div>
-			<div id="main08_r_m">
-				<a href="">
-					<img src="__PUBLIC__/index/<!--{$templatename}--!>/image/qudao_gg.jpg" width="280" height="105" />
-				</a>
 			</div>
 			<div id="main08_r_d">				
 				<div class="main08_r_d_tab tab">
