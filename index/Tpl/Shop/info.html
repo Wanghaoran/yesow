@@ -144,28 +144,33 @@ function submitcommit(){
                                     	<div class="div_left">
                                         	<img src="<!--{$Think.config.SHOP_PIC_PATH_SAVE}--!><!--{$result.big_pic}--!>" width="240" height="240" border="0" alt="<!--{$result.title}--!>" />
                                         </div>
-                                        <div class="div_right">
-					  <h6><span>商品运费：</span>
-					    <eq name="result.issend" value="1">
-					    <volist name="result_send" id="rs">
-					    <!--{$rs.name}--!>:￥<!--{$rs.money}--!>元&nbsp;
-					    </volist>
-    <else/>
-					    免运产品
-					    </eq>
-					  </h6>
-                                            <h6><span>购买数量：</span><input type="text" id="shopnums" class="input_gmsl" value="1" />&nbsp;件</h6>
-                                            <h6><span>支付方式：</span>余额支付  在线支付</h6>
-					    <h6><span>人气指数：</span><!--{$result.clickcount}--!></h6>
-                                            <h6><span>市场价格：</span><!--{$result.marketprice}--!></h6>
-                                            <h6><span>促销价格：</span><!--{$result.promotionprice}--!></h6>
-					    <h6>
-					      <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+					<div class="div_right">
+					  <div style="height:220px;">
+                                                <div class="lleft">商品运费：</div>
+						<div class="rleft">
+						  <eq name="result.issend" value="1">
+						  <volist name="result_send" id="rs">
+						  <div><!--{$rs.name}--!>:￥<!--{$rs.money}--!>元</div>
+						  </volist>
+						  <else/>
+						  <div>免运产品</div>
+						  </eq>
+						</div>
+                                                <div class="clear"></div>
+                                                <h5><span>购买数量：</span><input type="text" id="shopnums" class="input_gmsl" value="1" />&nbsp;件</h5>
+                                                <h5><span>支付方式：</span>余额支付  在线支付</h5>
+                                                <h5><span>人气指数：</span><!--{$result.clickcount}--!></h5>
+                                                <h5><span>市场价格：</span><!--{$result.marketprice}--!></h5>
+                                                <h5><span>促销价格：</span><!--{$result.promotionprice}--!></h5>
+					      </div>
+					      <h6>
+						<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 					      <input type="button" class="btn_scgw" value="立即购买" onclick="buynow();" />
 					      <else/>
 					      <input type="button" class="btn_scgw" value="立即购买" onclick="poplogin();"/>
 					      </if>
-					      <input type="button" class="btn_scgw" value="加入购物车" onclick="addshopcart();"/></h6>
+					      <input type="button" class="btn_scgw" value="加入购物车" onclick="addshopcart();"/>
+					      </h6>    
                                         </div>
                                     </li>
                                 </ul>

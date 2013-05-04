@@ -58,12 +58,12 @@ $(function(){
 					<div class="main08_l_d_bod tab_bod">
 					  <ul>
 					    <volist name="new_notice" id="nn">
-					    <li><a href="__ROOT__/notice/<!--{$nn.id}--!>" target="_blank">[<b><!--{$nn.titleattribute}--!></b>]<!--{$nn.title}--!></a><span><!--{$nn.addtime|date="Y-m-d", ###}--!></span></li>
+					    <li><span><!--{$nn.addtime|date="Y-m-d", ###}--!></span><a href="__ROOT__/notice/<!--{$nn.id}--!>" target="_blank">[<b><!--{$nn.titleattribute}--!></b>]<!--{$nn.title}--!></a></li>
 					    </volist>
 					</ul>
 					<ul class="none">
 					  <volist name="new_title" id="nt">
-					  <li><a>[<b><!--{$nt.tname}--!></b>]<!--{$nt.title}--!></a><span><!--{$nt.addtime|date="Y-m-d", ###}--!></span></li>
+					  <li><span><!--{$nt.addtime|date="Y-m-d", ###}--!></span><a>[<b><!--{$nt.tname}--!></b>]<!--{$nt.title}--!></a></li>
 					  </volist>
 
 					</ul>
@@ -185,12 +185,12 @@ $(function(){
 				<div class="main08_r_d_bod tab_bod">
 				  <ul>
 				    <volist name="score_top5" id="st5">
-				    <li><a href="__ROOT__/company/<!--{$st5.cid}--!>" target="_blank">[<b><!--{$st5.csname}--!></b>]<!--{$st5.cname}--!></a><span><!--{$st5.addtime|date="Y-m-d", ###}--!></span></li>
+				    <li><span><!--{$st5.addtime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$st5.cid}--!>" target="_blank">[<b><!--{$st5.csname}--!></b>]<!--{$st5.cname}--!></a></li>
 				    </volist>
 					</ul>
 					<ul class="none">
 					<volist name="score_last5" id="sl5">
-				    <li><a href="__ROOT__/company/<!--{$sl5.cid}--!>" target="_blank">[<b><!--{$sl5.csname}--!></b>]<!--{$sl5.cname}--!></a><span><!--{$sl5.addtime|date="Y-m-d", ###}--!></span></li>
+				    <li><span><!--{$sl5.addtime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$sl5.cid}--!>" target="_blank">[<b><!--{$sl5.csname}--!></b>]<!--{$sl5.cname}--!></a></li>
 				    </volist>
 					</ul>
 				</div>

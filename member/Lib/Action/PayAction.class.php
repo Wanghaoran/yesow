@@ -477,6 +477,7 @@ class PayAction extends Action {
       if($_POST['trade_status'] == 'WAIT_BUYER_PAY'){
 	$data['status'] = 0;
 	$monthly_order -> where($where) -> save($data);
+	ob_end_clean();
 	echo "success";
       
       }
@@ -499,12 +500,14 @@ class PayAction extends Action {
 	  //写用户主表
 	  M('Monthly') -> add($data);
 	}
+	ob_end_clean();
 	echo "success";
       }
       //该判断表示卖家已经发了货，但买家还没有做确认收货的操作 status = 2
       else if($_POST['trade_status'] == 'WAIT_BUYER_CONFIRM_GOODS'){
 	$data['status'] = 2;
 	$monthly_order -> where($where) -> save($data);
+	ob_end_clean();
 	echo "success";
       
       }
@@ -512,9 +515,11 @@ class PayAction extends Action {
       else if($_POST['trade_status'] == 'TRADE_FINISHED'){
 	$data['status'] = 3;
 	$monthly_order -> where($where) -> save($data);
+	ob_end_clean();
 	echo "success";
       }
     }else{
+      ob_end_clean();
       echo "fail";
     }
   }
@@ -639,17 +644,22 @@ class PayAction extends Action {
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
 	      M('Monthly') -> add($data);
+	      ob_end_clean();
 	      echo "success";
 	    }else{
+	      ob_end_clean();
 	      echo "fail";
 	    }
 	  }else{
+	    ob_end_clean();
 	    echo "fail"; 
 	  }
 	}else{
+	  ob_end_clean();
 	echo "fail";
 	}
       }else{
+	ob_end_clean();
 	echo "<br/>" . "认证签名失败" . "<br/>";
 	echo $resHandler->getDebugInfo() . "<br>";
       }

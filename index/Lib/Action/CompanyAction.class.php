@@ -428,7 +428,7 @@ class CompanyAction extends CommonAction {
     $_GET['keyword'] = safeEncoding($_GET['keyword']);
 
     //右侧固定排名 和 右侧热点排名 读取数据更新消息
-    $fixed_result = M('TiteNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(20) -> select();
+    $fixed_result = M('TiteNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(30) -> select();
     $this -> assign('fixed_result', $fixed_result);
    
     //高级搜索,只检索出按更新时间排序的一页数据

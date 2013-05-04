@@ -36,26 +36,30 @@
 					</div>
 				</div>
 				<div class="main_sjfc_c_bod tab_bod">
-				  <ul class="ul_sjfc">
+				  <ul class="ul_sjfc2">
 				    <!--
 				    <div class="div_dgcm1"><a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;<a href="#">笔记本</a>&nbsp;&nbsp;<a href="#">服务器</a>&nbsp;&nbsp;<a href="#">PC配件</a>&nbsp;&nbsp;<a href="#">机箱电源</a>&nbsp;&nbsp;</div>
 				    -->
 				    <div class="div_dgcm2">
 				      <volist name="result" id="r" mod="2">
 				      <li>
-				      <div class="left_img"><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></div>
-				      <div class="right_div">
-					<h4><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank" style="color:#ff6000;"><!--{$r.name}--!></a></h4>
-					<p><!--{$r.remark}--!></p>
-					
-					<volist name="r.qqarr" id="rq" offset="0" length='2'>
-					<notempty name="rq">
-					<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$rq}--!>&site=qq&menu=yes">
-					  <img border="0" src="http://wpa.qq.com/pa?p=2:<!--{$rq}--!>:44" alt="点击这里给我留言" title="点击这里给我留言"></a>
-					</notempty>
+				      <div class="left_img">
+					<h2><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></h2>
+					<h3>
+					  <volist name="r.qqarr" id="rq" offset="0" length='2'>
+					  <notempty name="rq">
+					  <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$rq}--!>&site=qq&menu=yes">
+					    <img border="0" src="http://wpa.qq.com/pa?p=2:<!--{$rq}--!>:44" alt="点击这里给我留言" title="点击这里给我留言"></a>
+					  </notempty>
 					</volist>
-					
-				      </div>
+					</h3>
+                      </div>
+				      <div class="right_div">
+                        <h4><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank" style="color:#ff6000;"><!--{$r.name}--!></a></h4>
+                        <p>
+			<!--{$r.remark}--!>
+                        </p>
+		      </div>
 				      </li>
 				      </volist>
                         </div>

@@ -7,38 +7,30 @@
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
-<script type="text/javascript">
-    var i = 5
-    function onload()
-    {
-        var timeturn = document.getElementById('timeturn');
-        i--;
-        timeturn.innerHTML = i+'秒';
-        setTimeout("onload()",1100);
-        if(i==0)
-       {
-           window.location.href="__ROOT__";
-        }
-    }
- </script>
+<script>
+  var closepage = function(){
+    window.opener = null;
+    window.open('', '_self');
+    window.close();  
+  }
+</script>
+
 </head>
 <body id="body_index">
 <div id="warp_body">
-	
-    
-    <!--导航-->
-    <include file="Index:header" />
-    <!--主体-->
-    <div style=" clear:both; 521px; padding:50px 200px; margin:0 auto;">
-        <div><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/index404.gif" width="512" height="312" border="0" /></div>
-	<div style="text-align:center"><span id="timeturn">5秒</span>后自动跳转到首页，如果不想等待，请点击<a href="__ROOT__">这里</a>跳转</div>
-        <div class="clear"></div>
+  <include file="Index:header" />
+  <!--主体-->
+  <div class="clear" style="height:5px;"></div>
+    <div class="box404">
+        <ul class="ul404">
+        	<li><a href="__ROOT__">返回首页</a></li>
+            <li><a href="__ROOT__/search">我要搜索</a></li>
+            <li><a href="javascript:closepage();">关闭本页</a></li>
+        </ul>
+        <div class="clear" style="height:5px;"></div>
     </div>
-    <div class="clear" style="height:30px;"></div>
+    <div class="clear"></div>
     <include file="Index:footer" />
-  </div>
+</div>
 </body>
-<script>
-  onload();
-</script>
 </html>

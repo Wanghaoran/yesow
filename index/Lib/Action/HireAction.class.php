@@ -95,6 +95,37 @@ class HireAction extends CommonAction {
     $this -> assign('result_sellused', $result_sellused);
     /* ---------------- 二手滞销 ---------------- */
 
+    /* ---------------- 最新更新 ---------------- */
+    //出租八条
+    $where_new_update_store = array();
+    $where_new_update_store['sr.ischeck'] = 1;
+    $where_new_update_store['sr.endtime'] = array('egt', $time);
+    $result_new_update_store = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where_new_update_store) -> order('sr.updatetime DESC') -> limit(8) -> select();
+    $this -> assign('result_new_update_store', $result_new_update_store);
+    //二手八条
+    $where_new_update_used = array();
+    $where_new_update_used['su.ischeck'] = 1;
+    $where_new_update_used['su.endtime'] = array('egt', $time);
+    $result_new_update_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_new_update_used) -> order('su.updatetime DESC') -> limit(8) -> select();
+    $this -> assign('result_new_update_used', $result_new_update_used);
+    /* ---------------- 最新更新 ---------------- */
+
+    /* ---------------- 热门信息/本月最热 ---------------- */
+    //出租八条
+    $where_hot_store = array();
+    $where_hot_store['sr.ischeck'] = 1;
+    $where_hot_store['sr.endtime'] = array('egt', $time);
+    $result_hot_store = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where_hot_store) -> order('sr.clickcount DESC') -> limit(8) -> select();
+    $this -> assign('result_hot_store', $result_hot_store);
+    //二手八条
+    $where_hot_used = array();
+    $where_hot_used['su.ischeck'] = 1;
+    $where_hot_used['su.endtime'] = array('egt', $time);
+    $result_hot_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_hot_used) -> order('su.updatetime DESC') -> limit(8) -> select();
+    $this -> assign('result_hot_used', $result_hot_used);
+    /* ---------------- 热门信息/本月最热 ---------------- */
+    
+
 
     $this -> display();
   }
