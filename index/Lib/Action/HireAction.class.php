@@ -122,7 +122,7 @@ class HireAction extends CommonAction {
     $where_hot_used['su.ischeck'] = 1;
     $where_hot_used['su.endtime'] = array('egt', $time);
     $result_hot_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_hot_used) -> order('su.updatetime DESC') -> limit(8) -> select();
-    $this -> assign('result_hot_used', $result_hot_used);
+    $this -> assign('result_hot_used', $result_hot_used); 
     /* ---------------- 热门信息/本月最热 ---------------- */
     
 
@@ -205,6 +205,12 @@ class HireAction extends CommonAction {
     $result = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.tid,sr.csid,sr.title,srt.name,cs.name as csname,sr.addtime,sr.updatetime') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where) -> order('sr.updatetime DESC') -> select();
     $this -> assign('result', $result);
 
+    //推荐信息
+    $where_recommended['ischeck'] = 1;
+    $where_recommended['endtime'] = array('egt', $time);
+    $recommended_result = M('StoreRent') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(10) -> select();
+    $this -> assign('recommended_result', $recommended_result);
+
     $this -> display();
   }
 
@@ -241,6 +247,12 @@ class HireAction extends CommonAction {
     $result_comment = $comment -> table('yesow_store_rent_comment as src') -> field('m.name,src.content,src.addtime,src.floor,src.face') -> where($comment_where) -> join('yesow_member as m ON src.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
+
+    //推荐信息
+    $where_recommended['ischeck'] = 1;
+    $where_recommended['endtime'] = array('egt', time());
+    $recommended_result = M('StoreRent') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(10) -> select();
+    $this -> assign('recommended_result', $recommended_result);
 
     $this -> display();
   }
@@ -338,6 +350,12 @@ class HireAction extends CommonAction {
     $result = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.tid_one,su.csid,su.title,sut.name,cs.name as csname,su.addtime,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> limit($limit_row . ',' . $limit_lits) -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where) -> order('su.updatetime DESC') -> select();
     $this -> assign('result', $result);
 
+    //推荐信息
+    $where_recommended['ischeck'] = 1;
+    $where_recommended['endtime'] = array('egt', $time);
+    $recommended_result = M('SellUsed') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(10) -> select();
+    $this -> assign('recommended_result', $recommended_result);
+
     $this -> display();
   }
 
@@ -373,6 +391,12 @@ class HireAction extends CommonAction {
     $result_comment = $comment -> table('yesow_sell_used_comment as suc') -> field('m.name,suc.content,suc.addtime,suc.floor,suc.face') -> where($comment_where) -> join('yesow_member as m ON suc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
+
+    //推荐信息
+    $where_recommended['ischeck'] = 1;
+    $where_recommended['endtime'] = array('egt', time());
+    $recommended_result = M('SellUsed') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(10) -> select();
+    $this -> assign('recommended_result', $recommended_result);
 
     $this -> display();
   }

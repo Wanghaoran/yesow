@@ -142,7 +142,7 @@ class PublicAction extends Action {
       $const = $level_info['rmb_one'];
     }
     
-    echo '您的会员等级为[' . $_SESSION['member_level_name'] . ']，今天可以查看 ' . $level_info['freecompany'] . ' 条免费信息。目前剩余 ' . $number . ' 条，本 页面将消费 ' . $const . ' 元。信息有效期为' . $viewtime . '小时。请确认。 <br /><a onclick="quitview();">【取消】</a><a onclick="confirmview();">【确认查看】</a><br/><input type="checkbox" />不再提示此条消息';
+    echo '您的会员等级为[' . $_SESSION['member_level_name'] . ']，今天可以查看 ' . $level_info['freecompany'] . ' 条免费信息。目前剩余 ' . $number . ' 条，本 页面将消费 ' . $const . ' 元。信息有效期为' . $viewtime . '小时。请确认。 <br /><a onclick="quitview();">【取消】</a><a onclick="confirmview();">【确认查看】</a><br/><input type="checkbox" id="noshow" />不再提示此条消息';
   }
 
   //ajax确认查看速查资料
@@ -151,6 +151,10 @@ class PublicAction extends Action {
     if($_SESSION['rmb_total'] < 0 && !D('Monthly') -> ismonthly()){
       echo 4;
       return ;
+    }
+    //判断是否需要隐藏提示信息
+    if($_GET['noshow'] == 'true'){
+      session('company_noshow', 'true');
     }
     $isfree = false;//是否是免费查看
     $ismonthly = false;//是否是包月查看

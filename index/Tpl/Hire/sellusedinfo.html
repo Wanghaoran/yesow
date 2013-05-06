@@ -54,10 +54,6 @@
 		<a href="__ROOT__/hire/sellusedlist">二手滞销</a> &gt;
 		<span>二手滞销详情页</span> 
 	</div>
-    <!--广告方位-->
-    <div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116" style="margin-right:5px;"/></a><a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/ad_xwyd.jpg" width="232" height="116"/></a>
-	</div>
 	<!--人才招聘   旺铺转租-->
 	<div id="main16">
 		<div id="main16_t">
@@ -69,16 +65,9 @@
 				</div>
 				<div class="cat_bod">
 					<ul class="tjxx_ul">
-						<li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
-                        <li><a href="" >百威软件浙江分公百威软件浙江分，一楼转让公司司分，一楼转让公司司分，一楼转让公司司</a></li>
+					  <volist name="recommended_result" id="rr">
+				    <li><a href="__ROOT__/storerent/<!--{$rr.id}--!>" target="_blank"><!--{$rr.content}--!></a></li>
+				    </volist>
 					</ul>
                     <div class="clear"></div>		
 				</div>
@@ -123,14 +112,16 @@
                         <div class="clear"></div>	
                         <!--相关链接-->	
                         <div class="xgljbox">
-                        	<h2>相关链接</h2>
+			  <ul class="ul_list1">
+			    <h2>相关链接</h2>
                             <div class="clear"></div>
-                            <ul class="ul_list1">
                             <volist name="about_left" id="al">
 			      <li><a>[<!--{$al.name}--!>]</a><a href="__ROOT__/sellused/<!--{$al.id}--!>"><div><!--{$al.title}--!></div></a><a>[<!--{$al.csname}--!>地区]</a></li>
 			      </volist>
                             </ul>
-                            <ul class="ul_list2">
+			    <ul class="ul_list2">
+			      <h2>本地最新</h2>
+                            <div class="clear"></div>
 			      <volist name="about_right" id="ar">
 			      <li><a>[<!--{$ar.name}--!>]</a><a href="__ROOT__/sellused/<!--{$ar.id}--!>"><div><!--{$ar.title}--!></div></a><a>[<!--{$ar.csname}--!>地区]</a></li>
 			      </volist>

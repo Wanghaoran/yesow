@@ -32,6 +32,11 @@
 			  <option value="">全部</option>
 			  <option value="info">资讯评论</option>
 			  <option value="notice">公告评论</option>
+			  <option value="company">速查评论</option>
+			  <option value="storesent">旺铺评论</option>
+			  <option value="mediashow">动感评论</option>
+			  <option value="sellused">二手评论</option>
+			  <option value="shop">商城评论</option>
 			</select>
 			</li>
 		</ul>
@@ -103,7 +108,23 @@
 		  <eq name="r.type" value="3">
 		  <td style="color:red;">速查</td>
 		  <td><a href="__ROOT__/company/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
-		  </eq>		  
+		  </eq>
+		  <eq name="r.type" value="4">
+		  <td style="color:black;">旺铺</td>
+		  <td><a href="__ROOT__/storerent/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
+		  </eq>
+		 <eq name="r.type" value="5">
+		  <td style="color:purple;">动感</td>
+		  <td><a href="__ROOT__/companyshow/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
+		  </eq>
+		  <eq name="r.type" value="6">
+		  <td style="color:aqua;">二手</td>
+		  <td><a href="__ROOT__/sellused/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
+		  </eq>
+		  <eq name="r.type" value="7">
+		  <td style="color:fuchsia;">商城</td>
+		  <td><a href="__ROOT__/shop/<!--{$r.fid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>
+		  </eq>
 			  <td><!--{$r.floor}--!></td>			 
 			  <td><!--{$r.content}--!></td>			 			 
 			  <td><!--{$r.name|default="游客"}--!></td>			 

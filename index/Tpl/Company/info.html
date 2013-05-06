@@ -77,14 +77,40 @@ body {
       }
     });
   }
+//无需确认
+var clicknoview = function(){
+  $.ajax({
+      url: '__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>',
+      success: function(ress){
+        if(ress == 1){
+	  location.reload();
+	  }else if(ress == 2){
+	  location.reload();
+	  }else if(ress == 3){
+	  location.reload();
+	  }else if(ress == 4){
+	  alert('您的账户余额已低于0元,无权进行任何操作！');
+	  window.open('__ROOT__/index.php/public/authorprompt/mod/nomoney');
+	  }else{
+	  alert('扣款失败！账户余额不足！');
+	  }
+      }
+    });
+
+}
 
   var quitview = function(){
     $("#isblock2").css("display","none");
   }
 
-  var confirmview = function(){
+var confirmview = function(){
+  if($("#noshow").attr("checked")){
+    var urls = '__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>/noshow/true';
+  }else{
+    var urls = '__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>';
+  }
     $.ajax({
-      url:'__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>',
+      url: urls,
       success: function(ress){
         if(ress == 1){
 	  location.reload();
@@ -251,7 +277,11 @@ var onedownload = function(){
 			  <div style="position:relative; background:#E7EBEE; padding:5px 0; margin-bottom:10px;">
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 			    <eq name="isview" value="0">
+			    <if condition="$_SESSION['company_noshow'] eq 'true'">
+			    <a onclick="clicknoview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
+			    <else/>
 			    <a onclick="clickview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
+			    </if>
 			    <else/>
 			    <a style="float:left;font-size:12px;color:blue;text-indent:10px;" href="__ROOT__/member.php/index/userupdeta" target="_blank">如想查看更多信息,请点击</a>
 			    </eq>

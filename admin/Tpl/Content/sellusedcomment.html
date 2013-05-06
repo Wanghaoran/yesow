@@ -84,8 +84,12 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><a href="__ROOT__/hire/sellusedinfo/id/<!--{$r.suid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>			 
-			  <td><!--{$r.floor}--!></td>			 
-			  <td><img src="__PUBLIC__/index/default/style/images/face/<!--{$r.face}--!>.gif"></td>			 
+			  <td><!--{$r.floor}--!></td>
+			  <notempty name="r.face">
+			  <td><img src="__PUBLIC__/index/default/style/images/face/<!--{$r.face}--!>.gif"></td>
+			  <else/>
+			  <td>无</td>
+			  </notempty>
 			  <td><!--{$r.content}--!></td>			 			 
 			  <td><!--{$r.mname|default="游客"}--!></td>			 
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>			 

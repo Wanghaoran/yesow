@@ -85,7 +85,11 @@
 			  <td><!--{$r.id}--!></td>
 			  <td><a href="__ROOT__/shop/<!--{$r.sid}--!>" target="_blank" style="color:blue;"><!--{$r.title}--!></a></td>			 
 			  <td><!--{$r.floor}--!></td>
- 			  <td><img src="__PUBLIC__/index/default/style/images/face/<!--{$r.face}--!>.gif"></td>			  
+			  <notempty name="r.face">
+			  <td><img src="__PUBLIC__/index/default/style/images/face/<!--{$r.face}--!>.gif"></td>
+			  <else/>
+			  <td>无</td>
+			  </notempty>
 			  <td><!--{$r.content}--!></td>			  
 			  <td><!--{$r.name|default="游客"}--!></td>			 
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>			 

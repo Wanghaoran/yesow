@@ -89,7 +89,17 @@
 				</ul>
 				<div class="clear"></div>			
 			</div>
-            <div class="bl_gg"><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/bl_gg.gif" width="295" height="100" /></a></div>
+			<notempty name="ad_arr.right">
+  <div class="bl_gg">
+    <volist name="ad_arr.right" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
+    <else/>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </if>
+    </volist>
+  </div>
+  </notempty>
             <div class="main12_r_item2">
 				<div class="huang_ui">
 					<div class="huang_ui_r">
@@ -108,9 +118,17 @@
 		</div>
 		<div class="clear"></div>
 	</div>
-	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-	</div>
+	<notempty name="ad_arr.foot">
+  <div class="index_gg01">
+    <volist name="ad_arr.foot" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"></embed></a>
+    <else/>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </if>
+    </volist>
+  </div>
+  </notempty>
 	<include file="Index:footer" />
 </div>
 </body>

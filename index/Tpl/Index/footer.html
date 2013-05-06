@@ -22,6 +22,72 @@
 			</volist>
 			<div class="clear"></div>
 		      </div>
+
+
+              <div class="box_quicklink">
+              	<ul>
+                	<li>
+                    	<dl>
+                        	<dt>易搜首页</dt>
+                            <dd><a href="__ROOT__/index/noticelist" target="_blank">站点公告</a></dd>
+                            <dd><a href="#">最新更新</a></dd>
+                            <dd><a href="#">渠道动态</a></dd>
+                            <dd><a target="_blank" href="__ROOT__/member.php/help" >帮助中心</a></dd>
+                            <dd><a href="__ROOT__/aboutus" target="_blank">关于我们</a></dd>
+                            <dd><a href="__ROOT__/companyshow" target="_blank">动感传媒</a></dd>
+                        </dl>
+                    </li>
+                    <li>
+                    	<dl>
+                        	<dt>渠道黄页</dt>
+                            <dd><a target="_blank" href="__ROOT__/company/companylist">商家名录</a></dd>
+                            <dd><a href="__ROOT__/company/companyshow" target="_blank">商家风采</a></dd>
+                            <dd><a href="__ROOT__/company/keywordrank" target="_blank">关键排名</a></dd>
+                            <dd><a href="__ROOT__/clickrank" target="_blank">点击排名</a></dd>
+                            <dd><a href="__ROOT__/company/companyonline" target="_blank">商家在线</a></dd>
+                            <dd><a href="__ROOT__/scorerank" target="_blank">正负排名</a></dd>
+                        </dl>
+                    </li>
+                    <li>
+                    	<dl>
+                        	<dt>出租招聘</dt>
+                            <dd><a href="#">商家招聘</a></dd>
+                            <dd><a href="__ROOT__/storerent" target="_blank">旺铺租转</a></dd>
+                            <dd><a href="__ROOT__/hire/sellusedlist" target="_blank">二手买卖</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+                <ul>
+                	<li>
+                    	<dl>
+			  <dt>资讯文章</dt>
+			  <volist name="index_article_nav" id="ian" offset="0" length='6'>
+			  <dd><a href="__ROOT__/infolist/<!--{$ian.id}--!>" target="_blank"><!--{$ian.name}--!></a></dd>
+			  </volist>
+                        </dl>
+                    </li>
+                    <li>
+                    	<dl>
+			  <dt>代理加盟</dt>
+			  <volist name="index_agent_join" id="iaj" offset="0" length='5'>
+			  <dd><a href="__ROOT__/agent/<!--{$iaj.id}--!>" target="_blank"><!--{$iaj.title}--!></a></dd>
+			  </volist>
+                            <dd><a href="__ROOT__/agent/add" target="_blank">加盟申请</a></dd>
+                        </dl>
+                    </li>
+                    <li>
+                    	<dl>
+			  <dt>易搜商城</dt>
+			  <volist name="index_shop_nav" id="isn" offset="0" length='6'>
+			  <dd><a href="__ROOT__/Shop/index/cid/<!--{$isn.id}--!>" target="_blank"><!--{$isn.name}--!></a></dd>
+			  </volist>
+                        </dl>
+                    </li>
+                </ul>
+              </div>
+
+
+
 		      <div id="copyright">
 			<div class="copy_l"></div>
 			<div class="copy_r">
