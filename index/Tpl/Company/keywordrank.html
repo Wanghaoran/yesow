@@ -173,16 +173,9 @@
 					</div>
 				</div>
 				<ul class="bl_list">
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称这里是测试的商家名称</a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>
-					<li><a href=""><span>[<b>北京</b>]</span> 这里是测试的商家名称 </a><span class="time">2012-02-02</span></li>				
+				  <volist name="hot_result" id="hr">
+				  <li><a href="__ROOT__/company/<!--{$hr.id}--!>" target="_blank"><span>[<b><!--{$hr.csname}--!></b>]</span><!--{$hr.name}--!></a><span class="time"><!--{$hr.addtime|date="Y-m-d", ###}--!></span></li>
+				  </volist>
 				</ul>
 				<div class="clear"></div>			
 			</div>

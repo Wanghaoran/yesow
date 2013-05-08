@@ -19,7 +19,18 @@
 		<a href="__ROOT__/info">资讯文章</a> &gt;
 		<a href="__ROOT__/infolist/<!--{$onetitle.id}--!>"><!--{$onetitle.name}--!></a> &gt;
 		<span><!--{$twotitle}--!></span> 
-	</div>
+	      </div>
+	      <notempty name="ad_arr.top">
+  <div class="index_gg01">
+    <volist name="ad_arr.top" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"></embed></a>
+    <else/>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </if>
+    </volist>
+  </div>
+  </notempty>
 	<!--咨询文章分页-->
 	<div id="main12">
 		<div id="main12_l">
@@ -29,7 +40,7 @@
 			<div class="cat_bod">
 			  <ul class="cat_list_bod_img">
 			    <volist name="result_left_pic" id="rlp">
-			    <li><a href="__ROOT__/article/<!--{$rlp.aid}--!>" target="_blank" ><img src="<!--{$rlp.address}--!>" /></a></li>
+			    <li><a href="__ROOT__/article/<!--{$rlp.aid}--!>" target="_blank" ><img src="<!--{$rlp.address}--!>" alt="<!--{$rlp.title}--!>" /></a></li>
 			    </volist>
 				</ul>
 				<ul class="cat_list_title">
@@ -56,21 +67,24 @@
 				<ul class="bl_list main11_l_d">
 				  <volist name="result_hot_point" id="rhp">
 					<li>
-						<div class="bl_list_img">
-						  <img src="<!--{$rhp.address|default='__PUBLIC__/index/default/image/nopicture.gif'}--!>" width="80" height="60">
-						</div>
-						<a href="__ROOT__/article/<!--{$rhp.id}--!>">[<!--{$rhp.addtime|date="Y-m-d", ###}--!>] <!--{$rhp.title}--!> </a>
-					</li>
-					</volist>
+					<div class="bl_list_img">
+					  <empty name="rhp.address">
+					  <a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" style="height:100%;" ><img src="__PUBLIC__/index/default/image/nopicture.gif" width="80" height="60" title="[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!>" /></a>
+					  <else/>
+					  <a href="__ROOT__/article/<!--{$rhp.id}--!>" target="_blank" style="height:100%;" ><img src="<!--{$rhp.address}--!>" width="80" height="60" title="[<!--{$rhp.cname}--!>] <!--{$rhp.title}--!>" /></a>
+					  </empty>
+						  
+					</div>
+					<div class="bl_list_text"><!--{$rhp.content|strip_tags}--!></div>
+						</li>
+						</volist>
 				</ul>				
 			</div>
 		</div>
 		<div class="clear"></div>
 	</div>
 	<!--咨询文章分页结束-->
-	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-	</div>
+	
 	
 	<include file="Index:footer" />
 </div>

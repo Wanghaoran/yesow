@@ -208,7 +208,7 @@ class HireAction extends CommonAction {
     //推荐信息
     $where_recommended['ischeck'] = 1;
     $where_recommended['endtime'] = array('egt', $time);
-    $recommended_result = M('StoreRent') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(10) -> select();
+    $recommended_result = M('StoreRent') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(11) -> select();
     $this -> assign('recommended_result', $recommended_result);
 
     $this -> display();
@@ -353,7 +353,7 @@ class HireAction extends CommonAction {
     //推荐信息
     $where_recommended['ischeck'] = 1;
     $where_recommended['endtime'] = array('egt', $time);
-    $recommended_result = M('SellUsed') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(10) -> select();
+    $recommended_result = M('SellUsed') -> field('id,content') -> order('updatetime DESC') -> where($where_recommended) -> limit(11) -> select();
     $this -> assign('recommended_result', $recommended_result);
 
     $this -> display();

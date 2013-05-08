@@ -540,8 +540,8 @@ class CompanyAction extends CommonAction {
     $cid_name = $category -> getFieldByid($cid, 'name');
     $this -> assign('cid_name', $cid_name);
     
-    //读取此分类的最新10条速查数据
-    $result = M('Company') -> table('yesow_company as c') -> field('c.id,c.name,c.linkman,c.address,c.companyphone,c.manproducts,c.updatetime,c.addtime') -> where(array('c.ccid' => $cid)) -> order('c.addtime DESC') -> limit(10) -> select();
+    //读取此分类的最新12条速查数据
+    $result = M('Company') -> table('yesow_company as c') -> field('c.id,c.name,c.linkman,c.address,c.companyphone,c.manproducts,c.updatetime,c.addtime') -> where(array('c.ccid' => $cid)) -> order('c.addtime DESC') -> limit(12) -> select();
     //隐藏电话
     foreach($result as $key => $value){
       $result[$key]['companyphone'] = substr_replace($value['companyphone'], '*****', 8);
@@ -560,11 +560,60 @@ class CompanyAction extends CommonAction {
 
   //关键排名
   public function keywordrank(){
+    $company = M('Company');
+    //热门商家
+    $where_hot = array();
+    $where_hot['c.delaid']  = array('exp', 'is NULL');
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where_hot['c.csid'] = $csid;
+    }
+    $hot_result = $company -> table('yesow_company as c') -> field('c.id,c.name,cs.name as csname,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> order('clickcount DESC') -> where($wher_hot) -> limit(10) -> select();
+    $this -> assign('hot_result', $hot_result);
     $this -> display();
   }
 
   //商家风采
   public function companyshow(){
+    $companyType = M('CompanyType');
+    $company = M('Company');
+    //读取公司类型
+    $company_type = $companyType -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('company_type', $company_type);
+    //确定typeid
+    $tid = !empty($_GET['tid']) ? $_GET['tid'] : $company_type[0]['id'];
+    $this -> assign('tid', $tid);
+
+    //结果
+    $where = array();
+    $where['typeid'] = $tid;
+    $where['delaid']  = array('exp', 'is NULL');
+    $where['pic'] = array('neq', '');
+    //判断是否为分站数据
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where['csid'] = $csid;
+    }
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $company -> where($where) -> count();
+    $page = new Page($count, 10);//每页10条
+    $page->setConfig('header','条数据');
+    $show = $page -> show();
+    $this -> assign('show', $show);
+
+    $result = $company -> field('id,name,manproducts,pic') -> where($where) -> order('updatetime') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+
+    //热门商家
+    $where_hot = array();
+    $where_hot['c.delaid']  = array('exp', 'is NULL');
+    $where_hot['c.typeid'] = $tid;
+    if($csid = D('admin://ChildSite') -> getid()){
+      $where_hot['c.csid'] = $csid;
+    }
+    $hot_result = $company -> table('yesow_company as c') -> field('c.id,c.name,cs.name as csname,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> order('clickcount DESC') -> where($wher_hot) -> limit(10) -> select();
+    $this -> assign('hot_result', $hot_result);
+
+    
     $this -> display();
   }
 

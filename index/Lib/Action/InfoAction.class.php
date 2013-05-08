@@ -81,10 +81,10 @@ class InfoAction extends CommonAction {
     $this -> assign('twotitle', $conf['name']);
     $this -> assign('onetitle', M('InfoOneColumn') -> field('id,name') -> find($conf['oneid']));
     //左侧图片
-    $result_left_pic = $article_pic -> field('aid,address') -> where(array('colid' => $id)) -> order('addtime DESC') -> limit($conf['leftpicnum']) -> group('aid') -> select();
+    $result_left_pic = $article_pic -> table('yesow_info_article_pic as iap') -> field('iap.aid,iap.address,ia.title') -> join('yesow_info_article as ia ON iap.aid = ia.id') -> where(array('iap.colid' => $id)) -> order('iap.addtime DESC') -> limit($conf['leftpicnum']) -> group('iap.aid') -> select();
     $this -> assign('result_left_pic', $result_left_pic);
     //热门看点
-    $result_hot_point = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,ia.addtime,iap.address as address') -> where(array('ia.colid' => $id, 'ia.status' => 2)) -> join('(SELECT aid,address FROM yesow_info_article_pic GROUP BY aid) as iap ON iap.aid = ia.id') -> order('ia.hits DESC') -> limit($conf['hotpointnum']) -> select();
+    $result_hot_point = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,ia.addtime,iap.address as address,ia.content') -> where(array('ia.colid' => $id, 'ia.status' => 2)) -> join('(SELECT aid,address FROM yesow_info_article_pic GROUP BY aid) as iap ON iap.aid = ia.id') -> order('ia.hits DESC') -> limit($conf['hotpointnum']) -> select();
     $this -> assign('result_hot_point', $result_hot_point);
     //中间文章
     $where = array();

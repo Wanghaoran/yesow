@@ -24,7 +24,18 @@ $(function(){
 		<a href="__ROOT__">易搜首页</a> &gt;
 		<a href="__ROOT__/info">资讯文章</a> &gt;
 		<span><!--{$title}--!></span> 
-	</div>
+	      </div>
+	      <notempty name="ad_arr.top">
+  <div class="index_gg01">
+    <volist name="ad_arr.top" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"></embed></a>
+    <else/>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </if>
+    </volist>
+  </div>
+  </notempty>
 	<!--咨询文章分页-->
 	<div id="main11">
 		<div id="main11_l">
@@ -105,9 +116,7 @@ $(function(){
 		<div class="clear"></div>
 	</div>
 	<!--咨询文章分页结束-->
-	<div class="index_gg01">
-		<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-	</div>
+	
 	
 	<include file="Index:footer" />
 </div>

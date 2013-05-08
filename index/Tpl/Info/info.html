@@ -62,9 +62,17 @@ $(function(){
 			</div>
 			<div class="clear"></div>
 		</div>
-		<div class="index_gg01">
-			<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-		</div>
+		<notempty name="ad_arr.zhong">
+  <div class="index_gg01">
+    <volist name="ad_arr.zhong" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"></embed></a>
+    <else/>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </if>
+    </volist>
+  </div>
+  </notempty>
 		<div id="main10_m">
 		  <volist name="result_one_column" id="roc" mod="3">
 		  <eq name="mod" value="0">
@@ -111,20 +119,25 @@ $(function(){
 			      </eq>
 			      <eq name="result_one_column_num" value="$key">
 			      <div class="clear"></div>
-			      </eq>
-			      <eq name="mod" value="2">
-			<div class="index_gg01">
-				<a href="#"><img src="__PUBLIC__/index/<!--{$templatename}--!>/image/gg1.jpg" width="950" height="90"></a>
-			      </div>
-			      </eq>
-
+			      </eq> 
 			</volist>
 			
 
 			
 		</div>
 		<div id="main10_d"></div>
-	</div>
+	      </div>
+	      <notempty name="ad_arr.food">
+  <div class="index_gg01">
+    <volist name="ad_arr.food" id="adt">
+    <if condition="strrchr($adt['address'], '.') == '.swf'">
+    <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"></embed></a>
+    <else/>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    </if>
+    </volist>
+  </div>
+  </notempty>
 	<!--咨询文章结束-->
 
 

@@ -654,7 +654,7 @@ class ShopAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.linkman,ms.companyphone,ms.starttime,ms.endtime,cc.name as ccname,ms.sort,ms.ischeck') -> join('yesow_company_category as cc ON ms.ccid_one = cc.id') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('ms.csid DESC,ms.sort ASC') -> select();
+    $result = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.linkman,ms.companyphone,ms.starttime,ms.endtime,cc.name as ccname,ms.sort,ms.ischeck') -> join('yesow_company_category as cc ON ms.ccid_one = cc.id') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('ms.updatetime DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);

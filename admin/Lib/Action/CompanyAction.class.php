@@ -101,6 +101,29 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //查看速查形象图片
+  public function editcompanypic(){
+    if($_GET['type'] == 'notcheck'){
+      $image = M('CompanyAudit') -> getFieldByid($this -> _get('id', 'intval'), 'pic');
+    }else if($_GET['type'] == 'check'){
+      $image = M('Company') -> getFieldByid($this -> _get('id', 'intval'), 'pic');
+    }
+    $this -> assign('image', $image);
+    $this -> display();
+  }
+
+  //删除速查形象图片
+  public function delcompanypic(){
+    $where['id'] = $this -> _get('id', 'intval');
+    $data['pic'] = '';
+    if($_GET['type'] == 'notcheck'){
+      M('CompanyAudit') -> where($where) -> save($data);
+    }else if($_GET['type'] == 'check'){
+      M('Company') -> where($where) -> save($data);
+    }
+    $this -> success(L('DATA_DELETE_SUCCESS'));
+  }
+
   //速查未审数据
   public function notcheckcompany(){
     $companyaudit = M('CompanyAudit');
@@ -228,7 +251,7 @@ class CompanyAction extends CommonAction {
     $id = !empty($id) ? $id : $this -> _get('id', 'intval');
     $this -> assign('id', $id);
     //结果
-    $result_edit = $companyaudit -> field('name,address,manproducts,companyphone,mobilephone,linkman,email,qqcode,csid,csaid,typeid,ccid,website,keyword,content,addname,addtel,addunit,addaddress,addemail,addnumberid,jointime') -> find($id);
+    $result_edit = $companyaudit -> field('name,address,manproducts,companyphone,mobilephone,linkman,email,qqcode,csid,csaid,typeid,ccid,website,pic,keyword,content,addname,addtel,addunit,addaddress,addemail,addnumberid,jointime') -> find($id);
     $this -> assign('result_edit', $result_edit);
     //根据csid 查分站下地区列表
     $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();
@@ -409,7 +432,7 @@ class CompanyAction extends CommonAction {
     $id = !empty($id) ? $id : $this -> _get('id', 'intval');
     $this -> assign('id', $id);
     //结果
-    $result_edit = $companyaudit -> field('name,address,manproducts,companyphone,mobilephone,linkman,email,qqcode,csid,csaid,typeid,ccid,website,keyword,content,addname,addtel,addunit,addaddress,addemail,addnumberid,jointime,cid') -> find($id);
+    $result_edit = $companyaudit -> field('name,address,manproducts,companyphone,mobilephone,linkman,email,pic,qqcode,csid,csaid,typeid,ccid,website,keyword,content,addname,addtel,addunit,addaddress,addemail,addnumberid,jointime,cid') -> find($id);
     $this -> assign('result_edit', $result_edit);
     //根据cid，查询原公司信息
     $company = M('Company');
@@ -765,7 +788,7 @@ class CompanyAction extends CommonAction {
     $id = !empty($id) ? $id : $this -> _get('id', 'intval');
     $this -> assign('id', $id);
     //结果
-    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname') -> where(array('c.id' => $id)) -> find();
+    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.pic,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname') -> where(array('c.id' => $id)) -> find();
     $this -> assign('result_edit', $result_edit);
     //根据csid 查分站下地区列表
     $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();

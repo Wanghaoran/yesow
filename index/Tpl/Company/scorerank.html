@@ -19,9 +19,9 @@
 		<a href="__ROOT__/company">渠道黄页</a> &gt;
 		<span>点击排名</span> 
 	</div>
-    <div class="clear5"></div>
+    <div class="clear"></div>
 <notempty name="ad_arr.top">
-  <div class="index_gg01">
+  <div class="index_gg01" style="padding-top:0;">
     <volist name="ad_arr.top" id="adt">
     <if condition="strrchr($adt['address'], '.') == '.swf'">
     <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>

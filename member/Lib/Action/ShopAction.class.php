@@ -118,7 +118,7 @@ class ShopAction extends CommonAction {
       $order_rmb_update = M('MemberLevel') -> getFieldByid($order_monthly, 'updatemoney');
       //如果订单会员RMB阀值小于当前等级值，则退出
       if($order_rmb_update <= $now_rmb_update){
-	R('Register/errorjump',array(L('MONTHLY_LEVEL_ERROR')));
+	R('Register/errorjump',array(L('MONTHLY_LEVEL_ERROR'), '__ROOT__/member.php/shop/buymonthly'));
       }
     }
 

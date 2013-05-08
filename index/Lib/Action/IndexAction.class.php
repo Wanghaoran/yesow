@@ -326,17 +326,17 @@ class IndexAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     
-    //热门商家（读取点击量倒序的15条信息）
+    //热门商家（读取点击量倒序的24条信息）
     $where_hot = array();
     if($csid){
       $where_hot['ms.csid'] = $csid;
       $where_hot['ms.ischeck'] = 1;
     }
-    $result_hot = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.updatetime') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where($where_hot) -> limit(15) -> order('ms.clickcount DESC') -> select();
+    $result_hot = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.updatetime') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where($where_hot) -> limit(24) -> order('ms.clickcount DESC') -> select();
     $this -> assign('result_hot', $result_hot);
-    //最新评论（15条最新评论）
+    //最新评论（24条最新评论）
     $mediashow_comment = M('MediaShowComment');
-    $result_comment = $mediashow_comment -> table('yesow_media_show_comment as msc') -> field('ms.id,msc.content,msc.addtime,cs.name as csname') -> join('yesow_media_show as ms ON msc.msid = ms.id') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where(array('msc.status' => 2)) -> limit(15) -> order('msc.addtime DESC') -> select();
+    $result_comment = $mediashow_comment -> table('yesow_media_show_comment as msc') -> field('ms.id,msc.content,msc.addtime,cs.name as csname') -> join('yesow_media_show as ms ON msc.msid = ms.id') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> where(array('msc.status' => 2)) -> limit(24) -> order('msc.addtime DESC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> display();
   }
