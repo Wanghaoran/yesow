@@ -23,6 +23,9 @@ class ShopAction extends CommonAction {
     //查20个最新商品
     $result_new_shop = $shop -> field('id,title') -> order('addtime DESC') -> limit(20) -> select();
     $this -> assign('result_new_shop', $result_new_shop);
+    //20个热门商品
+    $result_hot_shop = $shop -> field('id,title') -> order('clickcount DESC') -> limit(20) -> select();
+    $this -> assign('result_hot_shop', $result_hot_shop);
 
     $this -> display();
   
@@ -47,6 +50,11 @@ class ShopAction extends CommonAction {
     //查20个最新商品
     $result_new_shop = $shop -> field('id,title') -> order('addtime DESC') -> limit(20) -> select();
     $this -> assign('result_new_shop', $result_new_shop);
+
+    //20个热门商品
+    $result_hot_shop = $shop -> field('id,title') -> order('clickcount DESC') -> limit(20) -> select();
+    $this -> assign('result_hot_shop', $result_hot_shop);
+
     //查询4个同类商品
     $result_like = $shop -> field('id,title,small_pic,marketprice,promotionprice') -> where(array('cid_one' => $result['cid_one'], 'id' => array('neq', $result['id']))) -> order('addtime DESC') -> limit(4) -> select();
     $this -> assign('result_like', $result_like);

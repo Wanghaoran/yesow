@@ -19,7 +19,7 @@ class HireAction extends CommonAction {
     $where_sort['sr.ischeck'] = 1;
     $where_sort['srs.starttime'] = array('elt', $time);
     $where_sort['srs.endtime'] = array('egt', $time);
-    $result_sort = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> limit(17) -> where($where_sort) -> order('srs.sort DESC') -> select();
+    $result_sort = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> limit(16) -> where($where_sort) -> order('srs.sort DESC') -> select();
     $this -> assign('result_sort', $result_sort);
     //推荐的数量
     $sort_num = count($result_sort);
@@ -34,7 +34,7 @@ class HireAction extends CommonAction {
     }
     
     //非推荐读取的数量
-    $not_sort_num = 17 - $sort_num;
+    $not_sort_num = 16 - $sort_num;
     //再读取其他商家
     $store_rent = M('StoreRent');
     //过滤掉推荐中已有的商家
@@ -62,7 +62,7 @@ class HireAction extends CommonAction {
     $where_sort['su.ischeck'] = 1;
     $where_sort['sus.starttime'] = array('elt', $time);
     $where_sort['sus.endtime'] = array('egt', $time);
-    $result_sellused_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(17) -> where($where_sort) -> order('sus.sort DESC') -> select();
+    $result_sellused_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(16) -> where($where_sort) -> order('sus.sort DESC') -> select();
     $this -> assign('result_sellused_sort', $result_sellused_sort);
     //推荐的数量
     $sellused_sort_num = count($result_sellused_sort);
@@ -77,7 +77,7 @@ class HireAction extends CommonAction {
     }
     
     //非推荐读取的数量
-    $sellused_not_sort_num = 17 - $sellused_sort_num;
+    $sellused_not_sort_num = 16 - $sellused_sort_num;
     //再读取其他商家
     $sell_used = M('SellUsed');
     //过滤掉推荐中已有的商家

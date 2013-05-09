@@ -310,7 +310,7 @@ dl.minglu_nav_pop{
 .main07_r_bod_list ul li dt a,.main07_r_bod_list ul li dt a:visited{ display:inline-block; font-size:14px; color:#0428a2;}
 
 /**分页**/
-.page{ padding:0px 0; text-align:right;}
+.page{ padding:5px 0; text-align:right;}
 .page a, .page span{display:inline-block; margin-left:5px; height:20px; line-height:20px; padding:0 8px; border:1px solid #ccc;
 font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 }
@@ -751,14 +751,14 @@ ul.top_sjgxxx li p a.a_zengjia{ color:#039701; font-weight:bold;  font-size:14px
 .huang_ui_c h1{ background:url(images/clicktitlebg.gif) no-repeat; width:140px;  height:30px; line-height:30px; font-size:12px; overflow:hidden; text-align:center; font-size:14px;}
 .huang_ui_c h1 span{ color:#F00; margin-left:10px;}
 ul.click_list{ width:450px; border:1px solid #f60; border-top:0; padding:9px;}
-ul.click_list li{ float:left; width:450px; height:22px; margin-top:5px;}
-ul.click_list li img{ float:left; margin-top:5px;}
-ul.click_list li em{ margin:0 10px; float:left; font-style: normal;font-size:14px;font-family: Arial;width:20px; height:21px; text-align:center;}
+ul.click_list li{ float:left; width:450px; height:22px; margin-top:2px;}
+ul.click_list li img{ float:left; margin-top:2px;}
+ul.click_list li em{ margin:2px 10px 0 10px; float:left; font-style: normal;font-size:12px;font-family: Arial;width:20px; height:21px; text-align:center;}
 ul.click_list li.click_top3 em{background:url(images/numberbg.gif) top center no-repeat; color:#fff;}
 ul.click_list li.click_last3 em{background:url(images/numberbg.gif) bottom center no-repeat; color:#fff;}
-ul.click_list li a{ float:left; font-size:14px; font-weight:bold; max-width:200px;width:auto!important; _width:200px;  height:22px; line-height:22px; display:block; word-break:break-all; overflow:hidden;}
-ul.click_list li span.click_area{ color:#F00;font-size:14px; font-weight:bold; float:left; margin-left:5px;}
-ul.click_list li span.clicknum{ float:right; margin-right:5px; color:#F00; font-size:14px; font-weight:bold;}
+ul.click_list li a{ float:left; font-size:12px; font-weight:bold; max-width:200px;width:auto!important; _width:200px;  height:22px; line-height:22px; display:block; word-break:break-all; overflow:hidden;}
+ul.click_list li span.click_area{ color:#F00;font-size:12px; font-weight:bold; float:left; margin-left:5px;}
+ul.click_list li span.clicknum{ float:right; margin-right:5px; color:#F00; font-size:12px; font-weight:bold;}
 
 .boxzhengfu{ width:936px; border:#ff9900 2px solid; padding:5px;}
 .boxzhengfu span.span_zf1{ color:#000; font-weight:bold; background:url(images/icon_book.jpg) left center no-repeat; padding-left:20px;}
@@ -878,7 +878,7 @@ ul.ul_parter li span.littlespan{ font-size:12px; padding:5px 0 0 18px;}
 #page_navigation a.jp-current, a.jp-current:hover,
 #page_navigation a.jp-disabled, a.jp-disabled:hover {cursor: default; background: none;}
 #page_navigation span { margin: 0 5px; }
-ul.ul_zxjms{ padding:10px;}
+ul.ul_zxjms{ padding:5px 10px;}
 ul.ul_zxjms li{ float:left; width:170px; height:20px; line-height:20px; text-align:left; overflow:hidden;}
 
 h4.h4_sqxz{ text-align:center; color:#666; height:40px; line-height:40px;}
@@ -942,7 +942,7 @@ ul.main14_l_d li a{float:left;}
 .switchBox2 dt a.on{ background:url(images/btn_regbg.gif) left bottom no-repeat; text-decoration: none; color:#fff;}
 .switchBox2 dd{clear:both;display:none;height:auto;line-height:20px;padding:10px 10px 0 10px;font-family:"宋体";}
 
-.scgw_box{ float:left; width:295px; margin:0 10px 10px 0; height:223px; border:#d8d8d8 1px solid; border-bottom:none; padding:10px; background:url(images/scgwbg.gif) bottom repeat-x;}
+.scgw_box{ float:left; width:295px; margin:0 10px 5px 0; height:223px; border:#d8d8d8 1px solid; border-bottom:none; padding:10px; background:url(images/scgwbg.gif) bottom repeat-x;}
 ul.ul_scgw{ width:295px;}
 ul.ul_scgw li{ float:left;margin-bottom:5px; width:295px;}
 ul.ul_scgw li h2{ font-size:12px; font-weight:bold; color:#000; height:20px; line-height:20px; }

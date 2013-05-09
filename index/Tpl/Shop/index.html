@@ -50,7 +50,7 @@
         <div class="cat_header">
             <h3>网上商城</h3>
         </div>
-        <div class="cat_bod">
+        <div class="cat_bod" style="padding-top:0;">
         	<div id="main14_l">
                 <div class="main14_l_d">
                     <div class="huang_ui">
@@ -66,6 +66,21 @@
 		      </volist>
                     </ul>
                     <div class="clear10"></div>
+		  </div>
+		  <div class="main14_l_d">
+                    <div class="huang_ui">
+                        <div class="huang_ui_r">
+                            <div class="huang_ui_c">
+                                <h6>热门商品</h6>
+                            </div>
+                        </div>
+                    </div>
+		    <ul class="main14_l_d">
+		      <volist name="result_hot_shop" id="rhs">
+		      <li><a href="__ROOT__/shop/<!--{$rhs.id}--!>"><!--{$rhs.title}--!></a></li>
+		      </volist>
+                    </ul>
+                    <div class="clear10"></div>
                 </div>
             </div>
             <div id="main14_r">
@@ -75,15 +90,15 @@
                             <!--nav start-->
 			    <dt>
 			    <empty name="Think.get.cid">
-			    <a href="__ACTION__" class="on">商城首页</a>
+			    <a href="__ROOT__/shoplist" class="on">商城首页</a>
 			    <else/>
-			    <a href="__ACTION__">商城首页</a>
+			    <a href="__ROOT__/shoplist">商城首页</a>
 			    </empty>
 			    <volist name="index_shop_nav" id="isn">
 			    <eq name="Think.get.cid" value="$isn.id">
-			    <a href="__ACTION__/cid/<!--{$isn.id}--!>" class="on"><!--{$isn.name}--!></a>
+			    <a href="__ROOT__/shoplist/<!--{$isn.id}--!>" class="on"><!--{$isn.name}--!></a>
 			    <else/>
-			    <a href="__ACTION__/cid/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
+			    <a href="__ROOT__/shoplist/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
 			    </eq>
 			    </volist>
                             </dt>

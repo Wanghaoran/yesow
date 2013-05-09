@@ -10,7 +10,7 @@ class AgentAction extends CommonAction {
       $where['csid'] = $csid;
     }
     $where['delaid'] = array('exp', 'is NULL');
-    $new_company = M('Company') -> field('id,name') -> where($where) -> order('updatetime DESC') -> limit(6) -> select();
+    $new_company = M('Company') -> field('id,name') -> where($where) -> order('updatetime DESC') -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
 

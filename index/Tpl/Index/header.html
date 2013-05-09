@@ -175,9 +175,9 @@ var opensearch = function(key_word){
     	<div id="nav02">
 	  <ul id="nav02_ul">
 	    <if condition="MODULE_NAME eq 'Index'">
-	    <li class="li_weizhi1"><a href="__ROOT__/index/noticelist" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a target="_blank" href="__ROOT__/member.php/help" >帮助中心</a><a href="__ROOT__/aboutus" >关于我们</a><a href="__ROOT__/companyshow" >动感传媒</a></li>
+	    <li class="li_weizhi1"><a href="__ROOT__/noticelist" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a target="_blank" href="__ROOT__/member.php/help" >帮助中心</a><a href="__ROOT__/aboutus" >关于我们</a><a href="__ROOT__/companyshow" >动感传媒</a></li>
 	    <else/>
-	    <li class="none li_weizhi1"><a href="__ROOT__/index/noticelist" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a target="_blank" href="__ROOT__/member.php/help" >帮助中心</a><a href="__ROOT__/aboutus" >关于我们</a><a href="__ROOT__/companyshow" >动感传媒</a></li>
+	    <li class="none li_weizhi1"><a href="__ROOT__/noticelist" >站点公告</a><a href="" >最新更新</a><a href="" >渠道动态</a><a target="_blank" href="__ROOT__/member.php/help" >帮助中心</a><a href="__ROOT__/aboutus" >关于我们</a><a href="__ROOT__/companyshow" >动感传媒</a></li>
 	    </if>
 	    <if condition="MODULE_NAME eq 'Company'">
 	    <li class="li_weizhi2"><a target="_blank" href="__ROOT__/company/companylist" >商家名录</a><a href="__ROOT__/company/companyshow" target="_blank" >商家风采</a><a href="__ROOT__/company/keywordrank" target="_blank" >关键排名</a><a href="__ROOT__/clickrank" target="_blank" >点击排名</a><a href="__ROOT__/company/companyonline" target="_blank" >商家在线</a><a href="__ROOT__/scorerank" target="_blank" >正负排名</a></li>
@@ -187,9 +187,9 @@ var opensearch = function(key_word){
 
 	    <li class="none li_weizhi3"><a href="" >第三个01</a><a href="" >第三个02</a><a href="" >第三个03</a><a href="" >第三个04</a></li>
 	    <if condition="MODULE_NAME eq 'Hire'">
-	    <li class="li_weizhi4"><a href="" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/hire/sellusedlist" target="_blank" >二手买卖</a></li>
+	    <li class="li_weizhi4"><a href="" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/sellused" target="_blank" >二手买卖</a></li>
 	    <else/>
-	    <li class="none li_weizhi4"><a href="" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/hire/sellusedlist" target="_blank" >二手买卖</a></li>
+	    <li class="none li_weizhi4"><a href="" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/sellused" target="_blank" >二手买卖</a></li>
 	    </if>
 				<if condition="MODULE_NAME eq 'Info'">
 				<li class="li_weizhi5"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
@@ -205,13 +205,13 @@ var opensearch = function(key_word){
 				<if condition="MODULE_NAME eq 'Shop'">
 				<li class="li_weizhi8">
 				<volist name="index_shop_nav" id="isn">
-				<a href="__ROOT__/Shop/index/cid/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
+				<a href="__ROOT__/shoplist/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
 				</volist>
 				</li>
 				<else/>
 				<li class="none li_weizhi8">
 				<volist name="index_shop_nav" id="isn">
-				<a href="__ROOT__/Shop/index/cid/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
+				<a href="__ROOT__/shoplist/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
 				</volist>
 				</li>
 				</if>				
@@ -235,5 +235,5 @@ var opensearch = function(key_word){
         	<div id="nav03_r"></div>
             <div class="clear"></div>
 	  </div>
-
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=&amp;style=3&amp;fs=4&amp;textcolor=#fff&amp;bgcolor=#F60&amp;text=分享到"></script>
 	  <include file="Index:qqonline" />

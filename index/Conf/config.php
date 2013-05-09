@@ -22,12 +22,15 @@ $app_config = array(
     'aboutus' => 'index/aboutus',//关于我们
     'agent/:id\d' => 'agent/index',//代理加盟
     'shop/:id\d' => 'shop/info',//商品详情
+    'shoplist/:cid' => 'shop/index',//商品列表
+    'shoplist' => 'shop/index',//商品列表
     'companyshow/:id\d' => 'index/companyshowinfo',//动感传媒详情
     'companyshow' => 'index/companyshow',//动感传媒列表页
     'storerent/:id\d' => 'hire/storerentinfo',//旺铺出租详情页
     'storerent' => 'hire/storerentlist',//旺铺出租列表页
     'sellused/:id\d' => 'hire/sellusedinfo',//二手滞销详情页
     'sellused' => 'hire/sellusedlist',//二手滞销列表页
+    'applylink' => 'index/applylink',//申请友链
   ),
 );
 
