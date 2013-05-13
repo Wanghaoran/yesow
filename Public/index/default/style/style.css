@@ -760,7 +760,7 @@ ul.click_list li a{ float:left; font-size:12px; font-weight:bold; max-width:200p
 ul.click_list li span.click_area{ color:#F00;font-size:12px; font-weight:bold; float:left; margin-left:5px;}
 ul.click_list li span.clicknum{ float:right; margin-right:5px; color:#F00; font-size:12px; font-weight:bold;}
 
-.boxzhengfu{ width:936px; border:#ff9900 2px solid; padding:5px;}
+.boxzhengfu{ width:936px; border:#ff9900 2px solid; padding:5px; margin-top:5px;}
 .boxzhengfu span.span_zf1{ color:#000; font-weight:bold; background:url(images/icon_book.jpg) left center no-repeat; padding-left:20px;}
 .boxzhengfu span.span_zf2{ color:#f00; font-weight:bold;}
 
@@ -1135,7 +1135,7 @@ table.table_detail td a.tuijian{display:inline-block; height:30px; line-height:3
 table.table_detail td a.new{display:inline-block; height:30px; line-height:30px; background:url(images/new.gif) no-repeat right center; padding-right:26px; _background:url(images/new.gif) no-repeat right 10px; text-decoration:none;}
 table.table_detail td a.fenlei{ color:#0004f1;}
 
-.czwpbox1{width:680px; height:30px; border-bottom:#fb0019 1px dashed; margin:10px auto; padding:20px 0;}
+.czwpbox1{width:680px; height:50px; line-height:25px; border-bottom:#fb0019 1px dashed; margin:10px auto; }
 .czwpbox1 span{ float:left; font-weight:800;}
 span.span_czwp1{ color:#fe0104; font-size:16px; margin-right:10px;}
 span.span_czwp1 a{color:#fe0104; text-decoration:none;}

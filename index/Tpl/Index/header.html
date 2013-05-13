@@ -6,7 +6,7 @@
       $("#result_id").hide() ;
     }else{
       $.ajax({
-	url:'__APP__/public/ajaxkeyword/keyword/' + val,
+	url:'__APP__/public/ajaxkeyword/keyword/' + encodeURIComponent(val),
 	success: function(ress){
 	  var _nstr = '<table width="100%">';
 	  $.each(ress, function(i, res){

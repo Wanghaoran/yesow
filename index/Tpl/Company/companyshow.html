@@ -53,7 +53,13 @@
 					  <div>
 					    <volist name="result" id="r">
 					    <li>
-					    <div class="left_img"><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$r.pic}--!>" /></a></div>
+					    <div class="left_img">
+					      <if condition="strrchr($r['pic'], '.') == '.swf'">
+					      <a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank"><embed src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$r.pic}--!>" width="81" height="80"></embed></a>
+					      <else/>
+					      <a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$r.pic}--!>" /></a>
+					      </if>
+					    </div>
 					    <div class="right_div">
 					      <h4><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" style="font-size:12px;"><!--{$r.name}--!></a></h4>
 					      <p><!--{$r.manproducts}--!></p>

@@ -8,11 +8,15 @@ class CompanyAction extends CommonAction {
     $upload -> savePath = C('COMPANY_PIC_PATH') ;//设置上传目录
     $upload -> autoSub = false;//设置使用子目录保存上传文件
     $upload -> saveRule = 'uniqid';
+    $upload -> allowExts  = array('jpg', 'gif', 'swf', 'jpeg');// 设置附件上传类型
+    $upload -> maxSize  = 409600 ;// 设置附件上传大小
+
+    
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
       return $info[0]['savename'];
     }else{
-      return $upload;
+      return false;
     }
   }
 
@@ -79,7 +83,11 @@ class CompanyAction extends CommonAction {
       }
       $companyaudit -> type = '添加';
       if(!empty($_FILES['pic']['name'])){
-	$companyaudit -> pic = $this -> upload();
+	if($pics = $this -> upload()){
+	  $companyaudit -> pic = $pics;
+	}else{
+	  R('Public/errorjump',array(L('DATA_UPLOAD_ERROR')));
+	}
       }
       if($companyaudit -> add()){
 	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");location.href="'.__ACTION__.'";</script>';
@@ -337,7 +345,11 @@ class CompanyAction extends CommonAction {
       }
       $companyaudit -> type = '改错';
       if(!empty($_FILES['pic']['name'])){
-	$companyaudit -> pic = $this -> upload();
+	if($pics = $this -> upload()){
+	  $companyaudit -> pic = $pics;
+	}else{
+	  R('Public/errorjump',array(L('DATA_UPLOAD_ERROR')));
+	}
       }
       if($companyaudit -> add()){
 	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");history.go(-1);</script>';
@@ -600,7 +612,7 @@ class CompanyAction extends CommonAction {
     $show = $page -> show();
     $this -> assign('show', $show);
 
-    $result = $company -> field('id,name,manproducts,pic') -> where($where) -> order('updatetime') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $company -> field('id,name,manproducts,pic') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
 
     //热门商家

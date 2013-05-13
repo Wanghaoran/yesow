@@ -243,7 +243,11 @@ var onedownload = function(){
 				  <li class="li_img">
 				  <a href="#">
 				    <notempty name="result.pic">
-				    <img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="343" height="275" border="0" />
+				    <if condition="strrchr($result['pic'], '.') == '.swf'">
+				    <embed src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="343" height="275"></embed>
+				    <else/>
+				     <img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="343" height="275" border="0" />
+				    </if>
 				    <else/>
 				    <img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" />
 				    </notempty>

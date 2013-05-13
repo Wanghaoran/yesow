@@ -31,6 +31,7 @@ return array(
   'DATA_UPDATE_ERROR' => '数据更新失败',
   'DATA_ADD_SUCCESS' => '数据添加成功',
   'DATA_ADD_ERROR' => '数据添加失败',
+  'DATA_UPLOAD_ERROR' => '您上传的文件有误，请核对后按规格上传',
   'DATA_DELETE_SUCCESS' => '数据删除成功',
   'DATA_DELETE_ERROR' => '数据删除失败',
   'STATUS_ERROR' => '状态码错误',

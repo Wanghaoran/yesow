@@ -107,6 +107,7 @@
       <p style="width:90%"><label style="width:70px;">形象照片：</label>
       <input type="file" class="textInput" name="image" />
       <notempty name="result_edit.pic">
+      <input type="hidden" name="pic" value="<!--{$result_edit.pic}--!>" />
       <a href="__URL__/editcompanypic/id/<!--{$id}--!>/type/notcheck" target="dialog">点击查看</a>
       <a href="__URL__/delcompanypic/id/<!--{$id}--!>/type/notcheck" target="ajaxTodo">点击删除</a>
       </notempty>

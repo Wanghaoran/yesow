@@ -7,11 +7,12 @@ class CompanyAction extends CommonAction {
     $upload -> savePath = C('COMPANY_PIC_PATH') ;//设置上传目录
     $upload -> autoSub = false;//设置使用子目录保存上传文件
     $upload -> saveRule = 'uniqid';
+    $upload -> allowExts  = array('jpg', 'gif', 'swf', 'jpeg');// 设置附件上传类型
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
       return $info[0]['savename'];
     }else{
-      return $upload;
+      return false;
     }
   }
 
@@ -215,7 +216,11 @@ class CompanyAction extends CommonAction {
       $data['id'] = $_POST['id'];
       $data['ischeck'] = 1;
       if(!empty($_FILES['image']['name'])){
-	$data['pic'] = $this -> upload();
+	if($pics = $this -> upload()){
+	  $data['pic'] = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
       }
       $companyaudit -> save($data);
       unset($_POST['id']);
@@ -396,7 +401,11 @@ class CompanyAction extends CommonAction {
       $data['id'] = $_POST['id'];
       $data['ischeck'] = 1;
       if(!empty($_FILES['image']['name'])){
-	$data['pic'] = $this -> upload();
+	if($pics = $this -> upload()){
+	  $data['pic'] = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
       }
       $companyaudit -> save($data);
       $_POST['id'] = $companyaudit -> getFieldByid($this -> _post('id', 'intval'), 'cid');
@@ -567,7 +576,11 @@ class CompanyAction extends CommonAction {
 	$this -> error($company -> getError());
       }
       if(!empty($_FILES['image']['name'])){
-	$company -> pic = $this -> upload();
+	if($pics = $this -> upload()){
+	  $company -> pic = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
       }
       $company -> updateaid = session(C('USER_AUTH_KEY'));
       if($company -> save()){
@@ -775,7 +788,11 @@ class CompanyAction extends CommonAction {
 	$this -> error($company -> getError());
       }
       if(!empty($_FILES['image']['name'])){
-	$company -> pic = $this -> upload();
+	if($pics = $this -> upload()){
+	  $company -> pic = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
       }
       $company -> updateaid = session('admin_name');
       $company -> updatetime = time();

@@ -261,6 +261,7 @@ class PublicAction extends Action {
   //ajax获取搜索关键词返回
   public function ajaxkeyword(){
     $keyword = $this -> _get('keyword');
+    $keyword = iconv('GBK', 'UTF-8', $keyword);
     $audit_serach = M('AuditSearchKeyword');
     $where = array();
     $where['name'] = array('LIKE', '%' . $keyword . '%');
