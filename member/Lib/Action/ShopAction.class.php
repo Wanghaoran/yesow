@@ -157,11 +157,11 @@ class ShopAction extends CommonAction {
     $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
     //未设置交易密码的先去设置交易密码
     if(!$pay_pwd){
-      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR')));
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
     }
     //交易密码错误
     if($pay_pwd != $_GET['pwd']){
-      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR')));
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/shop/monthly_pay/orderid/' . $_GET['orderid'] . '/mid/' . $_GET['monid']));
     }
     //查询包月价格、月数
     $monthly_info = M('MemberMonthly') -> field('lid,months,promotionprice') -> find($this -> _get('monid', 'intval'));
