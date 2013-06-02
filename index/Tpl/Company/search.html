@@ -38,6 +38,8 @@
 <script>
   //批量下载
   var downindexresult = function(){
+    alert('暂不可用');
+    return;
     var api = $.dialog({
       id:'piliangcopy',
       title:'批量下载',
@@ -171,6 +173,8 @@
 
   //全部结果下载
   var downallresult = function(){
+    alert('暂不可用');
+    return;
     var sum = $('#result_num').html();
     $.ajax({
       url:'__APP__/public/ajaxalldownload/num/' + sum,
@@ -220,6 +224,8 @@
 
   //批量复制
   var piliangcopy = function(){
+    alert('暂不可用');
+    return;
     var api = $.dialog({
       id:'piliangcopy',
       title:'批量复制',
@@ -500,7 +506,7 @@
                     <li>
 		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a> <a href="#" class="a_weizhi">[等候此位]</a> </h2>
 		    <p class="one"><!--{$r.manproducts}--!></p>
-		    <p class="two" style="color:#8d8d8d;"><span>电话: <!--{$r.companyphone|substr_replace="******",8}--!></span></p>
+		    <p class="two" style="color:#8d8d8d;"><span>电话: <!--{$r.companyphone|strip_tags|substr_replace="******",8}--!></span></p>
 		    <p class="two" style="color:#8d8d8d;"><span><span>地址: <!--{$r.address}--!></span></p>
 		    <p class="two"><span>最后更新时间 <!--{$r.updatetime|date="Y-m-d", ###}--!></span><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank">进入详细页</a></p>
 			    </li>

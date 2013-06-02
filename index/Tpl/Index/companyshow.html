@@ -44,7 +44,11 @@
 				      <volist name="result" id="r" mod="2">
 				      <li>
 				      <div class="left_img">
+					<if condition="strrchr($r['image'], '.') == '.swf'">
+					<h2><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank"><embed src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" width="153" height="192"></embed></a></h2>
+					<else/>
 					<h2><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></h2>
+					</if>
 					<h3>
 					  <volist name="r.qqarr" id="rq" offset="0" length='2'>
 					  <notempty name="rq">

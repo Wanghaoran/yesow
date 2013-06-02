@@ -34,24 +34,6 @@
     });
   }
 
-  var getcompanycategorytwo = function(val){
-    $.ajax({
-      url:'__ROOT__/admin.php/public/ajaxgetcompanycategorytwo/id/' + val,
-      success:function(ress){
-	var _nstr = '<option value="">请选择</option>';
-	if(ress != null){
-	  $.each(ress, function(i, res){
-	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
-	  });
-	  $('#companyccid').html(_nstr).show();
-	  }else{
-	  $('#companyccid').html(_nstr).hide();
-	}
-      },
-      dataType:'json'
-    });
-  }
-
   var getchildsitecode = function(val){
     $.ajax({
       url: '__ROOT__/index.php/public/getchildsitecode/id/' + val,
@@ -261,25 +243,15 @@
                 <li>
                 	<div class="div_left">主营类别</div>
                     <div class="div_mid1" style="position:relative">
-		      <select class="div_select1" onchange="getcompanycategorytwo($(this).val());">
-			    <option value="">请选择</option>
-			    <volist name="result_company_category_one" id="rcco">
-			    <eq name="result_ccid_one" value="$rcco.id">
-			    <option value="<!--{$rcco.id}--!>" selected="selected"><!--{$rcco.name}--!></option>
-			    <else/>
-			    <option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
-			    </eq>
-			    </volist>
-			  </select>
-			  <select class="div_select1" id="companyccid" name="companyccid" >
+			  <select id="companyccid" name="companyccid" >
 			    <option value="">请选择</option>
 			    <volist name="result_company_category_two" id="rcct">
 			    <eq name="result.ccid" value="$rcct.id">
-			    <option value="<!--{$rcct.id}--!>" selected="selected"><!--{$rcct.name}--!></option>
+			    <option value="<!--{$rcct.id}--!>" title="<!--{$rcct.remark}--!>" selected="selected"><!--{$rcct.cctname}--!>-<!--{$rcct.name}--!></option>
 			    <else/>
-			    <option value="<!--{$rcct.id}--!>"><!--{$rcct.name}--!></option>
+			    <option value="<!--{$rcct.id}--!>" title="<!--{$rcct.remark}--!>"><!--{$rcct.cctname}--!>-<!--{$rcct.name}--!></option>
 			    </eq>
-			    </volist>
+			</volist>
 		      </select>
                     </div>
                     <div class="div_left">关键词</div>

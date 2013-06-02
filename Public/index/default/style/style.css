@@ -311,7 +311,7 @@ dl.minglu_nav_pop{
 
 /**分页**/
 .page{ padding:5px 0; text-align:right;}
-.page a, .page span{display:inline-block; margin-left:5px; height:20px; line-height:20px; padding:0 8px; border:1px solid #ccc;
+.page a, .page span{display:inline-block; margin-left:5px; height:20px; line-height:20px; padding:0 4px; border:1px solid #ccc;
 font-family: Tahoma, Helvetica, Arial, SimSun, sans-serf;_zoom:1;
 }
 .page span{ border:0; height:22px; line-height:22px;}

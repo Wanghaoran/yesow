@@ -130,10 +130,14 @@ class Page {
                     $linkPage .= "&nbsp;<span class='current'>".$page."</span>";
                 }
             }
-        }
+	}
+	//输入框
+	$inputpage = "";
+	$inputpage = '<input type="text" id="search_page_num" size="5"> <a href="javascript:var page_num = document.getElementById(\'search_page_num\').value;location.href=\''.$url.'&'.$p.'=\' + page_num + \'\'">Go</a>';
+
         $pageStr	 =	 str_replace(
-            array('%header%','%nowPage%','%totalRow%','%totalPage%','%upPage%','%downPage%','%first%','%prePage%','%linkPage%','%nextPage%','%end%'),
-            array($this->config['header'],$this->nowPage,$this->totalRows,$this->totalPages,$upPage,$downPage,$theFirst,$prePage,$linkPage,$nextPage,$theEnd),$this->config['theme']);
+            array('%header%','%nowPage%','%totalRow%','%totalPage%','%upPage%','%downPage%','%first%','%prePage%','%linkPage%','%nextPage%','%end%', '%inputpage%'),
+            array($this->config['header'],$this->nowPage,$this->totalRows,$this->totalPages,$upPage,$downPage,$theFirst,$prePage,$linkPage,$nextPage,$theEnd,$inputpage),$this->config['theme']);
         return $pageStr;
     }
 

@@ -932,6 +932,17 @@ function arr_foreach($arr) {
 	return implode($str);
 }
 
+//将字符串切割为数组
+function mbstringtoarray($str,$charset) {
+  $strlen=mb_strlen($str);
+  while($strlen){
+    $array[]=mb_substr($str,0,1,$charset);
+    $str=mb_substr($str,1,$strlen,$charset);
+    $strlen=mb_strlen($str);
+  }
+  return $array;
+}
+
 //请求字符串安全过滤
 function safefilter($string, $type){
   $getfilter="'|\b(alert|confirm|prompt)\b|<[^>]*?>|^\\+\/v(8|9)|\\b(and|or)\\b.+?(>|<|=|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";

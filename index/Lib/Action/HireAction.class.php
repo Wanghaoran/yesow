@@ -62,7 +62,7 @@ class HireAction extends CommonAction {
     $where_sort['su.ischeck'] = 1;
     $where_sort['sus.starttime'] = array('elt', $time);
     $where_sort['sus.endtime'] = array('egt', $time);
-    $result_sellused_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(16) -> where($where_sort) -> order('sus.sort DESC') -> select();
+    $result_sellused_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(16) -> where($where_sort) -> order('sus.sort DESC') -> select();
     $this -> assign('result_sellused_sort', $result_sellused_sort);
     //推荐的数量
     $sellused_sort_num = count($result_sellused_sort);
@@ -91,7 +91,7 @@ class HireAction extends CommonAction {
     if(!empty($del_id_arr)){
       $where['su.id'] = array('not in', $del_id_arr);
     }
-    $result_sellused = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_one = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit($sellused_not_sort_num) -> order('su.updatetime DESC') -> where($where) -> select();
+    $result_sellused = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit($sellused_not_sort_num) -> order('su.updatetime DESC') -> where($where) -> select();
     $this -> assign('result_sellused', $result_sellused);
     /* ---------------- 二手滞销 ---------------- */
 

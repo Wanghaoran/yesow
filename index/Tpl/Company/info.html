@@ -244,7 +244,7 @@ var onedownload = function(){
 				  <a href="#">
 				    <notempty name="result.pic">
 				    <if condition="strrchr($result['pic'], '.') == '.swf'">
-				    <embed src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="343" height="275"></embed>
+				    <embed src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="300" height="260" wmode="transparent"></embed>
 				    <else/>
 				     <img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="343" height="275" border="0" />
 				    </if>
