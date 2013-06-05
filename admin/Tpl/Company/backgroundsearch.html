@@ -84,6 +84,16 @@
     <else/>
     <li><a class="button" href="javascript:document.getElementById('searchwhere').action='__URL__/editdowntxt';document.getElementById('searchwhere').submit();"><span>下载TXT文件</span></a></li>
     </empty>
+    <empty name="result">
+    <li><a class="buttonDisabled" href="javascript:;"><span>下载WORD文件</span></a></li>
+    <else/>
+    <li><a class="button" href="javascript:document.getElementById('searchwhere').action='__URL__/editdownword';document.getElementById('searchwhere').submit();"><span>下载WORD文件</span></a></li>
+    </empty>
+    <empty name="result">
+    <li><a class="buttonDisabled" href="javascript:;"><span>下载WORD文件(无QQ邮件)</span></a></li>
+    <else/>
+    <li><a class="button" href="javascript:document.getElementById('searchwhere').action='__URL__/editdownword/mod/noqq';document.getElementById('searchwhere').submit();"><span>下载WORD文件(无QQ邮件)</span></a></li>
+    </empty>
     </ul>
   </div>
 </div>

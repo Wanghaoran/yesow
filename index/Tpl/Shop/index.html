@@ -44,7 +44,20 @@
 		<span>您的位置:</span>
 		<a href="__ROOT__">易搜首页</a> &gt;
 		<span>易搜商城</span> 
+	      </div>
+
+	      <notempty name="ad_arr.top">
+	<div class="index_gg01">
+	  <volist name="ad_arr.top" id="adt">
+	  <if condition="strrchr($adt['address'], '.') == '.swf'">
+	  <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
+	  <else/>
+	  <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+	  </if> 
+	  </volist>
 	</div>
+	</notempty>
+
 	<!--支付流程开始-->
 	<div id="main14">
         <div class="cat_header">

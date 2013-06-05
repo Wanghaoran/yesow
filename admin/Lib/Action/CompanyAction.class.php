@@ -1590,6 +1590,54 @@ class CompanyAction extends CommonAction {
     echo $content_download;
   }
 
+  //搜索结果下载word文件
+  public function editdownword(){
+    vendor('PHPWord/PHPWord');
+    $objPHPWord = new PHPWord();
+    $sectionPHPWord = $objPHPWord -> createSection(array('marginTop' => 565, 'marginLeft' => 565, 'marginRight' => 565, 'marginBottom' => 285, 'pageSizeW' => 7370, 'pageSizeH' => 10432));
+
+    //查询数据
+    $result = $this -> search_company($this -> _post('company_keyword'), 'a.updatetime DESC', false);
+
+    foreach($result['result'] as $value){
+      $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>6.5, 'bold'=>true));
+      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 17, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> 5.5));
+      $sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/','',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      $sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/','',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      if($_GET['mod'] != 'noqq'){
+	if(!empty($value['qqcode'])){
+	  $sectionPHPWord -> addText('QQ:' . $value['qqcode'], array('name'=>'黑体', 'size'=> 5.5));
+	}
+	if(!empty($value['email'])){
+	  $sectionPHPWord -> addText($value['email'], array('name'=>'黑体', 'size'=> 5.5));
+	}
+      }
+      if(!empty($value['website']) && $value['website'] != 'http//:' && $value['website'] != 'http://'){
+	$sectionPHPWord -> addText($value['website'], array('name'=>'黑体', 'size'=> 5.5));
+      }
+      $sectionPHPWord -> addTextBreak();
+    }
+
+    // Add footer
+    $footer = $sectionPHPWord -> createFooter();
+    $footer -> addPreserveText('.{PAGE}. ', array('name'=>'黑体', 'align'=>'Right','size'=> 9));
+
+    // Add header
+    $header = $sectionPHPWord -> createHeader();
+    $header->addPreserveText('IT通讯录', array('name'=>'黑体', 'size' => 9, 'bold'=>true));
+    
+    $objWriter = PHPWord_IOFactory::createWriter($objPHPWord, 'Word2007');
+    ob_end_clean();
+    //生成下载
+    header("Content-Type: application/vnd.ms-word;charset=UTF-8");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    $filename= date('YmdHis');
+    header("Content-Disposition:attachment;filename=$filename" . '.docx');
+    $objWriter->save('php://output'); 
+  }
+
 
   /* --------------- 速查搜索管理 ---------------- */
 

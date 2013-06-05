@@ -35,7 +35,7 @@ class ShopAction extends CommonAction {
     $count = $shop_order -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count('id');
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $shop_order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,so.paytotal,so.paytype,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> select();
+    $result = $shop_order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,so.paytotal,so.paytype,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus,so.result') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();

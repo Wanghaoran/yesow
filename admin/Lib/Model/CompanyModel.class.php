@@ -73,7 +73,7 @@ class CompanyModel extends Model {
     //生成关键词SQL
     $keyword_sql = array();
     foreach($keyword_arr as $value){
-      $keyword_sql[] = "SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL )";
+      $keyword_sql[] = "(SELECT id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount FROM yesow_company WHERE ( name LIKE '%{$value}%' OR address LIKE '%{$value}%' OR manproducts LIKE '%{$value}%' OR linkman LIKE '%{$value}%' ) AND ( delaid is NULL ) ORDER BY updatetime DESC)";
     }
 
     //生成主SQL
@@ -93,6 +93,8 @@ class CompanyModel extends Model {
 
     //组合SQL
     $sql = $this -> field('id,name,csid,csaid,manproducts,address,companyphone,linkman,mobilephone,addtime,updatetime,clickcount') -> where($map) -> union($keyword_sql) -> buildSql();
+    //按更新时间排序
+    //$sql = $this -> table($sql . ' tmpt') -> order('updatetime DESC') -> buildSql();
 
     //高级查询条件
     $senior_where = array();
