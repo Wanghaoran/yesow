@@ -1,0 +1,30 @@
+<div class="panel">
+  <h1>邮件群发</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:95%;">
+      <label style="width:100%;">填写说明：</label>
+      <p>1.多个收件人用英文半角分号(;)分隔</p>
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label style="width:70px;">收件人</label><input type="text" class="required" name="recipient" value="<!--{$recipientstring}--!>" size="130" />
+      </p>
+      <p style="width:90%;">
+      <label style="width:70px;">邮件标题</label><input type="text" class="required" name="title" size="130" />
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"><!--{$result.content|stripslashes}--!></textarea>
+
+	</p>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">发送</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

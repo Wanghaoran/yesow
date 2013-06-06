@@ -1603,11 +1603,18 @@ class CompanyAction extends CommonAction {
       $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>6.5, 'bold'=>true));
       $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 17, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
       $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> 5.5));
-      $sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/','',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
-      $sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/','',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      if(!strpos($value['companyphone'], '-123')){
+	$sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      }
+      if($value['linkman'] != '--'){
+	$sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      }else{
+	$sectionPHPWord -> addText(msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+      }
+      
       if($_GET['mod'] != 'noqq'){
 	if(!empty($value['qqcode'])){
-	  $sectionPHPWord -> addText('QQ:' . $value['qqcode'], array('name'=>'黑体', 'size'=> 5.5));
+	  $sectionPHPWord -> addText('QQ:' . preg_replace('/\s{2,}|　/U',' ',$value['qqcode']), array('name'=>'黑体', 'size'=> 5.5));
 	}
 	if(!empty($value['email'])){
 	  $sectionPHPWord -> addText($value['email'], array('name'=>'黑体', 'size'=> 5.5));
