@@ -137,6 +137,16 @@ class MessageAction extends CommonAction {
       $where['bse.email'] = $this -> _post('email');
     }
 
+    //今日已发送数量
+    $year = date("Y");
+    $month = date("m");
+    $day = date("d");
+    $dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
+    $dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+
+    $today_count = $email_list -> where(array('sendtime' => array(array('egt', $dayBegin),array('elt', $dayEnd)))) -> count('id');
+    $this -> assign('today_count', $today_count);
+
     //记录总数
     $count = $email_list -> table('yesow_background_send_email as bse') -> where($where) -> count('id');
     import('ORG.Util.Page');
