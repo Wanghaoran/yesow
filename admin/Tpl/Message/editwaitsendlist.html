@@ -3,20 +3,16 @@
 	<table class="table" width="100%" layoutH="50">
 		<thead>
 		  <tr>
-			<th width="50">编号</th>
-			<th>企业名称</th>
 			<th>邮箱</th>
 			<th width="50">操作</th>
 
 		</tr>
 		</thead>
 		<tbody>
-		<volist name="result" id="r">
+		<volist name="Think.session.admin_send_email_list" id="r">
 		<tr target="sid_role">
-			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.email}--!></td>
-			  <td><a href="__URL__/delwaitsendemail/id/<!--{$r.id}--!>/navTabId/editwaitsendlist" target="ajaxTodo" style="color:red;">删除</a></td>
+			  <td><!--{$r}--!></td>
+			  <td><a href="__URL__/delwaitsendemail/email/<!--{$r}--!>/navTabId/editwaitsendlist" target="ajaxTodo" style="color:red;">删除</a></td>
 			</tr>
 		</volist>
 		</tbody>

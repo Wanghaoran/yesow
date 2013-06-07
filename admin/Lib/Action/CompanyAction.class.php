@@ -1595,45 +1595,43 @@ class CompanyAction extends CommonAction {
     vendor('PHPWord/PHPWord');
     $objPHPWord = new PHPWord();
     $sectionPHPWord = $objPHPWord -> createSection(array('marginTop' => 565, 'marginLeft' => 565, 'marginRight' => 565, 'marginBottom' => 285, 'pageSizeW' => 7370, 'pageSizeH' => 10432));
+    $objPHPWord -> setDefaultFontName('黑体');
 
     //查询数据
     $result = $this -> search_company($this -> _post('company_keyword'), 'a.updatetime DESC', false);
+    $objPHPWord -> addParagraphStyle('pStyle', array('spacing'=> 21));
+
+    //地区信息
+    $child_site_area = M('ChildSiteArea') -> getFieldByid($_POST['bgsearch_csaid'], 'name');
+    $sectionPHPWord -> addText('【' . $child_site_area . '】', array('name'=>'黑体', 'size'=>6.5, 'bold'=>true), 'pStyle');
 
     foreach($result['result'] as $value){
-      $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>6.5, 'bold'=>true));
-      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 17, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
-      $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> 5.5));
+      $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>6.5, 'bold'=>true), 'pStyle');
+      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 17, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+      $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       if(!strpos($value['companyphone'], '-123')){
-	$sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+	$sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       }
       if($value['linkman'] != '--'){
-	$sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+	$sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       }else{
-	$sectionPHPWord -> addText(msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5));
+	$sectionPHPWord -> addText(msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       }
       
       if($_GET['mod'] != 'noqq'){
 	if(!empty($value['qqcode'])){
-	  $sectionPHPWord -> addText('QQ:' . preg_replace('/\s{2,}|　/U',' ',$value['qqcode']), array('name'=>'黑体', 'size'=> 5.5));
+	  $sectionPHPWord -> addText('QQ:' . preg_replace('/\s{2,}|　/U',' ',$value['qqcode']), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
 	}
 	if(!empty($value['email'])){
-	  $sectionPHPWord -> addText($value['email'], array('name'=>'黑体', 'size'=> 5.5));
+	  $sectionPHPWord -> addText($value['email'], array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
 	}
       }
       if(!empty($value['website']) && $value['website'] != 'http//:' && $value['website'] != 'http://'){
-	$sectionPHPWord -> addText($value['website'], array('name'=>'黑体', 'size'=> 5.5));
+	$sectionPHPWord -> addText($value['website'], array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       }
       $sectionPHPWord -> addTextBreak();
     }
 
-    // Add footer
-    $footer = $sectionPHPWord -> createFooter();
-    $footer -> addPreserveText('.{PAGE}. ', array('name'=>'黑体', 'align'=>'Right','size'=> 9));
-
-    // Add header
-    $header = $sectionPHPWord -> createHeader();
-    $header->addPreserveText('IT通讯录', array('name'=>'黑体', 'size' => 9, 'bold'=>true));
-    
     $objWriter = PHPWord_IOFactory::createWriter($objPHPWord, 'Word2007');
     ob_end_clean();
     //生成下载
