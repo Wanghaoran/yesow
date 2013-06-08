@@ -1,0 +1,38 @@
+
+<div class="panel">
+  <h1>群发邮件参数设置</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/navTabId/sendemailsetting" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:95%;">
+      <label style="width:100%;">填写说明：</label>
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label>发送邮箱地址:</label>
+      <input type="text" name="mail_address" value="<!--{$mail_address}--!>" size="40" />
+      </p>
+      <p style="width:90%;">
+      <label>发送邮箱SMTP服务器:</label>
+      <input type="text" name="mail_smtp" value="<!--{$mail_smtp}--!>" size="40" />
+      </p>
+      <p style="width:90%;">
+      <label>发送邮箱登录帐号:</label>
+      <input type="text" name="mail_loginname" value="<!--{$mail_loginname}--!>" size="40" />
+      </p>
+      <p style="width:90%;">
+      <label>发送邮箱密码:</label>
+      <input type="text" name="mail_password" value="<!--{$mail_password}--!>" size="40" />
+      </p>
+
+      
+      
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

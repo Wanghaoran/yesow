@@ -147,15 +147,22 @@ class MessageAction extends CommonAction {
     $email_list = D('BackgroundSendEmail');
     //执行发送
     if(!empty($_POST['recipient'])){
+      set_time_limit(0);
       $recipient_arr = explode(';', $_POST['recipient']);
       if(empty($recipient_arr[count($recipient_arr) - 1])){
 	unset($recipient_arr[count($recipient_arr) - 1]);
       }
 
-      C('MAIL_ADDRESS', 'yesow@yesow.com');
-      C('MAIL_SMTP', 'smtp.exmail.qq.com');
-      C('MAIL_LOGINNAME', 'yesow@yesow.com');
-      C('MAIL_PASSWORD', 'lyz008');
+      //读取发送邮件配置
+      $setting = M('BackgroundEmailSetting');
+      $mail_address = $setting -> getFieldByname('mail_address', 'value');
+      $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
+      $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
+      $mail_password = $setting -> getFieldByname('mail_password', 'value');
+      C('MAIL_ADDRESS', $mail_address);
+      C('MAIL_SMTP', $mail_smtp);
+      C('MAIL_LOGINNAME', $mail_loginname);
+      C('MAIL_PASSWORD', $mail_password);
       import('ORG.Util.Mail');
       $success_num = 0;
       $error_num = 0;
@@ -411,6 +418,35 @@ class MessageAction extends CommonAction {
       $result[] = $value['email'];
     }
     $this -> addwaitsendlist($result);
+  }
+
+  //群发邮件参数设置
+  public function sendemailsetting(){
+    $setting = M('BackgroundEmailSetting');
+    if(!empty($_POST['mail_address'])){
+      $where = array();
+      $data = array();
+      $num = 0;
+      foreach($_POST as $key => $value){
+	$where['name'] = $key;
+	$data['value'] = $value;
+	$num += $setting -> where($where) -> save($data);      
+      }
+      if($num > 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $mail_address = $setting -> getFieldByname('mail_address', 'value');
+    $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
+    $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
+    $mail_password = $setting -> getFieldByname('mail_password', 'value');
+    $this -> assign('mail_address', $mail_address);
+    $this -> assign('mail_smtp', $mail_smtp);
+    $this -> assign('mail_loginname', $mail_loginname);
+    $this -> assign('mail_password', $mail_password);
+    $this -> display();
   }
 
   /* ------------ 邮件群发管理 ------------ */
