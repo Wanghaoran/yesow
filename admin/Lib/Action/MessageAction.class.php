@@ -451,4 +451,52 @@ class MessageAction extends CommonAction {
 
   /* ------------ 邮件群发管理 ------------ */
 
+  /* ------------ 短信群发管理 ------------ */
+
+  //后台短信搜索
+  public function searchsms(){
+    if(!empty($_POST['bgsearch_sms_csid'])){
+      $result = array();
+      $where = array();
+      $company = M('Company');
+      $where['csid'] = $this -> _post('bgsearch_sms_csid', 'intval');
+      $where['mobilephone'] = array('neq', '');
+      if(!empty($_POST['bgsearch_sms_csaid'])){
+	$where['csaid'] = $this -> _post('bgsearch_sms_csaid', 'intval');
+      }
+
+      //page
+      $count_sql = $company -> field('id,mobilephone') -> where($where) -> group('mobilephone') -> buildSql();//去重
+      $count = $company -> table($count_sql . ' T') -> count();
+      import('ORG.Util.Page');
+      if(! empty ( $_REQUEST ['listRows'] )){
+	$listRows = $_REQUEST ['listRows'];
+      } else {
+	$listRows = 10;
+      }
+      $page = new Page($count, $listRows);
+      //当前页数
+      $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+      $page -> firstRow = ($pageNum - 1) * $listRows;
+      //每页条数
+      $result['listRows'] = $listRows;
+      //当前页数
+      $result['currentPage'] = $pageNum;
+      $result['count'] = $count;
+
+      //search time
+      G('start');
+      //result
+      $result['result'] = $company -> field('id,name,mobilephone,addtime,updatetime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> group('mobilephone') -> select();
+      //将查询时间写入结果数组
+      $result['time'] = G('start', 'end');
+      $this -> assign('result', $result);
+    }
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  /* ------------ 短信群发管理 ------------ */
+
 }

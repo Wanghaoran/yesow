@@ -1,0 +1,123 @@
+<style type="text/css">
+  ul.rightTools {float:right; display:block;}
+  ul.rightTools li{float:left; display:block; margin-left:5px}
+</style>
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$result.currentPage}--!>"/>
+</form>
+
+<div class="pageContent" style="padding:5px">
+  <div class="panel">
+    <h1>后台邮件检索</h1>
+    <div>
+      <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+
+	  <ul class="searchContent">
+	    
+	    <li style="width:210px;">
+	    <label style="width:37px;">地区</label>
+	    <select class="combox" name="bgsearch_sms_csid" ref="bgsearch_sms_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <option value="">请选择</option>
+	      <volist name="result_childsite" id="s_rc">
+	      <eq name="Think.post.bgsearch_sms_csid" value="$s_rc.id">
+	      <option value="<!--{$s_rc.id}--!>" selected="selected"><!--{$s_rc.name}--!></option>
+	      <else/>
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    <select class="combox" name="bgsearch_sms_csaid" id="bgsearch_sms_csaid">
+	      <option value="">请选择</option>
+	      <volist name="where_child_site_area" id="wcsa">
+	      <eq name="Think.post.bgsearch_sms_csaid" value="$wcsa.id">
+	      <option value="<!--{$wcsa.id}--!>" selected="selected"><!--{$wcsa.name}--!></option>
+	      <else/>
+	      <option value="<!--{$wcsa.id}--!>"><!--{$wcsa.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    </li>
+	   
+	  </ul>
+	</div>
+	<ul class="rightTools">
+      <li><div class="buttonActive"><div class="buttonContent"><button type="submit">搜 索</button></div></div></li>
+    </form>
+    </li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<div class="pageContent" style="padding:5px">
+  <div class="panel" defH="340">
+    <h1>搜索结果 <span> 共<!--{$result.count}--!>条(耗时：<!--{$result.time}--!> S)</span></h1>
+    <div>
+      <div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>添加所选到待发送列表</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>添加全部到待发送列表</span></a></li>
+	     <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>添加全部到通讯录</span></a></li>
+	    <li><a class="edit" href="__URL__/editwaitsendlist" target="navTab" rel="editwaitsendlist" mask="true"><span>编辑待发送列表</span></a></li>
+	   
+	    <li><a class="delete" href="__URL__/delwaitsendlist" target="ajaxTodo"><span>清空待发送列表</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['message']['addwaitsendlist'])">
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>添加到待发送列表</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>添加全部到待发送列表</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['message']['addsendlisttoemailgroup'])">
+	    <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>添加全部到通讯录</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['message']['editwaitsendlist'])">
+	    <li><a class="edit" href="__URL__/editwaitsendlist" target="navTab" rel="editwaitsendlist" mask="true"><span>编辑待发送列表</span></a></li>
+	    </if>
+	    
+	    <if condition="isset($_SESSION['acc_arr']['message']['delwaitsendlist'])">
+	    <li><a class="delete" href="__URL__/delwaitsendlist" target="ajaxTodo"><span>清空待发送列表</span></a></li>
+	    </if>
+	    </if>
+		</ul>
+	</div>
+	<table class="table" width="100%">
+		<thead>
+		  <tr>
+		    <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+		    <th width="90">编号</th>
+		    <th>企业名称</th>
+		    <th>邮箱</th>
+		    <th width="140">添加日期</th>
+		    <th width="140">更新日期</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <volist name="result.result" id="sr">
+		  <tr>
+		    <td><input type="checkbox" value="<!--{$sr.email}--!>" name="ids"></td>
+			  <td><!--{$sr.id}--!></td>
+			  <td><!--{$sr.name}--!></td>
+			  <td><!--{$sr.mobilephone}--!></td>
+			  <td><!--{$sr.addtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$sr.updatetime|date="Y-m-d H:i:s", ###}--!></td>
+			      </tr>
+			      </volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">	
+		  <span>共<!--{$result.count}--!>条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="<!--{$result.count}--!>" numPerPage="<!--{$result.listRows}--!>" pageNumShown="10" currentPage="<!--{$result.currentPage}--!>"></div>
+
+	</div>
+</div>
+
+
+
+	
+
