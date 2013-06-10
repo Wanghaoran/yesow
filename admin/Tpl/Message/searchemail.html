@@ -59,19 +59,19 @@
       <div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>添加所选到待发送列表</span></a></li>
-	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>添加全部到待发送列表</span></a></li>
-	     <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>添加全部到通讯录</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>多选到待发列表</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>全选到待发列表</span></a></li>
+	     <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>全选到通讯记录</span></a></li>
 	    <li><a class="edit" href="__URL__/editwaitsendlist" target="navTab" rel="editwaitsendlist" mask="true"><span>编辑待发送列表</span></a></li>
 	   
 	    <li><a class="delete" href="__URL__/delwaitsendlist" target="ajaxTodo"><span>清空待发送列表</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['message']['addwaitsendlist'])">
-	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>添加到待发送列表</span></a></li>
-	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>添加全部到待发送列表</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>多选到待发列表</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>全选到待发列表</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['message']['addsendlisttoemailgroup'])">
-	    <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>添加全部到通讯录</span></a></li>
+	    <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>全选到通讯记录</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['message']['editwaitsendlist'])">
 	    <li><a class="edit" href="__URL__/editwaitsendlist" target="navTab" rel="editwaitsendlist" mask="true"><span>编辑待发送列表</span></a></li>
@@ -97,7 +97,7 @@
 		<tbody>
 		  <volist name="result.result" id="sr">
 		  <tr>
-		    <td><input type="checkbox" value="<!--{$sr.email}--!>" name="ids"></td>
+		    <td><input type="checkbox" value="<!--{$sr.id}--!>" name="ids"></td>
 			  <td><!--{$sr.id}--!></td>
 			  <td><!--{$sr.name}--!></td>
 			  <td><!--{$sr.email}--!></td>

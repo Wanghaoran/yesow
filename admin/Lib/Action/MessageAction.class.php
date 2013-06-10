@@ -3,7 +3,7 @@ class MessageAction extends CommonAction {
 
   /* ------------ 邮件群发管理 ------------ */
 
-  //后台邮件搜索
+  //速查邮件搜索
   public function searchemail(){
     if(!empty($_POST['bgsearch_email_csid'])){
       $result = array();
@@ -52,50 +52,59 @@ class MessageAction extends CommonAction {
   //添加到待发送列表
   public function addwaitsendlist($send_arrs){
     $send_arr = array();
+    $company = M('Company');
     $count_old = count($_SESSION['admin_send_email_list']);
     if(empty($send_arrs)){
       //全部下载，重新搜索
       if(!empty($_GET['s_csid'])){
 	$where = array();
-	$company = M('Company');
 	$where['csid'] = $this -> _get('s_csid', 'intval');
 	$where['email'] = array('neq', '');
 	if(!empty($_GET['s_csaid'])){
 	  $where['csaid'] = $this -> _get('s_csaid', 'intval');
 	}
-	$result_temp = $company -> field('email') -> where($where) -> group('email') -> select();
+	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
 	foreach($result_temp as $value){
-	  $send_arr[] = $value['email'];
+	  $send_arr[$value['id']] = $value['email'];
 	}
       }else{
-	$send_arr = explode(',', $_POST['ids']);
+	$result_temp = explode(',', $_POST['ids']);
+	foreach($result_temp as $key => $value){
+	  $send_arr[$value] = $company -> getFieldByid($value, 'email');
+	}
       }
     }else{
       $send_arr = $send_arrs;
-    }  
-    
+    }
     if(!is_array($_SESSION['admin_send_email_list'])){
       $_SESSION['admin_send_email_list'] = array();
     }
-    $_SESSION['admin_send_email_list'] = array_merge($_SESSION['admin_send_email_list'], $send_arr);
-    $_SESSION['admin_send_email_list'] = array_unique($_SESSION['admin_send_email_list']);
+    $_SESSION['admin_send_email_list'] = array_unique($_SESSION['admin_send_email_list'] + $send_arr);
     $count_total = count($_SESSION['admin_send_email_list']);
     $poor = $count_total - $count_old;
     if($poor){
       $this -> success('添加成功！新增' . $poor .'条记录。目前发送列表里共有 ' . $count_total . ' 条待发送邮件');
     }else{
       $this -> error('添加失败！请不要添加重复记录。目前发送列表里共有 ' . $count_total . ' 条待发送邮件');
-    }    
+    }
   }
 
   //编辑待发送列表
   public function editwaitsendlist(){
+    $company = M('Company');
+    $result = array();
+    foreach($_SESSION['admin_send_email_list'] as $key => $value){
+      $result[$key]['name'] = $company -> getFieldByid($key, 'name');
+      $result[$key]['email'] = $value;
+    }
+    $this -> assign('result', $result);
     $this -> assign('count', count($_SESSION['admin_send_email_list']));
     $this -> display();
   }
 
   //添加全部到通讯录
   public function addsendlisttoemailgroup(){
+    //处理添加
     if(!empty($_POST['name'])){
       $email_group = D('BackgroundEmailGroup');
       if(!$email_group -> create()){
@@ -115,8 +124,9 @@ class MessageAction extends CommonAction {
 	if(!empty($_POST['csaid'])){
 	  $where['csaid'] = $this -> _post('csaid', 'intval');
 	}
-	$result = $company -> field('name,email') -> where($where) -> group('email') -> select();
+	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
 	foreach($result as $value){
+	  $data['cid'] = $value['id'];
 	  $data['name'] = $value['name'];
 	  $data['email'] = $value['email'];
 	  $data['addtime'] = time();
@@ -142,11 +152,12 @@ class MessageAction extends CommonAction {
     $this -> success(L('DATA_DELETE_SUCCESS'));
   }
 
-  //后台邮件群发
+  //速查邮件群发
   public function sendmassemail(){
     $email_list = D('BackgroundSendEmail');
     //执行发送
     if(!empty($_POST['recipient'])){
+      $company = M('Company');
       set_time_limit(0);
       $recipient_arr = explode(';', $_POST['recipient']);
       if(empty($recipient_arr[count($recipient_arr) - 1])){
@@ -166,12 +177,21 @@ class MessageAction extends CommonAction {
       import('ORG.Util.Mail');
       $success_num = 0;
       $error_num = 0;
+      
       foreach($recipient_arr as $value){
-	if(SendMail($value, $_POST['title'], $_POST['content'], 'yesow管理员')){
-	  $email_list -> addinfo($value, $_POST['title'], $_POST['content']);
+	$cid = intval(substr($value, strpos($value, '(') + 1));
+	$send_email = substr($value, 0 , strpos($value, '(')) ? substr($value, 0 , strpos($value, '(')) : $value;
+	$company_info = $company -> field('name,address,companyphone,linkman,website,email,manproducts,qqcode,mobilephone') -> find($cid);
+	
+	//模板替换
+	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephine}');
+	$email_content = str_replace($search, $company_info, $_POST['content']);
+	
+	if(SendMail($send_email, $_POST['title'], $email_content, 'yesow管理员')){
+	  $email_list -> addinfo($send_email, $_POST['title'], $email_content);
 	  $success_num++;
 	}else{
-	  $email_list -> addinfo($value, $_POST['title'], $_POST['content'], 0);
+	  $email_list -> addinfo($send_email, $_POST['title'], $email_content, 0);
 	  $error_num++;
 	}
       }
@@ -180,10 +200,13 @@ class MessageAction extends CommonAction {
       $this -> success('邮件发送完毕！成功：' . $success_num . ' 条。失败：' . $error_num . ' 条。可到邮件发送列表查看相信信息');
     }
     //读取收件人列表
-    foreach($_SESSION['admin_send_email_list'] as $value){
-      $recipientstring .= $value . ';';
+    foreach($_SESSION['admin_send_email_list'] as $key => $value){
+      $recipientstring .= $value . '(' . $key . ');';
     }
     $this -> assign('recipientstring', $recipientstring);
+    //读取模板
+    $send_template = M('BackgroundEmailTemplate') -> field('id,name') -> select();
+    $this -> assign('send_template', $send_template);
     $this -> display();
   }
 
@@ -248,7 +271,7 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //后台邮件通讯录
+  //速查邮件通讯录
   public function backgroundemailgroup(){
     $email_group = M('BackgroundEmailGroup');
     $where = array();
@@ -412,12 +435,13 @@ class MessageAction extends CommonAction {
     $email_group_list = M('BackgroundEmailGroupList');
     $where = array();
     $where['gid'] = $this -> _get('id', 'intval');
-    $result_temp = $email_group_list -> field('email') -> where($where) -> select();
+    $result_temp = $email_group_list -> field('cid,email') -> where($where) -> select();
     $result = array();
     foreach($result_temp as $value){
-      $result[] = $value['email'];
+      $result[$value['cid']] = $value['email'];
     }
     $this -> addwaitsendlist($result);
+    
   }
 
   //群发邮件参数设置
@@ -448,6 +472,86 @@ class MessageAction extends CommonAction {
     $this -> assign('mail_password', $mail_password);
     $this -> display();
   }
+
+  //邮件模板管理
+  public function emailtemplate(){
+    $template = M('BackgroundEmailTemplate');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('like', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $template -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $template -> field('id,name,addtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  
+  }
+
+  //新增邮件模板
+  public function addemailtemplate(){
+    if(!empty($_POST['name'])){
+      $template = D('BackgroundEmailTemplate');
+      if(!$template -> create()){
+	$this -> error($template -> getError());
+      }
+      if($template -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除邮件模板
+  public function delemailtemplate(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $template = M('BackgroundEmailTemplate');
+    if($template -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑邮件模板
+  public function editemailtemplate(){
+    $template = M('BackgroundEmailTemplate');
+    if(!empty($_POST['name'])){
+      if(!$template -> create()){
+	$this -> error($template -> getError());
+      }
+      if($template -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $template -> field('name,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
 
   /* ------------ 邮件群发管理 ------------ */
 

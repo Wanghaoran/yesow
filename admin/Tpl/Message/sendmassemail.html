@@ -1,3 +1,18 @@
+<script> 
+  var gettemplate = function(val){
+    $.ajax({
+      url:'__APP__/public/ajaxgetemailtemplate/id/' + val,
+      success: function(res){
+	_KE.remove('#send_content');
+
+	var send_editor = _KE.create('textarea[name="content"]', {
+	  height : 300 
+	});
+	send_editor.html(res)
+      }
+    });
+  }
+</script>
 <div class="panel">
   <h1>邮件群发</h1>
   <div class="pageFormContent" layoutH="56">
@@ -7,15 +22,25 @@
       <p>1.多个收件人用英文半角分号(;)分隔</p>
       </p>
       <div class="divider"></div>
-      <p style="width:90%;">
-      <label style="width:70px;">收件人</label><input type="text" class="required" name="recipient" value="<!--{$recipientstring}--!>" size="130" />
+      <p style="width:95%;">
+      <label style="width:70px;">收件人</label><input type="text" class="required" name="recipient" value="<!--{$recipientstring}--!>" size="112" />
       </p>
-      <p style="width:90%;">
-      <label style="width:70px;">邮件标题</label><input type="text" class="required" name="title" size="130" />
+      <p style="width:95%;">
+      <label style="width:70px;">邮件标题</label><input type="text" class="required" name="title" size="112" />
       </p>
+      <p style="width:95%;">
+      <label style="width:70px;">使用模板</label>
+      <select class="combox" onchange="gettemplate(this.value);">
+	<option value="">请选择</option>
+	<volist name="send_template" id="st">
+	<option value="<!--{$st.id}--!>"><!--{$st.name}--!></option>
+	</volist>
+      </select>
+      </p>
+      
       <div class="divider"></div>
       <p style="width:90%;height:300px;">
-      <textarea class="editor" name="content" style="width:96%;" rows="15"><!--{$result.content|stripslashes}--!></textarea>
+      <textarea class="editor" name="content" style="width:96%;" rows="15" id="send_content"></textarea>
 
 	</p>
       <div class="formBar">

@@ -339,4 +339,9 @@ class PublicAction extends Action {
       return $upload;
     }
   }
+
+  //ajax获取后台邮件发送模板
+  public function ajaxgetemailtemplate(){
+    echo M('BackgroundEmailTemplate') -> getFieldByid($this -> _get('id', 'intval'),'content');
+  }
 }
