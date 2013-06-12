@@ -3,18 +3,19 @@
   <h1>邮件模板管理</h1>
   <div class="pageFormContent" layoutH="56">
     <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/emailtemplate" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
-      <div class="unit" style="height:50px;">
+      <div class="unit" style="height:75px;">
 		<label>填写规则(速查):</label>
-		<p style="line-height:15px;width:80%;">公司名：<b>{company_name}</b> | 地址：<b>{company_address}</b> | 电话：<b>{company_companyphone}</b> | 联系人：<b>{company_linkman}</b>
+		<p style="line-height:20px;width:90%;">公司名：<b>{company_name}</b> | 地址：<b>{company_address}</b> | 电话：<b>{company_companyphone}</b> | 联系人：<b>{company_linkman}</b>
 		<br />
 		网址：<b>{company_website}</b> | 邮件：<b>{company_email}</b> | 主营：<b>{company_manproducts}</b> | QQ：<b>{company_qqcode}</b>
 		<br/>
-		手机：<b>{company_mobilephone}</b>
+		手机：<b>{company_mobilephone}</b> | ID：<b>{company_id}</b>
 		</p>
 	      </div>
-	      <div class="unit" style="height:50px;">
+	      <div class="divider"></div>
+	      <div class="unit" style="height:75px;">
 		<label>填写规则(会员):</label>
-		<p style="line-height:15px;width:80%;">
+		<p style="line-height:20px;width:90%;">
 		用户名：<b>{member_name}</b> | 昵称：<b>{member_nickman}</b> | 邮件：<b>{member_email}</b> | 单位：<b>{member_unit}</b>
 		<br/>
 		手机：<b>{member_tel}</b>

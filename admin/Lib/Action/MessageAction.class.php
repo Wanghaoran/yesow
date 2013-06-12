@@ -5,12 +5,17 @@ class MessageAction extends CommonAction {
 
   //速查邮件搜索
   public function searchemail(){
-    if(!empty($_POST['bgsearch_email_csid'])){
+    if(!empty($_POST['issearch'])){
       $result = array();
       $where = array();
       $company = M('Company');
-      $where['csid'] = $this -> _post('bgsearch_email_csid', 'intval');
       $where['email'] = array('neq', '');
+      if(!empty($_POST['bgsearch_email_keyword'])){
+	$where['_string'] = "( name LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( address LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( manproducts LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( mobilephone LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( email LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( linkman LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( companyphone LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( qqcode LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( website LIKE '%{$_POST['bgsearch_email_keyword']}%' )";
+      }
+      if(!empty($_POST['bgsearch_email_csid'])){
+	$where['csid'] = $this -> _post('bgsearch_email_csid', 'intval');
+      }
       if(!empty($_POST['bgsearch_email_csaid'])){
 	$where['csaid'] = $this -> _post('bgsearch_email_csaid', 'intval');
       }
@@ -56,12 +61,17 @@ class MessageAction extends CommonAction {
     $count_old = count($_SESSION['admin_send_email_list']);
     if(empty($send_arrs)){
       //全部下载，重新搜索
-      if(!empty($_GET['s_csid'])){
+      if(!empty($_GET['issearch'])){
 	$where = array();
-	$where['csid'] = $this -> _get('s_csid', 'intval');
 	$where['email'] = array('neq', '');
-	if(!empty($_GET['s_csaid'])){
+	if($_GET['s_csaid'] != 'null'){
+	  $where['csid'] = $this -> _get('s_csaid', 'intval');
+	}
+	if($_GET['s_csaid'] != 'null'){
 	  $where['csaid'] = $this -> _get('s_csaid', 'intval');
+	}
+	if($_GET['s_keyword'] != 'null'){
+	  $where['_string'] = "( name LIKE '%{$_GET['s_keyword']}%' ) OR ( address LIKE '%{$_GET['s_keyword']}%' ) OR ( manproducts LIKE '%{$_GET['s_keyword']}%' ) OR ( mobilephone LIKE '%{$_GET['s_keyword']}%' ) OR ( email LIKE '%{$_GET['s_keyword']}%' ) OR ( linkman LIKE '%{$_GET['s_keyword']}%' ) OR ( companyphone LIKE '%{$_GET['s_keyword']}%' ) OR ( qqcode LIKE '%{$_GET['s_keyword']}%' ) OR ( website LIKE '%{$_GET['s_keyword']}%' )";
 	}
 	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
 	foreach($result_temp as $value){
@@ -119,9 +129,15 @@ class MessageAction extends CommonAction {
 	$data = array();
 	$data['gid'] = $gid;
 	$company = M('Company');
-	$where['csid'] = $this -> _post('csid', 'intval');
 	$where['email'] = array('neq', '');
-	if(!empty($_POST['csaid'])){
+
+	if($_POST['keyword'] != 'null'){
+	  $where['_string'] = "( name LIKE '%{$_POST['keyword']}%' ) OR ( address LIKE '%{$_POST['keyword']}%' ) OR ( manproducts LIKE '%{$_POST['keyword']}%' ) OR ( mobilephone LIKE '%{$_POST['keyword']}%' ) OR ( email LIKE '%{$_POST['keyword']}%' ) OR ( linkman LIKE '%{$_POST['keyword']}%' ) OR ( companyphone LIKE '%{$_POST['keyword']}%' ) OR ( qqcode LIKE '%{$_POST['keyword']}%' ) OR ( website LIKE '%{$_POST['keyword']}%' )";
+	}
+	if($_POST['csid'] != 'null'){
+	  $where['csid'] = $this -> _post('csid', 'intval');
+	}
+	if($_POST['csaid'] != 'null'){
 	  $where['csaid'] = $this -> _post('csaid', 'intval');
 	}
 	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
@@ -181,17 +197,18 @@ class MessageAction extends CommonAction {
       foreach($recipient_arr as $value){
 	$cid = intval(substr($value, strpos($value, '(') + 1));
 	$send_email = substr($value, 0 , strpos($value, '(')) ? substr($value, 0 , strpos($value, '(')) : $value;
-	$company_info = $company -> field('name,address,companyphone,linkman,website,email,manproducts,qqcode,mobilephone') -> find($cid);
+	$company_info = $company -> field('id,name,address,mobilephone,companyphone,linkman,website,email,manproducts,qqcode,mobilephone') -> find($cid);
 	
 	//模板替换
-	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephine}');
+	$search = array('{company_id}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephine}');
 	$email_content = str_replace($search, $company_info, $_POST['content']);
+	$email_title = str_replace($search, $company_info, $_POST['title']);
 	
-	if(SendMail($send_email, $_POST['title'], $email_content, 'yesow管理员')){
-	  $email_list -> addinfo($send_email, $_POST['title'], $email_content);
+	if(SendMail($send_email, $email_title, $email_content, 'yesow管理员')){
+	  $email_list -> addinfo($send_email, $email_title, $email_content);
 	  $success_num++;
 	}else{
-	  $email_list -> addinfo($send_email, $_POST['title'], $email_content, 0);
+	  $email_list -> addinfo($send_email, $email_title, $email_content, 0);
 	  $error_num++;
 	}
       }

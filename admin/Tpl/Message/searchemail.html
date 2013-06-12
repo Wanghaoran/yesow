@@ -14,6 +14,10 @@
 	<div class="searchBar">
 
 	  <ul class="searchContent">
+	    <li style="width:210px;">
+	    <label style="width:37px;">关键字</label>
+	    <input type="text" name="bgsearch_email_keyword" value="<!--{$Think.post.bgsearch_email_keyword}--!>" />
+	    </li>
 	    
 	    <li style="width:210px;">
 	    <label style="width:37px;">地区</label>
@@ -41,6 +45,7 @@
 	   
 	  </ul>
 	</div>
+	<input type="hidden" name="issearch" value="1" />
 	<ul class="rightTools">
       <li><div class="buttonActive"><div class="buttonContent"><button type="submit">搜 索</button></div></div></li>
     </form>
@@ -60,18 +65,18 @@
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>多选到待发列表</span></a></li>
-	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>全选到待发列表</span></a></li>
-	     <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>全选到通讯记录</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/s_keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>/issearch/1" target="ajaxTodo"><span>全选到待发列表</span></a></li>
+	    <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>" target="dialog" mask="true"><span>全选到通讯记录</span></a></li>
 	    <li><a class="edit" href="__URL__/editwaitsendlist" target="navTab" rel="editwaitsendlist" mask="true"><span>编辑待发送列表</span></a></li>
 	   
 	    <li><a class="delete" href="__URL__/delwaitsendlist" target="ajaxTodo"><span>清空待发送列表</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['message']['addwaitsendlist'])">
 	    <li class=""><a class="add" href="__URL__/addwaitsendlist" posttype="string" rel="ids" target="selectedTodo" warn="请选择记录"><span>多选到待发列表</span></a></li>
-	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="ajaxTodo"><span>全选到待发列表</span></a></li>
+	    <li class=""><a class="add" href="__URL__/addwaitsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/s_keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>/issearch/1" target="ajaxTodo"><span>全选到待发列表</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['message']['addsendlisttoemailgroup'])">
-	    <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid}--!>" target="dialog" mask="true"><span>全选到通讯记录</span></a></li>
+	    <li><a class="add" href="__URL__/addsendlisttoemailgroup/csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>" target="dialog" mask="true"><span>全选到通讯记录</span></a></li>
 	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['message']['editwaitsendlist'])">
 	    <li><a class="edit" href="__URL__/editwaitsendlist" target="navTab" rel="editwaitsendlist" mask="true"><span>编辑待发送列表</span></a></li>
