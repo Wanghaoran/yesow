@@ -46,9 +46,11 @@
 		     <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
 			<th width="160">通讯录名称</th>
+			<th width="40">数量</th>
 			<th width="60">添加时间</th>
+			<th width="90">操作</th>
 			<th width="180">备注</th>
-			<th width="70">操作</th>
+			
 
 		</tr>
 		</thead>
@@ -58,9 +60,11 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
-			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>		  
+			  <td><!--{$r.count}--!></td>
+			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><a href="__URL__/editemailgrouplist/gid/<!--{$r.id}--!>" rel="editemailgrouplist" target="navTab">查看</a> / <a href="__URL__/addgroupwaitsendlist/id/<!--{$r.id}--!>" style="color:green;" target="ajaxTodo">添加到待发送列表</a></td>	  
 			  <td><!--{$r.remark}--!></td>
-			  <td><a href="__URL__/editemailgrouplist/gid/<!--{$r.id}--!>" rel="editemailgrouplist" target="navTab">查看</a> / <a href="__URL__/addgroupwaitsendlist/id/<!--{$r.id}--!>" style="color:green;" target="ajaxTodo">添加到待发送列表</a></td>
+			  
 			</tr>
 		</volist>
 		</tbody>

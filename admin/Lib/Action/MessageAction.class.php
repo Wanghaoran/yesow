@@ -197,10 +197,10 @@ class MessageAction extends CommonAction {
       foreach($recipient_arr as $value){
 	$cid = intval(substr($value, strpos($value, '(') + 1));
 	$send_email = substr($value, 0 , strpos($value, '(')) ? substr($value, 0 , strpos($value, '(')) : $value;
-	$company_info = $company -> field('id,name,address,mobilephone,companyphone,linkman,website,email,manproducts,qqcode,mobilephone') -> find($cid);
+	$company_info = $company -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,c.mobilephone') -> where(array('c.id' => $cid)) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
 	
 	//模板替换
-	$search = array('{company_id}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephine}');
+	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephine}');
 	$email_content = str_replace($search, $company_info, $_POST['content']);
 	$email_title = str_replace($search, $company_info, $_POST['title']);
 	
@@ -292,13 +292,13 @@ class MessageAction extends CommonAction {
   public function backgroundemailgroup(){
     $email_group = M('BackgroundEmailGroup');
     $where = array();
-    $where['aid'] = session(C('USER_AUTH_KEY'));
+    $where['g.aid'] = session(C('USER_AUTH_KEY'));
     if(!empty($_POST['name'])){
-      $where['name'] = array('like', '%' . $this -> _post('name') . '%');
+      $where['g.name'] = array('like', '%' . $this -> _post('name') . '%');
     }
 
     //记录总数
-    $count = $email_group -> where($where) -> count('id');
+    $count = $email_group -> table('yesow_background_email_group as g') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -310,7 +310,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $email_group -> field('id,name,remark,addtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
+    $result = $email_group -> table('yesow_background_email_group as g') -> field('g.id,g.name,g.remark,g.addtime,tmp.count') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_background_email_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.addtime DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -571,53 +571,5 @@ class MessageAction extends CommonAction {
 
 
   /* ------------ 邮件群发管理 ------------ */
-
-  /* ------------ 短信群发管理 ------------ */
-
-  //后台短信搜索
-  public function searchsms(){
-    if(!empty($_POST['bgsearch_sms_csid'])){
-      $result = array();
-      $where = array();
-      $company = M('Company');
-      $where['csid'] = $this -> _post('bgsearch_sms_csid', 'intval');
-      $where['mobilephone'] = array('neq', '');
-      if(!empty($_POST['bgsearch_sms_csaid'])){
-	$where['csaid'] = $this -> _post('bgsearch_sms_csaid', 'intval');
-      }
-
-      //page
-      $count_sql = $company -> field('id,mobilephone') -> where($where) -> group('mobilephone') -> buildSql();//去重
-      $count = $company -> table($count_sql . ' T') -> count();
-      import('ORG.Util.Page');
-      if(! empty ( $_REQUEST ['listRows'] )){
-	$listRows = $_REQUEST ['listRows'];
-      } else {
-	$listRows = 10;
-      }
-      $page = new Page($count, $listRows);
-      //当前页数
-      $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
-      $page -> firstRow = ($pageNum - 1) * $listRows;
-      //每页条数
-      $result['listRows'] = $listRows;
-      //当前页数
-      $result['currentPage'] = $pageNum;
-      $result['count'] = $count;
-
-      //search time
-      G('start');
-      //result
-      $result['result'] = $company -> field('id,name,mobilephone,addtime,updatetime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> group('mobilephone') -> select();
-      //将查询时间写入结果数组
-      $result['time'] = G('start', 'end');
-      $this -> assign('result', $result);
-    }
-    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
-    $this -> assign('result_childsite', $result_childsite);
-    $this -> display();
-  }
-
-  /* ------------ 短信群发管理 ------------ */
 
 }
