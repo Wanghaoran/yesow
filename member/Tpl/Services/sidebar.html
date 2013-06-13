@@ -9,6 +9,12 @@
     <else/>
     <li><a href="__URL__/qqonline">在线QQ管理</a></li>
     </if>
+    <if condition="(ACTION_NAME eq 'sms') OR (ACTION_NAME eq 'sendsms')">
+    <li class="hover"><a href="__URL__/sms">短信群发业务</a></li>
+    <else/>
+    <li><a href="__URL__/sms">短信群发业务</a></li>
+    </if>
+    <li><a href="#">邮件群发业务</a></li>
     <li><a href="#">企业形象管理</a></li>
     <li><a href="#">报错管理</a></li>
   </ul>

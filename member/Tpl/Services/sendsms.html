@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>发送短信-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">短信群发业务</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">手机短信发送</a>
+                            </dt>                    
+                        </dl>
+                        <div class="main_sjdxfs">
+                                <div class="text_sjdxfs">
+                                    <h2>短信群发平台功能介绍</h2>
+                                    <ul>
+                                        <li>1、如果您有手机号码，直接选择导入文本，就可以发送您想要发的信息。</li>
+                                        <li>2、如果您没有手机号码，那么您可以在易搜网上搜索您想要的号码，然后进行群发操作。</li>
+                                        <li>3、<span>温馨提示：</span>本平台有重复号码过滤功能，减少您不必要的短信资费！</li>
+                                    </ul>
+                                </div>
+                                <div class="clear"></div>
+                                <table class="table_sjdxfs">
+                                    <tr>
+                                        <td class="tdleft">发送类型：</td>
+					<td class="tdright">
+					  <select name="SendType">
+					    <volist name="result_sendtype" id="rs">
+					    <option value="<!--{$rs.apicode}--!>"><!--{$rs.name}--!></option>
+					    </volist>
+					</select>
+					</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">号码方式：</td>
+                                        <td class="tdright"><input type="radio" name="radio_hmfs" checked="checked"/>号码列表发送<input type="radio" name="radio_hmfs"/>号码群发簿发送</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">发送号码：</td>
+                                        <td class="tdright">
+                                        <textarea></textarea>
+                                        <p>如果您是在此输入手机号码，输入多个号码时每行一个或以英文逗号分隔。</p>
+                                        <P>如果您是在易搜上找的手机号码，在上列框中显示为：136****3696是正常的，请放心发送！</P>
+                                        <p class="p_text">当前共<span>2</span>号码,每个号码<span>0.07</span>元，本次发送共计短信费用<span>0.14</span>元，您的余额<span>1.54</span>元，<a href="#" class="a_wycz">我要充值</a></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">易搜号码：</td>
+                                        <td class="tdright">
+                                        <input type="button" value="易搜网上搜索手机号" class="wydh_btn"/>在易搜网上搜索您想要的号码。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">导入文本：</td>
+                                        <td class="tdright">
+                                        <div class="file-box"><input type='text' name='textfield' id='textfield' class='txtfile' /><input type='button' class='btnfile' value='浏览...' /><input type="file" name="fileField" class="fileinput" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" /></div>
+<div class="left"><input type="button" value="导入" class="rmb_fanhui"/><input type="button" value="过滤重复" class="rmb_fanhui"/></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">发送内容：</td>
+                                        <td class="tdright">
+                                            <textarea></textarea>
+                                            <P class="p_bottom">内容限192个字，超过64字符按多条计费。已输入<span>0</span>字，将做<span>0</span>条短信计费。</P>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">号码簿名：</td>
+                                        <td class="tdright">
+                                        <input type="checkbox" />存入群发簿以便下次群发，并取名<input type="text" value="201306091023群发号码" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><input type="button" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="button" value="重置" class="rmb_fanhui"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="clear30"></div>  
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

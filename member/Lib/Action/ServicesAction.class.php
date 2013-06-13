@@ -27,4 +27,29 @@ class ServicesAction extends CommonAction {
   public function qqonline(){
     $this -> display();
   }
+
+  //短信群发业务
+  public function _before_sms(){
+    $this -> _before_index();
+  }
+  public function sms(){
+    $this -> display();
+  }
+
+  //短信群发管理
+  public function sendsms(){
+    //发送通道
+    $sendtype = M('SmsSendType');
+    $result_sendtype = $sendtype -> field('apicode,name') -> select();
+    $this -> assign('result_sendtype', $result_sendtype);
+    $this -> display();
+  }
+
+  //邮件群发业务
+  public function _before_email(){
+    $this -> _before_index();
+  }
+  public function email(){
+  
+  }
 }

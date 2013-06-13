@@ -75,12 +75,22 @@ class MessageAction extends CommonAction {
 	}
 	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
 	foreach($result_temp as $value){
-	  $send_arr[$value['id']] = $value['email'];
+	  //过滤多个邮箱
+	  $value['email'] = preg_replace('/\s{2,}|　/U',' ',$value['email']);
+	  $temp_arr = explode(' ', $value['email']);
+	  foreach($temp_arr as $values){
+	    $send_arr[$value['id']] = $values;
+	  }
 	}
       }else{
 	$result_temp = explode(',', $_POST['ids']);
 	foreach($result_temp as $key => $value){
-	  $send_arr[$value] = $company -> getFieldByid($value, 'email');
+	  $temp_string = $company -> getFieldByid($value, 'email');
+	  $temp_string = preg_replace('/\s{2,}|　/U',' ',$temp_string);
+	  $temp_arr = explode(' ', $temp_string);
+	  foreach($temp_arr as $values){
+	    $send_arr[$value] = $values;
+	  }
 	}
       }
     }else{
@@ -142,11 +152,15 @@ class MessageAction extends CommonAction {
 	}
 	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
 	foreach($result as $value){
-	  $data['cid'] = $value['id'];
-	  $data['name'] = $value['name'];
-	  $data['email'] = $value['email'];
-	  $data['addtime'] = time();
-	  $email_group_list -> add($data);
+	  $value['email'] = preg_replace('/\s{2,}|　/U',' ',$value['email']);
+	  $temp_arr = explode(' ', $value['email']);
+	  foreach($temp_arr as $values){
+	    $data['cid'] = $value['id'];
+	    $data['name'] = $value['name'];
+	    $data['addtime'] = time();
+	    $data['email'] = $values;
+	    $email_group_list -> add($data);
+	  }
 	}
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
@@ -569,7 +583,87 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-
   /* ------------ 邮件群发管理 ------------ */
+
+  /* ------------ 短信群发管理 ------------ */
+
+  //接入通道管理
+  public function apisendtype(){
+    $sendtype = M('SmsSendType');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('like', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $sendtype -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $sendtype -> field('id,name,apicode,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //添加接入通道
+  public function addapisendtype(){
+    if(!empty($_POST['name'])){
+      $sendtype = M('SmsSendType');
+      if(!$sendtype -> create()){
+	$this -> error($sendtype -> getError());
+      }
+      if($sendtype -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除接入通道
+  public function delapisendtype(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $sendtype = M('SmsSendType');
+    if($sendtype -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑接入通道
+  public function editapisendtype(){
+    $sendtype = M('SmsSendType');
+    if(!empty($_POST['name'])){
+      if(!$sendtype -> create()){
+	$this -> error($sendtype -> getError());
+      }
+      if($sendtype -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $sendtype -> field('name,apicode,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+  /* ------------ 短信群发管理 ------------ */
 
 }

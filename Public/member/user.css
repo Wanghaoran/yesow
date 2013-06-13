@@ -54,6 +54,8 @@ ul.user_set li.btn_img5{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img5 a img{ margin:0 0 0 5px; }
 ul.user_set li.btn_img6{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img6 a img{ margin:0 15px 0 0; }
+ul.user_set li.btn_img7{ padding-bottom:0; width:270px; text-align:center;}
+ul.user_set li.btn_img7 a img{ margin:0 4px 0 0; }
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
@@ -478,3 +480,36 @@ ul.ul_price2 li.li_price2{ width:680px;}
 .btn_price{ width:100px; margin:0 auto;}
 .div_attention{ width:687px; color:#f70400; font-weight:bold; text-align:left;}
 
+/*我的电话号簿*/
+.ul_wddhhb{ width:740px; margin:10px auto;}
+.ul_wddhhb li{ float:left; width:100px; height:25px; margin-right:5px; line-height:25px;}
+h2.h2_yue{ float:right; background:url(images/user/icon_yue.gif) left center no-repeat; height:40px; line-height:40px; text-align:left; padding-left:30px; font-size:12px; font-weight:normal;}
+table.table_wdfsjl{ float:left;width:740px; border:none; border-collapse:collapse; margin:10px auto;}
+table.table_wdfsjl th{border:none; font-size:12px; font-weight:bold; border:#a6a6a6 1px solid; border-collapse:collapse; height:30px; line-height:30px; text-align:left; padding-left:10px;}
+table.table_wdfsjl td{border:none; border:#a6a6a6 1px solid; border-collapse:collapse; height:25px; line-height:25px; text-align:left; padding-left:10px;}
+table.table_wdfsjl td a.a_wdfsjl{ width:400px; height:25px; line-height:25px; display:inline-block; overflow:hidden; text-decoration:none;}
+
+.main_sjdxfs{ width:740px; height:auto; margin:0 auto;}
+.text_sjdxfs{ width:740px;}
+.text_sjdxfs h2{ font-size:12px; font-weight:bold; color:#fe0400; height:25px; line-height:25px; text-align:left; margin-top:10px;}
+.text_sjdxfs ul li span{ font-weight:bold;}
+
+table.table_sjdxfs{ border:#b9b9b9 1px solid; border-collapse:collapse; width:740px; margin:10px auto; text-align:center;}
+table.table_sjdxfs td{border:#b9b9b9 1px solid; border-collapse:collapse; height:40px; line-height:40px;}
+table.table_sjdxfs td.tdleft{ width:100px; text-align:center;}
+table.table_sjdxfs td.tdright{ text-align:left; padding-left:10px;}
+table.table_sjdxfs td.tdright input{ vertical-align:middle; margin-right:5px;}
+table.table_sjdxfs td.tdright select{ vertical-align:middle; margin-right:5px;}
+table.table_sjdxfs td.tdright textarea{ width:550px; height:80px; margin:10px 0;}
+table.table_sjdxfs td.tdright p{ line-height:20px; color:#fe0201;}
+table.table_sjdxfs td.tdright p.p_text{ font-weight:bold; color:#000; margin-bottom:10px;}
+table.table_sjdxfs td.tdright p.p_text span{ color:#fe0201;}
+table.table_sjdxfs td.tdright p.p_bottom{ margin-bottom:10px;}
+table.table_sjdxfs td.tdright p.p_bottom span{color:#020cff;}
+table.table_sjdxfs td.tdright p a.a_wycz{ color:#000eff; font-weight:bold; text-decoration:underline; background:none; margin:0; padding:0;}
+
+.file-box{ position:relative;width:280px; float:left;}
+.txtfile{ height:22px; border:1px solid #cdcdcd; width:180px;}
+.btnfile{background:url(images/user/btn_download.gif) bottom left no-repeat;font-size:12px; font-weight:bold;width:73px; height:28px; line-height:28px; text-align:center; color:#fff; border:none;cursor:pointer;}
+.fileinput{ position:absolute; top:0; right:20px; height:24px; line-height:24px; filter:alpha(opacity:0);opacity: 0;width:250px }
+.left{ float:left;}
