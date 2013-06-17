@@ -7,6 +7,41 @@
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+  function FormateNum(obj) {
+    if ($.trim(obj.value).length > 0) {
+      var objVal = $.trim(obj.value).replace(/\r\n/g, ",").replace(/\n/g, ",");
+      objVal = CtoH(objVal); //替换全角数字
+      obj.value = objVal;
+      $("#totalNums").html(objVal.split(",").length);
+    }
+    else {
+      $("#totalNums").html("0");
+    }
+  }
+
+  //大写数字转换 分割符扩展
+  function CtoH(str) {
+    var result = "";
+    for (var i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) == 12288) {
+	result += String.fromCharCode(str.charCodeAt(i) - 12256);
+	continue;
+      }
+      if (str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375) result += String.fromCharCode(str.charCodeAt(i) - 65248);
+      else result += String.fromCharCode(str.charCodeAt(i));
+    }
+    var th = "`,·,，,。,.,、,|,‘,’,。".split(",");
+    for (var i = 0; i < th.length; i++) {
+      result = result.replace(th[i],",");
+    }
+    var reger = new RegExp("[^0123456789,]", "gi");
+    result = result.replace(reger, "");
+    return result;
+} 
+  
+  
+</script>
 </head>
 <body id="body_user">
   <include file="Index:header" />
@@ -34,11 +69,12 @@
                                     </ul>
                                 </div>
                                 <div class="clear"></div>
-                                <table class="table_sjdxfs">
+				<table class="table_sjdxfs">
+				  <form action="__URL__/tosendsms" method="post">
                                     <tr>
                                         <td class="tdleft">发送类型：</td>
 					<td class="tdright">
-					  <select name="SendType">
+					  <select name="sendtype">
 					    <volist name="result_sendtype" id="rs">
 					    <option value="<!--{$rs.apicode}--!>"><!--{$rs.name}--!></option>
 					    </volist>
@@ -47,15 +83,15 @@
                                     </tr>
                                     <tr>
                                         <td class="tdleft">号码方式：</td>
-                                        <td class="tdright"><input type="radio" name="radio_hmfs" checked="checked"/>号码列表发送<input type="radio" name="radio_hmfs"/>号码群发簿发送</td>
+                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked"/>号码列表发送<input type="radio" name="phonetype" value="group" />号码群发簿发送</td>
                                     </tr>
                                     <tr>
                                         <td class="tdleft">发送号码：</td>
                                         <td class="tdright">
-                                        <textarea></textarea>
+                                        <textarea name="sendnumber" onkeyup="FormateNum(this)" onblur="FormateNum(this)">1232****1232,1232***1233</textarea>
                                         <p>如果您是在此输入手机号码，输入多个号码时每行一个或以英文逗号分隔。</p>
                                         <P>如果您是在易搜上找的手机号码，在上列框中显示为：136****3696是正常的，请放心发送！</P>
-                                        <p class="p_text">当前共<span>2</span>号码,每个号码<span>0.07</span>元，本次发送共计短信费用<span>0.14</span>元，您的余额<span>1.54</span>元，<a href="#" class="a_wycz">我要充值</a></p>
+                                        <p class="p_text">当前共<span id="totalNums">2</span>号码,每个号码<span>0.07</span>元，本次发送共计短信费用<span>0.14</span>元，您的余额<span>1.54</span>元，<a href="#" class="a_wycz">我要充值</a></p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -74,7 +110,7 @@
                                     <tr>
                                         <td class="tdleft">发送内容：</td>
                                         <td class="tdright">
-                                            <textarea></textarea>
+                                            <textarea name="content"></textarea>
                                             <P class="p_bottom">内容限192个字，超过64字符按多条计费。已输入<span>0</span>字，将做<span>0</span>条短信计费。</P>
                                         </td>
                                     </tr>
@@ -85,8 +121,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><input type="button" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="button" value="重置" class="rmb_fanhui"/></td>
-                                    </tr>
+                                        <td colspan="2"><input type="submit" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="reset" value="重置" class="rmb_fanhui"/></td>
+				      </tr>
+				      </form>
                                 </table>
                             </div>
                             <div class="clear30"></div>  

@@ -664,6 +664,35 @@ class MessageAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  //群发短信参数设置
+  public function sendsmssetting(){
+    $setting = M('SmsSetting');
+    if(!empty($_POST['sms_username'])){
+      $where = array();
+      $data = array();
+      $num = 0;
+      foreach($_POST as $key => $value){
+	$where['name'] = $key;
+	$data['value'] = $value;
+	$num += $setting -> where($where) -> save($data);      
+      }
+      if($num > 0){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $sms_username = $setting -> getFieldByname('sms_username', 'value');
+    $sms_password = $setting -> getFieldByname('sms_password', 'value');
+    $search_phone_price = $setting -> getFieldByname('search_phone_price', 'value');
+    $send_sms_price = $setting -> getFieldByname('send_sms_price', 'value');
+    $this -> assign('sms_username', $sms_username);
+    $this -> assign('sms_password', $sms_password);
+    $this -> assign('search_phone_price', $search_phone_price);
+    $this -> assign('send_sms_price', $send_sms_price);
+    $this -> display();
+  }
   /* ------------ 短信群发管理 ------------ */
 
 }

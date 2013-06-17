@@ -1,0 +1,36 @@
+
+<div class="panel">
+  <h1>群发短信参数设置</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/navTabId/sendsmssetting" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <p style="width:95%;">
+      <label style="width:100%;">填写说明：</label>
+      </p>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label>接口用户名:</label>
+      <input type="text" name="sms_username" value="<!--{$sms_username}--!>" size="40" />
+      </p>
+      <p style="width:90%;">
+      <label>接口密码:</label>
+      <input type="text" name="sms_password" value="<!--{$sms_password}--!>" size="40" />
+      </p>
+      <p style="width:90%;">
+      <label>搜索号码价格:</label>
+      <input type="text" name="search_phone_price" value="<!--{$search_phone_price}--!>" size="10" /><label>元 / 个号码</label>
+      </p>
+      <p style="width:90%;">
+      <label>发送号码价格:</label>
+      <input type="text" name="send_sms_price" value="<!--{$send_sms_price}--!>" size="10" /><label>元 / 条短信</label>
+      </p>
+
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

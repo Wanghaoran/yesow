@@ -730,6 +730,8 @@ class CompanyAction extends CommonAction {
 	$where['auditaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }else if($_POST['search_key'] == 'updatename'){
 	$where['updateaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'email'){
+	$where['email'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
       }
     }
     if(!empty($_POST['search_starttime'])){
