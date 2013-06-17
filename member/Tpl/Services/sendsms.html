@@ -13,7 +13,9 @@
       var objVal = $.trim(obj.value).replace(/\r\n/g, ",").replace(/\n/g, ",");
       objVal = CtoH(objVal); //替换全角数字
       obj.value = objVal;
-      $("#totalNums").html(objVal.split(",").length);
+      var sendnum = objVal.split(",").length;
+      $("#totalNums").html(sendnum);
+      $('#totalprice').html(sendnum * <!--{$send_sms_price}--!>);
     }
     else {
       $("#totalNums").html("0");
@@ -35,11 +37,28 @@
     for (var i = 0; i < th.length; i++) {
       result = result.replace(th[i],",");
     }
-    var reger = new RegExp("[^0123456789,]", "gi");
+    var reger = new RegExp("[^0123456789*,]", "gi");
     result = result.replace(reger, "");
     return result;
-} 
-  
+  }
+
+  function radioShow(){
+    var myradio=document.getElementsByName("phonetype"); 
+    if(myradio[0].checked){
+      $("#sendnumber").show();
+      $("#searchphone").show();
+      $("#inputtxt").show();
+      $("#phonegroup").hide();
+      $("#groupname").show();
+    }
+    else{
+      $("#sendnumber").hide();
+      $("#searchphone").hide();
+      $("#inputtxt").hide();
+      $("#phonegroup").show();
+      $("#groupname").hide();
+    }
+  }
   
 </script>
 </head>
@@ -83,24 +102,24 @@
                                     </tr>
                                     <tr>
                                         <td class="tdleft">号码方式：</td>
-                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked"/>号码列表发送<input type="radio" name="phonetype" value="group" />号码群发簿发送</td>
+                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked" onclick="radioShow();"/>号码列表发送<input type="radio" name="phonetype" value="group" onclick="radioShow();" />号码群发簿发送</td>
                                     </tr>
-                                    <tr>
+                                    <tr id="sendnumber">
                                         <td class="tdleft">发送号码：</td>
                                         <td class="tdright">
-                                        <textarea name="sendnumber" onkeyup="FormateNum(this)" onblur="FormateNum(this)">1232****1232,1232***1233</textarea>
+                                        <textarea name="sendnumber" id="sendnumber" onkeyup="FormateNum(this)" onblur="FormateNum(this)">1232****1232,1232***1233</textarea>
                                         <p>如果您是在此输入手机号码，输入多个号码时每行一个或以英文逗号分隔。</p>
                                         <P>如果您是在易搜上找的手机号码，在上列框中显示为：136****3696是正常的，请放心发送！</P>
-                                        <p class="p_text">当前共<span id="totalNums">2</span>号码,每个号码<span>0.07</span>元，本次发送共计短信费用<span>0.14</span>元，您的余额<span>1.54</span>元，<a href="#" class="a_wycz">我要充值</a></p>
+					<p class="p_text">当前共<span id="totalNums"></span>号码,每个号码<span><!--{$send_sms_price}--!></span>元，本次发送共计短信费用<span id="totalprice"></span>元，您的余额<span><!--{$Think.session.rmb_total}--!></span>元，<a href="__APP__/money/rmbrecharge" target="_blank" class="a_wycz">我要充值</a></p>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr id="searchphone">
                                         <td class="tdleft">易搜号码：</td>
                                         <td class="tdright">
-                                        <input type="button" value="易搜网上搜索手机号" class="wydh_btn"/>在易搜网上搜索您想要的号码。
+                                        <input type="button" value="易搜网上搜索手机号" onclick="location.href='__URL__/searchcompanyphone'" class="wydh_btn"/>在易搜网上搜索您想要的号码。
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr id="inputtxt">
                                         <td class="tdleft">导入文本：</td>
                                         <td class="tdright">
                                         <div class="file-box"><input type='text' name='textfield' id='textfield' class='txtfile' /><input type='button' class='btnfile' value='浏览...' /><input type="file" name="fileField" class="fileinput" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" /></div>
@@ -114,11 +133,19 @@
                                             <P class="p_bottom">内容限192个字，超过64字符按多条计费。已输入<span>0</span>字，将做<span>0</span>条短信计费。</P>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr id="groupname">
                                         <td class="tdleft">号码簿名：</td>
                                         <td class="tdright">
-                                        <input type="checkbox" />存入群发簿以便下次群发，并取名<input type="text" value="201306091023群发号码" />
+                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="201306091023群发号码" />
                                         </td>
+				      </tr>
+				      <tr style="display:none;" id="phonegroup">
+                                        <td class="tdleft">号码簿名：</td>
+					<td class="tdright">
+					  <select name="phonegroup">
+					    <option value="sssss">ssss</option>
+					  </select>
+					</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><input type="submit" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="reset" value="重置" class="rmb_fanhui"/></td>
@@ -135,5 +162,8 @@
         </div>
     </div>
     <include file="Index:footer" />
-</body>
+  </body>
+  <script>
+    FormateNum($('textarea[name="sendnumber"]')[0]);
+  </script>
 </html>

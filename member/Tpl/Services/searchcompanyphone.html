@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网上搜索手机号-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+  var tosend = function(){
+
+  }
+
+  var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#csaid').html(_nstr).show();
+	  }else{
+	  $('#csaid').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+
+ function radioShow(){
+	var myradio=document.getElementsByName("searchscope"); 
+	if(myradio[0].checked){
+		$("#tr_ssfw").hide();
+	}
+	else{
+		$("#tr_ssfw").show();
+		}
+ }
+
+function isSelectAll(){
+ 	  var selectAll = document.getElementById("selectAll");
+ 	   var indexIds = document.getElementsByName("checktel");
+ 	    if(selectAll.checked){
+ 	      for(var i=0;i<indexIds.length;i++){
+ 	       indexIds[i].checked=true;
+ 	      }
+		  $("#ffsw_num2").html(indexIds.length);
+ 	    }else{
+ 	      for(var i=0;i<indexIds.length;i++){
+ 	       indexIds[i].checked=false;
+ 	      }
+		  $("#ffsw_num2").html("0");
+ 	    }
+		
+ 	}
+function checkSelect(field){
+			var count=0;
+			var indexIds = document.getElementsByName("checktel");
+			var selectAll = document.getElementById("selectAll");
+
+		    for(var i=0;i<indexIds.length;i++){
+	 	      if(indexIds[i].checked){
+	 	        count++;
+	 	      }
+	 	      if(count==indexIds.length){
+	 	        selectAll.checked=true;
+	 	      }
+			  if(count<indexIds.length){
+				selectAll.checked=false;
+			  }
+ 	      }
+		  $("#ffsw_num2").html(count);
+	}
+</script>
+
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">短信群发业务</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">搜索手机号码</a>
+                            </dt>                    
+                        </dl>
+                        <div class="main_sjdxfs">
+			  <table class="table_ssfw">
+			    <form action="__ACTION__" method="get">
+                            	<tr><td class="tdright">搜索关键词：</td><td class="tdleft"><input type="text" name="keyword" /></td></tr>
+                                <tr><td class="tdright">搜索范围：</td><td class="tdleft"><input type="radio" name="searchscope" onclick="radioShow();" checked="checked" value="all"/>全部查询<input type="radio" name="searchscope" onclick="radioShow();" value="city"/>省市查询</td></tr>
+				<tr id="tr_ssfw" style="display:none;">
+				  <td class="tdright">选择地区：</td>
+				  <td class="tdleft">
+				    <select id="csid" name="csid" onchange="getchildsitearea($(this).val());">
+				      <option value="">请选择</option>
+				      <volist name="result_childsite" id="rc">
+				      <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+				      </volist>
+				    </select>
+				    <select id="csaid" name="csaid" >
+				      <option value="">请选择</option>
+				    </select>
+				</td>
+			      </tr>
+				<tr><td colspan="2" class="tdbutton"><input type="submit" value="搜索" /></td></tr>
+				</form>
+                            </table> 
+			    <div class="clear10"></div>
+			    <notempty name="result">
+			    <div class="div_ssjg">你搜索了“<span><!--{$Think.get.keyword}--!></span>”关键词，搜到<span id="ffsw_num1"><!--{$count}--!></span>条数据。您本次选中了<span id="ffsw_num2">0</span>个手机号码，本次号码使用费为<span id="ffsw_num3">0.2</span>元。<br />您的余额为：<span><!--{$Think.session.rmb_total}--!></span>元。[&nbsp;<a href="__APP__/money/rmbrecharge" target="_blank" >我要充值</a>&nbsp;]</div>
+			    <else/>
+			    <div class="div_ssjg">请输入检索条件进行搜索</div>
+			    </notempty>
+                            <div class="clear"></div>
+                            <ul class="ul_ssfw_title">
+                            	<li class="one">选择</li>
+                            	<li class="two">公司名称</li>
+                                <li class="three">主营产品</li>
+                                <li class="four">手机号码</li>
+                            </ul>
+			    <div class="clear"></div>
+			    <ul id="ul_parter" class="ul_parter">
+			      <volist name="result" id="r">
+                              <li>
+			      <div class="left ssfw_width1"><input type="checkbox" name="checktel" value="<!--{$r.id}--!>" onClick="checkSelect(this);"/></div>
+			      <div class="left ssfw_width2"><a title="<!--{$r.name}--!>"><!--{$r.name}--!></a></div>
+			      <div class="left ssfw_width3"><a title="<!--{$r.manproducts}--!>"><!--{$r.manproducts}--!></a></div>
+			      <div class="left ssfw_width4"><!--{$r.mobilephone|substr=0,11|substr_replace="****",3,4}--!></div>
+			      </li>
+			      </volist>
+			    </ul>
+                            <div class="clear"></div>
+                            <div class="ssfw_foot">
+			      <div id="page_navigation"><!--{$show}--!></div> 
+                            	<div class="left"><input name="checkbox" type="checkbox" value="" onClick="isSelectAll()" id="selectAll"/>全选&nbsp;&nbsp;<input type="button" onclick="tosend();" value="马上去发送" /></div>
+                            </div>  
+                            <div class="clear10"></div>
+                        </div>
+                        <div class="clear"></div>  
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+<script type="text/javascript">
+//交替行变色
+    $("#ul_parter li").css("background","#fff");
+    $("#ul_parter li:even").css("background","#ebebeb");
+</script>
+</html>

@@ -56,6 +56,8 @@ ul.user_set li.btn_img6{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img6 a img{ margin:0 15px 0 0; }
 ul.user_set li.btn_img7{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img7 a img{ margin:0 4px 0 0; }
+ul.user_set li.btn_img8{ padding-bottom:0; width:270px; text-align:center;}
+ul.user_set li.btn_img8 a img{ margin:0 10px; }
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
@@ -535,9 +537,9 @@ ul.ul_ssfw_title li.four{ width:170px;}
 ul.ul_parter{ width:738px;}
 ul.ul_parter li{ float:left; width:727px; height:25px; line-height:25px; text-align:left; border:#bcbcbc 1px solid; border-top:none; padding-left:10px;}
 div.ssfw_width1{width:38px;border-right:#bcbcbc 1px solid; height:25px; vertical-align:middle;}
-div.ssfw_width2{width:180px;border-right:#bcbcbc 1px solid;padding-left:10px;}
-div.ssfw_width3{width:306px;border-right:#bcbcbc 1px solid;padding-left:10px;}
-div.ssfw_width4{width:170px;padding-left:10px;}
+div.ssfw_width2{width:170px; height:25px;border-right:#bcbcbc 1px solid;padding:0 10px;word-break:break-all;overflow:hidden}
+div.ssfw_width3{width:306px; height:25px; border-right:#bcbcbc 1px solid;padding-left:10px;word-break:break-all; overflow:hidden}
+div.ssfw_width4{width:160px; height:25px;padding:0 10px;word-break:break-all;overflow:hidden}
 
 .ssfw_foot{ border:#bcbcbc 1px solid; border-top: none; padding:10px; height:30px; line-height:30px; width:717px;}
 #page_navigation { float:right;}

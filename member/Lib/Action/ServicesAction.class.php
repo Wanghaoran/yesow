@@ -15,6 +15,7 @@ class ServicesAction extends CommonAction {
 
   //首页
   public function index(){
+    $this -> display();
   
   }
 
@@ -42,6 +43,10 @@ class ServicesAction extends CommonAction {
     $sendtype = M('SmsSendType');
     $result_sendtype = $sendtype -> field('apicode,name') -> select();
     $this -> assign('result_sendtype', $result_sendtype);
+    //发送价格
+    $setting = M('SmsSetting');
+    $send_sms_price = $setting -> getFieldByname('send_sms_price', 'value');
+    $this -> assign('send_sms_price', $send_sms_price);
     $this -> display();
   }
 
@@ -70,9 +75,52 @@ class ServicesAction extends CommonAction {
 	</div></body></html>';
     echo $sHtml;
     flush();//输出送出的缓冲内容
-    dump($_POST);
+
+    if($_POST['phonetype'] == 'list'){
+      dump('发送号码：' . $_POST['sendnumber']);
+      dump('发送内容：' . $_POST['content']);
+      if($_POST['savegroup'] == 'true'){
+	dump('保存通讯录的名称：' . $_POST['savegroupname']);
+      }
     
-    
+    }else if($_POST['phonetype'] == 'group'){
+      dump('发送内容：' . $_POST['content']);
+      dump('发送号码簿：' . $_POST['phonegroup']);
+      
+    }
+    dump($_POST); 
+  }
+
+  //搜索号码
+  public function searchcompanyphone(){
+    if(!empty($_GET['keyword'])){
+      $keyword = $this -> _get('keyword');
+      $company = M('Company');
+      $where = array();
+      $where['delaid']  = array('exp', 'is NULL');
+      $where['mobilephone'] = array('neq', '');
+      $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+      if($_GET['searchscope'] == 'city'){
+	$where['csid'] = $this -> _get('csid', 'intval');
+	if(!empty($_GET['csaid'])){
+	  $where['csaid'] = $this -> _get('csaid', 'intval');
+	}
+      }
+
+      import("ORG.Util.Page");// 导入分页类
+      $count = $company -> where($where) -> count('id');
+      $page = new Page($count, 10);//每页10条
+      $show = $page -> show();
+      $this -> assign('show', $show);
+
+      $result = $company -> field('id,name,manproducts,mobilephone') -> where($where) -> order('id DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+      $this -> assign('result', $result);
+      $this -> assign('count', $count);
+    }
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
   }
 
   //短信发送记录
