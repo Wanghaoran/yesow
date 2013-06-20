@@ -47,6 +47,7 @@ class ServicesAction extends CommonAction {
     $setting = M('SmsSetting');
     $send_sms_price = $setting -> getFieldByname('send_sms_price', 'value');
     $this -> assign('send_sms_price', $send_sms_price);
+    dump($_SESSION['member_search_send_list']);
     $this -> display();
   }
 
@@ -116,11 +117,59 @@ class ServicesAction extends CommonAction {
       $result = $company -> field('id,name,manproducts,mobilephone') -> where($where) -> order('id DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
       $this -> assign('result', $result);
       $this -> assign('count', $count);
+
+      //搜索价格
+      $setting = M('SmsSetting');
+      $search_phone_price = $setting -> getFieldByname('search_phone_price', 'value');
+      $this -> assign('search_phone_price', $search_phone_price);
     }
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
+  }
+
+  //ajax处理搜索结果添加到待发送列表
+  public function ajaxaddsearchsendlist(){
+    if(!is_array($_SESSION['member_search_phone_list'])){
+      $_SESSION['member_search_phone_list'] = array();
+    }
+    if(in_array($_GET['cid'], $_SESSION['member_search_phone_list'])){
+      unset($_SESSION['member_search_phone_list'][array_search($_GET['cid'], $_SESSION['member_search_phone_list'])]);
+    }else{
+      $_SESSION['member_search_phone_list'][] = $_GET['cid'];
+    } 
+    echo count($_SESSION['member_search_phone_list']);
+  }
+
+  //提取搜索结果并扣费
+  public function searchresult(){
+    //搜索价格
+    $setting = M('SmsSetting');
+    $search_phone_price = $setting -> getFieldByname('search_phone_price', 'value');
+    //消费金额
+    $cost = count($_SESSION['member_search_phone_list']) * $search_phone_price;
+    //扣费
+    $MemberRmb = D('member://MemberRmb');
+    if($MemberRmb -> autolessmoney($cost)){
+      //写消费日志
+      $MemberRmbDetail = D('member://MemberRmbDetail');
+      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心搜索手机号码', '消费', '-' . $cost);
+      //处理待发送数组
+      $company = M('Company');
+      $_SESSION['member_search_send_list'] = array();
+      foreach($_SESSION['member_search_phone_list'] as $value){
+	$_SESSION['member_search_send_list'][] = substr($company -> getFieldByid($value, 'mobilephone'), 0, 11);
+      }
+      $_SESSION['member_search_phone_list'] = array();
+      //更新RMB缓存
+      if(!$MemberRmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Register/successjump',array('扣费成功！现在转入待发送页面', U('Services/sendsms')));
+    }else{
+      R('Register/errorjump', array('用户余额不足，请充值', U('Services/sendsms')));
+    }
   }
 
   //短信发送记录

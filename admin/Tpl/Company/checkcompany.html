@@ -47,7 +47,11 @@
 		    <select class="combox" name="search_csid" ref="search_csaid6" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
 		    <option value="">请选择</option>
 		    <volist name="result_childsite" id="s_rc">
+		    <eq name="Think.request.search_csid" value="$s_rc.id">
+		    <option value="<!--{$s_rc.id}--!>" selected="selected"><!--{$s_rc.name}--!></option>
+		    <else/>
 		    <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+		    </eq>
 		    </volist>
 		  </select>
 		  <select class="combox" name="search_csaid" id="search_csaid6">

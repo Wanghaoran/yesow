@@ -9,7 +9,7 @@
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
 <script type="text/javascript">
   var tosend = function(){
-
+    location.href="__URL__/searchresult";
   }
 
   var getchildsitearea = function(val){
@@ -42,39 +42,34 @@
  }
 
 function isSelectAll(){
- 	  var selectAll = document.getElementById("selectAll");
- 	   var indexIds = document.getElementsByName("checktel");
- 	    if(selectAll.checked){
- 	      for(var i=0;i<indexIds.length;i++){
- 	       indexIds[i].checked=true;
- 	      }
-		  $("#ffsw_num2").html(indexIds.length);
- 	    }else{
- 	      for(var i=0;i<indexIds.length;i++){
- 	       indexIds[i].checked=false;
- 	      }
-		  $("#ffsw_num2").html("0");
- 	    }
-		
- 	}
-function checkSelect(field){
-			var count=0;
-			var indexIds = document.getElementsByName("checktel");
-			var selectAll = document.getElementById("selectAll");
-
-		    for(var i=0;i<indexIds.length;i++){
-	 	      if(indexIds[i].checked){
-	 	        count++;
-	 	      }
-	 	      if(count==indexIds.length){
-	 	        selectAll.checked=true;
-	 	      }
-			  if(count<indexIds.length){
-				selectAll.checked=false;
-			  }
- 	      }
-		  $("#ffsw_num2").html(count);
-	}
+  var selectAll = document.getElementById("selectAll");
+  var indexIds = document.getElementsByName("checktel");
+  if(selectAll.checked){
+    for(var i=0;i<indexIds.length;i++){
+      if(indexIds[i].checked != true){
+	indexIds[i].checked = true;
+	checkSelect(indexIds[i].value);
+      }
+    }
+  }else{
+    for(var i=0;i<indexIds.length;i++){
+      if(indexIds[i].checked == true){
+	indexIds[i].checked = false;
+	checkSelect(indexIds[i].value);
+      }
+    }
+  }
+}
+function checkSelect(cid){
+  $.ajax({
+    url:'__URL__/ajaxaddsearchsendlist/cid/' + cid,
+      success: function(ress){
+        $("#ffsw_num2").html(ress);
+	var total = ress * parseFloat(<!--{$search_phone_price}--!>);
+	$("#ffsw_num3").html(total.toFixed(2));
+      },
+      });
+}
 </script>
 
 </head>
@@ -97,6 +92,7 @@ function checkSelect(field){
                         <div class="main_sjdxfs">
 			  <table class="table_ssfw">
 			    <form action="__ACTION__" method="get">
+			      {__NOTOKEN__}
                             	<tr><td class="tdright">搜索关键词：</td><td class="tdleft"><input type="text" name="keyword" /></td></tr>
                                 <tr><td class="tdright">搜索范围：</td><td class="tdleft"><input type="radio" name="searchscope" onclick="radioShow();" checked="checked" value="all"/>全部查询<input type="radio" name="searchscope" onclick="radioShow();" value="city"/>省市查询</td></tr>
 				<tr id="tr_ssfw" style="display:none;">
@@ -118,7 +114,7 @@ function checkSelect(field){
                             </table> 
 			    <div class="clear10"></div>
 			    <notempty name="result">
-			    <div class="div_ssjg">你搜索了“<span><!--{$Think.get.keyword}--!></span>”关键词，搜到<span id="ffsw_num1"><!--{$count}--!></span>条数据。您本次选中了<span id="ffsw_num2">0</span>个手机号码，本次号码使用费为<span id="ffsw_num3">0.2</span>元。<br />您的余额为：<span><!--{$Think.session.rmb_total}--!></span>元。[&nbsp;<a href="__APP__/money/rmbrecharge" target="_blank" >我要充值</a>&nbsp;]</div>
+			    <div class="div_ssjg">你搜索了“<span><!--{$Think.get.keyword}--!></span>”关键词，搜到<span id="ffsw_num1"><!--{$count}--!></span>条数据。您本次选中了<span id="ffsw_num2"><!--{$Think.session.member_search_phone_list|count}--!></span>个手机号码，本次号码使用费为<span id="ffsw_num3">0</span>元。<br />您的余额为：<span><!--{$Think.session.rmb_total}--!></span>元。[&nbsp;<a href="__APP__/money/rmbrecharge" target="_blank" >我要充值</a>&nbsp;]</div>
 			    <else/>
 			    <div class="div_ssjg">请输入检索条件进行搜索</div>
 			    </notempty>
@@ -132,8 +128,12 @@ function checkSelect(field){
 			    <div class="clear"></div>
 			    <ul id="ul_parter" class="ul_parter">
 			      <volist name="result" id="r">
-                              <li>
-			      <div class="left ssfw_width1"><input type="checkbox" name="checktel" value="<!--{$r.id}--!>" onClick="checkSelect(this);"/></div>
+			      <li>
+			      <if condition="in_array($r['id'], $_SESSION['member_search_phone_list'])">
+			      <div class="left ssfw_width1"><input type="checkbox" name="checktel" value="<!--{$r.id}--!>" onClick="checkSelect(this.value);" checked="checked" /></div>
+			      <else/>
+			       <div class="left ssfw_width1"><input type="checkbox" name="checktel" value="<!--{$r.id}--!>" onClick="checkSelect(this.value);"/></div>
+			      </if>
 			      <div class="left ssfw_width2"><a title="<!--{$r.name}--!>"><!--{$r.name}--!></a></div>
 			      <div class="left ssfw_width3"><a title="<!--{$r.manproducts}--!>"><!--{$r.manproducts}--!></a></div>
 			      <div class="left ssfw_width4"><!--{$r.mobilephone|substr=0,11|substr_replace="****",3,4}--!></div>
@@ -161,5 +161,8 @@ function checkSelect(field){
 //交替行变色
     $("#ul_parter li").css("background","#fff");
     $("#ul_parter li:even").css("background","#ebebeb");
+    //总费用
+    var totals = $("#ffsw_num2")[0].innerHTML * parseFloat(<!--{$search_phone_price}--!>);
+    $("#ffsw_num3").html(totals.toFixed(2));
 </script>
 </html>

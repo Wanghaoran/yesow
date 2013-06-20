@@ -1535,7 +1535,7 @@ class CompanyAction extends CommonAction {
 
     foreach($result['result'] as $value){
       $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>6.5, 'bold'=>true), 'pStyle');
-      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 17, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 16, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
       if(!strpos($value['companyphone'], '-123')){
 	$sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');

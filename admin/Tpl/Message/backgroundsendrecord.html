@@ -27,9 +27,17 @@
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li class=""><a class="delete" href="__URL__/delbackgroundsendrecord/navTabId/backgroundsendrecord" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/alldelbackgroundsendrecord/navTabId/backgroundsendrecord" target="ajaxTodo" title="确实要删除这些记录吗?"><span>全部删除</span></a></li>
+	    <li><a class="delete" href="__URL__/intervaldelbackgroundsendrecord" target="dialog" mask="true"><span>区间删除</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['message']['delbackgroundsendrecord'])">
 	    <li class=""><a class="delete" href="__URL__/delbackgroundsendrecord/navTabId/backgroundsendrecord" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['message']['alldelbackgroundsendrecord'])">
+	     <li class=""><a class="delete" href="__URL__/alldelbackgroundsendrecord/navTabId/backgroundsendrecord" target="ajaxTodo" title="确实要删除这些记录吗?"><span>全部删除</span></a></li>
+	     </if>
+	     <if condition="isset($_SESSION['acc_arr']['message']['intervaldelbackgroundsendrecord'])">
+	     <li><a class="delete" href="__URL__/intervaldelbackgroundsendrecord" target="dialog" mask="true"><span>区间删除</span></a></li>
 	    </if>
 	    </if>
 	    <li><b><span style="color:red;">今日已发送：<!--{$today_count}--!> 条</span></b></li>

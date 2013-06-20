@@ -211,10 +211,10 @@ class MessageAction extends CommonAction {
       foreach($recipient_arr as $value){
 	$cid = intval(substr($value, strpos($value, '(') + 1));
 	$send_email = substr($value, 0 , strpos($value, '(')) ? substr($value, 0 , strpos($value, '(')) : $value;
-	$company_info = $company -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,c.mobilephone') -> where(array('c.id' => $cid)) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	$company_info = $company -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $cid)) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
 	
 	//模板替换
-	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephine}');
+	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
 	$email_content = str_replace($search, $company_info, $_POST['content']);
 	$email_title = str_replace($search, $company_info, $_POST['title']);
 	
@@ -293,6 +293,38 @@ class MessageAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
+  }
+
+  //全部删除后台发送记录
+  public function alldelbackgroundsendrecord(){
+    $email_list = M('BackgroundSendEmail');
+    if($email_list -> where(1) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //区间删除后台发送记录
+  public function intervaldelbackgroundsendrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['sendtime'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['sendtime'][] = array('lt', $endtime);
+      }
+      $email_list = M('BackgroundSendEmail');
+      if($email_list -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
   }
 
   //查看后台已发送记录正文

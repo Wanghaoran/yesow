@@ -3,13 +3,15 @@
   <h1>邮件模板管理</h1>
   <div class="pageFormContent" layoutH="56">
     <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/emailtemplate" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
-      <div class="unit" style="height:75px;">
+      <div class="unit" style="height:100px;">
 		<label>填写规则(速查):</label>
 		<p style="line-height:20px;width:90%;">公司名：<b>{company_name}</b> | 地址：<b>{company_address}</b> | 电话：<b>{company_companyphone}</b> | 联系人：<b>{company_linkman}</b>
 		<br />
 		网址：<b>{company_website}</b> | 邮件：<b>{company_email}</b> | 主营：<b>{company_manproducts}</b> | QQ：<b>{company_qqcode}</b>
 		<br/>
 		手机：<b>{company_mobilephone}</b> | ID：<b>{company_id}</b> | 所属省份：<b>{company_csid}</b> | 所属地区：<b>{company_csaid}</b>
+		<br/>
+		分站域名：<b>{company_domain}</b>
 		</p>
 	      </div>
 	      <div class="divider"></div>
