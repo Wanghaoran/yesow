@@ -47,7 +47,20 @@ class ServicesAction extends CommonAction {
     $setting = M('SmsSetting');
     $send_sms_price = $setting -> getFieldByname('send_sms_price', 'value');
     $this -> assign('send_sms_price', $send_sms_price);
-    dump($_SESSION['member_search_send_list']);
+    //将要发送的号码
+    $sendphone = '';
+    //后台搜索号码
+    if(!empty($_SESSION['member_search_send_list'])){
+      foreach($_SESSION['member_search_send_list'] as $value){
+	if(empty($sendphone)){
+	  $sendphone .= substr_replace($value, '****', 3, 4);
+	}else{
+	  $sendphone .= ',' . substr_replace($value, '****', 3, 4);
+	}
+      }
+      $this -> assign('issearch', 'true');
+    }
+    $this -> assign('sendphone', $sendphone);
     $this -> display();
   }
 
@@ -80,7 +93,16 @@ class ServicesAction extends CommonAction {
     if($_POST['phonetype'] == 'list'){
       dump('发送号码：' . $_POST['sendnumber']);
       dump('发送内容：' . $_POST['content']);
+      //保存通讯录
       if($_POST['savegroup'] == 'true'){
+	$MemberSmsGroup = D('MemberSmsGroup');
+	$data = array();
+	$data['mid'] = session(C('USER_AUTH_KEY'));
+	$data['name'] = $this -> _post('savegroupname');
+	if($MemberSmsGroup -> create($data)){
+	  //该写添加通讯录了
+	
+	}
 	dump('保存通讯录的名称：' . $_POST['savegroupname']);
       }
     

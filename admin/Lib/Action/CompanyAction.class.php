@@ -969,6 +969,32 @@ class CompanyAction extends CommonAction {
     }
   }
 
+  //批量操作管理
+  public function batchhandle(){
+    $company = M('Company');
+    //企业简介为空的数量
+    $aboutus_num = $company -> where('content=""') -> count();
+    $this -> assign('aboutus_num', $aboutus_num);
+    $this -> display();
+  }
+
+  //批量生成企业简介
+  public function editbatchtocompanycontent(){
+    $company = M('Company');
+    $aboutus_empty = $company -> table('yesow_company as c') -> field('c.id,c.name,cs.name as csname,csa.name as csaname,c.address,c.manproducts,c.linkman,ct.name as ctname,c.website') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_type as ct ON c.typeid = ct.id') -> where('c.content = ""') -> select();
+    $num = 0;
+    foreach($aboutus_empty as $value){
+      $data = array();
+      $data['id'] = $value['id'];
+      $data['content'] = '    ' . $value['name'] . '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' . $value['name'] . "这里在此我们全体成员祝你网上浏览愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国" . $value['csname'] . $value['csaname'] . '地区,公司地址在' . $value['address'] . '，公司主要经营' . $value['manproducts'] . '，欢迎来人来电咨询和联系我们，公司联系人是' . $value['linkman'] . "，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    " . $value['name'] . '将会为你提供优质的售前、售中和售后服务，我们作为' . $value['ctname'] . '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' . $value['csname'] .'地区IT行业争光！为' . $value['csaname'] . '的经济发展争光！！欢迎访问我公司网站：' . $value['website'] . '也许会给你带来意外的收获！';
+      $num += $company -> save($data);
+    }
+    if($num > 0){
+      $this -> success('数据更新成功，共更新' . $num . '条数据');
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
   /* --------------- 速查数据管理 ---------------- */
 
 

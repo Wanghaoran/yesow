@@ -337,7 +337,7 @@ var onedownload = function(){
                 <div class="clear"></div>
                 <h3 class="h3_text">公司简介</h3>
                 <div class="div_about">
-		  <p><!--{$result.content|nl2br}--!></p>
+		  <p><!--{$result.content|str_replace=chr(32),'&nbsp;&nbsp;',###|nl2br}--!></p>
                 </div>
                 <div class="clear"></div>
                 <h3 class="h3_line">网友评论</h3>

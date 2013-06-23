@@ -126,15 +126,7 @@ class MessageAction extends CommonAction {
   public function addsendlisttoemailgroup(){
     //处理添加
     if(!empty($_POST['name'])){
-      $email_group = D('BackgroundEmailGroup');
-      if(!$email_group -> create()){
-	$this -> error($email_group -> getError());
-      }
-      $email_group -> aid = session(C('USER_AUTH_KEY'));
-      if($gid = $email_group -> add()){
-	$email_group_list = D('BackgroundEmailGroupList');
-	//添加组内记录
-	//重新搜索
+      //重新搜索
 	$where = array();
 	$data = array();
 	$data['gid'] = $gid;
@@ -151,22 +143,47 @@ class MessageAction extends CommonAction {
 	  $where['csaid'] = $this -> _post('csaid', 'intval');
 	}
 	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
-	foreach($result as $value){
-	  $value['email'] = preg_replace('/\s{2,}|　/U',' ',$value['email']);
-	  $temp_arr = explode(' ', $value['email']);
-	  foreach($temp_arr as $values){
-	    $data['cid'] = $value['id'];
-	    $data['name'] = $value['name'];
-	    $data['addtime'] = time();
-	    $data['email'] = $values;
-	    $email_group_list -> add($data);
+
+	//每个通讯录的数量限制
+	$setting = M('BackgroundEmailSetting');
+	$group_limit = $setting -> getFieldByname('group_limit', 'value');
+	$group_num = (int)ceil(count($result) / $group_limit);
+	$result_finish = array();
+	for($i = 0; $i < $group_num; $i++){
+	  $result_finish[] = array_slice($result, $i*$group_limit, $group_limit);
+	}
+
+	//批量添加通讯录
+	$email_group_list = D('BackgroundEmailGroupList');
+	$email_group = M('BackgroundEmailGroup');
+	foreach($result_finish as $key => $value){
+	  $data = array();
+	  $data['aid'] = session(C('USER_AUTH_KEY'));
+	  $data['remark'] = $this -> _post('remark');
+	  $data['addtime'] = time();
+	  $data['name'] = $_POST['name'] . '(' . ($key+1) . ')';
+
+	  if($gid = $email_group -> add($data)){
+	    //添加组内记录
+	    foreach($result_finish[$key] as $valuetwo){
+	      $valuetwo['email'] = preg_replace('/\s{2,}|　/U',' ',$valuetwo['email']);
+	      $temp_arr = explode(' ', $valuetwo['email']);
+	      foreach($temp_arr as $values){
+		$datas['gid'] = $gid;
+		$datas['cid'] = $valuetwo['id'];
+		$datas['name'] = $valuetwo['name'];
+		$datas['addtime'] = time();
+		$datas['email'] = $values;
+		$email_group_list -> add($datas);
+	      }
+	    }
+	  }else{
+	    $this -> error(L('DATA_ADD_ERROR'));
 	  }
 	}
 	$this -> success(L('DATA_ADD_SUCCESS'));
-      }else{
-	$this -> error(L('DATA_ADD_ERROR'));
-      }
     }
+
     $this -> display();
   }
 
@@ -356,7 +373,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $email_group -> table('yesow_background_email_group as g') -> field('g.id,g.name,g.remark,g.addtime,tmp.count') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_background_email_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.addtime DESC') -> select();
+    $result = $email_group -> table('yesow_background_email_group as g') -> field('g.id,g.name,g.remark,g.addtime,tmp.count') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_background_email_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.id DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -529,10 +546,12 @@ class MessageAction extends CommonAction {
     $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
     $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
     $mail_password = $setting -> getFieldByname('mail_password', 'value');
+    $group_limit = $setting -> getFieldByname('group_limit', 'value');
     $this -> assign('mail_address', $mail_address);
     $this -> assign('mail_smtp', $mail_smtp);
     $this -> assign('mail_loginname', $mail_loginname);
     $this -> assign('mail_password', $mail_password);
+    $this -> assign('group_limit', $group_limit);
     $this -> display();
   }
 

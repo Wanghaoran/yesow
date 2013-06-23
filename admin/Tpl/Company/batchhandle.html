@@ -1,0 +1,17 @@
+
+<div class="panel">
+  <h1>批量操作管理</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/navTabId/batchhandle" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <fieldset>
+	<legend>批量生成企业简介：</legend>
+	<dl style="width:90%;">
+	  <dt style="width:250px;">当前共有 <font style="color:red;"><!--{$aboutus_num}--!></font> 条速查数据企业简介为空</dt>
+	  <dd><a class="button" target="ajaxTodo" href="__URL__/editbatchtocompanycontent/navTabId/batchhandle"><span>批量生成简介</span></a></dd>
+	</dl>
+
+      </fieldset>
+    </form>
+
+  </div>
+</div>

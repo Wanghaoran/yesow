@@ -107,7 +107,7 @@
                                     <tr id="sendnumber">
                                         <td class="tdleft">发送号码：</td>
                                         <td class="tdright">
-                                        <textarea name="sendnumber" id="sendnumber" onkeyup="FormateNum(this)" onblur="FormateNum(this)">1232****1232,1232***1233</textarea>
+					  <textarea name="sendnumber" id="sendnumber" onkeyup="FormateNum(this)" onblur="FormateNum(this)"><!--{$sendphone}--!></textarea>
                                         <p>如果您是在此输入手机号码，输入多个号码时每行一个或以英文逗号分隔。</p>
                                         <P>如果您是在易搜上找的手机号码，在上列框中显示为：136****3696是正常的，请放心发送！</P>
 					<p class="p_text">当前共<span id="totalNums"></span>号码,每个号码<span><!--{$send_sms_price}--!></span>元，本次发送共计短信费用<span id="totalprice"></span>元，您的余额<span><!--{$Think.session.rmb_total}--!></span>元，<a href="__APP__/money/rmbrecharge" target="_blank" class="a_wycz">我要充值</a></p>
@@ -136,7 +136,7 @@
                                     <tr id="groupname">
                                         <td class="tdleft">号码簿名：</td>
                                         <td class="tdright">
-                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="201306091023群发号码" />
+                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="<!--{:date('Ymd')}--!>群发号码" />
                                         </td>
 				      </tr>
 				      <tr style="display:none;" id="phonegroup">
@@ -147,7 +147,10 @@
 					  </select>
 					</td>
                                     </tr>
-                                    <tr>
+				    <tr>
+				      <notempty name="issearch">
+				      <input type="hidden" name="issearch" value="<!--{$issearch}--!>" />
+				      </empty>
                                         <td colspan="2"><input type="submit" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="reset" value="重置" class="rmb_fanhui"/></td>
 				      </tr>
 				      </form>
