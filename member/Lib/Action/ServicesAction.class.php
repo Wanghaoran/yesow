@@ -66,11 +66,12 @@ class ServicesAction extends CommonAction {
 
   //执行发送
   public function tosendsms(){
+    set_time_limit(0);
     $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>支付跳转页面-易搜</title>
+<title>正在发送-易搜</title>
 <style>
   .zhifu_tz{ width:320px; height:150px; border:#e78c55 3px solid; margin:0 auto 50px; position:absolute; top:50%; left:50%; margin-top:-75px; margin-left:-160px;
     /*圆角*/
@@ -90,28 +91,126 @@ class ServicesAction extends CommonAction {
     echo $sHtml;
     flush();//输出送出的缓冲内容
 
+    //提交来的号码列表
+    $sendnumber_arr = explode(',', $_POST['sendnumber']);
+
+    //要发送的号码
+    $to_send = array();
+
+    //输入框发送
     if($_POST['phonetype'] == 'list'){
-      dump('发送号码：' . $_POST['sendnumber']);
-      dump('发送内容：' . $_POST['content']);
-      //保存通讯录
+
+      /* -- 保存通讯录 Start -- */
       if($_POST['savegroup'] == 'true'){
 	$MemberSmsGroup = D('MemberSmsGroup');
+	$MemberSmsGroupList = M('MemberSmsGroupList');
 	$data = array();
 	$data['mid'] = session(C('USER_AUTH_KEY'));
 	$data['name'] = $this -> _post('savegroupname');
-	if($MemberSmsGroup -> create($data)){
-	  //该写添加通讯录了
-	
+	if(!$MemberSmsGroup -> create($data)){
+	  R('Register/errorjump', array('添加通讯录失败'));
 	}
-	dump('保存通讯录的名称：' . $_POST['savegroupname']);
+	//添加通讯录详情
+	if($gid = $MemberSmsGroup -> add()){
+	  //搜索得到的记录
+	  if(!empty($_POST['issearch'])){
+	    foreach($_SESSION['member_search_send_list'] as $value){
+	      $list_data = array();
+	      $list_data['gid'] = $gid;
+	      $list_data['realnumber'] = $value;
+	      $list_data['hidenumber'] = substr_replace($value, '****', 3, 4);
+	      $MemberSmsGroupList -> add($list_data);
+	    }
+	  }
+	  //后添加的
+	  foreach($sendnumber_arr as $value){
+	    if(!strpos($value, '*')){
+	      $list_data = array();
+	      $list_data['gid'] = $gid;
+	      $list_data['realnumber'] = $value;
+	      $list_data['hidenumber'] = $value;
+	      $MemberSmsGroupList -> add($list_data);
+	    }
+	  }
+	}else{
+	  R('Register/errorjump', array('添加通讯录失败'));
+	}
       }
-    
+      /* -- 保存通讯录 End -- */
+
+      //组合发送号码
+      //搜索号码
+      if(!empty($_POST['issearch'])){
+	$to_send = array_merge($to_send, $_SESSION['member_search_send_list']);
+      }
+      //后添加号码
+      foreach($sendnumber_arr as $value){
+	if(!strpos($value, '*')){
+	  $to_send[] = $value;
+	}
+      }
+
+    //号码薄发送
     }else if($_POST['phonetype'] == 'group'){
       dump('发送内容：' . $_POST['content']);
       dump('发送号码簿：' . $_POST['phonegroup']);
-      
     }
-    dump($_POST); 
+
+    //计算短信条数
+    $content_length = mb_strlen($_POST['content'], 'UTF-8');
+    $sms_num = ceil($content_length / 64);
+
+    //扣费
+    //搜索价格
+    $setting = M('SmsSetting');
+    $send_phone_price = $setting -> getFieldByname('send_sms_price', 'value');
+    //消费金额
+    $cost = count($to_send) * $send_phone_price * $sms_num;
+    //扣费
+    $MemberRmb = D('member://MemberRmb');
+    if($MemberRmb -> autolessmoney($cost)){
+      //写消费日志
+      $MemberRmbDetail = D('member://MemberRmbDetail');
+      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信', '消费', '-' . $cost);
+      //重新缓存用户余额
+      $MemberRmb -> rmbtotal();
+
+      //读取发送配置
+      $setting = M('SmsSetting');
+      $sms_username = $setting -> getFieldByname('sms_username', 'value');
+      $sms_password = $setting -> getFieldByname('sms_password', 'value');
+
+      $MemberSendSmsRecord = M('MemberSendSmsRecord');
+
+      //执行发送
+      foreach($to_send as $value){
+	$url = "http://www.vip.86aaa.com/api.aspx?SendType={$_POST['sendtype']}&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$value}&Content={$_POST['content']}【yesow】";
+	$url = iconv('UTF-8', 'GB2312', $url);
+	$fp = fopen($url, 'rb');
+	$ret= fgetss($fp,255);
+	fclose($fp);
+	//记录发送信息
+	$data_rec = array();
+	$data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
+	$data_rec['sendtime'] = time();
+	$data_rec['content'] = $_POST['content'];
+	$data_rec['sendphone'] = $value;
+	$data_rec['statuscode'] = $ret;
+	$MemberSendSmsRecord -> add($data_rec);
+      }
+      //清空信息
+      $_SESSION['member_search_send_list'] = array();
+      echo "<script>location.href='" . __URL__ ."/sendendjump';</script>";
+      
+    
+    }else{
+      R('Register/errorjump', array('用户余额不足，请充值', U('Services/sendsms')));
+    }
+  }
+
+  //发送完毕跳转
+  public function sendendjump(){
+    R('Register/successjump',array('发送完毕,现在跳转到发送记录', U('Services/smsendrecord')));
   }
 
   //搜索号码
@@ -196,16 +295,48 @@ class ServicesAction extends CommonAction {
 
   //短信发送记录
   public function smsendrecord(){
+    $MemberSendSmsRecord = M('MemberSendSmsRecord');
+    $where = array();
+    $where['mid'] = session(C('USER_AUTH_KEY'));
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberSendSmsRecord -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $MemberSendSmsRecord -> field('sendtime,content,sendphone,statuscode') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
     $this -> display();
   }
 
   //短信群发薄
   public function sendsmsgroup(){
+    $MemberSmsGroup = D('MemberSmsGroup');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberSmsGroup -> table('yesow_member_sms_group as msg') -> where(array('msg.mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $MemberSmsGroup -> table('yesow_member_sms_group as msg') -> field('msg.id,msg.name,msg.addtime,tmp.count') -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_sms_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('msg.mid' => session(C('USER_AUTH_KEY')))) -> order('msg.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
     $this -> display();
   }
 
   //短信群发薄详情
   public function sendsmsgrouplist(){
+    $MemberSmsGroupList = D('MemberSmsGroupList');
+    $where = array();
+    $where['gid'] = $this -> _get('id', 'intval');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberSmsGroupList -> where($where) -> count();
+    $page = new Page($count, 42);
+    $show = $page -> show();
+
+    $result = $MemberSmsGroupList -> field('hidenumber') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
     $this -> display();
   }
 

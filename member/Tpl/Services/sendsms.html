@@ -8,6 +8,19 @@
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
 <script>
+  function StatContents(obj) {
+    var l = $.trim(obj.value).length;
+   
+    if (l > 185) {
+      l = 185;
+      obj.value = obj.value.substring(0, 192);
+    }
+    var SmsOneCount = $("#SmsOneCount").html();
+    var s = l == 0 ? 0 : Math.ceil(l / SmsOneCount);
+    $("#totalLetter").html(l);
+    $("#totalSms").html(s);
+  }
+  
   function FormateNum(obj) {
     if ($.trim(obj.value).length > 0) {
       var objVal = $.trim(obj.value).replace(/\r\n/g, ",").replace(/\n/g, ",");
@@ -15,7 +28,7 @@
       obj.value = objVal;
       var sendnum = objVal.split(",").length;
       $("#totalNums").html(sendnum);
-      $('#totalprice').html(sendnum * <!--{$send_sms_price}--!>);
+      $('#totalprice').html((sendnum * <!--{$send_sms_price}--!>).toFixed(2));
     }
     else {
       $("#totalNums").html("0");
@@ -128,9 +141,9 @@
                                     </tr>
                                     <tr>
                                         <td class="tdleft">发送内容：</td>
-                                        <td class="tdright">
-                                            <textarea name="content"></textarea>
-                                            <P class="p_bottom">内容限192个字，超过64字符按多条计费。已输入<span>0</span>字，将做<span>0</span>条短信计费。</P>
+					<td class="tdright">
+					  <textarea onkeyup="StatContents(this)" onblur="StatContents(this)" id="txtContents" name="content"></textarea>
+					  <P class="p_bottom">内容限<span style="color:black;"> 185 </span>个字，超过<span id="SmsOneCount" style="color:black;"> 64 </span>字符按多条计费。已输入<span id="totalLetter" style="color:black;"> 0 </span>字，将做<span id="totalSms" style="color:black;"> 0 </span>条短信计费。</P>
                                         </td>
                                     </tr>
                                     <tr id="groupname">

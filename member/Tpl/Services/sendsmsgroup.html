@@ -21,7 +21,7 @@
                         <dl class="switchBox" id="switchBox2">
                             <!--nav start-->
                             <dt>
-                                <a href="#" class="on">我的发送记录</a>
+                                <a href="#" class="on">我的群发薄</a>
                             </dt>
                                                  
                         </dl>
@@ -33,49 +33,21 @@
                                         <th width="80">号码数量</th>
                                         <th width="150">创建时间</th>
                                         <th width="80">详细号码</th>
-                                    </tr>
-                                    <tr>
-                                    	<td>201212145411群发号码</td>
-                                        <td>2</td>
-                                        <td>2013-03-02 11:12:50</td>
-                                        <td><a href="__URL__/sendsmsgrouplist/id/22">详细</a></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>201212145411群发号码</td>
-                                        <td>2</td>
-                                        <td>2013-03-02 11:12:50</td>
-                                        <td><a href="#">详细</a></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>201212145411群发号码</td>
-                                        <td>2</td>
-                                        <td>2013-03-02 11:12:50</td>
-                                        <td><a href="#">详细</a></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>201212145411群发号码</td>
-                                        <td>2</td>
-                                        <td>2013-03-02 11:12:50</td>
-                                        <td><a href="#">详细</a></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>201212145411群发号码</td>
-                                        <td>2</td>
-                                        <td>2013-03-02 11:12:50</td>
-                                        <td><a href="#">详细</a></td>
-                                    </tr>
+				      </tr>
+				      <volist name="result" id="r">
+				      <tr>
+					<td><!--{$r.name}--!></td>
+					<td><!--{$r.count|default=0}--!></td>
+					<td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+					<td><a href="__URL__/sendsmsgrouplist/id/<!--{$r.id}--!>">详细</a></td>
+				      </tr>
+				      </volist>
                                 </table>
                             </div>
                             <div class="clear"></div>
-                            <div class="page">
-                                <span>共72条数据</span>
-                                <a href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#">4</a>
-                                <a href="#">5</a>
-                                <a href="#">下一页</a>
-                            </div>
+			    <div class="page">
+			      <!--{$show}--!>
+			    </div>
                             <div class="clear"></div>
                         </div>
                         <div class="clear30"></div>     
