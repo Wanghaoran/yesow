@@ -744,6 +744,54 @@ class MessageAction extends CommonAction {
     $this -> assign('send_sms_price', $send_sms_price);
     $this -> display();
   }
+
+  //用户发送记录
+  public function membersmssendrecord(){
+    $MemberSendSmsRecord = M('MemberSendSmsRecord');
+
+    $where = array();
+    if(!empty($_POST['username'])){
+      $mid = M('Member') -> getFieldByname($_POST['username'], 'id');
+      $where['mssr.mid'] = $mid;
+    }
+
+    //记录总数
+    $count = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendphone,mssr.statuscode') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除用户发送记录
+  public function delmembersmssendrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSendSmsRecord = M('MemberSendSmsRecord');
+    if($MemberSendSmsRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+    
+    
+  }
+
   /* ------------ 短信群发管理 ------------ */
 
 }

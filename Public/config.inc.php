@@ -70,6 +70,9 @@ return array(
   //二手滞销图片显示
   'SELLUSED_PIC_PATH_SAVE' => __ROOT__ . '/Upload/sellused/',
 
+  //网站临时上传目录
+  'TEMP_UPLOAD_PATH' => './Upload/temp/',
+
   /*
   //重新定义__ROOT__常量，线上项目需要设置此项
   'TMPL_PARSE_STRING' => array(

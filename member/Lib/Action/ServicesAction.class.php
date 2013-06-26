@@ -47,6 +47,11 @@ class ServicesAction extends CommonAction {
     $setting = M('SmsSetting');
     $send_sms_price = $setting -> getFieldByname('send_sms_price', 'value');
     $this -> assign('send_sms_price', $send_sms_price);
+    //个人号码薄
+    $MemberSmsGroup = M('MemberSmsGroup');
+    $sms_group = $MemberSmsGroup -> field('id,name') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> select();
+    $this -> assign('sms_group', $sms_group);
+
     //将要发送的号码
     $sendphone = '';
     //后台搜索号码
@@ -59,6 +64,16 @@ class ServicesAction extends CommonAction {
 	}
       }
       $this -> assign('issearch', 'true');
+    //上传号码
+    }else if(!empty($_SESSION['member_upload_send_list'])){
+      foreach($_SESSION['member_upload_send_list'] as $value){
+	if(empty($sendphone)){
+	  $sendphone .= substr_replace($value, '****', 3, 4);
+	}else{
+	  $sendphone .= ',' . substr_replace($value, '****', 3, 4);
+	}
+      }
+      $this -> assign('isupload', 'true');   
     }
     $this -> assign('sendphone', $sendphone);
     $this -> display();
@@ -67,6 +82,31 @@ class ServicesAction extends CommonAction {
   //执行发送
   public function tosendsms(){
     set_time_limit(0);
+    //文本上传
+    if(!empty($_POST['textfield'])){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('TEMP_UPLOAD_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('txt');// 设置附件上传类型
+      $upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+	//读取上传文件
+	$string_upload = file_get_contents($info[0]['savepath'] . $info[0]['savename']);
+	$arr_upload = explode(',', $string_upload); 
+	
+	//上传文档号码
+	$_SESSION['member_upload_send_list'] = array();
+	foreach($arr_upload as $value){
+	  $_SESSION['member_upload_send_list'][] = $value;
+	}
+	R('Register/successjump',array('上传成功,现在跳转到发送页面'));
+      }else{
+	R('Register/errorjump', array('上传文档失败，请检查上传文件合法性'));
+      }
+    }
     $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -121,6 +161,14 @@ class ServicesAction extends CommonAction {
 	      $list_data['hidenumber'] = substr_replace($value, '****', 3, 4);
 	      $MemberSmsGroupList -> add($list_data);
 	    }
+	  }else if(!empty($_POST['isupload'])){
+	    foreach($_SESSION['member_upload_send_list'] as $value){
+	      $list_data = array();
+	      $list_data['gid'] = $gid;
+	      $list_data['realnumber'] = $value;
+	      $list_data['hidenumber'] = substr_replace($value, '****', 3, 4);
+	      $MemberSmsGroupList -> add($list_data);
+	    }
 	  }
 	  //后添加的
 	  foreach($sendnumber_arr as $value){
@@ -142,6 +190,8 @@ class ServicesAction extends CommonAction {
       //搜索号码
       if(!empty($_POST['issearch'])){
 	$to_send = array_merge($to_send, $_SESSION['member_search_send_list']);
+      }else if(!empty($_POST['isupload'])){
+	$to_send = array_merge($to_send, $_SESSION['member_upload_send_list']);
       }
       //后添加号码
       foreach($sendnumber_arr as $value){
@@ -152,9 +202,14 @@ class ServicesAction extends CommonAction {
 
     //号码薄发送
     }else if($_POST['phonetype'] == 'group'){
-      dump('发送内容：' . $_POST['content']);
-      dump('发送号码簿：' . $_POST['phonegroup']);
+      $MemberSmsGroupList = M('MemberSmsGroupList');
+      $group_list = $MemberSmsGroupList -> field('realnumber') -> where(array('gid' => $_POST['phonegroup'])) -> select();
+      foreach($group_list as $value){
+	$to_send[] = $value['realnumber'];
+      }
     }
+
+    /*  ----  执行发送  ----- */
 
     //计算短信条数
     $content_length = mb_strlen($_POST['content'], 'UTF-8');
@@ -200,8 +255,8 @@ class ServicesAction extends CommonAction {
       }
       //清空信息
       $_SESSION['member_search_send_list'] = array();
+      $_SESSION['member_upload_send_list'] = array();
       echo "<script>location.href='" . __URL__ ."/sendendjump';</script>";
-      
     
     }else{
       R('Register/errorjump', array('用户余额不足，请充值', U('Services/sendsms')));

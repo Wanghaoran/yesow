@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="clear"></div>
 				<table class="table_sjdxfs">
-				  <form action="__URL__/tosendsms" method="post">
+				  <form action="__URL__/tosendsms" method="post" enctype="multipart/form-data">
                                     <tr>
                                         <td class="tdleft">发送类型：</td>
 					<td class="tdright">
@@ -136,7 +136,7 @@
                                         <td class="tdleft">导入文本：</td>
                                         <td class="tdright">
                                         <div class="file-box"><input type='text' name='textfield' id='textfield' class='txtfile' /><input type='button' class='btnfile' value='浏览...' /><input type="file" name="fileField" class="fileinput" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" /></div>
-<div class="left"><input type="button" value="导入" class="rmb_fanhui"/><input type="button" value="过滤重复" class="rmb_fanhui"/></div>
+<div class="left"><input type="submit" value="导入" class="rmb_fanhui"/></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -156,13 +156,18 @@
                                         <td class="tdleft">号码簿名：</td>
 					<td class="tdright">
 					  <select name="phonegroup">
-					    <option value="sssss">ssss</option>
+					    <volist name="sms_group" id="sg">
+					    <option value="<!--{$sg.id}--!>"><!--{$sg.name}--!></option>
+					    </volist>
 					  </select>
 					</td>
                                     </tr>
 				    <tr>
 				      <notempty name="issearch">
 				      <input type="hidden" name="issearch" value="<!--{$issearch}--!>" />
+				      </empty>
+				      <notempty name="isupload">
+				      <input type="hidden" name="isupload" value="<!--{$isupload}--!>" />
 				      </empty>
                                         <td colspan="2"><input type="submit" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="reset" value="重置" class="rmb_fanhui"/></td>
 				      </tr>
