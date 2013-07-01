@@ -788,8 +788,195 @@ class MessageAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
-    
-    
+  }
+
+  //用户搜索记录
+  public function membersmssearchrecord(){
+    $MemberSearchSmsRecord = M('MemberSearchSmsRecord');
+    $where = array();
+    if(!empty($_POST['keyword'])){
+      $where['mssr.keyword'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['mssr.searchtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['mssr.searchtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $MemberSearchSmsRecord -> table('yesow_member_search_sms_record as mssr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberSearchSmsRecord -> table('yesow_member_search_sms_record as mssr') -> field('mssr.id,mssr.keyword,m.name as mname,tmp.count,mssr.checknum,mssr.ip,mssr.searchtime') -> join('yesow_member as m ON mssr.mid = m.id') -> join('LEFT JOIN (SELECT keyword,count(id) as count FROM yesow_member_search_sms_record GROUP BY keyword) as tmp ON mssr.keyword = tmp.keyword') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('mssr.searchtime DESC') -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //删除用户搜索记录
+  public function delmembersmssearchrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSearchSmsRecord = M('MemberSearchSmsRecord');
+    if($MemberSearchSmsRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //用户群发电话簿
+  public function membersmsgroup(){
+    $MemberSmsGroup = M('MemberSmsGroup');
+    $where = array();
+    if(!empty($_POST['keyword'])){
+      $where['msg.name'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['msg.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['msg.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $MemberSmsGroup -> table('yesow_member_sms_group as msg') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberSmsGroup -> table('yesow_member_sms_group as msg') -> field('msg.id,msg.name,msg.addtime,tmp.count,m.name as mname') -> join('yesow_member as m ON msg.mid = m.id') -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_sms_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('msg.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除用户群发电话簿
+  public function delmembersmsgroup(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSmsGroup = M('MemberSmsGroup');
+    if($MemberSmsGroup -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑用户群发电话薄
+  public function editmembersmsgroup(){
+    $MemberSmsGroupList = M('MemberSmsGroupList');
+    $id = $this -> _request('id', 'intval');
+    $where = array();
+    $where['gid'] = $id;
+    if(!empty($_POST['name'])){
+      $where['realnumber'] = $this -> _post('name');
+    }
+
+    //记录总数
+    $count = $MemberSmsGroupList -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberSmsGroupList -> field('id,realnumber') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //新增用户群发电话簿详情
+  public function addeditmembersmsgroup(){
+    //处理添加
+    if(!empty($_POST['realnumber'])){
+      $MemberSmsGroupList = M('MemberSmsGroupList');
+      if(!$MemberSmsGroupList -> create()){
+	$this -> error($MemberSmsGroupList -> getError());
+      }
+      $MemberSmsGroupList -> hidenumber = substr_replace($_POST['realnumber'], '****', 3, 4);
+      if($MemberSmsGroupList -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display(); 
+  }
+
+  //编辑用户群发电话簿详情
+  public function editeditmembersmsgroup(){
+    $MemberSmsGroupList = M('MemberSmsGroupList');
+
+    if(!empty($_POST['realnumber'])){
+      if(!$MemberSmsGroupList -> create()){
+	$this -> error($MemberSmsGroupList -> getError());
+      }
+      $MemberSmsGroupList -> hidenumber = substr_replace($_POST['realnumber'], '****', 3, 4);
+      if($MemberSmsGroupList -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $MemberSmsGroupList -> field('id,realnumber') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  
+  }
+
+  //删除用户群发电话簿详情
+  public function deleditmembersmsgroup(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSmsGroupList = M('MemberSmsGroupList');
+    if($MemberSmsGroupList -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   /* ------------ 短信群发管理 ------------ */

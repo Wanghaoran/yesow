@@ -176,7 +176,7 @@ class ServicesAction extends CommonAction {
 	      $list_data = array();
 	      $list_data['gid'] = $gid;
 	      $list_data['realnumber'] = $value;
-	      $list_data['hidenumber'] = $value;
+	      $list_data['hidenumber'] = substr_replace($value, '****', 3, 4);
 	      $MemberSmsGroupList -> add($list_data);
 	    }
 	  }
@@ -227,8 +227,7 @@ class ServicesAction extends CommonAction {
       //写消费日志
       $MemberRmbDetail = D('member://MemberRmbDetail');
       $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信', '消费', '-' . $cost);
-      //重新缓存用户余额
-      $MemberRmb -> rmbtotal();
+      
 
       //读取发送配置
       $setting = M('SmsSetting');
@@ -250,9 +249,22 @@ class ServicesAction extends CommonAction {
 	$data_rec['sendtime'] = time();
 	$data_rec['content'] = $_POST['content'];
 	$data_rec['sendphone'] = $value;
+	if($ret === false){
+	  $ret = 5;
+	}
+	//发送失败退费
+	if($ret != 0){
+	  //增加金额
+	  $MemberRmb -> addmoney('rmb_exchange', $send_phone_price);
+	  //写日志
+	  $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . $send_phone_price);
+
+	}
 	$data_rec['statuscode'] = $ret;
 	$MemberSendSmsRecord -> add($data_rec);
       }
+      //重新缓存用户余额
+      $MemberRmb -> rmbtotal();
       //清空信息
       $_SESSION['member_search_send_list'] = array();
       $_SESSION['member_upload_send_list'] = array();
@@ -273,9 +285,9 @@ class ServicesAction extends CommonAction {
     if(!empty($_GET['keyword'])){
       $keyword = $this -> _get('keyword');
       $company = M('Company');
+      $map['_string'] = "LENGTH(mobilephone) = 11";
       $where = array();
       $where['delaid']  = array('exp', 'is NULL');
-      $where['mobilephone'] = array('neq', '');
       $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
       if($_GET['searchscope'] == 'city'){
 	$where['csid'] = $this -> _get('csid', 'intval');
@@ -283,6 +295,7 @@ class ServicesAction extends CommonAction {
 	  $where['csaid'] = $this -> _get('csaid', 'intval');
 	}
       }
+      $where['_complex'] = $map;
 
       import("ORG.Util.Page");// 导入分页类
       $count = $company -> where($where) -> count('id');
@@ -338,6 +351,15 @@ class ServicesAction extends CommonAction {
 	$_SESSION['member_search_send_list'][] = substr($company -> getFieldByid($value, 'mobilephone'), 0, 11);
       }
       $_SESSION['member_search_phone_list'] = array();
+      //记录搜索日志
+      $MemberSearchSmsRecord = M('MemberSearchSmsRecord');
+      $data_rec = array();
+      $data_rec['mid'] = session(C('USER_AUTH_KEY'));
+      $data_rec['keyword'] = $this -> _get('keyword');
+      $data_rec['checknum'] = count($_SESSION['member_search_send_list']);
+      $data_rec['ip'] = get_client_ip();
+      $data_rec['searchtime'] = time();
+      $MemberSearchSmsRecord -> add($data_rec);
       //更新RMB缓存
       if(!$MemberRmb -> rmbtotal()){
 	R('Register/errorjump',array(L('RMB_CACHE')));

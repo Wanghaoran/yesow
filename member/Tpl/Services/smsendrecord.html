@@ -26,7 +26,7 @@
                                                  
                         </dl>
                         <div class="main_sjdxfs">
-                            <h2 class="h2_yue">余额 200.00元</h2>
+                            <h2 class="h2_yue">余额: <!--{$Think.session.rmb_total}--!> 元</h2>
                             <div style="min-height:250px;">
                                 <table class="table_wdfsjl">
                                     <tr>
@@ -56,12 +56,19 @@
 					<case value="4" break="1">
 					<td>其他参数错误</td>
 					</case>
+					<case value="5" break="1">
+					<td>发送失败</td>
+					</case>
 					</switch>
 					
 				      </tr>
 				      </volist>
                                 </table>
-                            </div>
+			      </div>
+			      <div class="rmb_btn">
+				<input type="button" class="BtnA" value="返回" onclick="location.href='__URL__/sendsms'"/>    
+			      </div>
+			      
                             <div class="clear"></div>
                             <div class="page">
 			      <!--{$show}--!>

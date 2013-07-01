@@ -1,0 +1,84 @@
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="keyword" value="<!--{$Think.request.keyword}--!>" />
+  <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
+  <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+</form>
+
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>关键字：</label>
+				<input type="text" name="keyword" />
+				</li>
+				<li style="width:370px;">
+		  <label>创建时间：</label>
+		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		    -  
+		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  </li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li class=""><a class="delete" href="__URL__/delmembersmsgroup/navTabId/membersmsgroup" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['message']['delmembersmsgroup'])">
+	    <li class=""><a class="delete" href="__URL__/delmembersmsgroup/navTabId/membersmsgroup" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    </if>
+	    </if>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		    <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+		    <th width="20">编号</th>
+		    <th width="80">电话薄名称</th>
+			<th width="20">号码数量</th>
+			<th width="30">用户</th>
+			<th width="30">创建时间</th>
+			<th width="20">操作</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.name}--!></td>			 			 
+			  <td><!--{$r.count|default=0}--!></td>
+			  <td><!--{$r.mname}--!></td>
+			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><a href="__URL__/editmembersmsgroup/id/<!--{$r.id}--!>" target="navTab" rel="editmembersmsgroup" title="<!--{$r.name}--!>">详细</a></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+
