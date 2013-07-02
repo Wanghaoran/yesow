@@ -2313,6 +2313,84 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_level', $result_level);
 
     $this -> display();
+  }
+
+  //在线QQ价格
+  public function qqonlinemoney(){
+    $QqonlineMoney = M('QqonlineMoney');
+    $where = array();
+
+    //记录总数
+    $count = $QqonlineMoney -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $QqonlineMoney -> field('id,months,marketprice,promotionprice,remark') -> order('months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加在线QQ价格
+  public function addqqonlinemoney(){
+    //处理添加
+    if(!empty($_POST['months'])){
+      $QqonlineMoney = M('QqonlineMoney');
+      if(!$QqonlineMoney -> create()){
+	$this -> error($QqonlineMoney -> getError());
+      }
+      if($QqonlineMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除在线QQ价格
+  public function delqqonlinemoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $QqonlineMoney = M('QqonlineMoney');
+    if($QqonlineMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑在线QQ价格
+  public function editqqonlinemoney(){
+    $QqonlineMoney = M('QqonlineMoney');
+    //处理更新
+    if(!empty($_POST['months'])){
+      if(!$QqonlineMoney -> create()){
+	$this -> error($QqonlineMoney -> getError());
+      }
+      if($QqonlineMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $QqonlineMoney -> field('months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   
   }
 
