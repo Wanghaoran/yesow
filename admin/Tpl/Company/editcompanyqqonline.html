@@ -1,0 +1,40 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/companyqqonline" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>公司名称：</label>
+	  <input  value="<!--{$result.cname}--!>" type="text required" disabled="true" size="40" />
+	</div>
+	<div class="unit">
+	  <label>QQ号码：</label>
+	  <input name="qqcode" type="text required" value="<!--{$result.qqcode}--!>" />
+	</div>
+	<div class="unit">
+	  <label>QQ名称：</label>
+	  <input name="qqname" type="text required" value="<!--{$result.qqname}--!>" />
+	</div>
+	
+	<div class="unit">
+		<label>开始日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="starttime" value="<!--{$result.starttime|date='Y-m-d', ###}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>结束日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="endtime" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" />
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

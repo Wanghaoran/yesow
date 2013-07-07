@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加在线QQ-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+	    event.stopPropagation();
+	    countprice();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist1').hradio();
+});
+
+function appendli()
+{
+	
+	if($("#chens li").length > <!--{$add_qq_num - 1}--!>){
+		alert("最多添加8个在线QQ");
+        return false;
+		}
+	else{
+    jQuery("#chens").append("<li>添加QQ：<input type='text' class='inputclass2' name='qqlist[]' />&nbsp;&nbsp;昵称：<input type='text' class='inputclass2' name='namelist[]' />&nbsp;&nbsp;<a onclick='return RemoveLi(this);'  title='删除'><img src='__PUBLIC__/member/images/user/reduce.gif' style='vertical-align:middle'/></a></li>");
+	}
+	countprice();
+}
+//删除
+function RemoveLi(obj){
+ var onthis = $(obj).parents("li");
+ $(obj).parent().remove();
+ countprice();
+}
+
+var countprice = function(){
+  //QQ数量
+  var qqlistnum = $("#chens li").length;
+  qqlistnum = qqlistnum ? qqlistnum : 0;
+  //包月价格
+  var everymonthprice = $("input[name='months']:checked ").next().find(".tuiguangjia").html();
+  everymonthprice = everymonthprice ? everymonthprice : 0;
+  //包月份数
+  var monthsnum2 = $("input[name='months']:checked ").next().find(".baoyueshu").html();
+  monthsnum2 = monthsnum2 ? monthsnum2 : 0;
+
+  //总价格
+  var totalprice = everymonthprice * qqlistnum;
+
+  $('#qqnum').html(qqlistnum);
+  $('#qqmonths').html(monthsnum2);
+  $('#monthsnum').html(everymonthprice);
+  $('#totalnum').html(totalprice);
+}
+
+var tosubmits = function(){
+  if(!$("input[name='months']:checked ").val()){
+    alert('请选择购买月份！');
+    return false;
+  }
+  if(!$("input[name='qqlist[]']").val()){
+    alert('请至少添加一个QQ！');
+    return false;
+  }
+  return true;
+}
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">在线QQ管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">在线QQ申请</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+							<!--第一步-->
+                            <div class="div_zxqqsq1">
+								<div class="zxqqsq1_left left"><h2>第一步</h2><h3>确认信息</h3></div>
+								<div class="zxqqsq1_mid left">
+								  <ul>
+								    <notempty name="company_info">
+								    <li>所属地区：<!--{$company_info.csname}--!> - <!--{$company_info.csaname}--!></li>
+								    <li>商家名称：<!--{$company_info.name}--!></li>
+								    <li>公司地址：<!--{$company_info.address}--!></li>
+								    <li>联&nbsp;&nbsp;系&nbsp;人：<!--{$company_info.linkman}--!></li>
+								    <else/>
+								    <div class="zxqqsq1_right left">请先到页面下方选择公司信息</div>
+
+								    </notempty>
+								  </ul>
+								</div>
+								<div class="zxqqsq1_right left">此处为您选择的客户公司信息，请核对是否有误。<br/>该公司已有 <!--{$have_qq_num}--!> 个在线QQ，还可添加 <!--{$add_qq_num}--!> 个</div>
+							</div>
+                            <div class="clear10"></div>
+			    <!--第二步-->
+			    <form action="__URL__/qqonline_pay" method='post' onsubmit="return tosubmits();">
+			<div class="div_zxqqsq2">
+			  <div class="zxqqsq2_left left"><h2>第二步</h2><h3>添加QQ</h3></div>
+			  <div class="zxqqsq2_mid left">
+			    <div class="qiye_info">
+			      <ul id="chens" class="addqqli">
+				<li>添加QQ：<input type="text" class="inputclass2" name="qqlist[]" />&nbsp;&nbsp;昵称：<input type="text" class="inputclass2" maxlength="4" name="namelist[]" /></li>
+			      </ul>
+			      <div class="clear"></div>
+			      <input type="button" id="chen" class="qq_add" title="添加QQ" value="添加QQ" onclick="appendli()"/>
+			    </div>
+			  </div>
+			  <div class="zxqqsq2_right left">此处可以添加您的QQ号码，最大数量不超过8个，昵称可以自己定义，字数不超过4个中文字。</div>
+			
+			</div>
+                            <div class="clear10"></div>
+							<!--第三步-->
+			<div class="div_zxqqsq3">
+			  <div class="zxqqsq3_left left"><h2>第三步</h2><h3>包月时间</h3></div>
+			  <div class="zxqqsq3_right left">
+			    <div id="radiolist1">
+			      <volist name="qq_price" id="qp">
+			      <input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+			      <label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+			      </volist>
+			      <div class="clear"></div>
+			    </div>
+			  </div>
+			</div>
+                            <div class="clear10"></div>
+							<!--第四步-->
+							<div class="div_zxqqsq4">
+								<div class="zxqqsq4_left left"><h2>第四步</h2><h3>核对总价</h3></div>
+								<div class="zxqqsq4_mid left">
+								  合计费用  <span id="qqnum"> 1 </span>个QQ ×<span id="qqmonths"> 0 </span> 个月/<span id="monthsnum"> 0 </span> 元 = <span id="totalnum"> 0 </span> 元
+								</div>
+								<div class="zxqqsq4_right left">(费用自动计算，数量乘以时间)</div>
+							</div>
+                            <div class="clear10"></div>
+			    <!--第四步 结束-->
+			    <div class="div_zxqqsq5">
+			      <empty name="Think.get.cid">
+			      <input type="button" class="btn_goumai" onclick="alert('请先选择公司信息');"/>
+			      <else/>
+			      <input type="hidden" name="cid" value="<!--{$Think.get.cid}--!>">
+			      <input type="submit" class="btn_goumai" value="" />
+			      </empty>
+			      </div>
+
+			      </form>
+                            <div class="clear10"></div>
+			    <div class="qqsq_tishi">注：您是在会员中心进行的添加，请先进行公司搜索，点选公司后，会在第一步中显示您选择的公司信息。</div>
+			    <form action="__ACTION__" method="post">
+			    <div class="qqsq_search">请输入公司名称：
+			      <input type="text" name="keyword" />
+			      <input type="button" value="搜索" />
+			    </div>
+			    </form>
+                            <div class="qqsq_jieguo">
+                            	<div id="help01">
+				  <ul>
+				    <notempty name="company_search">
+				    <volist name="company_search" id="cs">
+				    <li>
+				    <a href="__ACTION__/cid/<!--{$cs.id}--!>">
+				      <div class="help01"><!--{$cs.name}--!></div>
+				      <div class="poptip">
+					<div class="poptipcon">
+					  <dl class="dl_help1">
+					    <dd>主营：<!--{$cs.manproducts}--!></dd>
+					    <dd>地址：<!--{$cs.address}--!></dd>
+					    <dd>网址：<!--{$cs.website}--!></dd>
+					    <dd class="last">负责人：<!--{$cs.linkman}--!></dd>
+					  </dl>
+					  <div class="clear"></div>
+					</div>
+					<em>
+					  <i></i>
+					</em>
+				      </div>
+				    </a>
+				    </li>
+				    </volist>
+				    </notempty>
+				  </ul>
+				</div>
+                                <div class="clear10"></div>
+                            </div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

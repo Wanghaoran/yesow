@@ -330,9 +330,13 @@ var onedownload = function(){
                 </ul>
                 <div class="clear10"></div>
                 <h3 class="h3_text">企业在线</h3>
-                <ul class="ul_qq">
-		  <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=39352580&site=qq&menu=yes" title="点击这里给我发消息" class="qq_online">自定义</a></li>
-		  <li><a target="_blank" href="__URL__/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline">暂无QQ</a></li>
+		<ul class="ul_qq">
+		  <volist name="result_company_qqonline" id="cq">
+		  <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$cq.qqcode}--!>&site=qq&menu=yes" title="点击这里给我发消息" class="qq_online"><!--{$cq.qqname}--!></a></li>
+		  </volist>
+		  <if condition="count($result_company_qqonline) lt 8">
+		  <li><a target="_blank" href="__ROOT__/member.php/services/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline">添加QQ</a></li>
+		  </if>
                 </ul>
                 <div class="clear"></div>
                 <h3 class="h3_text">公司简介</h3>

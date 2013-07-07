@@ -6,6 +6,7 @@ a:active{color:#333; text-decoration:none;}
 a:hover{color:#ff9900; text-decoration:underline;}
 .warp_850{width:850px; margin:0 auto; height:100%;}
 .warp_900{width:950px; margin:0 auto; height:100%;}
+a:focus{outline:none;}
 
 /**顶部**/
 #user_t{width:100%; height:155px; background:url(images/user/bg.gif) repeat-x 0 0;}
@@ -401,6 +402,7 @@ table.table_zxzf2 td.tdmid{ padding-left:200px;}
 .hrstyle{ height:0; border:none; border-bottom:#adadad 1px dashed;}
 .zxzf_tishi{color:#ff0101; font-weight:bold; text-align:center}
 input.inputclass1{ width:140px; height:20px; line-height:20px; border:#999 1px solid;}
+input.inputclass2{ width:100px; height:20px; line-height:20px; border:#999 1px solid; vertical-align:middle;}
 
 #zhifuradio{ padding:20px 0;}
 #zhifuradio label{ margin-left:20px;}
@@ -491,6 +493,14 @@ table.table_wdfsjl th{border:none; font-size:12px; font-weight:bold; border:#a6a
 table.table_wdfsjl td{border:none; border:#a6a6a6 1px solid; border-collapse:collapse; height:25px; line-height:25px; text-align:left; padding-left:10px;}
 table.table_wdfsjl td a.a_wdfsjl{ width:400px; height:25px; line-height:25px; display:inline-block; overflow:hidden; text-decoration:none;}
 
+table.table_zxqqgl{ float:left;width:740px; border:none; border-collapse:collapse; margin:10px auto;}
+table.table_zxqqgl th{border:none; font-size:12px; font-weight:bold; border:#ccc 1px solid; border-collapse:collapse; height:30px; line-height:30px; text-align:left; padding-left:5px; font-weight:normal; background:#f2f1ed;}
+table.table_zxqqgl th.th_mid{text-align:center; padding-left:0;}
+table.table_zxqqgl td{border:none; border:#dedede 1px solid; border-collapse:collapse; height:25px; line-height:25px; text-align:left; padding-left:5px;}
+table.table_zxqqgl td.td_gsmc div{ width:200px; height:25px; line-height:25px; display:inline-block; overflow:hidden; text-decoration:none;}
+table.table_zxqqgl td.td_tjqq div{ width:290px; height:25px; line-height:25px; display:inline-block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+table.table_zxqqgl td.td_mid{ text-align:center; padding-left:0;}
+
 .main_sjdxfs{ width:740px; height:auto; margin:0 auto;}
 .text_sjdxfs{ width:740px;}
 .text_sjdxfs h2{ font-size:12px; font-weight:bold; color:#fe0400; height:25px; line-height:25px; text-align:left; margin-top:10px;}
@@ -552,3 +562,55 @@ div.ssfw_width4{width:160px; height:25px;padding:0 10px;word-break:break-all;ove
 #page_navigation a.jp-current, a.jp-current:hover,
 #page_navigation a.jp-disabled, a.jp-disabled:hover {cursor: default; background: none;}
 #page_navigation span { margin: 0 5px; }
+
+.div_zxqqsq1,.div_zxqqsq2,.div_zxqqsq3,.div_zxqqsq4,.div_zxqqsq5{ border-top:#d8d8d8 1px solid; padding:10px 0 0 0; width:740px;}
+.zxqqsq1_left,.zxqqsq2_left,.zxqqsq3_left,.zxqqsq4_left{ text-align:center; vertical-align:middle; width:100px; padding-top:20px;}
+.zxqqsq1_left h2,.zxqqsq2_left h2,.zxqqsq3_left h2,.zxqqsq4_left h2{ color:#ff6f16; font-size:16px; font-weight:800; line-height:20px;}
+.zxqqsq1_left h3,.zxqqsq2_left h3,.zxqqsq3_left h3,.zxqqsq4_left h3{ color:#000; font-size:12px; font-weight:normal; line-height:16px;}
+.zxqqsq1_mid,.zxqqsq2_mid,.zxqqsq4_mid{border-left:#d8d8d8 1px solid;border-right:#d8d8d8 1px solid; width:380px; padding:0 10px;}
+.zxqqsq1_right,.zxqqsq2_right,.zxqqsq4_right{padding-left:10px; width:220px;}
+.zxqqsq1_right,.zxqqsq2_right{ color:#f90000;}
+.zxqqsq3_right{border-left:#d8d8d8 1px solid;padding-left:10px; width:610px;}
+.div_zxqqsq5{ text-align:center;}
+.zxqqsq4_mid{ padding:20px 10px; color:#f56703; font-size:14px; font-weight:800;}
+.zxqqsq4_right{ padding-top:20px; font-weight:800;}
+input.btn_goumai{ width:173px; height:43px; background:url(images/user/btn_goumai.jpg) no-repeat; border:none; cursor:pointer;}
+
+.zxqqsqradio{float:left; width:100px; height:58px; padding:5px; line-height:18px; text-align:left; cursor:pointer;vertical-align:middle; font-size:12px; margin:10px 10px 10px 0;}
+
+.qq_add{ width:80px; height:20px; line-height:20px; padding-left:12px; margin:10px; background:url(images/user/add.gif) left center no-repeat; border:none; font-size:14px; cursor:pointer;}
+ul.addqqli li{margin:5px;}
+.qqsq_tishi{ font-weight:bold; color:#fa0000; text-align:center; width:740px; height:30px; line-height:30px;}
+.zxddqx_tishi{font-weight:bold; color:#fa0000; text-align:left; width:740px; height:30px; line-height:30px;}
+.zxddqx_tishi span{ float:right; font-weight:normal; color:#555;}
+.zxddqx_jiage{ text-align:left; width:740px; height:30px; line-height:30px;}
+
+.qqsq_search{ height:50px; line-height:50px; text-align:center;}
+.qqsq_search input{ vertical-align:middle; margin-right:10px; font-size:12px;}
+
+
+
+#help01{font-size:12px;font-weight:normal; width:690px; margin:10px auto;}
+	#help01 ul li{line-height:25px; float:left;width:230px;}
+	#help01 ul li a{color:#127ed6; text-decoration:none; position:relative; display:block;}
+	#help01 ul li a div.help01{ width:230px; height:18px; line-height:18px; padding:3px 0 0 0;}
+	#help01 ul li a div.poptip{display:none;}
+	#help01 ul li a:hover{ visibility:visible;}
+	#help01 ul li a:hover div.poptip{position:absolute; left:0; top:28px;z-index:9999; display:block;
+	line-height:16px;color:#2b2b2b;font-size:12px;background:#e8f4fd;border:solid 1px #85c4fe;width:400px;}
+    #help01 ul li a:hover div.poptip em{position:absolute;top:-15px;left:24px;display:block;height:0;width:0;font-size: 0;line-height: 0;border-color:transparent transparent #85c4fe transparent; border-style:dashed dashed solid dashed; border-width:7px; }
+	#help01 ul li a:hover div.poptip i{position:absolute; top:-6px;left:-7px;display:block; height:0; width:0;font-size: 0; line-height: 0; border-color:transparent transparent #fff transparent;border-style:dashed dashed solid dashed;border-width:7px;}
+	#help01 ul li a:hover div.poptip .poptipcon{ background:#fcfeff; width:400px;}
+	#help01 ul li a:hover div.poptip dl.dl_help1{ width:460px;}
+	#help01 ul li a:hover div.poptip dl.dl_help1 dd{ float:left; width:350px; padding:10px; line-height:25px; border-bottom:#e6f0f7 1px solid;}
+	#help01 ul li a:hover div.poptip dl.dl_help1 dd.last{ border-bottom:none;}
+	
+ul.ul_zxqqbj{ width:500px;}
+ul.ul_zxqqbj li{ width:500px; height:30px; line-height:30px;}
+ul.ul_zxqqbj li input{ vertical-align:middle;}
+ul.ul_zxqqbj li span{ width:80px; text-align:right; display:inline-block;}
+ul.ul_zxqqbj li div.left{ float:left; width:250px;}
+ul.ul_zxqqbj li div.right{ float:right; width:250px;}
+input.input_sjdxfs1{ width:398px; height:20px; line-height:20px; border:#999 1px solid;}
+input.input_sjdxfs2{ width:148px; height:20px; line-height:20px; border:#999 1px solid;}
+.sjdxfs_tishi{ text-align:left; color:#f07c0f; font-weight:bold; margin:20px 0 0 0;}

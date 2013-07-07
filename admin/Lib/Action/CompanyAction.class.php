@@ -1722,7 +1722,6 @@ class CompanyAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
-  
   }
 
   //通过审核会员包月订单
@@ -1745,6 +1744,79 @@ class CompanyAction extends CommonAction {
     $where_audit['id'] = array('IN', $this -> _post('ids'));  
     $data_audit = array('ischeck' => 0);
     if($monthlyorder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //在线QQ订单
+  public function qqonlineorder(){
+    $QqonlineOrder = M('QqonlineOrder');
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['qo.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['qo.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.ordernum,m.name as mname,c.name as cname,qo.cid,tmp.count,qm.months,qo.price,qo.status,qo.ischeck,qo.paytype,qo.addtime,qo.isrenew') -> join('yesow_member as m ON qo.mid = m.id') -> join('yesow_company as c ON qo.cid = c.id') -> join('LEFT JOIN (SELECT oid,COUNT(id) as count FROM yesow_qqonline_order_list GROUP BY oid) as tmp ON tmp.oid = qo.id') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> order('qo.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除在线QQ订单
+  public function delqqonlineorder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $QqonlineOrder = M('QqonlineOrder');
+    if($QqonlineOrder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核在线QQ订单
+  public function passauditqqonlineorder(){
+    $QqonlineOrder = M('QqonlineOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($QqonlineOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核在线QQ订单
+  public function nopassauditqqonlineorder(){
+    $QqonlineOrder = M('QqonlineOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($QqonlineOrder -> where($where_audit) -> save($data_audit)){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
@@ -2047,6 +2119,116 @@ class CompanyAction extends CommonAction {
     $where_audit['id'] = array('IN', $this -> _post('ids'));  
     $data_audit = array('ischeck' => 0);
     if($monthly -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //在线QQ管理
+  public function companyqqonline(){
+    $CompanyQqonline = M('CompanyQqonline');
+    $where = array();
+    if(!empty($_POST['cname'])){
+      $where['c.name'] = $this -> _post('cname');
+    }
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    //记录总数
+    $count = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> join('yesow_member as m ON cq.mid = m.id') -> join('yesow_company as c ON cq.cid = c.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> field('cq.id,m.name as mname,c.name as cname,cq.cid,cq.qqcode,cq.qqname,cq.starttime,cq.endtime,cq.ischeck') -> join('yesow_member as m ON cq.mid = m.id') -> join('yesow_company as c ON cq.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cq.starttime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加在线QQ
+  public function addcompanyqqonline(){
+    if(!empty($_POST['starttime'])){
+      $CompanyQqonline = M('CompanyQqonline');
+      $_POST['cid'] = $_POST['org2_id'];
+      $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
+      $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      if(!$CompanyQqonline -> create()){
+	$this -> error($CompanyQqonline -> getError());
+      }
+      if($CompanyQqonline -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除在线QQ
+  public function delcompanyqqonline(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $CompanyQqonline = M('CompanyQqonline');
+    if($CompanyQqonline -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑在线QQ
+  public function editcompanyqqonline(){
+    $CompanyQqonline = M('CompanyQqonline');
+    //处理更新
+    if(!empty($_POST['qqcode'])){
+      $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
+      $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      if(!$CompanyQqonline -> create()){
+	$this -> error($CompanyQqonline -> getError());
+      }
+      if($CompanyQqonline -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> field('c.name as cname,cq.qqcode,cq.qqname,cq.starttime,cq.endtime') -> join('yesow_company as c ON cq.cid = c.id') -> where(array('cq.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //通过审核在线QQ
+  public function passauditcompanyqqonline(){
+    $CompanyQqonline = M('CompanyQqonline');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($CompanyQqonline -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核在线QQ
+  public function nopassauditcompanyqqonline(){
+    $CompanyQqonline = M('CompanyQqonline');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($CompanyQqonline -> where($where_audit) -> save($data_audit)){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));

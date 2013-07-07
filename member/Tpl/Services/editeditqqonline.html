@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑在线QQ-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+    $('#radiolist1').hradio();
+    });
+
+var checksubmit = function(){
+  var checksrting = "";
+  if($("#qqname").val() != '<!--{$result.qqname}--!>'){
+    checksrting += 'QQ昵称';
+  }
+  if($("#qqcode").val() != '<!--{$result.qqcode}--!>'){
+    checksrting += ' QQ号码';
+  }
+  if($("input[name='months']:checked ").val()){
+    checksrting += ' 包月时间';
+  }
+  if(checksrting){
+    if(confirm("您修改了：" + checksrting + "字段，请确认无误后提交")){
+      return true;
+    }else{
+      return false;
+    }
+  }else{
+    alert('您未更改任何数据');
+    return false;
+  }
+}
+
+
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">编辑在线QQ</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">编辑在线QQ</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                        	<ul class="ul_zxqqbj">
+				  <li><span class="">公司名称：</span><input type="text" class="input_sjdxfs1" value="<!--{$result.cname}--!>" disabled="disabled"/></li>
+				  <li><span class="">所属站点：</span><input type="text" class="input_sjdxfs1" value="<!--{$result.csname}--!>" disabled="disabled"/></li>
+                                <li>
+				<div class="right"><span class="">结束日期：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.starttime|date='Y-m-d', ###}--!>" disabled="disabled"/></div>
+				<div class="left"><span class="">开始日期：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" disabled="disabled"/></div>
+                                </li>
+				<li class="sjdxfs_tishi">以下可更改</li>
+				<form action="__ACTION__" method="post" onsubmit="return checksubmit();">
+                                <li>
+				<div class="right"><span class="">昵称：</span><input id="qqname" type="text" class="input_sjdxfs2" value="<!--{$result.qqname}--!>" name="qqname" /></div>
+				<div class="left"><span class="">QQ号：</span><input id="qqcode" type="text" class="input_sjdxfs2" value="<!--{$result.qqcode}--!>" name="qqcode" /></div>
+                                </li>
+                            </ul>
+                            <div class="clear"></div>
+                            <div class="sjdxfs_tishi">续包月可选择以下选项，不选择则视为不续包。</div>
+                            <div class="">
+			      <div id="radiolist1">
+				<volist name="qq_price" id="qp">
+				<input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+				<label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+				</volist>
+                                         <div class="clear"></div>
+                                     </div>
+                            </div>							
+			    <div class="div_zxqqsq5">
+			      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+			      <input type="reset" class="rmb_fanhui" value="重置"/>
+                            	<input type="submit" class="rmb_fanhui" value="确认提交"/>
+			      </div>
+			      </form>
+                            <div class="clear10"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

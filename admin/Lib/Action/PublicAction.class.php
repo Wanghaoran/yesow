@@ -242,6 +242,16 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取速查公司名及id
+  public function ajaxgetcompanyinfo(){
+    $companyname = $this -> _post('inputValue');
+    $company = M('Company');
+    $where = array();
+    $where['name'] = array('like', '%' . $companyname . '%');
+    $result = $company -> field('id,name') -> where($where) -> limit(10) -> select();
+    echo json_encode($result);
+  }
+
   //ajax获取包月会员类型
   public function ajaxgetmonthlytype(){
     $member_monthly = M('MemberMonthly');

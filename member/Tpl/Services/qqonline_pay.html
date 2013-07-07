@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>订单中心 - 网上购物 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.md5.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('zfRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('zfRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("zfRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("zfRadio_Checked");
+                $(this).prev()[0].checked = true;
+            }
+               
+            event.stopPropagation();
+
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#zhifuradio').hradio();
+});
+</script>
+<script>
+  //余额支付
+  var balancepay = function(){
+    //订单号
+    var orderid = '<!--{$result_qqonline.orderid}--!>';
+    //交易密码
+    var pwd = $.md5($('#paypwd').val());
+    location.href = '__URL__/qqonline_rmb_pay/orderid/' + orderid + '/pwd/' + pwd;
+  }
+
+  //网银支付
+  var tosubmit = function(){
+    var selectid = $('input[name="paytype"]:checked').val();
+    if(selectid){
+      location.href = '__URL__/qqonline_' + selectid + '_pay/oid/<!--{$result_qqonline.orderid}--!>';
+    }
+  }
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_850">
+	<!--支付流程开始-->
+	<div id="main14">
+    	<div class="clear10"></div>
+        <div class="zxzfbox">
+            <div class="zxzfbox_title">
+                <h2>商品付款详单</h2>
+            </div>
+            <div class="zxzfbox_con">
+                <h2>您本次购买的产品为下列清单</h2>
+                <table class="table_zxzf1">
+                    <tr>
+                        <th>单号</th>
+                        <th>在线QQ号码</th>
+                        <th>在线QQ昵称</th>
+                        <th>包月价格</th>
+                        <th>小计金额</th>
+		      </tr>
+		      <volist name="result_qqonline.qq_name" id="q">
+                    <tr>
+		      <td><!--{$result_qqonline.orderid}--!></td>
+		      <td><!--{$key}--!></td>
+		      <td><!--{$q}--!></td>
+		      <td><!--{$result_qqonline.months}--!>月 / <!--{$result_qqonline.promotionprice}--!> 元</td>
+		      <td><!--{$result_qqonline.promotionprice}--!> 元</td>
+		    </tr>
+		    </volist>
+                </table>
+                <div class="clear10"></div>
+            </div>
+        </div>
+        <div class="clear10"></div>
+        <div class="zxzfbox">
+            <div class="zxzfbox_title">
+                <h2>支付方式一：余额支付</h2>
+            </div>
+            <div class="zxzfbox_con">
+                <table class="table_zxzf2">
+		  <tr><td class="tdleft">本次付款的总金额：</td><td class="tdright"><!--{$result_qqonline.count}--!>元</td></tr>
+		  <tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$Think.session.rmb_total}--!>元<a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
+		  <eq name="result_monthly.rmb_enough" value="1">
+		  <tr><td colspan="2" class="zxzf_tishi">您的余额充足，可以使用余额支付方式！</td></tr>
+		</table>
+		<div class="clear10"></div>
+		<hr class="hrstyle" />
+                <table class="table_zxzf2">
+                    <tr><td class="tdleft">易搜交易密码：</td><td><input type="password" id="paypwd" class="inputclass1" /></td></tr>
+                    <tr><td colspan="2" class="tdmid"><input type="button" onclick="balancepay();" value="确认付款" class="rmb_fanhui"/></td></tr>
+                </table>
+                <div class="div_zxzf">我还没有交易密码，马上去<a target="_blank" href="__ROOT__/member.php/index/setsafepwd">设置>></a></div>
+		<else/>
+		<tr><td colspan="2" class="zxzf_tishi">您的余额不足，请使用网上支付方式支付！</td></tr>
+		</table>
+		</eq>
+		<div class="clear10"></div>
+            </div>
+        </div>
+        <div class="clear10"></div>
+        <div class="zxzfbox">
+            <div class="zxzfbox_title">
+                <h2>支付方式二：网上支付</h2>
+            </div>
+	    <div class="zxzfbox_con" id="zhifuradio">
+	      <volist name="result_pay" id="rp">
+	      <input name='paytype' type="radio" value='<!--{$rp.enname}--!>' /><label><img src="__PUBLIC__/member/images/user/pay_<!--{$rp.enname}--!>.gif" width="126" height="50"/></label>
+	      </volist>
+	      
+	    </div>
+	    <div class="editbtn">
+  <input type="button" onclick="tosubmit();" class="rmb_fanhui" value="使用网上支付" />
+  <input type="button" style="margin-left:20px;" onclick="location.href='__URL__';" class="rmb_fanhui" value="取消" />
+                                         </div>
+	  </div>
+	  
+         <div class="clear10"></div>
+	</div>
+	<!--支付流程结束-->
+	
+	</div>
+    </div>
+    <include file="Index:footer" />
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>

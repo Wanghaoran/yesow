@@ -268,6 +268,15 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
 
+    //在线QQ
+    $CompanyQqonline = M('CompanyQqonline');
+    $where_qqonline = array();
+    $where_qqonline['cid'] = $id;
+    $where_qqonline['starttime'] = array('ELT', time());
+    $where_qqonline['endtime'] = array('EGT', time());
+    $result_company_qqonline = $CompanyQqonline -> field('qqcode,qqname') -> where($where_qqonline) -> order('starttime ASC') -> limit(8) -> select();
+    $this -> assign('result_company_qqonline', $result_company_qqonline);
+
     $this -> display();
   }
 
@@ -521,15 +530,6 @@ class CompanyAction extends CommonAction {
     //LAST100
     $result_last100 = $companycomment -> table('yesow_company_comment as cc') -> field('c.name as cname,cs.name as csname,cc.cid,SUM(cc.score) as count') -> join('yesow_company as c ON cc.cid = c.id') -> join('yesow_child_site as cs ON c.csid = cs.id') -> group('cc.cid') -> where('cc.status = 2') -> order('count ASC') -> limit(100) -> select();
     $this -> assign('result_last100', $result_last100);
-    $this -> display();
-  }
-
-  //添加在线QQ
-  public function addqqonline(){
-    $cid = $this -> _get('cid', 'intval');
-    //公司信息
-    $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
-    $this -> assign('company_info', $company_info);
     $this -> display();
   }
 
