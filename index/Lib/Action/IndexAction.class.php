@@ -191,7 +191,7 @@ class IndexAction extends CommonAction {
       $where['csid'] = $csid;
     }
     $where['delaid'] = array('exp', 'is NULL');
-    $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where($where) -> limit(28) -> select();
+    $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where($where) -> limit(32) -> select();
     $this -> assign('recommend_company', $recommend_company);
   }
 
@@ -226,10 +226,11 @@ class IndexAction extends CommonAction {
   private function companytype(){
     $category = M('CompanyCategory');
     //主营一级类别
-    $category_result = $category -> field('id,name') -> where(array('pid' => 0)) -> limit(14) -> select();
+    $category_result = $category -> field('id,name') -> where(array('pid' => 0)) -> limit(15) -> select();
     //主营一级类别下的二级类别
     foreach($category_result as $key => $value){
       $category_result[$key]['child'] = $category -> field('id,name') -> where(array('pid' => $value['id'])) -> limit(2) -> select();
+      $category_result[$key]['childs'] = $category -> field('id,name') -> where(array('pid' => $value['id'])) -> limit('2,30') -> select();
     }
     $this -> assign('category_result', $category_result);
   }

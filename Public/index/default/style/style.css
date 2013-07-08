@@ -123,7 +123,7 @@ p#hot_search{padding-top:1px;}
 #main02_ld{width:250px;background:url(images/main02_l.gif) no-repeat 0 0;}
 #main02_lt,
 #main02_ld{height:5px; overflow:hidden;}
-#main02_lc{ height:470px; background-repeat:repeat-y; background-position:-250px 0; position:relative;}
+#main02_lc{ height:503px; background-repeat:repeat-y; background-position:-250px 0; position:relative;}
 #main02_ld{background-position:0 -5px;}
 
 #main02_ul li{width:240px; padding-left:10px; height:31px; border-top:1px solid #e06422;}
@@ -135,15 +135,15 @@ p#hot_search{padding-top:1px;}
 #main02_ul li.exclude a:hover{ text-decoration:none;}
 
 /**弹出菜单**/
-.pop_div{ display:none; position:absolute; background:#FFF1E0; width:690px; height:470px; padding:2px 4px 2px 5px; border:3px solid #e06422; top:-5px; left:248px; border-left:0;}
+.pop_div{ display:none; position:absolute; background:#FFF1E0; width:330px; height:503px; padding:2px 4px 2px 5px; border:3px solid #e06422; top:-5px; left:248px; border-left:0;}
 
 
 #main02_ul li.hover .pop_div{display:block;}
-.pop_div dl{width:690px; float:left; padding:8px 0;}
+.pop_div dl{float:left; padding:8px 0;}
 .pop_div dt{width:90px; float:left;}
 .pop_div dt{width:90px; float:left; text-align:center;}
 .pop_div dt a{ font-weight:bold; height:25px; line-height:25px;}
-.pop_div dd{width:600px; float:left;}
+.pop_div dd{float:left;}
 .pop_div dd a{display:block; padding:0 8px; float:left; height:25px; line-height:25px;}
 #main02_r{width:695px; height:480px; float:left; position:relative; z-index:2;}
 .main02_r_tit,
@@ -152,7 +152,7 @@ p#hot_search{padding-top:1px;}
 .main02_r_tit{padding:0 0 5px 15px;}
 .main02_r_tit_r{padding-right:15px; background-position:100% -90px;}
 .main02_r_tit_c{ background:#F79437; line-height:30px; width:665px; font-size:14px; font-weight:bold; color:#FFF;}
-.main02_r_bod{ width:692px; height:174px; padding:3px 1px 3px 0; border:1px solid #F69537; background:#fef9f5 url(images/main02_r_bod.gif) no-repeat center center;}
+.main02_r_bod{ width:692px; height:205px; padding:3px 1px 3px 0; border:1px solid #F69537; background:#fef9f5 url(images/main02_r_bod.gif) no-repeat center center;}
 
 #main02_r_bod_ul{ width:692px; float:left;}
 #main02_r_bod_ul li{ width:153px; height:24px; padding:0 2px 0 18px; float:left; overflow:hidden; background:url(images/main_bg.gif) no-repeat 0 -120px;}
