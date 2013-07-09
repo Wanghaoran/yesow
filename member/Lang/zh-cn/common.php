@@ -15,6 +15,7 @@ $app_lang = array(
   'QQONLINE_LIMIT' => '此公司已有在线QQ，您不属于此公司的管理帐号，因此不能添加',
   'QQONLINE_RENEW' => '在线QQ信息更新成功，现在跳转到续费订单页面',
   'QQONLINE_REPETA_ERROR' => '此在线QQ已经添加过，请勿重复添加',
+  'QQONLINE_NUM_ERROR' => '一个企业最多添加8个在线QQ',
 );
 
 return array_merge($common_lang, $app_lang);

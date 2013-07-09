@@ -96,13 +96,23 @@ class ServicesAction extends CommonAction {
       }
     }
 
-    //判断是否重复添加QQ号
+    //判断QQ号是否超过8个
     $CompanyQqonline = M('CompanyQqonline');
+    $where_qqonline_count = array();
+    $where_qqonline_count['cid'] = $this -> _post('cid', 'intval');
+    $where_qqonline_count['starttime'] = array('ELT', time());
+    $where_qqonline_count['endtime'] = array('EGT', time());
+    $qqonline_count = $CompanyQqonline -> where($where_qqonline_count) -> count();
+    if($qqonline_count >= 8){
+      R('Register/errorjump',array(L('QQONLINE_NUM_ERROR')));
+    }
+
+    //判断是否重复添加QQ号
     $where_qqonline = array();
     $where_qqonline['cid'] = $this -> _post('cid', 'intval');
     $where_qqonline['starttime'] = array('ELT', time());
     $where_qqonline['endtime'] = array('EGT', time());
-    $result_company_qqonline = $CompanyQqonline -> field('qqcode,qqname') -> where($where_qqonline) -> order('starttime ASC') -> limit(8) -> select();
+    $result_company_qqonline = $CompanyQqonline -> field('qqcode') -> where($where_qqonline) -> order('starttime ASC') -> limit(8) -> select();
     foreach($result_company_qqonline as $value){
       foreach($result_qqonline['qq_name'] as $keys => $values){
 	if(in_array($keys, $value)){
@@ -110,6 +120,7 @@ class ServicesAction extends CommonAction {
 	}
       }
     }
+
 
     //QQ数量
     $result_qq_num = count($result_qqonline['qq_name']);

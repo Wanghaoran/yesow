@@ -638,7 +638,7 @@ ul.saledetail_btn li.btn_baocuo a{background:url(images/detailbtn.gif) no-repeat
 ul.saledetail_btn li.btn_copy a{background:url(images/detailbtn.gif) no-repeat; background-position:-311px -3px;}
 ul.saledetail_btn li.btn_download a{background:url(images/detailbtn.gif) no-repeat; background-position:-416px -3px;}
 
-ul.ul_qq li{ float:left; margin-left:10px;}
+ul.ul_qq li{ float:left; margin-left:10px; margin-bottom:10px;}
 a.qq_online{ width:60px; height:22px; line-height:22px; padding-left:24px; background:url(images/online.jpg) no-repeat; color:#3f83b7; font-size:12px; word-break:break-all; overflow: hidden; text-decoration:none; display:block;}
 a.qq_offline{ width:60px; height:22px; line-height:22px; padding-left:24px; background:url(images/offline.jpg) no-repeat; color:#7b7b7b; font-size:12px; word-break:break-all; overflow: hidden; text-decoration:none; display:block;}
 

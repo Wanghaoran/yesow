@@ -331,19 +331,15 @@ var onedownload = function(){
                 <div class="clear10"></div>
                 <h3 class="h3_text">企业在线</h3>
 		<ul class="ul_qq">
-		  <volist name="result_company_qqonline" id="cq">
 		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+		  <volist name="result_company_qqonline" id="cq">
 		  <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$cq.qqcode}--!>&site=qq&menu=yes" title="点击这里给我发消息" class="qq_online"><!--{$cq.qqname}--!></a></li>
-		  <else/>
-		  <li><a href="javascript:poplogin();" class="qq_online"><!--{$cq.qqname}--!></a></li>
-		  </if>
 		  </volist>
 		  <if condition="count($result_company_qqonline) lt 8">
-		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 		  <li><a target="_blank" href="__ROOT__/member.php/services/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline">添加QQ</a></li>
-		  <else/>
-		  <li><a href="javascript:poplogin();" title="暂无QQ" class="qq_offline">添加QQ</a></li>
 		  </if>
+		  <else/>
+		  <li><a href="javascript:poplogin();" title="登录查看" class="qq_offline">登录查看</a></li>
 		  </if>
                 </ul>
                 <div class="clear"></div>
