@@ -14,6 +14,7 @@ $app_lang = array(
   'MONTHLY_LEVEL_ERROR' => '您现在已经是包月会员，请重新选择高于您现在会员等级的包月类型',
   'QQONLINE_LIMIT' => '此公司已有在线QQ，您不属于此公司的管理帐号，因此不能添加',
   'QQONLINE_RENEW' => '在线QQ信息更新成功，现在跳转到续费订单页面',
+  'QQONLINE_REPETA_ERROR' => '此在线QQ已经添加过，请勿重复添加',
 );
 
 return array_merge($common_lang, $app_lang);

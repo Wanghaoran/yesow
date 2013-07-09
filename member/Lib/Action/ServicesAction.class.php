@@ -95,7 +95,22 @@ class ServicesAction extends CommonAction {
 	$result_qqonline['qq_name'][$value['qqcode']] = $value['qqname'];
       }
     }
-   
+
+    //判断是否重复添加QQ号
+    $CompanyQqonline = M('CompanyQqonline');
+    $where_qqonline = array();
+    $where_qqonline['cid'] = $this -> _post('cid', 'intval');
+    $where_qqonline['starttime'] = array('ELT', time());
+    $where_qqonline['endtime'] = array('EGT', time());
+    $result_company_qqonline = $CompanyQqonline -> field('qqcode,qqname') -> where($where_qqonline) -> order('starttime ASC') -> limit(8) -> select();
+    foreach($result_company_qqonline as $value){
+      foreach($result_qqonline['qq_name'] as $keys => $values){
+	if(in_array($keys, $value)){
+	  R('Register/errorjump',array(L('QQONLINE_REPETA_ERROR')));
+	}
+      }
+    }
+
     //QQ数量
     $result_qq_num = count($result_qqonline['qq_name']);
 
@@ -139,6 +154,7 @@ class ServicesAction extends CommonAction {
     $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
     $this -> assign('result_pay', $result_pay);
     $this -> display();
+
   }
 
   //余额支付页
