@@ -339,7 +339,11 @@ var onedownload = function(){
 		  <li><a target="_blank" href="__ROOT__/member.php/services/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline">添加QQ</a></li>
 		  </if>
 		  <else/>
+		  <notempty name="result_company_qqonline">
 		  <li><a href="javascript:poplogin();" title="登录查看" class="qq_offline">登录查看</a></li>
+		  <else/>
+		  <li><a href="javascript:poplogin();" title="添加QQ" class="qq_offline">添加QQ</a></li>
+		  </notempty>
 		  </if>
                 </ul>
                 <div class="clear"></div>

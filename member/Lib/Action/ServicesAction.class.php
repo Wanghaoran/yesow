@@ -81,7 +81,9 @@ class ServicesAction extends CommonAction {
       //整理QQ和昵称对应数组
       $result_qqonline['qq_name'] = array();
       foreach($_POST['qqlist'] as $key => $value){
-	$result_qqonline['qq_name'][$value] = $_POST['namelist'][$key];
+	if(!empty($value)){
+	  $result_qqonline['qq_name'][$value] = $_POST['namelist'][$key];
+	}
       }
     }else{
       //月份价格
