@@ -585,7 +585,7 @@ ul.addqqli li{margin:5px;}
 .zxddqx_tishi span{ float:right; font-weight:normal; color:#555;}
 .zxddqx_jiage{ text-align:left; width:740px; height:30px; line-height:30px;}
 
-.qqsq_search{ height:50px; line-height:50px; text-align:center;}
+.qqsq_search{ height:30px; line-height:30px; text-align:center;}
 .qqsq_search input{ vertical-align:middle; margin-right:10px; font-size:12px;}
 
 
@@ -593,7 +593,7 @@ ul.addqqli li{margin:5px;}
 #help01{font-size:12px;font-weight:normal; width:690px; margin:10px auto;}
 	#help01 ul li{line-height:25px; float:left;width:230px;}
 	#help01 ul li a{color:#127ed6; text-decoration:none; position:relative; display:block;}
-	#help01 ul li a div.help01{ width:230px; height:18px; line-height:18px; padding:3px 0 0 0;}
+	#help01 ul li a div.help01{ width:220px; height:18px; line-height:18px; padding:3px 0 0 0; overflow:hidden;}
 	#help01 ul li a div.poptip{display:none;}
 	#help01 ul li a:hover{ visibility:visible;}
 	#help01 ul li a:hover div.poptip{position:absolute; left:0; top:28px;z-index:9999; display:block;
@@ -602,7 +602,7 @@ ul.addqqli li{margin:5px;}
 	#help01 ul li a:hover div.poptip i{position:absolute; top:-6px;left:-7px;display:block; height:0; width:0;font-size: 0; line-height: 0; border-color:transparent transparent #fff transparent;border-style:dashed dashed solid dashed;border-width:7px;}
 	#help01 ul li a:hover div.poptip .poptipcon{ background:#fcfeff; width:400px;}
 	#help01 ul li a:hover div.poptip dl.dl_help1{ width:460px;}
-	#help01 ul li a:hover div.poptip dl.dl_help1 dd{ float:left; width:350px; padding:10px; line-height:25px; border-bottom:#e6f0f7 1px solid;}
+	#help01 ul li a:hover div.poptip dl.dl_help1 dd{ float:left; width:350px; padding:2px 10px; line-height:25px; border-bottom:#e6f0f7 1px solid;}
 	#help01 ul li a:hover div.poptip dl.dl_help1 dd.last{ border-bottom:none;}
 	
 ul.ul_zxqqbj{ width:500px;}

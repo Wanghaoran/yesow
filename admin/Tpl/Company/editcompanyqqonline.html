@@ -9,6 +9,11 @@
 	  <input  value="<!--{$result.cname}--!>" type="text required" disabled="true" size="40" />
 	</div>
 	<div class="unit">
+	  <label>所属会员：</label>
+	  <input name="org4.id" value="<!--{$result.mid}--!>" type="hidden">
+	  <input name="org4.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org4" value="<!--{$result.mname}--!>"/>
+	</div>
+	<div class="unit">
 	  <label>QQ号码：</label>
 	  <input name="qqcode" type="text required" value="<!--{$result.qqcode}--!>" />
 	</div>

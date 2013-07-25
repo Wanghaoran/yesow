@@ -64,6 +64,7 @@
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
 			<th width=40">用户名</th>
+			<th width=40">购买方式</th>
 			<th width="150">公司名称</th>
 			<th width="60">QQ号码</th>
 			<th width="60">QQ名称</th>
@@ -79,7 +80,12 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 		  <td><!--{$r.id}--!></td>
-		  <td><!--{$r.mname|default="后台添加"}--!></td>
+		  <td><!--{$r.mname}--!></td>
+		  <eq name="r.type" value="1">
+		  <td style="color:green;">后台添加</td>
+		  <else/>
+		  <td style="color:blue;">前台购买</td>
+		  </eq>
 		  <td><a href="__ROOT__/company/<!--{$r.cid}--!>" target="_blank"><!--{$r.cname}--!></a></td>
 			  <td><!--{$r.qqcode}--!></td>
 			  <td><!--{$r.qqname}--!></td>

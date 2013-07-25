@@ -1347,6 +1347,11 @@ class CompanyAction extends CommonAction {
 	$where_category = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $_POST['bgsearch_ccid_one'])) -> select();
 	$this -> assign('where_category', $where_category);
       }
+      //更新设置项
+      $CompanyBackgroundSearchSetup = M('CompanyBackgroundSearchSetup');
+      $CompanyBackgroundSearchSetup -> where(array('name' => 'name_size')) -> save(array('value' => $_POST['name_size']));
+      $CompanyBackgroundSearchSetup -> where(array('name' => 'manproducts_size')) -> save(array('value' => $_POST['manproducts_size']));
+      $CompanyBackgroundSearchSetup -> where(array('name' => 'manproducts_num')) -> save(array('value' => $_POST['manproducts_num']));
     }
     //查询分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
@@ -1354,6 +1359,13 @@ class CompanyAction extends CommonAction {
     //查询主营类别 - 一级
     $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
     $this -> assign('result_company_category_one', $result_company_category_one);
+    //查询后台搜索设置
+    $CompanyBackgroundSearchSetup = M('CompanyBackgroundSearchSetup');
+    $result_setup = array();
+    $result_setup['name_size'] = $CompanyBackgroundSearchSetup -> getFieldByname('name_size', 'value');
+    $result_setup['manproducts_size'] = $CompanyBackgroundSearchSetup -> getFieldByname('manproducts_size', 'value');
+    $result_setup['manproducts_num'] = $CompanyBackgroundSearchSetup -> getFieldByname('manproducts_num', 'value');
+    $this -> assign('result_setup', $result_setup);
     $this -> display();
   }
 
@@ -1546,6 +1558,13 @@ class CompanyAction extends CommonAction {
 
   //搜索结果下载word文件
   public function editdownword(){
+    //查询设置项
+    $CompanyBackgroundSearchSetup = M('CompanyBackgroundSearchSetup');
+    $result_setup = array();
+    $result_setup['name_size'] = $CompanyBackgroundSearchSetup -> getFieldByname('name_size', 'value');
+    $result_setup['manproducts_size'] = $CompanyBackgroundSearchSetup -> getFieldByname('manproducts_size', 'value');
+    $result_setup['manproducts_num'] = $CompanyBackgroundSearchSetup -> getFieldByname('manproducts_num', 'value');
+
     vendor('PHPWord/PHPWord');
     $objPHPWord = new PHPWord();
     $sectionPHPWord = $objPHPWord -> createSection(array('marginTop' => 565, 'marginLeft' => 565, 'marginRight' => 565, 'marginBottom' => 285, 'pageSizeW' => 7370, 'pageSizeH' => 10432));
@@ -1557,31 +1576,31 @@ class CompanyAction extends CommonAction {
 
     //地区信息
     $child_site_area = M('ChildSiteArea') -> getFieldByid($_POST['bgsearch_csaid'], 'name');
-    $sectionPHPWord -> addText('【' . $child_site_area . '】', array('name'=>'黑体', 'size'=>6.5, 'bold'=>true), 'pStyle');
+    $sectionPHPWord -> addText('【' . $child_site_area . '】', array('name'=>'黑体', 'size'=>$result_setup['name_size']+1, 'bold'=>true), 'pStyle');
 
     foreach($result['result'] as $value){
-      $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>6.5, 'bold'=>true), 'pStyle');
-      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, 16, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
-      $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+      $sectionPHPWord -> addText($value['name'], array('name'=>'黑体', 'size'=>$result_setup['name_size'], 'bold'=>true), 'pStyle');
+      $sectionPHPWord -> addText('主营:' . msubstr($value['manproducts'], 0, $result_setup['manproducts_num'], 'utf-8', false), array('name'=>'黑体', 'size'=>$result_setup['manproducts_size']), 'pStyle');
+      $sectionPHPWord -> addText($value['address'] , array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
       if(!strpos($value['companyphone'], '-123')){
-	$sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+	$sectionPHPWord -> addText('……' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['companyphone']), 0, 22, 'utf-8', false), array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
       }
       if($value['linkman'] != '--'){
-	$sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+	$sectionPHPWord -> addText($value['linkman'] . '   ' . msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
       }else{
-	$sectionPHPWord -> addText(msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+	$sectionPHPWord -> addText(msubstr(preg_replace('/\s{2,}|　/',' ',$value['mobilephone']), 0, 23, 'utf-8', false), array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
       }
       
       if($_GET['mod'] != 'noqq'){
 	if(!empty($value['qqcode'])){
-	  $sectionPHPWord -> addText('QQ:' . preg_replace('/\s{2,}|　/U',' ',$value['qqcode']), array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+	  $sectionPHPWord -> addText('QQ:' . preg_replace('/\s{2,}|　/U',' ',$value['qqcode']), array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
 	}
 	if(!empty($value['email'])){
-	  $sectionPHPWord -> addText($value['email'], array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+	  $sectionPHPWord -> addText($value['email'], array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
 	}
       }
       if(!empty($value['website']) && $value['website'] != 'http//:' && $value['website'] != 'http://'){
-	$sectionPHPWord -> addText($value['website'], array('name'=>'黑体', 'size'=> 5.5), 'pStyle');
+	$sectionPHPWord -> addText($value['website'], array('name'=>'黑体', 'size'=> $result_setup['manproducts_size']), 'pStyle');
       }
       $sectionPHPWord -> addTextBreak();
     }
@@ -1821,6 +1840,17 @@ class CompanyAction extends CommonAction {
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
+  }
+
+  //在线QQ订单详情
+  public function editqqonlineorder(){
+    $QqonlineOrder = M('$QqonlineOrder');
+    $result_o = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.ordernum,m.name as mname,m.tel as mtel,m.fullname as mfullname,c.name as cname,qo.cid,tmp.count,qm.months,qo.price,qo.status,qo.ischeck,qo.paytype,qo.addtime,qo.isrenew') -> join('yesow_member as m ON qo.mid = m.id') -> join('yesow_company as c ON qo.cid = c.id') -> join('LEFT JOIN (SELECT oid,COUNT(id) as count FROM yesow_qqonline_order_list GROUP BY oid) as tmp ON tmp.oid = qo.id') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result_o', $result_o);
+    $QqonlineOrderList = M('QqonlineOrderList');
+    $result = $QqonlineOrderList -> field('qqcode,qqname') -> where(array('oid' => $this -> _get('id'))) -> select();
+    $this -> assign('result', $result);
+    $this -> display();
   }
 
   /* --------------- 业务订单管理 ---------------- */
@@ -2147,7 +2177,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> field('cq.id,m.name as mname,c.name as cname,cq.cid,cq.qqcode,cq.qqname,cq.starttime,cq.endtime,cq.ischeck') -> join('yesow_member as m ON cq.mid = m.id') -> join('yesow_company as c ON cq.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cq.starttime DESC') -> select();
+    $result = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> field('cq.id,m.name as mname,c.name as cname,cq.cid,cq.qqcode,cq.qqname,cq.starttime,cq.endtime,cq.ischeck,cq.type') -> join('yesow_member as m ON cq.mid = m.id') -> join('yesow_company as c ON cq.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cq.ischeck ASC, cq.id DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -2164,6 +2194,10 @@ class CompanyAction extends CommonAction {
       $_POST['cid'] = $_POST['org2_id'];
       $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
       $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      $_POST['type'] = 1;
+      if(!empty($_POST['org3_id'])){
+	$_POST['mid'] = $_POST['org3_id'];
+      }
       if(!$CompanyQqonline -> create()){
 	$this -> error($CompanyQqonline -> getError());
       }
@@ -2195,6 +2229,9 @@ class CompanyAction extends CommonAction {
     if(!empty($_POST['qqcode'])){
       $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
       $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      if(!empty($_POST['org4_id'])){
+	$_POST['mid'] = $_POST['org4_id'];
+      }
       if(!$CompanyQqonline -> create()){
 	$this -> error($CompanyQqonline -> getError());
       }
@@ -2204,7 +2241,7 @@ class CompanyAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> field('c.name as cname,cq.qqcode,cq.qqname,cq.starttime,cq.endtime') -> join('yesow_company as c ON cq.cid = c.id') -> where(array('cq.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $CompanyQqonline -> table('yesow_company_qqonline as cq') -> field('c.name as cname,cq.qqcode,cq.qqname,cq.starttime,cq.endtime,m.name as mname,cq.mid') -> join('yesow_member as m ON cq.mid = m.id') -> join('yesow_company as c ON cq.cid = c.id') -> where(array('cq.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $this -> display();
   }

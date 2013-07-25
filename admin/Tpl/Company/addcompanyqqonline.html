@@ -7,15 +7,20 @@
 	<div class="unit">
 	  <label>公司名称：</label>
 	  <input name="org2.id" value="" type="hidden">
-	  <input class="required" name="org2.name" type="text required" suggestFields="name" suggestUrl="__APP__/public/ajaxgetcompanyinfo" lookupGroup="org2"/>
+	  <input class="required" name="org2.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetcompanyinfo" lookupGroup="org2"/>
+	</div>
+	<div class="unit">
+	  <label>所属会员：</label>
+	  <input name="org3.id" value="" type="hidden">
+	  <input name="org3.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org3"/>
 	</div>
 	<div class="unit">
 	  <label>QQ号码：</label>
-	  <input name="qqcode" type="text required">
+	  <input name="qqcode" type="text" class="required">
 	</div>
 	<div class="unit">
 	  <label>QQ名称：</label>
-	  <input name="qqname" type="text required">
+	  <input name="qqname" type="text" class="required">
 	</div>
 	
 	<div class="unit">

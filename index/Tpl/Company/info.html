@@ -328,21 +328,26 @@ var onedownload = function(){
 			<li class="btn_download"><a href="javascript:poplogin();"></a></li>
 			</if>
                 </ul>
-                <div class="clear10"></div>
-                <h3 class="h3_text">企业在线</h3>
-		<ul class="ul_qq">
+		<div class="clear10"></div>
+		<div style="width:630px;">
+		  <div class="left"><h3 class="h3_text">企业在线</h3></div>
+		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+		  <if condition="count($result_company_qqonline) lt 8">
+		  <div class="left"><a target="_blank" href="__ROOT__/member.php/services/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline" style="margin:14px 0;">添加QQ</a></div>
+		  </if>
+		  <else/>
+		  <div class="left"><a href="javascript:poplogin();" title="暂无QQ" class="qq_offline" style="margin:14px 0;">添加QQ</a></div>
+		  </if>
+		</div>
+		<div class="clear"></div>
+  		  <ul class="ul_qq">
 		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 		  <volist name="result_company_qqonline" id="cq">
 		  <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$cq.qqcode}--!>&site=qq&menu=yes" title="点击这里给我发消息" class="qq_online"><!--{$cq.qqname}--!></a></li>
 		  </volist>
-		  <if condition="count($result_company_qqonline) lt 8">
-		  <li><a target="_blank" href="__ROOT__/member.php/services/addqqonline/cid/<!--{$Think.get.id}--!>" title="暂无QQ" class="qq_offline">添加QQ</a></li>
-		  </if>
 		  <else/>
 		  <notempty name="result_company_qqonline">
 		  <li><a href="javascript:poplogin();" title="登录查看" class="qq_offline">登录查看</a></li>
-		  <else/>
-		  <li><a href="javascript:poplogin();" title="添加QQ" class="qq_offline">添加QQ</a></li>
 		  </notempty>
 		  </if>
                 </ul>

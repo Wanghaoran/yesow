@@ -58,11 +58,20 @@ class ServicesAction extends CommonAction {
        $have_qq_num = $CompanyQqonline -> where($where_qqonline) -> count();
        $this -> assign('have_qq_num', $have_qq_num);
        $this -> assign('add_qq_num', 8 - $have_qq_num);
-
+       //查询已有QQ
+       $qqonline_list = $CompanyQqonline -> field('qqcode,qqname') -> where($where_qqonline) -> select();
+       $this -> assign('qqonline_list', $qqonline_list);
     }
     //后台搜索公司
-    if(!empty($_POST['keyword'])){
-      $company_search = M('Company') -> field('id,name,manproducts,address,website,linkman') -> where(array('name' => array('LIKE', '%' . $_POST['keyword'] . '%'))) -> order('updatetime DESC') -> select();
+    if(!empty($_REQUEST['keyword'])){
+      $where_company['name'] = array('LIKE', '%' . $_POST['keyword'] . '%');
+      import("ORG.Util.Page");// 导入分页类
+      $count = M('Company') -> where($where_company) -> count();
+      $page = new Page($count, 9);
+      $page -> parameter = "keyword=" . $_POST['keyword'];
+      $show = $page -> show();
+      $company_search = M('Company') -> field('id,name,manproducts,address,website,linkman') -> where($where_company) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+      $this -> assign('show', $show);
       $this -> assign('company_search', $company_search);
     }
     //查询价格

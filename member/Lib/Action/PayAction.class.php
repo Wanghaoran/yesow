@@ -929,13 +929,13 @@ class PayAction extends Action {
 	  if($qqonline_order -> where($where) -> save($data)){
 	    //写在线QQ主表
 	    ////订单相关信息
-	    $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $orderId)) -> find();
+	    $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months,qo.mid') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $orderId)) -> find();
 	    //订单所属QQ信息
 	    $order_qq_info = M('QqonlineOrderList') -> field('qqcode,qqname') -> where(array('oid' => $qqonline_info['id'])) -> select();
 	    //写主表
 	    $CompanyQqonline = M('CompanyQqonline');
 	    $qq_data = array();
-	    $qq_data['mid'] = session(C('USER_AUTH_KEY'));
+	    $qq_data['mid'] = $qqonline_info['mid'];
 	    $qq_data['cid'] = $qqonline_info['cid'];
 	    $qq_data['starttime'] = time();
 	    $qq_data['endtime'] = $qq_data['starttime'] + ($qqonline_info['months'] * 30 * 24 * 60 * 60);
@@ -968,7 +968,6 @@ class PayAction extends Action {
       $info_succ = "在线QQ相关服务未购买成功";
       R('Services/qqonlinesuccess',array($info_succ, 'error', $qqonline_info['cid']));
     }
-    $this -> display('./member/Tpl/Money/rmbrecharge_four.html');
   }
 
   //支付宝异步通知页面
@@ -1025,13 +1024,13 @@ class PayAction extends Action {
 	if($qqonline_order -> where($where) -> save($data) && $now_status == 0){
 	  //写在线QQ主表
 	  //////订单相关信息
-	  $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $out_trade_no)) -> find();
+	  $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months,qo.mid') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $out_trade_no)) -> find();
 	  //订单所属QQ信息
 	  $order_qq_info = M('QqonlineOrderList') -> field('qqcode,qqname') -> where(array('oid' => $qqonline_info['id'])) -> select();
 	  //写主表
 	  $CompanyQqonline = M('CompanyQqonline');
 	  $qq_data = array();
-	  $qq_data['mid'] = session(C('USER_AUTH_KEY'));
+	  $qq_data['mid'] = $qqonline_info['mid'];
 	  $qq_data['cid'] = $qqonline_info['cid'];
 	  $qq_data['starttime'] = time();
 	  $qq_data['endtime'] = $qq_data['starttime'] + ($qqonline_info['months'] * 30 * 24 * 60 * 60);
@@ -1171,13 +1170,13 @@ class PayAction extends Action {
 	    if($qqonline_order -> where($where) -> save($data)){
 	      //写在线QQ主表
 	      ////////订单相关信息
-	      $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $out_trade_no)) -> find();
+	      $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months,qo.mid') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $out_trade_no)) -> find();
 	      //订单所属QQ信息
 	      $order_qq_info = M('QqonlineOrderList') -> field('qqcode,qqname') -> where(array('oid' => $qqonline_info['id'])) -> select();
 	      //写主表
 	      $CompanyQqonline = M('CompanyQqonline');
 	      $qq_data = array();
-	      $qq_data['mid'] = session(C('USER_AUTH_KEY'));
+	      $qq_data['mid'] = s$qqonline_info['mid'];
 	      $qq_data['cid'] = $qqonline_info['cid'];
 	      $qq_data['starttime'] = time();
 	      $qq_data['endtime'] = $qq_data['starttime'] + ($qqonline_info['months'] * 30 * 24 * 60 * 60);

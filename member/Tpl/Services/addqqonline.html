@@ -38,7 +38,7 @@ function appendli()
         return false;
 		}
 	else{
-    jQuery("#chens").append("<li>添加QQ：<input type='text' class='inputclass2' name='qqlist[]' />&nbsp;&nbsp;昵称：<input type='text' class='inputclass2' name='namelist[]' />&nbsp;&nbsp;<a onclick='return RemoveLi(this);'  title='删除'><img src='__PUBLIC__/member/images/user/reduce.gif' style='vertical-align:middle'/></a></li>");
+    jQuery("#chens").append("<li>添加QQ：<input type='text' class='inputclass2' name='qqlist[]' />&nbsp;&nbsp;昵称：<input type='text' class='inputclass2' maxlength='6' name='namelist[]' />&nbsp;&nbsp;<a onclick='return RemoveLi(this);'  title='删除'><img src='__PUBLIC__/member/images/user/reduce.gif' style='vertical-align:middle'/></a></li>");
 	}
 	countprice();
 }
@@ -100,80 +100,8 @@ var tosubmits = function(){
                             </dt>
                                                  
                         </dl>
-                        <div class="main_sjdxfs">
-							<!--第一步-->
-                            <div class="div_zxqqsq1">
-								<div class="zxqqsq1_left left"><h2>第一步</h2><h3>确认信息</h3></div>
-								<div class="zxqqsq1_mid left">
-								  <ul>
-								    <notempty name="company_info">
-								    <li>所属地区：<!--{$company_info.csname}--!> - <!--{$company_info.csaname}--!></li>
-								    <li>商家名称：<!--{$company_info.name}--!></li>
-								    <li>公司地址：<!--{$company_info.address}--!></li>
-								    <li>联&nbsp;&nbsp;系&nbsp;人：<!--{$company_info.linkman}--!></li>
-								    <else/>
-								    <div class="zxqqsq1_right left">请先到页面下方选择公司信息</div>
-
-								    </notempty>
-								  </ul>
-								</div>
-								<div class="zxqqsq1_right left">此处为您选择的客户公司信息，请核对是否有误。<br/>该公司已有 <!--{$have_qq_num}--!> 个在线QQ，还可添加 <!--{$add_qq_num}--!> 个</div>
-							</div>
-                            <div class="clear10"></div>
-			    <!--第二步-->
-			    <form action="__URL__/qqonline_pay" method='post' onsubmit="return tosubmits();">
-			<div class="div_zxqqsq2">
-			  <div class="zxqqsq2_left left"><h2>第二步</h2><h3>添加QQ</h3></div>
-			  <div class="zxqqsq2_mid left">
-			    <div class="qiye_info">
-			      <ul id="chens" class="addqqli">
-				<li>添加QQ：<input type="text" class="inputclass2" name="qqlist[]" />&nbsp;&nbsp;昵称：<input type="text" class="inputclass2" maxlength="4" name="namelist[]" /></li>
-			      </ul>
-			      <div class="clear"></div>
-			      <input type="button" id="chen" class="qq_add" title="添加QQ" value="添加QQ" onclick="appendli()"/>
-			    </div>
-			  </div>
-			  <div class="zxqqsq2_right left">此处可以添加您的QQ号码，最大数量不超过8个，昵称可以自己定义，字数不超过4个中文字。</div>
-			
-			</div>
-                            <div class="clear10"></div>
-							<!--第三步-->
-			<div class="div_zxqqsq3">
-			  <div class="zxqqsq3_left left"><h2>第三步</h2><h3>包月时间</h3></div>
-			  <div class="zxqqsq3_right left">
-			    <div id="radiolist1">
-			      <volist name="qq_price" id="qp">
-			      <input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
-			      <label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
-			      </volist>
-			      <div class="clear"></div>
-			    </div>
-			  </div>
-			</div>
-                            <div class="clear10"></div>
-							<!--第四步-->
-							<div class="div_zxqqsq4">
-								<div class="zxqqsq4_left left"><h2>第四步</h2><h3>核对总价</h3></div>
-								<div class="zxqqsq4_mid left">
-								  合计费用  <span id="qqnum"> 1 </span>个QQ ×<span id="qqmonths"> 0 </span> 个月/<span id="monthsnum"> 0 </span> 元 = <span id="totalnum"> 0 </span> 元
-								</div>
-								<div class="zxqqsq4_right left">(费用自动计算，数量乘以时间)</div>
-							</div>
-                            <div class="clear10"></div>
-			    <!--第四步 结束-->
-			    <div class="div_zxqqsq5">
-			      <div class="qqsq_tishi">请确认您购买的是本公司QQ号，请勿恶意购买，如经发现，我们将删除该信息，且不予退费！</div>
-			      <empty name="Think.get.cid">
-			      <input type="button" class="btn_goumai" onclick="alert('请先选择公司信息');"/>
-			      <else/>
-			      <input type="hidden" name="cid" value="<!--{$Think.get.cid}--!>">
-			      <input type="submit" class="btn_goumai" value="" />
-			      </empty>
-			      </div>
-
-			      </form>
-                            <div class="clear10"></div>
-			    <div class="qqsq_tishi">注：您是在会员中心进行的添加，请先进行公司搜索，点选公司后，会在第一步中显示您选择的公司信息。</div>
+			<div class="main_sjdxfs">
+			  <div class="qqsq_tishi">注：如果您是在会员中心直接进行添加的，请先进行公司搜索，点选公司后，会在第一步中显示您选择的公司信息.</div>
 			    <form action="__ACTION__" method="post">
 			    <div class="qqsq_search">请输入公司名称：
 			      <input type="text" name="keyword" />
@@ -208,10 +136,93 @@ var tosubmits = function(){
 				    </notempty>
 				  </ul>
 				</div>
-                                <div class="clear10"></div>
+
+				<div class="clear"></div>
+				<div class="page"><!--{$show}--!></div>
                             </div>
                         </div>
-                        <div class="clear30"></div>     
+                        <div class="clear30"></div> 
+							<!--第一步-->
+                            <div class="div_zxqqsq1">
+								<div class="zxqqsq1_left left"><h2>第一步</h2><h3>确认信息</h3></div>
+								<div class="zxqqsq1_mid left">
+								  <ul>
+								    <notempty name="company_info">
+								    <li>所属地区：<!--{$company_info.csname}--!> - <!--{$company_info.csaname}--!></li>
+								    <li>商家名称：<!--{$company_info.name}--!></li>
+								    <li>公司地址：<!--{$company_info.address}--!></li>
+								    <li>联&nbsp;&nbsp;系&nbsp;人：<!--{$company_info.linkman}--!></li>
+								    <else/>
+								    <div class="zxqqsq1_right left">请到上面搜索栏搜索出您要添加QQ的商家名片，然后选择确认在这里</div>
+
+								    </notempty>
+								  </ul>
+								</div>
+								<div class="zxqqsq1_right left">此处为您选择的客户公司信息，请核对是否有误。<br/>该公司已有 <!--{$have_qq_num}--!> 个在线QQ，还可添加 <!--{$add_qq_num}--!> 个</div>
+							</div>
+                            <div class="clear10"></div>
+			    <!--第二步-->
+			    <form action="__URL__/qqonline_pay" method='post' onsubmit="return tosubmits();">
+			<div class="div_zxqqsq2">
+			  <div class="zxqqsq2_left left"><h2>第二步</h2><h3>添加QQ</h3></div>
+			  <div class="zxqqsq2_mid left">
+			    <div class="qiye_info">
+			      <ul id="chens" class="addqqli">
+				<volist name="qqonline_list" id="ql">
+				<li><span>QQ号码：<!--{$ql.qqcode}--!></span><span style="margin-left:90px;">QQ昵称：<!--{$ql.qqname}--!></span></li>
+				</volist>
+				<li>添加QQ：<input type="text" class="inputclass2" name="qqlist[]" />&nbsp;&nbsp;昵称：<input type="text" class="inputclass2" maxlength="6" name="namelist[]" /></li>
+			      </ul>
+			      <div class="clear"></div>
+			      <input type="button" id="chen" class="qq_add" title="添加QQ" value="添加QQ" onclick="appendli()"/>
+			    </div>
+			  </div>
+			  <div class="zxqqsq2_right left">此处可以添加您的QQ号码，最大数量不超过8个，昵称可以自己定义，字数不超过6个中文字。</div>
+			
+			</div>
+                            <div class="clear10"></div>
+							<!--第三步-->
+			<div class="div_zxqqsq3">
+			  <div class="zxqqsq3_left left"><h2>第三步</h2><h3>包月时间</h3></div>
+			  <div class="zxqqsq3_right left">
+			    <div id="radiolist1">
+			      <volist name="qq_price" id="qp">
+			      <input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+			      <label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+			      </volist>
+			      <div class="clear"></div>
+			    </div>
+			  </div>
+			</div>
+                            <div class="clear10"></div>
+							<!--第四步-->
+							<div class="div_zxqqsq4">
+								<div class="zxqqsq4_left left"><h2>第四步</h2><h3>核对总价</h3></div>
+								<div class="zxqqsq4_mid left">
+								  合计费用  <span id="qqnum"> 1 </span>个QQ ×<span id="qqmonths"> 0 </span> 个月/<span id="monthsnum"> 0 </span> 元 = <span id="totalnum"> 0 </span> 元
+								</div>
+								<div class="zxqqsq4_right left">(费用自动计算，数量乘以时间)</div>
+							</div>
+                            <div class="clear10"></div>
+			    <!--第四步 结束-->
+			    <div class="div_zxqqsq5">
+
+			      <div class="qqsq_tishi" style="height:90px;text-align:left;padding-left:20px;">注意：<br/>
+				1、请确认您购买的是您自己的信息内容，再添加您的QQ号，请勿恶意购买；<br/>
+				2、如今后有其他客户投诉我们经核实后将删除此购买信息，且不予退款！
+				
+			      </div>
+			      <empty name="Think.get.cid">
+			      <input type="button" class="btn_goumai" onclick="alert('请先选择公司信息');"/>
+			      <else/>
+			      <input type="hidden" name="cid" value="<!--{$Think.get.cid}--!>">
+			      <input type="submit" class="btn_goumai" value="" />
+			      </empty>
+			      </div>
+
+			      </form>
+                            <div class="clear10"></div>
+			        
                     </div>
                     <div class="clear"></div>
 					<!--main结束-->
