@@ -1274,6 +1274,31 @@ class SystemAction extends CommonAction {
     $this -> display('editport_' . $mod);
   }
 
+  //网站地图管理
+  public function websitemap(){
+    $sitemap_upload = M('SitemapUpload');
+    //记录总数
+    $count = $sitemap_upload -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $sitemap_upload -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
   /* ------------  系统设置   -------------- */
 
   /* ----------- 关于我们 ------------ */

@@ -70,6 +70,16 @@ return array(
   //二手滞销图片显示
   'SELLUSED_PIC_PATH_SAVE' => __ROOT__ . '/Upload/sellused/',
 
+  //企业形象图片保存路径
+  'COMPANY_PIC_PATH' => './Upload/companypic/',
+  //企业形象图片显示
+  'COMPANY_PIC_PATH_SAVE' => __ROOT__ . '/Upload/companypic/',
+
+  //企业形象资料保存路径
+  'COMPANY_PIC_DATA_PATH' => './Upload/companypicdata/',
+  //企业形象资料下载地址
+  'COMPANY_PIC_DATA_PATH_SAVE' => __ROOT__ . '/Upload/companypicdata/',
+
   //网站临时上传目录
   'TEMP_UPLOAD_PATH' => './Upload/temp/',
 

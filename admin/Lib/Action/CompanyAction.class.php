@@ -1853,6 +1853,87 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //企业形象订单
+  public function companypicorder(){
+    $CompanypicOrder = M('CompanypicOrder');
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['co.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['co.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $CompanypicOrder -> table('yesow_companypic_order as co') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.ordernum,m.name as mname,c.name as cname,co.cid,cm.months,co.price,co.status,co.ischeck,co.paytype,co.addtime,co.isrenew,co.maketype,co.filename') -> join('yesow_member as m ON co.mid = m.id') -> join('yesow_company as c ON co.cid = c.id') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> order('co.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除企业形象订单
+  public function delcompanypicorder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $CompanypicOrder = M('CompanypicOrder');
+    if($CompanypicOrder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核企业形象订单
+  public function passauditcompanypicorder(){
+    $CompanypicOrder = M('CompanypicOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($CompanypicOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核企业形象订单
+  public function nopassauditcompanypicorder(){
+    $CompanypicOrder = M('CompanypicOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($CompanypicOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //企业形象订单详情
+  public function editcompanypicorder(){
+    $CompanypicOrder = M('CompanypicOrder');
+    $result_o = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.ordernum,m.name as mname,m.tel as mtel,m.fullname as mfullname,c.name as cname,co.cid,cm.months,co.price,co.status,co.ischeck,co.paytype,co.addtime,co.isrenew,co.maketype,co.filename') -> join('yesow_member as m ON co.mid = m.id') -> join('yesow_company as c ON co.cid = c.id') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result_o', $result_o);
+    $this -> display();
+  }
+
   /* --------------- 业务订单管理 ---------------- */
 
   /* --------------- 速查业务管理 ---------------- */
@@ -2271,6 +2352,139 @@ class CompanyAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
+
+  //企业形象管理
+  public function companypics(){
+    $Companypic = M('Companypic');
+    $where = array();
+    if(!empty($_POST['cname'])){
+      $where['c.name'] = $this -> _post('cname');
+    }
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    //记录总数
+    $count = $Companypic -> table('yesow_companypic as cp') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.id,m.name as mname,c.name as cname,cp.cid,cp.starttime,cp.endtime,cp.ischeck,cp.type,cp.filename') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cp.ischeck ASC, cp.id DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加企业形象
+  public function addcompanypics(){
+    if(!empty($_POST['starttime'])){
+      $Companypic = M('Companypic');
+      $add_data = array();
+      if(!empty($_FILES['filename']['name'])){
+	if($pics = $this -> upload()){
+	  $add_data['filename'] = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      $add_data['cid'] = $_POST['org2_id'];
+      $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
+      $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['type'] = 1;    
+      if(!empty($_POST['org3_id'])){
+	$add_data['mid'] = $_POST['org3_id'];
+      }
+
+      if(!$Companypic -> create($add_data)){
+	$this -> error($Companypic -> getError());
+      }
+      if($Companypic -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除企业形象
+  public function delcompanypics(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $Companypic = M('Companypic');
+    if($Companypic -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑企业形象
+  public function editcompanypics(){
+    $Companypic = M('Companypic');
+    //处理更新
+    if(!empty($_POST['id'])){
+      $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
+      $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      if(!empty($_POST['org4_id'])){
+	$_POST['mid'] = $_POST['org4_id'];
+      }
+      if(!empty($_FILES['filename']['name'])){
+	if($pics = $this -> upload()){
+	  $_POST['filename'] = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      if(!$Companypic -> create()){
+	$this -> error($Companypic -> getError());
+      }
+      if($Companypic -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('c.name as cname,cp.filename,cp.starttime,cp.endtime,m.name as mname,cp.mid') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //通过审核企业形象
+  public function passauditcompanypics(){
+    $Companypic = M('Companypic');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($Companypic -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核企业形象
+  public function nopassauditcompanypics(){
+    $Companypic = M('Companypic');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($Companypic -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
   
   /* --------------- 速查业务管理 ---------------- */
 
@@ -2610,7 +2824,83 @@ class CompanyAction extends CommonAction {
     $result = $QqonlineMoney -> field('months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
-  
+  }
+
+  //企业形象价格
+  public function companypicmoney(){
+    $CompanypicMoney = M('CompanypicMoney');
+    $where = array();
+
+    //记录总数
+    $count = $CompanypicMoney -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $CompanypicMoney -> field('id,months,marketprice,promotionprice,remark') -> order('months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加企业形象价格
+  public function addcompanypicmoney(){
+    //处理添加
+    if(!empty($_POST['months'])){
+      $CompanypicMoney = M('CompanypicMoney');
+      if(!$CompanypicMoney -> create()){
+	$this -> error($CompanypicMoney -> getError());
+      }
+      if($CompanypicMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除企业形象价格
+  public function delcompanypicmoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $CompanypicMoney = M('CompanypicMoney');
+    if($CompanypicMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑企业形象价格
+  public function editcompanypicmoney(){
+    $CompanypicMoney = M('CompanypicMoney');
+    //处理更新
+    if(!empty($_POST['months'])){
+      if(!$CompanypicMoney -> create()){
+	$this -> error($CompanypicMoney -> getError());
+      }
+      if($CompanypicMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $CompanypicMoney -> field('months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   }
 
   /* --------------- 速查设置管理 ---------------- */

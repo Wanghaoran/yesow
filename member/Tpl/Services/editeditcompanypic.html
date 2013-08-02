@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑企业形象-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist1').hradio();
+	});
+
+var checksubmit = function(){
+  return true;
+}
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">企业形象管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">企业形象管理</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                        	<ul class="ul_zxqqbj">
+				  <li><span class="">公司名称：</span><input type="text" class="input_sjdxfs1" value="<!--{$result.cname}--!>" disabled="disabled"/></li>
+                                <li>
+				<div class="right"><span class="">结束日期：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" disabled="disabled"/></div>
+                                    <div class="left"><span class="">开始日期：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.starttime|date='Y-m-d', ###}--!>" disabled="disabled"/></div>
+                                </li>
+				<li><span>企业形象的</span>大小为：305×265PX像素&nbsp;&nbsp;&nbsp;&nbsp;
+				<if condition="(strstr($result['filename'], '.') eq '.rar') OR (strstr($result['filename'], '.') eq '.zip')">
+					<a href="<!--{$Think.config.COMPANY_PIC_DATA_PATH_SAVE}--!><!--{$result.filename}--!>" target="_blank" style="color:red;">设计中</a>
+					<else/>
+					<a style="color:green;" href="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.filename}--!>" target="_blank">查看</a>
+					</if>
+					</li>
+					<form action="__ACTION__" method="post" enctype="multipart/form-data" onsubmit="return checksubmit();">
+                                <li>
+                                	<input type="radio" name="updatetype" value="1"/><font class="font_cs">选择自行更新广告</font>
+                                    <div class="clear"></div>
+                                    <div style="padding-left:30px;">
+                                        <div style="float:left">更新广告图片：</div>
+					<div class="file-box">
+					  <input type='text' id='picname' class='txtfile' />
+					  <input type='button' class='btnfile' value='浏览...' />
+					  <input type="file" name="picname" class="fileinput" size="28" onchange="document.getElementById('picname').value=this.value" /></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </li>
+                                <div class="clear"></div>
+                                <li>
+                                	<input type="radio" name="updatetype" value="2"/><font class="font_cs">选择让我们来更新广告</font>
+                                    <div style="padding-left:40px;">
+				      <div style="float:left">上传文件包：</div>
+				      <div class="file-box">
+					<input type='text' id='dataname' class='txtfile' />
+					<input type='button' class='btnfile' value='浏览...' />
+					<input type="file" name="dataname" class="fileinput" size="28" onchange="document.getElementById('dataname').value=this.value" /></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </li>
+                                <div class="clear"></div>
+                            </ul>
+                            <div class="clear"></div>
+                            <div class="sjdxfs_tishi">续包月可选择以下选项，不选择则视为不续包。</div>
+                            <div class="">
+                            	<div id="radiolist1">
+				  <volist name="companypic_price" id="qp">
+				<input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+				<label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+				</volist>
+                                         <div class="clear"></div>
+                                     </div>
+                            </div>							
+			    <div class="div_zxqqsq5">
+			      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+			      <input type="reset" class="rmb_fanhui" value="重置"/>
+                            	<input type="submit" class="rmb_fanhui" value="确认提交"/>
+			      </div>
+			      </form>
+                            <div class="clear10"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

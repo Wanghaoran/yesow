@@ -241,17 +241,19 @@ var onedownload = function(){
 				<ul class="saledetail">
 				  <li class="li_h1"><!--{$result.name}--!><span>人气 [ <!--{$result.clickcount}--!> ]</span></li>
 				  <li class="li_img">
-				  <a href="#">
-				    <notempty name="result.pic">
-				    <if condition="strrchr($result['pic'], '.') == '.swf'">
-				    <embed src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="300" height="260" wmode="transparent"></embed>
-				    <else/>
-				     <img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.pic}--!>" width="343" height="275" border="0" />
-				    </if>
-				    <else/>
-				    <img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" />
-				    </notempty>
-				  </a>
+				  <notempty name="result_companypic">
+				  <if condition="(strstr($result_companypic['filename'], '.') == '.rar') OR (strstr($result_companypic['filename'], '.') == '.zip')">
+				  <a href="javascript:alert('形象图片还在设计中');"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" /></a>
+				  <else/>
+				  <a href="#"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result_companypic.filename}--!>" width="343" height="275" border="0" /></a>
+				  </if>
+				  <else/>
+				  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+				  <a target="_blank" href="__ROOT__/member.php/services/addcompanypic/cid/<!--{$Think.get.id}--!>"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" /></a>
+				  <else/>
+				  <a href="javascript:poplogin();"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" /></a>
+				  </if>
+				  </notempty>
 				  </li>
                     <li>
 		    <h2>

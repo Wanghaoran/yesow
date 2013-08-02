@@ -1019,6 +1019,486 @@ class ServicesAction extends CommonAction {
 
   /* ------  在线QQ ------- */
 
+
+  /* ------  企业形象 ------- */
+
+  //在线QQ管理前置操作
+  public function _before_companypic(){
+    $this -> _before_index();
+  }
+
+  //企业形象管理
+  public function companypic(){
+    $this -> display();
+  }
+
+  //添加企业形象
+  public function addcompanypic(){
+    //传递cid
+    if(!empty($_GET['cid'])){
+       $cid = $this -> _get('cid', 'intval');
+       //公司信息
+       $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+       $this -> assign('company_info', $company_info);
+
+       // 查询该公司是否已有生效的企业形象
+       $Companypic = M('Companypic');
+       $where_limit['cid'] = $cid;
+       $where_limit['starttime'] = array('ELT', time());
+       $where_limit['endtime'] = array('EGT', time());
+       $add_limit = $Companypic -> where($where_limit) -> find();
+       if($add_limit){
+	 R('Register/errorjump',array(L('COMPANYPIC_LIMIT')));
+       }
+    }
+    //后台搜索公司
+    if(!empty($_REQUEST['keyword'])){
+      $where_company['name'] = array('LIKE', '%' . $_POST['keyword'] . '%');
+      import("ORG.Util.Page");// 导入分页类
+      $count = M('Company') -> where($where_company) -> count();
+      $page = new Page($count, 9);
+      $page -> parameter = "keyword=" . $_POST['keyword'];
+      $show = $page -> show();
+      $company_search = M('Company') -> field('id,name,manproducts,address,website,linkman') -> where($where_company) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+      $this -> assign('show', $show);
+      $this -> assign('company_search', $company_search);
+    }
+    //查询价格
+    $CompanypicMoney = M('CompanypicMoney');
+    $companypic_price = $CompanypicMoney -> field('id,months,marketprice,promotionprice') -> order('months ASC') -> select();
+    $this -> assign('companypic_price', $companypic_price);
+    $this -> display();
+  }
+
+  //企业形象订单页
+  public function companypic_pay(){
+
+    $result_companypic = array();
+
+    //上传企业形象
+    if($_POST['maketype'] == 1){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('COMPANY_PIC_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('gif', 'jpg', 'jpeg');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传企业形象图片失败，请检查文件合理性'));
+      }
+    }else if($_POST['maketype'] == 2){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('COMPANY_PIC_DATA_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('rar', 'zip');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传企业形象资料失败，请检查文件合理性'));
+      }
+    }
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_companypic = M('CompanypicMoney') -> field('months,promotionprice') -> find($this -> _post('months'));
+      //公司id
+      $result_companypic['cid'] = $this -> _post('cid', 'intval');
+    }else{
+      $CompanypicOrder = M('CompanypicOrder');
+      $cmid = $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'cmid');
+      $result_companypic = M('CompanypicMoney') -> field('months,promotionprice') -> find($cmid);
+      //公司id
+      $result_companypic['cid'] =  $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'cid');
+    }
+
+    $result_companypic['filename'] = $info[0]['savename'];
+    $result_companypic['maketype'] = $this -> _post('maketype', 'intval');
+
+    //生成订单号
+    $result_companypic['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+    //总价
+    $result_companypic['count'] = $result_companypic['promotionprice'];
+    
+    //公司名称
+    $result_companypic['companyname'] = M('Company') -> getFieldByid($result_companypic['cid'], 'name');
+
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $CompanypicOrder = M('CompanypicOrder');
+      $data = array();
+      $data['ordernum'] = $result_companypic['orderid'];
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['cid'] = $result_companypic['cid'];
+      $data['cmid'] = $this -> _post('months', 'intval');
+      $data['price'] = $result_companypic['count'];
+      $data['maketype'] = $result_companypic['maketype'];
+      $data['filename'] = $result_companypic['filename'];
+      $data['addtime'] = time();
+      if(!$oid = $CompanypicOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+    
+    //RMB余额是否足够支付
+    $result_companypic['rmb_enough'] = $_SESSION['rmb_total'] - $result_companypic['count'] >= 0 ? 1 : 0;
+
+    $this -> assign('result_companypic', $result_companypic);
+
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+  }
+
+  //企业形象订单页
+  public function companypicorder(){
+    $CompanypicOrder = M('CompanypicOrder');
+    $where = array();
+    $where['co.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    import("ORG.Util.Page");// 导入分页类
+    $count = $CompanypicOrder -> table('yesow_companypic_order as co') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.ordernum,c.name as cname,cm.months,co.price,co.status,co.ischeck,co.paytype,co.addtime,co.isrenew') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> join('yesow_company as c ON co.cid = c.id') -> order('co.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //企业形象订单详情
+  public function companypicorderlist(){
+
+    $oid = $this -> _get('id', 'intval');
+    $CompanypicOrder = M('CompanypicOrder');
+    $result_order = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.maketype,co.ordernum,co.status,co.ischeck,co.price,c.name as cname,cm.months') -> join('yesow_company as c ON co.cid = c.id') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.id' => $oid)) -> find();
+    $this -> assign('result_order', $result_order);
+
+    $this -> display();
+  }
+
+  //企业形象订单RMB支付页
+  public function companypic_rmb_pay(){
+    $CompanypicOrder = M('CompanypicOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+    //根据订单号查询应付总额
+    $const = $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$CompanypicOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功购买 企业形象 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $companypic_info = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $_GET['orderid'])) -> find();
+
+    //写主表
+    $Companypic = M('Companypic');
+    $pic_data = array();
+    $pic_data['mid'] = session(C('USER_AUTH_KEY'));
+    $pic_data['cid'] = $companypic_info['cid'];
+    $pic_data['filename'] = $companypic_info['filename'];
+    $pic_data['starttime'] = time();
+    $pic_data['endtime'] = $pic_data['starttime'] + ($companypic_info['months'] * 30 * 24 * 60 * 60);
+    if($Companypic -> add($pic_data)){
+      $info_succ = "您已成功购买企业形象相关服务";
+      //更新会员余额和等级
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Services/companypicsuccess',array($info_succ, 'success', $companypic_info['cid']));
+    }else{
+      R('Register/errorjump',array(L('COMPANYPIC_ERROR')));
+    }
+  }
+
+  //企业形象快钱支付
+  public function companypic_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/companypic_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('CompanypicOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心企业形象购买';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //企业形象支付宝支付
+  public function companypic_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/companypic_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/companypic_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心企业形象购买';
+    $price = M('CompanypicOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //企业形象财付通支付
+  public function companypic_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/companypic_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/companypic_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心企业形象购买';
+    $order_price = M('CompanypicOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+  //企业形象购买成功
+  public function companypicsuccess($title, $status, $cid){
+    $this -> assign('status', $status);
+    $this -> assign('cid', $cid);
+    $this -> assign('title', $title);
+    $this -> display('services:companypicsuccess');
+    exit();
+  }
+
+  //企业形象管理
+  public function editcompanypic(){
+    $Companypic = M('Companypic');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $Companypic -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.id,c.id as cid,c.name as cname,cp.starttime,cp.endtime,cp.filename') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cp.starttime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //编辑企业形象管理
+  public function editeditcompanypic(){
+    $Companypic = M('Companypic');
+
+    if(!empty($_POST['id'])){
+      //上传企业形象
+      if($_POST['updatetype'] == 1){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('COMPANY_PIC_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('gif', 'jpg', 'jpeg');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传企业形象图片失败，请检查文件合理2性'));
+      }
+    }else if($_POST['updatetype'] == 2){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('COMPANY_PIC_DATA_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('rar', 'zip');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传企业形象资料失败，请检查文件合理3性'));
+      }
+    }
+
+      $upload_data = array();
+      if(!empty($_POST['updatetype'])){
+	$upload_data['filename'] = $info[0]['savename'];
+      }
+      $upload_data['id'] = $_POST['id'];
+      if($Companypic -> save($upload_data)){
+	if(!empty($_POST['months'])){
+	  R('Register/successjump',array(L('COMPANYPIC_RENEW'), U('Services/companypic_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/qid/' . $this -> _post('id', 'intval')));
+	}else{
+	  R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Services/editcompanypic')));
+	}
+      }else{
+	if(!empty($_POST['months'])){
+	  R('Register/successjump',array(L('COMPANYPIC_RENEW'), U('Services/companypic_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/qid/' . $this -> _post('id', 'intval')));
+	}else{
+	  R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+	}
+      }
+    }
+
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.starttime,cp.endtime,c.name as cname,cp.filename') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    //查询价格
+    $CompanypicMoney = M('CompanypicMoney');
+    $companypic_price = $CompanypicMoney -> field('id,months,marketprice,promotionprice') -> order('months ASC') -> select();
+    $this -> assign('companypic_price', $companypic_price);
+    $this -> display();
+  }
+
+  //企业形象续费订单页
+  public function companypic_renew_pay(){
+    $result_companypic = array();
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_companypic = M('CompanypicMoney') -> field('months,promotionprice') -> find($this -> _get('oid'));
+      //公司id
+      $result_companypic['cid'] = M('Companypic') -> getFieldByid($this -> _get('qid', 'intval'), 'cid');
+    }else{
+      $CompanypicOrder = M('CompanypicOrder');
+      $cmid = $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'cmid');
+      $result_companypic = M('CompanypicMoney') -> field('months,promotionprice') -> find($cmid);
+      //公司id
+      $result_companypic['cid'] =  $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'cid');
+    }
+
+    $filename = M('Companypic') -> getFieldByid($this -> _get('qid', 'intval'), 'filename');
+    $result_companypic['filename'] = $filename;
+    if(strstr($filename, '.') == '.rar' || strstr($filename, '.') == '.zip'){
+      $result_companypic['maketype'] = 2;
+    }else{
+      $result_companypic['maketype'] = 1;
+    }
+
+    //生成订单号
+    $result_companypic['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+    //总价
+    $result_companypic['count'] = $result_companypic['promotionprice'];
+    
+    //公司名称
+    $result_companypic['companyname'] = M('Company') -> getFieldByid($result_companypic['cid'], 'name');
+    
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $CompanypicOrder = M('CompanypicOrder');
+      $data = array();
+      $data['ordernum'] = $result_companypic['orderid'];
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['cid'] = $result_companypic['cid'];
+      $data['cmid'] = $this -> _get('oid', 'intval');
+      $data['price'] = $result_companypic['count'];
+      $data['maketype'] = $result_companypic['maketype'];
+      $data['filename'] = $result_companypic['filename'];
+      $data['addtime'] = time();
+      $data['isrenew'] = 1;
+      if(!$oid = $CompanypicOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+    
+    //RMB余额是否足够支付
+    $result_companypic['rmb_enough'] = $_SESSION['rmb_total'] - $result_companypic['count'] >= 0 ? 1 : 0;
+
+    $this -> assign('result_companypic', $result_companypic);
+
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+  }
+
+  //企业形象 - 续费 - 余额支付
+  public function companypic_renew_rmb_pay(){
+    $CompanypicOrder = M('CompanypicOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+    //根据订单号查询应付总额
+    $const = $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$CompanypicOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功续费 企业形象 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $companypic_info = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $_GET['orderid'])) -> find();
+
+    //更新主表
+    $Companypic = M('Companypic');
+    $where_up = array();
+    $where_up['cid'] = $companypic_info['cid'];
+
+    if($Companypic -> where($where_up) -> setInc('endtime', $companypic_info['months'] * 30 * 24 * 60 * 60)){
+      $info_succ = "您已成功续费企业形象相关服务";
+      //更新会员余额和等级
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Services/companypicsuccess',array($info_succ, 'success', $companypic_info['cid']));
+    }else{
+      R('Register/errorjump',array(L('COMPANYPIC_ERROR')));
+    }
+  }
+
+  //企业形象快钱支付
+  public function companypic_renew_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/companypic_renew_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('CompanypicOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心企业形象续费';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //企业形象支付宝支付
+  public function companypic_renew_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/companypic_renew_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/companypic_renew_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心企业形象续费';
+    $price = M('CompanypicOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //企业形象财付通支付
+  public function companypic_renew_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/companypic_renew_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/companypic_renew_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心企业形象续费';
+    $order_price = M('CompanypicOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+
+  /* ------  企业形象 ------- */
+
   //短信群发业务
   public function _before_sms(){
     $this -> _before_index();

@@ -56,7 +56,7 @@
 			  <td><!--{$r.mname}--!></td>			 			 
 			  <td><!--{$r.sendphone}--!></td>
 			  <td><!--{$r.content}--!></td>
-			  <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>			 
 			  <switch name="r.statuscode">
 			  <case value="0" break="1">
 			  <td style="color:green;">发送成功</td>
@@ -70,9 +70,8 @@
 			  <case value="3" break="1">
 			  <td style="color:red;">手机号或内容为空或错误</td>
 			  </case>
-			  <case value="4" break="1">
+			  <default/>
 			  <td style="color:red;">其他参数错误</td>
-			  </case>
 			  </switch>
 			</tr>
 		</volist>

@@ -59,6 +59,8 @@ ul.user_set li.btn_img7{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img7 a img{ margin:0 4px 0 0; }
 ul.user_set li.btn_img8{ padding-bottom:0; width:270px; text-align:center;}
 ul.user_set li.btn_img8 a img{ margin:0 10px; }
+ul.user_set li.btn_img9{ padding-bottom:0; width:270px; text-align:center;}
+ul.user_set li.btn_img9 a img{ margin:0;}
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
@@ -614,3 +616,6 @@ ul.ul_zxqqbj li div.right{ float:right; width:250px;}
 input.input_sjdxfs1{ width:398px; height:20px; line-height:20px; border:#999 1px solid;}
 input.input_sjdxfs2{ width:148px; height:20px; line-height:20px; border:#999 1px solid;}
 .sjdxfs_tishi{ text-align:left; color:#f07c0f; font-weight:bold; margin:20px 0 0 0;}
+
+.font_cs{ text-align:left; color:#f07c0f; font-weight:bold;}
+.qiye_info input{ vertical-align:middle;}

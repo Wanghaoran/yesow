@@ -277,6 +277,14 @@ class CompanyAction extends CommonAction {
     $result_company_qqonline = $CompanyQqonline -> field('qqcode,qqname') -> where($where_qqonline) -> order('starttime ASC') -> limit(8) -> select();
     $this -> assign('result_company_qqonline', $result_company_qqonline);
 
+    //企业形象
+    $Companypic = M('Companypic');
+    $where_limit['cid'] = $id;
+    $where_limit['starttime'] = array('ELT', time());
+    $where_limit['endtime'] = array('EGT', time());
+    $result_companypic = $Companypic -> field('filename') -> where($where_limit) -> find();
+    $this -> assign('result_companypic', $result_companypic);
+
     $this -> display();
   }
 

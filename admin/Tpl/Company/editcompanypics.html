@@ -1,0 +1,48 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/companypics" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>公司名称：</label>
+	  <input  value="<!--{$result.cname}--!>" type="text required" disabled="true" size="40" />
+	</div>
+	<div class="unit">
+	  <label>所属会员：</label>
+	  <input name="org4.id" value="<!--{$result.mid}--!>" type="hidden">
+	  <input name="org4.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org4" value="<!--{$result.mname}--!>"/>
+	</div>
+		<div class="unit">
+	  <label>形象图片：</label>
+	  <input name="filename" type="file" />
+	  <if condition="(strstr($result['filename'], '.') eq '.rar') OR (strstr($result['filename'], '.') eq '.zip')">
+	  <a target="_blank" href="<!--{$Think.config.COMPANY_PIC_DATA_PATH_SAVE}--!><!--{$result.filename}--!>">查看&下载</a>
+  	  <else/>
+	  <a target="_blank" href="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result.filename}--!>">查看&下载</a>
+	  </if>
+	  
+	 
+	</div>
+	
+	<div class="unit">
+		<label>开始日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="starttime" value="<!--{$result.starttime|date='Y-m-d', ###}--!>" />
+	      </div>
+	      <div class="unit">
+		<label>结束日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="endtime" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" />
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

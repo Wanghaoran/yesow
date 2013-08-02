@@ -214,6 +214,8 @@ class ShopAction extends CommonAction {
     $payport = M('Payport');
     $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
     $this -> assign('result_pay', $result_pay);
+    //清空购物车
+    D('ShopCart') -> delshop('all');
     $this -> display();
   }
 
@@ -230,8 +232,6 @@ class ShopAction extends CommonAction {
     if($pay_pwd != $_GET['pwd']){
       R('Public/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/shop/orderpay/oid/' . $_GET['orderid']));
     }
-    //清空购物车
-    D('ShopCart') -> delshop('all');
 
     //根据订单号查询总价格
     $const = M('ShopOrder') -> getFieldbyordernum($_GET['orderid'], 'paytotal');
@@ -261,8 +261,6 @@ class ShopAction extends CommonAction {
 
   //快钱支付
   public function shop_k99bill_pay(){
-    //清空购物车
-    D('ShopCart') -> delshop('all');
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'k99bill')) -> find();
@@ -376,8 +374,6 @@ class ShopAction extends CommonAction {
 
   //商城 - 财付通支付
   public function shop_tenpay_pay(){
-    //清空购物车
-    D('ShopCart') -> delshop('all');
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1') -> where(array('enname' => 'tenpay')) -> find();
@@ -469,8 +465,6 @@ class ShopAction extends CommonAction {
 
   //商城 - 支付宝支付
   public function shop_alipay_pay(){
-    //清空购物车
-    D('ShopCart') -> delshop('all');
     $payport = M('Payport');
     //查询认证信息
     $author = $payport -> field('account,key1,key2') -> where(array('enname' => 'alipay')) -> find();
