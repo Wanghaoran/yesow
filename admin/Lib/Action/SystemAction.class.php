@@ -1277,6 +1277,20 @@ class SystemAction extends CommonAction {
   //网站地图管理
   public function websitemap(){
     $sitemap_upload = M('SitemapUpload');
+    //查询时间
+    $system = M('System');
+    $time = $system -> getFieldByname('updatesitemaptime', 'value');
+    $this -> assign('time', $time);
+    if(!empty($_POST['time'])){
+      $system = M('System');
+      $where['name'] = 'updatesitemaptime';
+      $data['value'] = $_POST['time'];
+      if($system -> where($where) -> save($data)){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
     //记录总数
     $count = $sitemap_upload -> count('id');
     import('ORG.Util.Page');
@@ -1297,6 +1311,18 @@ class SystemAction extends CommonAction {
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
+  }
+
+  //删除网站地图更新记录
+  public function delwebsitemap(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $sitemap_upload = M('SitemapUpload');
+    if($sitemap_upload -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
   /* ------------  系统设置   -------------- */

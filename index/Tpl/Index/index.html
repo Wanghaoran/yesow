@@ -121,13 +121,13 @@ $(function(){
 				  <li>
 				  <a class="pop_nav_a" href="#"><!--{$cr.name}--!></a>
 				  <volist name="cr.child" id="crc">
-				  <span>&nbsp;&nbsp;<!--{$crc.name}--!></span>
+				  <span>&nbsp;&nbsp;<a href="__APP__/company/companylist/cid/<!--{$crc.id}--!>"><!--{$crc.name}--!></a></span>
 				  </volist>
 				  <div class="pop_div">
 				    <dl>
 				      <dd>
 				      <volist name="cr.childs" id="crcs">
-				      <a href="#"><!--{$crcs.name}--!></a>
+				      <a href="__APP__/company/companylist/cid/<!--{$crcs.id}--!>"><!--{$crcs.name}--!></a>
 				      </volist>
 				      </dd>
 				    </dl>

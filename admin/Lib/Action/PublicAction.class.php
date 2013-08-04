@@ -357,52 +357,22 @@ class PublicAction extends Action {
 
   //生成网站地图
   public function setwebsitemap(){
-    $time = date('Y-m-d');
-    if(is_file('./sitemap.html')){
-      unlink('./sitemap.html');
-    }
-    if(is_file('./Sitemap.xml')){
-      unlink('./Sitemap.xml');
-    }
-    $content_html = '<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>www.yesow.com SiteMap</title>
-<META NAME="description" CONTENT="">
-<META NAME="keywords" CONTENT="">
-</head>
-<body>
-<div class="width:100%">
-<div style="margin-bottom:30px; width:100%; text-align:center">
-<a style="text-decoration:none;" href="http://www.yesow.com"><span style="font-size:20px;color:#3574b1;">www.yesow.com</span><font color=red>SiteMap</font></a>
-</div>
-</div>
-<div class="width:100%">';
-    $content_xml = '<?xml version="1.0" encoding="UTF-8"?>
-      <urlset>';
-    //读取分站
-    $data_website = M('ChildSite') -> field('name,domain') -> where('isshow=1') -> select();
-    foreach($data_website as $value){
-      $content_html .= '<a href="http://' . $value['domain'] .'">' . $value['name'] . '</a><br />';
+    $time = time();
+    
+
+
+    //分站信息
+    $ChildSite = M('ChildSite') -> field('id,domain,name') -> select();
+    foreach($ChildSite as $value){
+      $content_xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<urlset>";
       $content_xml .= '
 <url>
-<loc>http://' . $value['domain'] . '</loc>
+<loc>http://' . $value['domain'] .  ' </loc>
 <lastmod>' . $time . '</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>';
-    }
-    //导航
-    $content_html .= '<a href="http://www.yesow.com">易搜首页</a><br />';
-    $content_html .= '<a href="http://www.yesow.com/company">渠道黄页</a><br />';
-    $content_html .= '<a href="http://www.yesow.com">企业会员</a><br />';
-    $content_html .= '<a href="http://www.yesow.com/hire">出租招聘</a><br />';
-    $content_html .= '<a href="http://www.yesow.com/info">资讯文章</a><br />';
-    $content_html .= '<a href="http://www.yesow.com">招商引资</a><br />';
-    $content_html .= '<a href="http://www.yesow.com/agent">代理加盟</a><br />';
-    $content_html .= '<a href="http://www.yesow.com/shop">易搜商城</a><br />';
 $content_xml .= '
 <url>
 <loc>http://www.yesow.com</loc>
@@ -460,80 +430,85 @@ $content_xml .= '
 <priority>1.0</priority>
 </url>';
 
-    //速查
-    $company_data = M('Company') -> table('yesow_company as c') -> field('c.name,c.id,cs.domain') -> join('yesow_child_site as cs ON c.csid = cs.id') -> where('c.delaid is NULL') -> select();
-    foreach($company_data as $value){
-      $content_html .= '<a href="http://' . $value['domain'] .'/company/' . $value['id'] . '">' . $value['name'] . '</a><br />';
+
+//速查
+$company_data = M('Company') -> field('id') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => $value['id'])) -> select();
+    foreach($company_data as $value2){
       $content_xml .= '
 <url>
-<loc>http://' . $value['domain'] .'/company/' . $value['id'] . '</loc>
+<loc>http://' . $value['domain'] . '/company/' . $value2['id'] . '</loc>
 <lastmod>' . $time . '</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>';
     }
-    //商城
+
+//商城
     $shop_data = M('Shop') -> field('id,title') -> select();
-    foreach($shop_data as $value){
-      $content_html .= '<a href="http://www.yesow.com/shop/' . $value['id'] .'">' . $value['title'] . '</a><br />';
+    foreach($shop_data as $value3){
       $content_xml .= '
 <url>
-<loc>http://www.yesow.com/shop/' . $value['id'] .'</loc>
+<loc>http://' . $value['domain'] . '/shop/' . $value3['id'] .'</loc>
 <lastmod>' . $time . '</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>';
+    }
+
+    //资讯文章 - 分站对应
+    $ChildsiteInfoarticle = M('ChildsiteInfoarticle');
+    $iaid_temp = $ChildsiteInfoarticle -> field('iaid') -> where(array('csid' => $value['id'])) -> select();
+    $iaid = array();
+    foreach($iaid_temp as $iaid_value){
+      $iaid[] = $iaid_value['iaid'];
     }
     //资讯文章
-    $article_data = M('InfoArticle') -> field('id,title') -> select();
-    foreach($article_data as $value){
-      $content_html .= '<a href="http://www.yesow.com/article/' . $value['id'] .'">' . $value['title'] . '</a><br />';
+    $article_data = M('InfoArticle') -> field('id') -> where(array('id' => array('IN', $iaid))) -> select();
+    foreach($article_data as $value4){
                   $content_xml .= '
 <url>
-<loc>http://www.yesow.com/article/' . $value['id'] .'</loc>
+<loc>http://' . $value['domain'] . '/article/' . $value4['id'] .'</loc>
 <lastmod>' . $time . '</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>';
     }
+
     //公告
     $notice_data = M('Notice') -> field('id,title') -> select();
-    foreach($notice_data as $value){
-      $content_html .= '<a href="http://www.yesow.com/notice/' . $value['id'] .'">' . $value['title'] . '</a><br />';
+    foreach($notice_data as $value5){
        $content_xml .= '
 <url>
-<loc>http://www.yesow.com/notice/' . $value['id'] .'</loc>
+<loc>http://' . $value['domain'] . '/notice/' . $value5['id'] .'</loc>
 <lastmod>' . $time . '</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>';
     }
+
     //旺铺出租
-    $storerent_data = M('StoreRent') -> field('id,title') -> select();
-    foreach($storerent_data as $value){
-      $content_html .= '<a href="http://www.yesow.com/storerent/' . $value['id'] .'">' . $value['title'] . '</a><br />';
+    $storerent_data = M('StoreRent') -> field('id') -> where(array('csid' => $value['id'])) -> select();
+    foreach($storerent_data as $value6){
       $content_xml .= '
 <url>
-<loc>http://www.yesow.com/storerent/' . $value['id'] .'</loc>
+<loc>http://' . $value['domain'] . '/storerent/' . $value6['id'] .'</loc>
 <lastmod>' . $time . '</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>';
     }
-    $content_html .= '</div></body></html>';
-    $content_xml .= '
-</urlset>';
-    $file_html = fopen('./sitemap.html', 'wb');
-    fwrite($file_html, $content_html);
-    fclose($file_html);
 
-    $file_xml = fopen('./Sitemap.xml', 'wb');
-    fwrite($file_xml, $content_xml);
-    fclose($file_xml);
+$content_xml .= '
+</urlset>';
+
+      $urlname = substr($value['domain'], 0, strpos($value['domain'], '.'));
+      $file_xml = fopen('./sitemap/Sitemap_' . $urlname . 'yesow.xml', 'wb');
+      fwrite($file_xml, $content_xml);
+      fclose($file_xml);
 
     $sitemap_upload = M('SitemapUpload');
     $data_upload = array();
-    $data_upload['websitenum'] = count($data_website);
+    $data_upload['csname'] = $value['name'];
     $data_upload['navnum'] = 8;
     $data_upload['companynum'] = count($company_data);
     $data_upload['shopnum'] = count($shop_data);
@@ -541,7 +516,10 @@ $content_xml .= '
     $data_upload['noticenum'] = count($notice_data);
     $data_upload['storerentnum'] = count($storerent_data);
     $data_upload['updatetime'] = time();
+    $data_upload['xmlsize'] = filesize('./sitemap/Sitemap_' . $urlname . 'yesow.xml');
     $sitemap_upload -> add($data_upload);
+    }
+
     $this -> success('网站地图更新成功', __ROOT__);
     return;
   }

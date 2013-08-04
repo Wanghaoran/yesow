@@ -943,6 +943,21 @@ function mbstringtoarray($str,$charset) {
   return $array;
 }
 
+function sizeformat($bytesize){
+  $i=0;
+  //当$bytesize 大于是1024字节时，开始循环，当循环到第4次时跳出；
+  while(abs($bytesize)>=1024){       
+    $bytesize=$bytesize/1024;
+    $i++;
+    if($i==4)break;
+  }
+  //将Bytes,KB,MB,GB,TB定义成一维数组；
+  $units= array("Bytes","KB","MB","GB","TB");
+  $newsize=round($bytesize,2);
+  return("$newsize $units[$i]");
+}
+
+
 //请求字符串安全过滤
 function safefilter($string, $type){
   $getfilter="'|\b(alert|confirm|prompt)\b|<[^>]*?>|^\\+\/v(8|9)|\\b(and|or)\\b.+?(>|<|=|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
