@@ -335,6 +335,42 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取分站广告页面列表
+  public function ajaxgetchildsiteadvertpage(){
+    $result_temp = M('AdvertisePage') -> field('id,remark') -> where(array('csid' => $this -> _get('id', 'intval'))) -> select();
+    $result = array();
+    $result[] = array('', '请选择');
+    //格式化结果集
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['remark']);
+    }
+    echo json_encode($result);
+  }
+
+  //ajax获取分站页面广告位列表
+  public function ajaxgetchildsiteadvert(){
+    $result_temp = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _get('id', 'intval'), 'isopen' => 1)) -> select();
+    $result = array();
+    $result[] = array('', '请选择');
+    //格式化结果集
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['name'] . '(' . $value['width'] . 'x' . $value['height'] . ')');
+    }
+    echo json_encode($result);
+  }
+
+  //ajax获取分站页面广告位价格
+  public function ajaxgetchildsiteadvertprice(){
+    $result = M('AdvertMoney') -> field('id,months,marketprice,promotionprice') -> where(array('adid' => $this -> _get('id', 'intval'))) -> select();
+    echo json_encode($result);
+  }
+
+  //ajax获取分站页面广告位尺寸
+  public function ajaxgetchildsiteadvertsize(){
+    $result = M('Advertise') -> field('width,height') -> where(array('id' => $this -> _get('id', 'intval'))) -> find();
+    echo json_encode($result);
+  }
+
   //二手滞销图片文件上传
   public function sellused_pic_upload(){
     import('ORG.Net.UploadFile');

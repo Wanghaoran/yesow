@@ -19,6 +19,9 @@ $app_lang = array(
   'COMPANYPIC_ERROR' => '更新企业形象信息失败',
   'COMPANYPIC_LIMIT' => '此公司已有企业形象,请勿重复添加',
   'COMPANYPIC_RENEW' => '企业形象信息更新成功，现在跳转到续费订单页面',
+  'ADVERT_ERROR' => '更新页面广告信息失败',
+  'ADVERT_LIMIT' => '此广告位已售出，请选择其他广告位',
+  'ADVERT_RENEW' => '页面广告信息更新成功，现在跳转到续费订单页面',
 );
 
 return array_merge($common_lang, $app_lang);

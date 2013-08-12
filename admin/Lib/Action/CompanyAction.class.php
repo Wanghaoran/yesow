@@ -16,6 +16,21 @@ class CompanyAction extends CommonAction {
     }
   }
 
+  public function advert_upload(){//广告图片文件上传
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('ADVERT_PIC_PATH') ;//设置上传目录
+    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> saveRule = 'uniqid';
+    $upload -> allowExts  = array('jpg', 'gif', 'swf', 'jpeg');// 设置附件上传类型
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info[0]['savename'];
+    }else{
+      return false;
+    }
+  }
+
   /* --------------- 速查数据管理 ---------------- */
 
   //速查主营类别
@@ -1934,6 +1949,87 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //页面广告订单
+  public function advertorder(){
+    $AdvertOrder = M('AdvertOrder');
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['ao.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['ao.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $AdvertOrder -> table('yesow_advert_order as ao') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.ordernum,m.name as mname,am.months,ao.price,ao.status,ao.ischeck,ao.paytype,ao.addtime,ao.isrenew,ao.maketype,ao.filename,ao.website,ad.name as adname,adp.remark as adpremark,cs.name as csname') -> join('yesow_member as m ON ao.mid = m.id') -> join('yesow_advert_money as am ON ao.amid = am.id') -> join('yesow_advertise as ad ON ao.adid = ad.id') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> order('ao.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除页面广告订单
+  public function deladvertorder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $AdvertOrder = M('AdvertOrder');
+    if($AdvertOrder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核页面广告订单
+  public function passauditadvertorder(){
+    $AdvertOrder = M('AdvertOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($AdvertOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核页面广告订单
+  public function nopassauditadvertorder(){
+    $AdvertOrder = M('AdvertOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($AdvertOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //页面广告订单详情
+  public function editadvertorder(){
+    $AdvertOrder = M('AdvertOrder');
+    $result_o = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.ordernum,m.name as mname,m.tel as mtel,m.fullname as mfullname,am.months,ao.price,ao.status,ao.ischeck,ao.paytype,ao.addtime,ao.isrenew,ao.maketype,ao.filename,ad.name as adname,adp.remark as adpremark,cs.name as csname,ao.website') -> join('yesow_member as m ON ao.mid = m.id') -> join('yesow_advert_money as am ON ao.amid = am.id') -> join('yesow_advertise as ad ON ao.adid = ad.id') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where(array('ao.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result_o', $result_o);
+    $this -> display();
+  }
+
   /* --------------- 业务订单管理 ---------------- */
 
   /* --------------- 速查业务管理 ---------------- */
@@ -2485,6 +2581,172 @@ class CompanyAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
+
+  //页面广告管理
+  public function adverts(){
+    $Advert = M('Advert');
+    $where = array();
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    if(!empty($_POST['csid'])){
+      $where['cs.id'] = $this -> _post('csid');
+      //读取相应分站下的广告页
+      $childsite_adpage = M('AdvertisePage') -> field('id,remark') -> where(array('csid' => $this -> _request('csid', 'intval'))) -> select();
+      $this -> assign('childsite_adpage', $childsite_adpage);
+    }
+    if(!empty($_POST['pid'])){
+      $where['adp.id'] = $this -> _post('pid');
+      //读取相应页面的广告位
+      $page_advert = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _request('pid', 'intval'), 'isopen' => 1)) -> select();
+      $this -> assign('page_advert', $page_advert);
+    }
+    if(!empty($_POST['adid'])){
+      $where['ads.id'] = $this -> _post('adid');
+    }
+
+    //记录总数
+    $count = $Advert -> table('yesow_advert as ad') -> join('yesow_member as m ON ad.mid = m.id') -> join('yesow_advertise as ads ON ad.adid = ads.id') -> join('yesow_advertise_page as adp ON ads.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $Advert -> table('yesow_advert as ad') -> field('ad.id,m.name as mname,ad.starttime,ad.endtime,ad.ischeck,ad.type,ad.filename,ad.website,ads.name as adsname,adp.remark as adpremark,cs.name as csname') -> join('yesow_member as m ON ad.mid = m.id') -> join('yesow_advertise as ads ON ad.adid = ads.id') -> join('yesow_advertise_page as adp ON ads.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('ad.ischeck ASC, ad.id DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //添加页面广告
+  public function addadverts(){
+    if(!empty($_POST['starttime'])){
+      $Advert = M('Advert');
+      $add_data = array();
+      if(!empty($_FILES['filename']['name'])){
+	if($pics = $this -> advert_upload()){
+	  $add_data['filename'] = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      $add_data['adid'] = $_POST['adid'];
+      $add_data['website'] = $_POST['website'];
+      $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
+      $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['type'] = 1; 
+       if(!empty($_POST['org3_id'])){
+	$add_data['mid'] = $_POST['org3_id'];
+       }
+      if(!$Advert -> create($add_data)){
+	$this -> error($Advert -> getError());
+      }
+      if($Advert -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+
+    if($_GET['csid']){
+      //读取相应分站下的广告页
+      $childsite_adpage = M('AdvertisePage') -> field('id,remark') -> where(array('csid' => $this -> _get('csid', 'intval'))) -> select();
+      $this -> assign('childsite_adpage', $childsite_adpage);
+    }
+    if($_GET['pid']){
+      //读取相应页面的广告位
+      $page_advert = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _get('pid', 'intval'), 'isopen' => 1)) -> select();
+      $this -> assign('page_advert', $page_advert);
+    }
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除页面广告
+  public function deladverts(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $Advert = M('Advert');
+    if($Advert -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑页面广告
+  public function editadverts(){
+    $Advert = M('Advert');
+
+    //处理更新
+    if(!empty($_POST['id'])){
+      $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
+      $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      if(!empty($_POST['org4_id'])){
+	$_POST['mid'] = $_POST['org4_id'];
+      }
+      if(!empty($_FILES['filename']['name'])){
+	if($pics = $this -> advert_upload()){
+	  $_POST['filename'] = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      if(!$Advert -> create()){
+	$this -> error($Advert -> getError());
+      }
+      if($Advert -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $Advert -> table('yesow_advert as ad') -> field('ad.filename,ad.starttime,ad.endtime,m.name as mname,ad.mid,ads.name as adsname,adp.remark as adpremark,cs.name as csname,ad.website') -> join('yesow_member as m ON ad.mid = m.id') -> join('yesow_advertise as ads ON ad.adid = ads.id') -> join('yesow_advertise_page as adp ON ads.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where(array('ad.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //通过审核页面广告
+  public function passauditadverts(){
+    $Advert = M('Advert');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($Advert -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核页面广告
+  public function nopassauditadverts(){
+    $Advert = M('Advert');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($Advert -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
   
   /* --------------- 速查业务管理 ---------------- */
 
@@ -2899,6 +3161,116 @@ class CompanyAction extends CommonAction {
       }
     }
     $result = $CompanypicMoney -> field('months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //广告价格设置
+  public function advertmoney(){
+    $AdvertMoney = M('AdvertMoney');
+    $where = array();
+    if(!empty($_REQUEST['csid'])){
+      $where['ap.csid'] = $this -> _request('csid', 'intval');
+      //读取相应分站下的广告页
+      $childsite_adpage = M('AdvertisePage') -> field('id,remark') -> where(array('csid' => $this -> _request('csid', 'intval'))) -> select();
+      $this -> assign('childsite_adpage', $childsite_adpage);
+    }
+    if(!empty($_REQUEST['pid'])){
+      $where['ad.pid'] = $this -> _request('pid', 'intval');
+      //读取相应页面的广告位
+      $page_advert = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _request('pid', 'intval'), 'isopen' => 1)) -> select();
+      $this -> assign('page_advert', $page_advert);
+    }
+    if(!empty($_REQUEST['adid'])){
+      $where['am.adid'] = $this -> _request('adid', 'intval');
+    }
+
+    //记录总数
+    $count = $AdvertMoney -> table('yesow_advert_money as am') -> join('yesow_advertise as ad ON am.adid = ad.id') -> join('yesow_advertise_page as ap ON ad.pid = ap.id') -> join('yesow_child_site as cs ON ap.csid = cs.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $AdvertMoney -> table('yesow_advert_money as am') -> field('am.id,am.months,am.marketprice,am.promotionprice,am.remark,ad.name as adname,ad.width,ad.height,ap.remark as apremark,cs.name as csname') -> join('yesow_advertise as ad ON am.adid = ad.id') -> join('yesow_advertise_page as ap ON ad.pid = ap.id') -> join('yesow_child_site as cs ON ap.csid = cs.id') -> where($where) -> order('am.adid,am.months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+  
+    $this -> display();
+  }
+
+  //增加广告价格
+  public function addadvertmoney(){
+    //处理添加
+    if(!empty($_POST['months'])){
+      $AdvertMoney = M('AdvertMoney');
+      if(!$AdvertMoney -> create()){
+	$this -> error($AdvertMoney -> getError());
+      }
+      if($AdvertMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    if($_GET['csid']){
+      //读取相应分站下的广告页
+      $childsite_adpage = M('AdvertisePage') -> field('id,remark') -> where(array('csid' => $this -> _get('csid', 'intval'))) -> select();
+      $this -> assign('childsite_adpage', $childsite_adpage);
+    }
+    if($_GET['pid']){
+      //读取相应页面的广告位
+      $page_advert = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _get('pid', 'intval'), 'isopen' => 1)) -> select();
+      $this -> assign('page_advert', $page_advert);
+    }
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除广告价格
+  public function deladvertmoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $AdvertMoney = M('AdvertMoney');
+    if($AdvertMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑广告价格
+  public function editadvertmoney(){
+    $AdvertMoney = M('AdvertMoney');
+    //处理更新
+    if(!empty($_POST['months'])){
+      if(!$AdvertMoney -> create()){
+	$this -> error($AdvertMoney -> getError());
+      }
+      if($AdvertMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $AdvertMoney -> table('yesow_advert_money as am') -> field('am.id,am.months,am.marketprice,am.promotionprice,am.remark,ad.name as adname,ad.width,ad.height,ap.remark as apremark,cs.name as csname') -> join('yesow_advertise as ad ON am.adid = ad.id') -> join('yesow_advertise_page as ap ON ad.pid = ap.id') -> join('yesow_child_site as cs ON ap.csid = cs.id') -> where(array('am.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $this -> display();
   }

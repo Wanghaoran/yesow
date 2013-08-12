@@ -619,3 +619,7 @@ input.input_sjdxfs2{ width:148px; height:20px; line-height:20px; border:#999 1px
 
 .font_cs{ text-align:left; color:#f07c0f; font-weight:bold;}
 .qiye_info input{ vertical-align:middle;}
+
+.select_css2{ width:100px; height:22px; line-height:22px; margin-right:10px}
+.select_css3{ width:210px; height:22px; line-height:22px;}
+.ymsq_tishi{ font-weight:bold; color:#fa0000; text-align:left; width:700px; line-height:30px; padding-left:40px;}

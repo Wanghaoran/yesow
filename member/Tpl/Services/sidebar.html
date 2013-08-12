@@ -24,6 +24,11 @@
     <else/>
     <li><a href="__URL__/companypic">企业形象管理</a></li>
     </if>
+    <if condition="(ACTION_NAME eq 'advert') OR (ACTION_NAME eq 'addadvert') OR (ACTION_NAME eq 'advertorder') OR (ACTION_NAME eq 'advertorderlist') OR (ACTION_NAME eq 'editadvert') OR (ACTION_NAME eq 'editeditadvert')">
+    <li class="hover"><a href="__URL__/advert">页面广告管理</a></li>
+    <else/>
+    <li><a href="__URL__/advert">页面广告管理</a></li>
+    </if>
     <li><a href="#">报错管理</a></li>
   </ul>
 </div>

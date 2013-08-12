@@ -15,5 +15,6 @@ class AdvertisePageModel extends Model {
       $result = D('index://Advertise') -> getadimg($pid);
     }
     return $result;
+    
   }
 }

@@ -1,3 +1,8 @@
+<script>
+  var getbuylink = function(){
+    $('#advert_link').val('__ROOT__/member.php/services/addadvert/adid/<!--{$Think.get.id}--!>');
+  }
+</script>
 <div class="page">
 	<div class="pageContent">
 	
@@ -21,7 +26,7 @@
 	      </div>
 	      <div class="unit">
 		<label>链接：</label>
-		<input type="text" class="" name="link" value="<!--{$result.link}--!>" />
+		<input type="text" class="" name="link" id="advert_link" value="<!--{$result.link}--!>" /> <a class="button" href="javascript:getbuylink();" style="margin-left:10px;"><span>生成购买链接</span></a>
 	      </div>
 	      <div class="unit">
 		<label>广告图片：</label>

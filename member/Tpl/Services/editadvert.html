@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>页面广告管理-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">页面广告管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">页面广告管理</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                            <div style="min-height:250px;">
+                                <table class="table_zxqqgl">
+                                    <tr>
+                                        <th>广告位名称</th>
+                                        <th>网址</th>
+                                        <th>添加日期</th>
+					<th>到期日期</th>
+					<th width="50">状态</th>
+					<th width="55">图片</th>
+                                        <th width="40">编辑</th>
+				      </tr>
+				      <volist name="result" id="r">
+				      <tr>
+					<td width="220"><!--{$r.csname}--!> - <!--{$r.adpremark}--!> - <!--{$r.atdname}--!></td>
+					<td><!--{$r.website}--!></td>
+					<td width="160"><!--{$r.starttime|date="Y-m-d H:i:s", ###}--!></td>
+					<td width="160"><!--{$r.endtime|date="Y-m-d H:i:s", ###}--!></td>
+					<if condition="time() elt $r['endtime']">
+					<td style="color:green;">已生效</td>
+					<else/>
+					<td style="color:red;">已过期</td>
+					</if>
+					<if condition="(strstr($r['filename'], '.') eq '.rar') OR (strstr($r['filename'], '.') eq '.zip')">
+					<td><a href="<!--{$Think.config.ADVERT_PIC_DATA_PATH_SAVE}--!><!--{$r.filename}--!>" target="_blank" style="color:red;">设计中</a></td>
+					<else/>
+					<td><a style="color:green;" href="<!--{$Think.config.ADVERT_PIC_PATH_SAVE}--!><!--{$r.filename}--!>" target="_blank">查看</a></td>
+					</if>
+					<if condition="time() elt $r['endtime']">
+					<td class="td_mid"><a href="__URL__/editeditadvert/id/<!--{$r.id}--!>">编辑</a></td>
+					<else/>
+					<td class="td_mid"></td>
+					</if>
+				      </tr>
+				      </volist>
+                                </table>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="page">
+			      <!--{$show}--!>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

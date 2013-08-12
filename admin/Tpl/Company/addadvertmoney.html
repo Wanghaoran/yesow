@@ -1,0 +1,69 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/advertmoney" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>广告位:</label>
+		<select class="combox" ref="pid" refUrl="__APP__/public/ajaxgetchildsiteadvertpage/id/{value}">
+		    <option value="">请选择</option>
+		    <volist name="result_childsite" id="rc">
+		    <eq name="Think.get.csid" value="$rc.id">
+		    <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+		    <else/>
+		    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+		    </eq>
+		    </volist>
+		  </select>
+		  <select class="combox" id="pid" ref="adid" refUrl="__APP__/public/ajaxgetchildsiteadvert/id/{value}">
+		    <option value="">请选择</option>
+		    <volist name="childsite_adpage" id="ca">
+				  <eq name="Think.get.pid" value="$ca.id">
+				  <option value="<!--{$ca.id}--!>" selected="selected"><!--{$ca.remark}--!></option>
+				  <else/>
+				  <option value="<!--{$ca.id}--!>"><!--{$ca.remark}--!></option>
+				  </eq>
+				  </volist>
+		  </select>
+		  <select class="combox" name="adid" id="adid">
+		    <option value="">请选择</option>
+		    <volist name="page_advert" id="pa">
+		    <eq name="Think.get.adid" value="$pa.id">
+		    <option value="<!--{$pa.id}--!>" selected="selected"><!--{$pa.name}--!>(<!--{$pa.width}--!> x <!--{$pa.height}--!>)</option>
+		    <else/>
+		    <option value="<!--{$pa.id}--!>"><!--{$pa.name}--!>(<!--{$pa.width}--!> x <!--{$pa.height}--!>)</option>
+		    </eq>
+		    </volist>
+		    </select>
+	</div>
+	
+	<div class="unit">
+		<label>包月数：</label>
+		<input type="text" class="required digits" name="months" />
+	      </div>
+	<div class="unit">
+		<label>市场价：</label>
+		<input type="text" class="required" name="marketprice" />
+	      </div>
+	<div class="unit">
+		<label>促销价：</label>
+		<input type="text" class="required" name="promotionprice" />
+	</div>
+	
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ></textarea><label>(255个字符以内)</label>
+	</div>
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -203,6 +203,32 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取分站页面广告位列表 除去已订购的广告位
+  public function ajaxgetchildsiteadvert(){
+    $result_temp = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _get('id', 'intval'), 'isopen' => 1)) -> select();
+    $where_limit = array();
+    $where_limit['starttime'] = array('ELT', time());
+    $where_limit['endtime'] = array('EGT', time());
+    $del_adid_tmp = M('Advert') -> field('adid') -> where($where_limit) -> select();
+    $del_adid = array();
+    foreach($del_adid_tmp as $value){
+      $del_adid[] = $value['adid'];
+    }
+    foreach($result_temp as $key => $value){
+      if(in_array($value['id'], $del_adid)){
+	unset($result_temp[$key]);
+      }
+    }
+    $result = array();
+    $result[] = array('', '请选择');
+    //格式化结果集
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['name'] . '(' . $value['width'] . 'x' . $value['height'] . ')');
+    }
+    echo json_encode($result);
+
+  }
+
   //获得底部关于我们
   public function getfooternav(){
     $aboutus =  M('Aboutus');

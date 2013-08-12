@@ -1894,4 +1894,503 @@ class ServicesAction extends CommonAction {
   public function email(){
   
   }
+
+  /* ------  页面广告 ------- */
+  //页面广告管理
+  public function _before_advert(){
+    $this -> _before_index();
+  }
+  public function advert(){
+    $this -> display();
+  }
+
+  //添加页面广告
+  public function addadvert(){
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    if(!empty($_GET['adid'])){
+      //已经购买
+      $where_have = array();
+      $where_have['adid'] = $this -> _get('adid', 'intval');
+      $where_have['starttime'] = array('ELT', time());
+      $where_have['endtime'] = array('EGT', time());
+      if(M('Advert') -> where($where_have) -> find()){
+	R('Register/errorjump',array(L('ADVERT_LIMIT')));
+      }
+      $pid = M('Advertise') -> getFieldByid($this -> _get('adid', 'intval'), 'pid');
+      $csid = M('AdvertisePage') -> getFieldByid($pid, 'csid');
+      $advert_list = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $pid, 'isopen' => 1)) -> select();
+      $where_limit = array();
+      $where_limit['starttime'] = array('ELT', time());
+      $where_limit['endtime'] = array('EGT', time());
+      $del_adid_tmp = M('Advert') -> field('adid') -> where($where_limit) -> select();
+      $del_adid = array();
+      foreach($del_adid_tmp as $value){
+	$del_adid[] = $value['adid'];
+      }
+      foreach($advert_list as $key => $value){
+	if(in_array($value['id'], $del_adid)){
+	  unset($advert_list[$key]);
+	}
+      }
+      $this -> assign('advert_list', $advert_list);
+      $advert_page_list = M('AdvertisePage') -> field('id,remark') -> select($pid);
+      $this -> assign('advert_page_list', $advert_page_list);
+
+      $this -> assign('pid', $pid);
+      $this -> assign('csid', $csid);
+    }
+    $this -> display();
+  }
+
+  //页面广告订单页
+  public function advertorder(){
+    $AdvertOrder = M('AdvertOrder');
+    $where = array();
+    $where['ao.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    import("ORG.Util.Page");// 导入分页类
+    $count = $AdvertOrder -> table('yesow_advert_order as ao') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.ordernum,am.months,ao.price,ao.status,ao.ischeck,ao.paytype,ao.addtime,ao.isrenew,ad.name as adname,adp.remark as adpremark,cs.name as csname') -> join('yesow_advert_money as am ON ao.amid = am.id') -> join('yesow_advertise as ad ON ao.adid = ad.id') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> order('ao.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //页面广告订单详情页
+  public function advertorderlist(){
+    $oid = $this -> _get('id', 'intval');
+    $AdvertOrder = M('AdvertOrder');
+    $result_order = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.ordernum,am.months,ao.price,ao.status,ao.ischeck,ao.paytype,ao.addtime,ao.isrenew,ad.name as adname,adp.remark as adpremark,cs.name as csname,ao.website,ao.maketype') -> join('yesow_advert_money as am ON ao.amid = am.id') -> join('yesow_advertise as ad ON ao.adid = ad.id') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where(array('ao.id' => $oid)) -> find();
+    $this -> assign('result_order', $result_order);
+
+    $this -> display();
+  }
+
+  //页面广告订单支付页
+  public function advert_pay(){
+
+    $result_advert = array();
+
+    //上传页面广告
+    if($_POST['maketype'] == 1){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('ADVERT_PIC_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('gif', 'jpg', 'jpeg');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传页面广告图片失败，请检查文件合理性'));
+      }
+    }else if($_POST['maketype'] == 2){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('ADVERT_PIC_DATA_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('rar', 'zip');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传页面广告资料失败，请检查文件合理性'));
+      }
+    }
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_advert = M('AdvertMoney') -> field('months,promotionprice') -> find($this -> _post('months'));
+      //广告位id
+      $result_advert['adid'] = $this -> _post('adid', 'intval');
+      //网址
+      $result_advert['website'] = $this -> _post('website');
+    }else{
+      $AdvertOrder = M('AdvertOrder');
+      $amid = $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'amid');
+      $result_advert = M('AdvertMoney') -> field('months,promotionprice') -> find($amid);
+      //广告位id
+      $result_advert['adid'] =  $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'adid');
+      //网址
+      $result_advert['website'] = $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'website');
+    }
+
+    $result_advert['filename'] = $info[0]['savename'];
+    $result_advert['maketype'] = $this -> _post('maketype', 'intval');
+
+    //生成订单号
+    $result_advert['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+
+    //总价
+    $result_advert['count'] = $result_advert['promotionprice'];
+    
+    //广告位名称
+    $temp_name = M('Advertise') -> table('yesow_advertise as ad') -> field('ad.name as adname,adp.remark as adpremark,cs.name as csname') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where(array('ad.id' => $result_advert['adid'])) -> find();
+    $result_advert['advertname'] = $temp_name['csname'] . ' - ' . $temp_name['adpremark'] . ' - ' . $temp_name['adname'];
+
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $AdvertOrder = M('AdvertOrder');
+      $data = array();
+      $data['ordernum'] = $result_advert['orderid'];
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['adid'] = $result_advert['adid'];
+      $data['amid'] = $this -> _post('months', 'intval');
+      $data['price'] = $result_advert['count'];
+      $data['website'] = $result_advert['website'];
+      $data['maketype'] = $result_advert['maketype'];
+      $data['filename'] = $result_advert['filename'];
+      $data['addtime'] = time();
+      if(!$oid = $AdvertOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+
+     //RMB余额是否足够支付
+    $result_advert['rmb_enough'] = $_SESSION['rmb_total'] - $result_advert['count'] >= 0 ? 1 : 0;
+    $this -> assign('result_advert', $result_advert);
+
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+  }
+
+  //页面广告 - 余额支付
+  public function advert_rmb_pay(){
+    $AdvertOrder = M('AdvertOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+
+    //根据订单号查询应付总额
+    $const = $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$AdvertOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功购买 页面广告 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $advert_info = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $_GET['orderid'])) -> find();
+
+    //写主表
+    $Advert = M('Advert');
+    $advert_data = array();
+    $advert_data['mid'] = session(C('USER_AUTH_KEY'));
+    $advert_data['adid'] = $advert_info['adid'];
+    $advert_data['website'] = $advert_info['website'];
+    $advert_data['filename'] = $advert_info['filename'];
+    $advert_data['starttime'] = time();
+    $advert_data['endtime'] = $advert_data['starttime'] + ($advert_info['months'] * 30 * 24 * 60 * 60);
+    if($Advert -> add($advert_data)){
+      $info_succ = "您已成功购买页面广告相关服务";
+      //更新会员余额和等级
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Services/advertsuccess',array($info_succ, 'success', $advert_info['adid']));
+    }else{
+      R('Register/errorjump',array(L('ADVERT_ERROR')));
+    }
+  }
+
+  //页面广告 - 快钱支付
+  public function advert_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/advert_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('AdvertOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心页面广告购买';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //页面广告 - 支付宝支付
+  public function advert_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/advert_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/advert_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心页面广告购买';
+    $price = M('AdvertOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //页面广告 - 财付通支付
+  public function advert_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/advert_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/advert_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心页面广告购买';
+    $order_price = M('AdvertOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+  //页面广告管理
+  public function editadvert(){
+    $Advert = M('Advert');
+    $where = array();
+    $where['ad.mid'] = session(C('USER_AUTH_KEY'));
+    import("ORG.Util.Page");// 导入分页类
+    $count = $Advert -> table('yesow_advert as ad') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $Advert -> table('yesow_advert as ad') -> field('ad.id,adt.name as atdname,adp.remark as adpremark,cs.name as csname,ad.starttime,ad.endtime,ad.filename,ad.website') -> join('yesow_advertise as adt ON ad.adid = adt.id') -> join('yesow_advertise_page as adp ON adt.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('ad.starttime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //编辑页面广告管理
+  public function editeditadvert(){
+    $Advert = M('Advert');
+
+    if(!empty($_POST['id'])){
+      //上传页面广告
+      if($_POST['updatetype'] == 1){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('ADVERT_PIC_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('gif', 'jpg', 'jpeg');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传页面广告图片失败，请检查文件合理性'));
+      }
+    }else if($_POST['updatetype'] == 2){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('ADVERT_PIC_DATA_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('rar', 'zip');// 设置附件上传类型
+      //$upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传页面广告资料失败，请检查文件合理性'));
+      }
+    }
+
+      $upload_data = array();
+      if(!empty($_POST['updatetype'])){
+	$upload_data['filename'] = $info[0]['savename'];
+      }
+      $upload_data['id'] = $_POST['id'];
+      $upload_data['website'] = $_POST['website'];
+      if($Advert -> save($upload_data)){
+	if(!empty($_POST['months'])){
+	  R('Register/successjump',array(L('ADVERT_RENEW'), U('Services/advert_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/aid/' . $this -> _post('id', 'intval')));
+	}else{
+	  R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Services/editadvert')));
+	}
+      }else{
+	if(!empty($_POST['months'])){
+	  R('Register/successjump',array(L('ADVERT_RENEW'), U('Services/advert_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/aid/' . $this -> _post('id', 'intval')));
+	}else{
+	  R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+	}
+      }
+    }
+
+    $result = $Advert -> table('yesow_advert as ad') -> field('ad.id,ad.adid,adt.name as atdname,adp.remark as adpremark,cs.name as csname,ad.starttime,ad.endtime,ad.filename,ad.website,adt.width,adt.height') -> join('yesow_advertise as adt ON ad.adid = adt.id') -> join('yesow_advertise_page as adp ON adt.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where(array('ad.id' => $this -> _get('id', 'intval'))) -> find();
+    //查询价格
+    $AdvertMoney = M('AdvertMoney');
+    $advert_price = $AdvertMoney -> field('id,months,marketprice,promotionprice') -> where(array('adid' => $result['adid'])) -> order('months ASC') -> select();
+    $this -> assign('advert_price', $advert_price);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //页面广告 - 续费 订单页
+  public function advert_renew_pay(){
+    $result_advert = array();
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_advert = M('AdvertMoney') -> field('months,promotionprice') -> find($this -> _get('oid'));
+      //广告位id
+      $result_advert['adid'] = M('Advert') -> getFieldByid($this -> _get('aid', 'intval'), 'adid');
+      //网址
+      $website = M('Advert') -> getFieldByid($this -> _get('aid', 'intval'), 'website');
+      $result_advert['website'] = $website;
+    }else{
+      $AdvertOrder = M('AdvertOrder');
+      $amid = $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'amid');
+      $result_advert = M('AdvertMoney') -> field('months,promotionprice') -> find($amid);
+      //广告位id
+      $result_advert['adid'] =  $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'adid');
+      $result_advert['website'] = $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'website');
+    }
+
+    $filename = M('Advert') -> getFieldByid($this -> _get('aid', 'intval'), 'filename');
+    $result_advert['filename'] = $filename;
+    if(strstr($filename, '.') == '.rar' || strstr($filename, '.') == '.zip'){
+      $result_advert['maketype'] = 2;
+    }else{
+      $result_advert['maketype'] = 1;
+    }
+
+    //生成订单号
+    $result_advert['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+    //总价
+    $result_advert['count'] = $result_advert['promotionprice'];
+    
+    $temp_name = M('Advertise') -> table('yesow_advertise as ad') -> field('ad.name as adname,adp.remark as adpremark,cs.name as csname') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where(array('ad.id' => $result_advert['adid'])) -> find();
+    $result_advert['advertname'] = $temp_name['csname'] . ' - ' . $temp_name['adpremark'] . ' - ' . $temp_name['adname'];
+    
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $AdvertOrder = M('AdvertOrder');
+      $data = array();
+      $data['ordernum'] = $result_advert['orderid'];
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['adid'] = $result_advert['adid'];
+      $data['amid'] = $this -> _get('oid', 'intval');
+      $data['price'] = $result_advert['count'];
+      $data['maketype'] = $result_advert['maketype'];
+      $data['filename'] = $result_advert['filename'];
+      $data['website'] = $result_advert['website'];
+      $data['addtime'] = time();
+      $data['isrenew'] = 1;
+      if(!$oid = $AdvertOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+    
+    //RMB余额是否足够支付
+    $result_advert['rmb_enough'] = $_SESSION['rmb_total'] - $result_advert['count'] >= 0 ? 1 : 0;
+
+    $this -> assign('result_advert', $result_advert);
+
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+  }
+
+  //页面广告 - 续费 - 余额支付
+  public function advert_renew_rmb_pay(){
+    $AdvertOrder = M('AdvertOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+
+    //根据订单号查询应付总额
+    $const = $AdvertOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$AdvertOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功续费 页面广告 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $advert_info = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.mid,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $_GET['orderid'])) -> find();
+    //根据adid查主表的id
+    $where_id = array();
+    $where_id['mid'] = $advert_info['mid'];
+    $where_id['adid'] = $advert_info['adid'];
+    $where_id['starttime'] = array('ELT', time());
+    $where_id['endtime'] = array('EGT', time());
+    $id = M('Advert') -> where($where_id) -> getField('id');
+
+    //更新主表
+    $Advert = M('Advert');
+    $where_up = array();
+    $where_up['id'] = $id;
+
+    if($Advert -> where($where_up) -> setInc('endtime', $advert_info['months'] * 30 * 24 * 60 * 60)){
+      $info_succ = "您已成功续费页面广告相关服务";
+      //更新会员余额和等级
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Services/advertsuccess',array($info_succ, 'success', $advert_info['adid']));
+    }else{
+      R('Register/errorjump',array(L('ADVERT_ERROR')));
+    }
+  }
+
+  //页面广告 - 续费 - 快钱支付
+  public function advert_renew_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/advert_renew_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('AdvertOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心页面广告续费';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //页面广告 - 续费 - 支付宝支付
+  public function advert_renew_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/advert_renew_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/advert_renew_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心页面广告续费';
+    $price = M('AdvertOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //页面广告 - 续费 - 财付通支付
+  public function advert_renew_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/advert_renew_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/advert_renew_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心页面广告续费';
+    $order_price = M('AdvertOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+  //页面广告购买成功
+  public function advertsuccess($title, $status, $adid){
+    $this -> assign('status', $status);
+    $this -> assign('title', $title);
+    $page = M('Advertise') -> table('yesow_advertise as ad') -> field('adp.module_name,adp.action_name') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> where(array('ad.id' => $adid)) -> find();
+    $this -> assign('page', $page);
+    $this -> display('services:advertsuccess');
+    exit();
+  }
+  /* ------  页面广告 ------- */
 }

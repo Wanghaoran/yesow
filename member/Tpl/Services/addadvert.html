@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加页面广告-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist1').hradio();
+	});
+
+var getpage = function(val){
+  $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetchildsiteadvertpage/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#adpage').html(_nstr).show();
+	  }else{
+	  $('#adpage').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+}
+
+var getadid = function(val){
+  $.ajax({
+      url:'__ROOT__/member.php/public/ajaxgetchildsiteadvert/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#adid').html(_nstr).show();
+	  }else{
+	  $('#adid').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+}
+
+var getadprice = function(val){
+  $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetchildsiteadvertprice/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  $.each(ress, function(i, res){
+	    _nstr += '<input name="months" id="bysjr' + res['id'] + '" type="radio" value="' + res['id'] + '"/><label for="bysjr' + res['id'] + '" class="zxqqsqradio">包月数：' + res['months'] + '个月<br />市场价：' + res['marketprice'] + '元<br />推广价：' + res['promotionprice'] + '元</label>';
+	  });
+	  $('#radiolist1').html(_nstr).show();
+	  }else{
+	  $('#radiolist1').html('暂无包月报价！').show();
+	  }
+	  $('#radiolist1').hradio();
+          getadsize(val);	  
+      },
+      dataType:'json'
+    });
+}
+
+var getadsize = function(vals){
+  $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetchildsiteadvertsize/id/' + vals,
+      success: function(ress){
+        $('#adsize').html(ress['width'] + ' X ' + ress['height']);
+      },
+      dataType:'json'
+    });
+}
+
+var tosubmits = function(){
+  if(!$("input[name='months']:checked ").val()){
+    alert('请选择购买月份！');
+    return false;
+  }
+  if(!$("input[name='maketype']:checked ").val()){
+    alert('请至少选择一种页面广告上传方式！');
+    return false;
+  }
+  if(!$('#picname').val() && !$('#dataname').val()){
+    alert('请至少上传一种资料！');
+    return false;
+  }
+  return true;
+}
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">页面广告管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">页面广告申请</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+			  <!--第一步-->
+			  <form action="__URL__/advert_pay" method='post' enctype="multipart/form-data" onsubmit="return tosubmits();">
+                            <div class="div_zxqqsq1">
+								<div class="zxqqsq1_left left"><h2>第一步</h2><h3>选择位置</h3></div>
+								<div class="zxqqsq1_mid left">
+								  <ul>
+								    <li>选择站点：
+								    <select class="select_css2" onchange="getpage($(this).val());">
+								      <option>请选择</option>
+								      <volist name="result_childsite" id="rc">
+								      <eq name="csid" value="$rc.id">
+								      <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+								      <else/>
+								      <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+								      </eq>
+								      </volist>
+								    </select>
+								    </li>
+								    <li>选择页面：
+								    <select class="select_css3" id="adpage" onchange="getadid($(this).val());">
+								      <option>请选择</option>
+								      <volist name="advert_page_list" id="adp">
+								      <eq name="pid" value="$adp.id">
+								      <option value="<!--{$adp.id}--!>" selected="selected"><!--{$adp.remark}--!></option>
+								      <else/>
+								      <option value="<!--{$adp.id}--!>"><!--{$adp.remark}--!></option>
+								      </eq>
+								      </volist>
+								    </select>
+								    </li>
+								    <li>选择位置：
+								    <select class="select_css3" name="adid" id="adid" onchange="getadprice($(this).val());">
+								      <option>请选择</option>
+								      <volist name="advert_list" id="ad">
+								      <eq name="Think.get.adid" value="$ad.id">
+								      <option value="<!--{$ad.id}--!>" selected="selected"><!--{$ad.name}--!>(<!--{$ad.width}--!> x <!--{$ad.height}--!>)</option>
+								      <else/>
+								      <option value="<!--{$ad.id}--!>"><!--{$ad.name}--!>(<!--{$ad.width}--!> x <!--{$ad.height}--!>)</option>
+								      </eq>
+								      </volist>
+								    </select>
+								    </li>
+								  </ul>
+								</div>
+								<div class="zxqqsq1_right left">这里选择确认您所想要展示广告的位置，可在前台查看后进行选择，或者直接点击前台的招租广告位进行购买。</div>
+							</div>
+                            <div class="clear10"></div>
+							<!--第二步-->
+							<div class="div_zxqqsq2">
+								<div class="zxqqsq2_left left"><h2>第二步</h2><h3>设置广告</h3></div>
+								<div class="zxqqsq2_mid left">
+									<div class="qiye_info">
+									  您选择的广告位置大小为：<span id="adsize"> 0 </span> PX像素
+                                        <div class="clear"></div>
+                                        <input type="radio" name="maketype" value="1"/>你可以自己上传
+                                        <div class="clear"></div>
+                                        <div style="padding-left:20px;">
+					  <div class="file-box">
+					    <input type='text' id='picname' class='txtfile' />
+					    <input type='button' class='btnfile' value='浏览...'/>
+					    <input type="file" name="pic" class="fileinput" size="28" onchange="document.getElementById('picname').value=this.value" />
+					  </div>
+                                            <div class="clear10"></div>
+                                            <div style="float:left">网址：</div>
+                                            <div style="float:left"><input type="text" class="txtfile" name="website" style="width:215px;"/></div>
+                                            <div class="clear10"></div>
+                                         </div>
+                                         <div class="clear"></div>
+                                         <input type="radio" name="maketype" value="2"/>您可以把广告资料提交给我们，让我们来帮您设计
+                                         <div style="padding-left:20px;">
+					   <div class="file-box">
+					     <input type='text' id='dataname' class='txtfile' />
+					     <input type='button' class='btnfile' value='浏览...' />
+					     <input type="file" name="data" class="fileinput" size="28" onchange="document.getElementById('dataname').value=this.value" /></div>
+                                         </div>
+                                         <div class="clear10"></div>
+                                    </div>
+								</div>
+								<div class="zxqqsq2_right left">这里可以看到您选择的广告位的大小，如果是您自行设计的，请上传gif或jpg格式，并且按照标准大小设置，否则可能会出现变形的情况；如果您是让我们来帮您设计，那么请您将所需要用到的资料打包成rar或zip等格式（不超过2M），上传给我们，我们会具体跟您联系。</div>
+							</div>
+                            <div class="clear10"></div>
+							<!--第三步-->
+							<div class="div_zxqqsq3">
+								<div class="zxqqsq3_left left"><h2>第三步</h2><h3>包月时间</h3></div>
+								<div class="zxqqsq3_right left">
+                                    <div id="radiolist1">
+                                        请选择广告位
+                                         <div class="clear"></div>
+                                     </div>
+								</div>
+							</div>
+                            <div class="clear10"></div>
+                            <div class="ymsq_tishi">
+                            注：1、请确认您选择的位置正确的之后再进行提交；<br />
+                            2、我们会不定期检查网站广告，如发现有反动或者侵权等情况的广告，我们会删除该广告，并不予退款；<br />
+                            3、最终解释权归易搜所有。
+                            </div>
+                            <div class="clear10"></div>
+                            <div class="div_zxqqsq5">
+                            	<input type="submit" value="" class="btn_goumai" />
+			      </div>
+			      </form>
+                            <div class="clear10"></div>
+                            
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+<include file="Index:footer" />
+</body>
+</html>
+<notempty name="Think.get.adid">
+<script>
+  getadprice(<!--{$Think.get.adid}--!>);
+</script>
+</notempty>

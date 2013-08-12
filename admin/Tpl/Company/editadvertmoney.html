@@ -1,0 +1,41 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/advertmoney" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>广告位:</label>
+		<!--{$result.csname}--!> - <!--{$result.apremark}--!> - <!--{$result.adname}--!>(<!--{$result.width}--!> x <!--{$result.height}--!>)
+	</div>
+	
+	<div class="unit">
+		<label>包月数：</label>
+		<input type="text" class="required digits" name="months" value="<!--{$result.months}--!>" />
+	      </div>
+	<div class="unit">
+		<label>市场价：</label>
+		<input type="text" class="required" name="marketprice" value="<!--{$result.marketprice}--!>" />
+	      </div>
+	<div class="unit">
+		<label>促销价：</label>
+		<input type="text" class="required" name="promotionprice" value="<!--{$result.promotionprice}--!>" />
+	</div>
+	
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	      </div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

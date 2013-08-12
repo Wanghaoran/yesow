@@ -80,6 +80,16 @@ return array(
   //企业形象资料下载地址
   'COMPANY_PIC_DATA_PATH_SAVE' => __ROOT__ . '/Upload/companypicdata/',
 
+  //页面广告图片保存路径
+  'ADVERT_PIC_PATH' => './Upload/ad/',
+  //页面广告图片显示
+  'ADVERT_PIC_PATH_SAVE' => __ROOT__ . '/Upload/ad/',
+
+  //页面广告资料保存路径
+  'ADVERT_PIC_DATA_PATH' => './Upload/advertpicdata/',
+  //页面广告资料下载地址
+  'ADVERT_PIC_DATA_PATH_SAVE' => __ROOT__ . '/Upload/advertpicdata/',
+
   //网站临时上传目录
   'TEMP_UPLOAD_PATH' => './Upload/temp/',
 
