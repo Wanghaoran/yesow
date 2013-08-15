@@ -243,15 +243,15 @@ var onedownload = function(){
 				  <li class="li_img">
 				  <notempty name="result_companypic">
 				  <if condition="(strstr($result_companypic['filename'], '.') == '.rar') OR (strstr($result_companypic['filename'], '.') == '.zip')">
-				  <a href="javascript:alert('形象图片还在设计中');"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" /></a>
+				  <a href="javascript:alert('形象图片还在设计中');"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" alt="形象图片" /></a>
 				  <else/>
-				  <a href="#"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result_companypic.filename}--!>" width="343" height="275" border="0" /></a>
+				  <a href="#"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result_companypic.filename}--!>" width="343" height="275" border="0" alt="形象图片" /></a>
 				  </if>
 				  <else/>
 				  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
-				  <a target="_blank" href="__ROOT__/member.php/services/addcompanypic/cid/<!--{$Think.get.id}--!>"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" /></a>
+				  <a target="_blank" href="__ROOT__/member.php/services/addcompanypic/cid/<!--{$Think.get.id}--!>"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" alt="形象图片" /></a>
 				  <else/>
-				  <a href="javascript:poplogin();"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" /></a>
+				  <a href="javascript:poplogin();"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" alt="形象图片" /></a>
 				  </if>
 				  </notempty>
 				  </li>
@@ -284,9 +284,9 @@ var onedownload = function(){
 			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 			    <eq name="isview" value="0">
 			    <if condition="$_SESSION['company_noshow'] eq 'true'">
-			    <a onclick="clicknoview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
+			    <a onclick="clicknoview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" alt="点击查看" /></a>
 			    <else/>
-			    <a onclick="clickview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" /></a>
+			    <a onclick="clickview()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dianji.gif" width="88" height="20" border="0" alt="点击查看" /></a>
 			    </if>
 			    <else/>
 			    <a style="float:left;font-size:12px;color:blue;text-indent:10px;" href="__ROOT__/member.php/index/userupdeta" target="_blank">如想查看更多信息,请点击</a>
@@ -306,7 +306,7 @@ var onedownload = function(){
 				   });
 			       }
 			     </script>
-			    <a onclick="poplogin()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dlck.gif" width="88" height="20" border="0" /></a><a href="" class="btn_tuijian"></a>
+			    <a onclick="poplogin()"><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/btn_dlck.gif" width="88" height="20" border="0" alt="点击查看" /></a><a href="" class="btn_tuijian"></a>
 			    </if>
                             	<div class="isblock" id="isblock2" style="display:none;">   
                                 </div>
@@ -370,7 +370,7 @@ var onedownload = function(){
 			  <dd>评分：<!--{$rc.score}--!></dd>
 			  <dd>表情：
 			  <notempty name="rc.face">			  
-			  <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+			  <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" alt="表情" />
 			  <else/>
 			  无
 			  </notempty>
@@ -393,14 +393,14 @@ var onedownload = function(){
 				  <textarea class="txt_pl" id="content"></textarea>
 				  <p>表情:
 				  <input type="radio" name="face" value="" checked="checked"/>无
-				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/1.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/2.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/3.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/4.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/5.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/6.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/7.gif" width="20" height="20" border="0" />
-				  <input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/8.gif" width="20" height="20" border="0" />
+				  <input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/1.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/2.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/3.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/4.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/5.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/6.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/7.gif" width="20" height="20" border="0" alt="表情" />
+				  <input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/8.gif" width="20" height="20" border="0" alt="表情" />
 				  </p>
 
 				
@@ -438,7 +438,7 @@ var onedownload = function(){
                         <li>
                             <div class="div_left">验证码</div>
                             <div class="div_right">
-                            	<div class="fl"><input type="text" class="div_input4" id="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div>
+                            	<div class="fl"><input type="text" class="div_input4" id="verify" /></div><div class="fl"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" alt="验证码" width="50" height="22" /></div>
                             </div>
                         </li>
                         <li>
@@ -467,7 +467,7 @@ var onedownload = function(){
     <if condition="strrchr($adt['address'], '.') == '.swf'">
     <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
     <else/>
-    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" alt="广告位"/></a>
     </if>
     </volist>
   </div>
@@ -494,7 +494,7 @@ var onedownload = function(){
     <if condition="strrchr($adt['address'], '.') == '.swf'">
     <a href="<!--{$adt.link}--!>"><embed src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" style="margin-left:5px;"></embed></a>
     <else/>
-    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>"/></a>
+    <a href="<!--{$adt.link}--!>"><img src="<!--{$Think.config.AD_PIC_PATH_SAVE}--!><!--{$adt.address}--!>" width="<!--{$adt.width}--!>" height="<!--{$adt.height}--!>" alt="广告位"/></a>
     </if>
     </volist>
   </div>

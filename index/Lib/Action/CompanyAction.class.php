@@ -198,11 +198,11 @@ class CompanyAction extends CommonAction {
     }
     //如果没有登录，加一张提示图片到后面
     if(!isset($_SESSION[C('USER_AUTH_KEY')])){
-      $result['companyphone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
-	$result['mobilephone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
-	$result['qqcode'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
-	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
-	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" /></a>';
+      $result['companyphone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" width="55" height="10" alt="登录可见" /></a>';
+	$result['mobilephone'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" width="55" height="10" alt="登录可见" /></a>';
+	$result['qqcode'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" width="55" height="10" alt="登录可见" /></a>';
+	$result['email'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" width="55" height="10" alt="登录可见" /></a>';
+	$result['website'] .= ' <a onclick="poplogin();"><img src="__PUBLIC__/index/default/style/images/dd.gif" width="55" height="10" alt="登录可见" /></a>';
     }
     //非法词过滤，过滤的字段：公司名称、主营、企业介绍
     $illegal = M('IllegalWord');
