@@ -42,8 +42,8 @@
 				      </tr>
 				      <volist name="result" id="r">
                                     <tr>
-				      <td><a href="__URL__/companypicorderlist/id/<!--{$r.id}--!>"><!--{$r.ordernum}--!></a></td>
-				      <td><!--{$r.cname}--!></td>
+				      <td><a href="__URL__/companypicorderlist/id/<!--{$r.id}--!>" class="div_ddh" title="<!--{$r.ordernum}--!>"><!--{$r.ordernum}--!></a></td>
+				      <td><a class="div_gsmc" title="<!--{$r.cname}--!>"><!--{$r.cname}--!></a></td>
 				      <td><!--{$r.months}--!>月</td>
 				      <td><!--{$r.price}--!>元</td>
 				      <switch name="r.status">
@@ -58,7 +58,7 @@
 				      <td style="color:red">未确认</td>
 				      </eq>
 				      <td><!--{$r.paytype}--!></td>
-				      <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+				      <td><a class="div_xdsj" title='<!--{$r.addtime|date="Y-m-d H:i:s", ###}--!>'><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></a></td>
                                       <eq name="r.isrenew" value="1">
 				      <td width="30" style="color:red">续费</td>
 				      <eq name="r.status" value="0">

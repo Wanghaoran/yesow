@@ -282,7 +282,7 @@ class CompanyAction extends CommonAction {
     $where_limit['cid'] = $id;
     $where_limit['starttime'] = array('ELT', time());
     $where_limit['endtime'] = array('EGT', time());
-    $result_companypic = $Companypic -> field('filename') -> where($where_limit) -> find();
+    $result_companypic = $Companypic -> field('filename,website') -> where($where_limit) -> find();
     $this -> assign('result_companypic', $result_companypic);
 
     $this -> display();

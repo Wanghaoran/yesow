@@ -1752,14 +1752,16 @@ class PayAction extends Action {
 	  if($companypic_order -> where($where) -> save($data)){
 	    //写主表
 	    //订单相关信息
-	    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $orderId)) -> find();
+	    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.mid,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $orderId)) -> find();
 	    //写主表
 	    $Companypic = M('Companypic');
 	    $pic_data = array();
-	    $pic_data['mid'] = session(C('USER_AUTH_KEY'));
+	    $pic_data['mid'] = $companypic_info['mid'];
 	    $pic_data['cid'] = $companypic_info['cid'];
 	    $pic_data['filename'] = $companypic_info['filename'];
+	    $pic_data['website'] = $companypic_info['website'];
 	    $pic_data['starttime'] = time();
+	    $pic_data['updatetime'] = time();
 	    $pic_data['endtime'] = $pic_data['starttime'] + ($companypic_info['months'] * 30 * 24 * 60 * 60);
 	    if($Companypic -> add($pic_data)){
 	      $info_succ = "您已成功购买企业形象相关服务";
@@ -1835,14 +1837,16 @@ class PayAction extends Action {
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($companypic_order -> where($where) -> save($data) && $now_status == 0){
 	  //订单相关信息
-	  $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
+	  $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.mid,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
 	  //写主表
 	  $Companypic = M('Companypic');
 	  $pic_data = array();
-	  $pic_data['mid'] = session(C('USER_AUTH_KEY'));
+	  $pic_data['mid'] = $companypic_info['mid'];
 	  $pic_data['cid'] = $companypic_info['cid'];
 	  $pic_data['filename'] = $companypic_info['filename'];
+	  $pic_data['website'] = $companypic_info['website'];
 	  $pic_data['starttime'] = time();
+	  $pic_data['updatetime'] = time();
 	  $pic_data['endtime'] = $pic_data['starttime'] + ($companypic_info['months'] * 30 * 24 * 60 * 60);
 	  $Companypic -> add($pic_data);
 	}
@@ -1902,12 +1906,12 @@ class PayAction extends Action {
     $alipayNotify = new AlipayNotify($alipay_config);
     $verify_result = $alipayNotify->verifyReturn();
 
-    //商户订单号
-    $out_trade_no = $_POST['out_trade_no'];
+
+    $mid = session(C('USER_AUTH_KEY'));
 
     //订单相关信息
     $companypic_order = M('CompanypicOrder');
-    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
+    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.mid' => $mid)) -> order('co.addtime DESC') -> find();
 
     //验证成功
     if($verify_result){
@@ -1946,9 +1950,11 @@ class PayAction extends Action {
 	$total_fee = $resHandler->getParameter("total_fee");
 	//取得订单号
 	$out_trade_no = $resHandler->getParameter("out_trade_no");
+	$mid = session(C('USER_AUTH_KEY'));
+
 	//订单相关信息
 	$companypic_order = M('CompanypicOrder');
-	$companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
+	$companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.mid' => $mid)) -> order('co.addtime DESC') -> find();
 
 	if("1" == $trade_mode ) {
 	  if( "0" == $trade_state){
@@ -2033,14 +2039,16 @@ class PayAction extends Action {
 	    $data['paytype'] = '财付通';
 	    if($companypic_order -> where($where) -> save($data)){
 	      //订单相关信息
-	      $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
+	      $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.mid,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
 	      //写主表
 	      $Companypic = M('Companypic');
 	      $pic_data = array();
-	      $pic_data['mid'] = session(C('USER_AUTH_KEY'));
+	      $pic_data['mid'] = $companypic_info['mid'];
 	      $pic_data['cid'] = $companypic_info['cid'];
 	      $pic_data['filename'] = $companypic_info['filename'];
+	      $pic_data['website'] = $companypic_info['website'];
 	      $pic_data['starttime'] = time();
+	      $pic_data['updatetime'] = time();
 	      $pic_data['endtime'] = $pic_data['starttime'] + ($companypic_info['months'] * 30 * 24 * 60 * 60);
 	      $Companypic -> add($pic_data); 
 	      ob_end_clean();
@@ -2302,12 +2310,11 @@ class PayAction extends Action {
     $alipayNotify = new AlipayNotify($alipay_config);
     $verify_result = $alipayNotify->verifyReturn();
 
-    //商户订单号
-    $out_trade_no = $_POST['out_trade_no'];
+    $mid = session(C('USER_AUTH_KEY'));
 
     //订单相关信息
     $companypic_order = M('CompanypicOrder');
-    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
+    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.mid' => $mid)) -> order('co.addtime DESC') -> find();
 
     //验证成功
     if($verify_result){
@@ -2346,9 +2353,11 @@ class PayAction extends Action {
 	$total_fee = $resHandler->getParameter("total_fee");
 	//取得订单号
 	$out_trade_no = $resHandler->getParameter("out_trade_no");
+	$mid = session(C('USER_AUTH_KEY'));
+
 	//订单相关信息
 	$companypic_order = M('CompanypicOrder');
-	$companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
+	$companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.mid' => $mid)) -> order('co.addtime DESC') -> find();
 
 	if("1" == $trade_mode ) {
 	  if( "0" == $trade_state){
@@ -2568,6 +2577,7 @@ class PayAction extends Action {
 	    $advert_data['website'] = $advert_info['website'];
 	    $advert_data['filename'] = $advert_info['filename'];
 	    $advert_data['starttime'] = time();
+	    $advert_data['updatetime'] = time();
 	    $advert_data['endtime'] = $advert_data['starttime'] + ($advert_info['months'] * 30 * 24 * 60 * 60);
 	    if($Advert -> add($advert_data)){
 	      $info_succ = "您已成功购买页面广告相关服务";
@@ -2643,15 +2653,16 @@ class PayAction extends Action {
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($advert_order -> where($where) -> save($data) && $now_status == 0){
 	  //订单相关信息
-	  $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
+	  $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.mid,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
 	  //写主表
 	  $Advert = M('Advert');
 	  $advert_data = array();
-	  $advert_data['mid'] = session(C('USER_AUTH_KEY'));
+	  $advert_data['mid'] = $advert_info['mid'];
 	  $advert_data['adid'] = $advert_info['adid'];
 	  $advert_data['website'] = $advert_info['website'];
 	  $advert_data['filename'] = $advert_info['filename'];
 	  $advert_data['starttime'] = time();
+	  $advert_data['updatetime'] = time();
 	  $advert_data['endtime'] = $advert_data['starttime'] + ($advert_info['months'] * 30 * 24 * 60 * 60);
 	  $Advert -> add($advert_data);
 	}
@@ -2711,12 +2722,11 @@ class PayAction extends Action {
     $alipayNotify = new AlipayNotify($alipay_config);
     $verify_result = $alipayNotify->verifyReturn();
 
-    //商户订单号
-    $out_trade_no = $_POST['out_trade_no'];
+    $mid = session(C('USER_AUTH_KEY'));
 
     //订单相关信息
     $advert_order = M('AdvertOrder');
-    $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
+    $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.mid' => $mid)) -> order('ao.addtime DESC') -> find();
 
     //验证成功
     if($verify_result){
@@ -2755,9 +2765,11 @@ class PayAction extends Action {
 	$total_fee = $resHandler->getParameter("total_fee");
 	//取得订单号
 	$out_trade_no = $resHandler->getParameter("out_trade_no");
+	$mid = session(C('USER_AUTH_KEY'));
+
 	//订单相关信息
 	$advert_order = M('AdvertOrder');
-	$advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
+	$advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.mid' => $mid)) -> order('ao.addtime DESC') -> find();
 
 	if("1" == $trade_mode ) {
 	  if( "0" == $trade_state){
@@ -2842,15 +2854,16 @@ class PayAction extends Action {
 	    $data['paytype'] = '财付通';
 	    if($advert_order -> where($where) -> save($data)){
 	      //订单相关信息
-	      $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
+	      $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.mid,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
 	      //写主表
 	      $Advert = M('Advert');
 	      $advert_data = array();
-	      $advert_data['mid'] = session(C('USER_AUTH_KEY'));
+	      $advert_data['mid'] = $advert_info['mid'];
 	      $advert_data['adid'] = $advert_info['adid'];
 	      $advert_data['website'] = $advert_info['website'];
 	      $advert_data['filename'] = $advert_info['filename'];
 	      $advert_data['starttime'] = time();
+	      $advert_data['updatetime'] = time();
 	      $advert_data['endtime'] = $advert_data['starttime'] + ($advert_info['months'] * 30 * 24 * 60 * 60);
 	      $Advert -> add($advert_data); 
 	      ob_end_clean();

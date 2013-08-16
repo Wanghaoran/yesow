@@ -2471,7 +2471,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.id,m.name as mname,c.name as cname,cp.cid,cp.starttime,cp.endtime,cp.ischeck,cp.type,cp.filename') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cp.ischeck ASC, cp.id DESC') -> select();
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.id,m.name as mname,c.name as cname,cp.cid,cp.starttime,cp.endtime,cp.ischeck,cp.type,cp.filename,cp.updatetime') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('cp.updatetime DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -2497,6 +2497,8 @@ class CompanyAction extends CommonAction {
       $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
       $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
       $add_data['type'] = 1;    
+      $add_data['website'] = $this -> _post('website');   
+      $add_data['updatetime'] = time();   
       if(!empty($_POST['org3_id'])){
 	$add_data['mid'] = $_POST['org3_id'];
       }
@@ -2532,6 +2534,7 @@ class CompanyAction extends CommonAction {
     if(!empty($_POST['id'])){
       $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
       $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      $_POST['updatetime'] = time(); 
       if(!empty($_POST['org4_id'])){
 	$_POST['mid'] = $_POST['org4_id'];
       }
@@ -2551,7 +2554,7 @@ class CompanyAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $Companypic -> table('yesow_companypic as cp') -> field('c.name as cname,cp.filename,cp.starttime,cp.endtime,m.name as mname,cp.mid') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('c.name as cname,cp.filename,cp.starttime,cp.endtime,m.name as mname,cp.mid,cp.website') -> join('yesow_member as m ON cp.mid = m.id') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $this -> display();
   }
@@ -2618,7 +2621,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $Advert -> table('yesow_advert as ad') -> field('ad.id,m.name as mname,ad.starttime,ad.endtime,ad.ischeck,ad.type,ad.filename,ad.website,ads.name as adsname,adp.remark as adpremark,cs.name as csname') -> join('yesow_member as m ON ad.mid = m.id') -> join('yesow_advertise as ads ON ad.adid = ads.id') -> join('yesow_advertise_page as adp ON ads.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('ad.ischeck ASC, ad.id DESC') -> select();
+    $result = $Advert -> table('yesow_advert as ad') -> field('ad.id,m.name as mname,ad.starttime,ad.endtime,ad.ischeck,ad.type,ad.filename,ad.website,ads.name as adsname,adp.remark as adpremark,cs.name as csname,ad.updatetime') -> join('yesow_member as m ON ad.mid = m.id') -> join('yesow_advertise as ads ON ad.adid = ads.id') -> join('yesow_advertise_page as adp ON ads.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('ad.updatetime DESC') -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -2648,6 +2651,7 @@ class CompanyAction extends CommonAction {
       $add_data['website'] = $_POST['website'];
       $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
       $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['updatetime'] = time();
       $add_data['type'] = 1; 
        if(!empty($_POST['org3_id'])){
 	$add_data['mid'] = $_POST['org3_id'];
@@ -2698,6 +2702,7 @@ class CompanyAction extends CommonAction {
     if(!empty($_POST['id'])){
       $_POST['starttime'] = $this -> _post('starttime', 'strtotime');
       $_POST['endtime'] = $this -> _post('endtime', 'strtotime');
+      $_POST['updatetime'] = time();
       if(!empty($_POST['org4_id'])){
 	$_POST['mid'] = $_POST['org4_id'];
       }

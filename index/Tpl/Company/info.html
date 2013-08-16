@@ -245,7 +245,7 @@ var onedownload = function(){
 				  <if condition="(strstr($result_companypic['filename'], '.') == '.rar') OR (strstr($result_companypic['filename'], '.') == '.zip')">
 				  <a href="javascript:alert('形象图片还在设计中');"><img src="__ROOT__/Upload/companypic/detailimg.gif" width="343" height="275" border="0" alt="形象图片" /></a>
 				  <else/>
-				  <a href="#"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result_companypic.filename}--!>" width="343" height="275" border="0" alt="形象图片" /></a>
+				  <a href="<!--{$result_companypic.website}--!>" target="_blank"><img src="<!--{$Think.config.COMPANY_PIC_PATH_SAVE}--!><!--{$result_companypic.filename}--!>" width="343" height="275" border="0" alt="形象图片" /></a>
 				  </if>
 				  <else/>
 				  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">

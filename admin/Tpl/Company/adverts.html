@@ -101,6 +101,7 @@
 			<th width="50">制作方</th>
 			<th width="120">开始时间</th>
 			<th width="120">结束时间</th>
+			<th width="120">更新时间</th>
 			<th width="55">当前状态</th>
 			<th width="45">资料下载</th>
 			<th width="35">审核</th>
@@ -127,6 +128,7 @@
 		  </if>
 			  <td><!--{$r.starttime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.endtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$r.updatetime|date="Y-m-d", ###}--!></td>
 			  <if condition="$r['endtime'] gt time()">
 			  <td style="color:green">正常</td>
 			  <else/>

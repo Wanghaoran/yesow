@@ -64,7 +64,7 @@ class ServicesAction extends CommonAction {
     }
     //后台搜索公司
     if(!empty($_REQUEST['keyword'])){
-      $where_company['name'] = array('LIKE', '%' . $_POST['keyword'] . '%');
+      $where_company['name'] = array('LIKE', '%' . $_REQUEST['keyword'] . '%');
       import("ORG.Util.Page");// 导入分页类
       $count = M('Company') -> where($where_company) -> count();
       $page = new Page($count, 9);
@@ -1053,7 +1053,7 @@ class ServicesAction extends CommonAction {
     }
     //后台搜索公司
     if(!empty($_REQUEST['keyword'])){
-      $where_company['name'] = array('LIKE', '%' . $_POST['keyword'] . '%');
+      $where_company['name'] = array('LIKE', '%' . $_REQUEST['keyword'] . '%');
       import("ORG.Util.Page");// 导入分页类
       $count = M('Company') -> where($where_company) -> count();
       $page = new Page($count, 9);
@@ -1109,12 +1109,16 @@ class ServicesAction extends CommonAction {
       $result_companypic = M('CompanypicMoney') -> field('months,promotionprice') -> find($this -> _post('months'));
       //公司id
       $result_companypic['cid'] = $this -> _post('cid', 'intval');
+      //网址
+      $result_companypic['website'] = $this -> _post('website');
     }else{
       $CompanypicOrder = M('CompanypicOrder');
       $cmid = $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'cmid');
       $result_companypic = M('CompanypicMoney') -> field('months,promotionprice') -> find($cmid);
       //公司id
       $result_companypic['cid'] =  $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'cid');
+      //网址
+      $result_companypic['website'] = $CompanypicOrder -> getFieldByordernum($_GET['orderid'], 'website');
     }
 
     $result_companypic['filename'] = $info[0]['savename'];
@@ -1139,6 +1143,7 @@ class ServicesAction extends CommonAction {
       $data['price'] = $result_companypic['count'];
       $data['maketype'] = $result_companypic['maketype'];
       $data['filename'] = $result_companypic['filename'];
+      $data['website'] = $result_companypic['website'];
       $data['addtime'] = time();
       if(!$oid = $CompanypicOrder -> add($data)){
 	R('Register/errorjump',array(L('ORDER_ERROR')));
@@ -1216,7 +1221,7 @@ class ServicesAction extends CommonAction {
     }
 
     //订单相关信息
-    $companypic_info = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $_GET['orderid'])) -> find();
+    $companypic_info = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $_GET['orderid'])) -> find();
 
     //写主表
     $Companypic = M('Companypic');
@@ -1224,7 +1229,9 @@ class ServicesAction extends CommonAction {
     $pic_data['mid'] = session(C('USER_AUTH_KEY'));
     $pic_data['cid'] = $companypic_info['cid'];
     $pic_data['filename'] = $companypic_info['filename'];
+    $pic_data['website'] = $companypic_info['website'];
     $pic_data['starttime'] = time();
+    $pic_data['updatetime'] = time();
     $pic_data['endtime'] = $pic_data['starttime'] + ($companypic_info['months'] * 30 * 24 * 60 * 60);
     if($Companypic -> add($pic_data)){
       $info_succ = "您已成功购买企业形象相关服务";
@@ -1328,6 +1335,8 @@ class ServicesAction extends CommonAction {
 	$upload_data['filename'] = $info[0]['savename'];
       }
       $upload_data['id'] = $_POST['id'];
+      $upload_data['website'] = $_POST['website'];
+      $upload_data['updatetime'] = time();
       if($Companypic -> save($upload_data)){
 	if(!empty($_POST['months'])){
 	  R('Register/successjump',array(L('COMPANYPIC_RENEW'), U('Services/companypic_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/qid/' . $this -> _post('id', 'intval')));
@@ -1343,7 +1352,7 @@ class ServicesAction extends CommonAction {
       }
     }
 
-    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.starttime,cp.endtime,c.name as cname,cp.filename') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $Companypic -> table('yesow_companypic as cp') -> field('cp.starttime,cp.endtime,c.name as cname,cp.filename,cp.website') -> join('yesow_company as c ON cp.cid = c.id') -> where(array('cp.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     //查询价格
     $CompanypicMoney = M('CompanypicMoney');
@@ -2105,6 +2114,7 @@ class ServicesAction extends CommonAction {
     $advert_data['website'] = $advert_info['website'];
     $advert_data['filename'] = $advert_info['filename'];
     $advert_data['starttime'] = time();
+    $advert_data['updatetime'] = time();
     $advert_data['endtime'] = $advert_data['starttime'] + ($advert_info['months'] * 30 * 24 * 60 * 60);
     if($Advert -> add($advert_data)){
       $info_succ = "您已成功购买页面广告相关服务";
@@ -2202,6 +2212,7 @@ class ServicesAction extends CommonAction {
       }
       $upload_data['id'] = $_POST['id'];
       $upload_data['website'] = $_POST['website'];
+      $upload_data['updatetime'] = time();
       if($Advert -> save($upload_data)){
 	if(!empty($_POST['months'])){
 	  R('Register/successjump',array(L('ADVERT_RENEW'), U('Services/advert_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/aid/' . $this -> _post('id', 'intval')));
