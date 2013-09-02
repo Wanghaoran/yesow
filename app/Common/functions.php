@@ -957,6 +957,14 @@ function sizeformat($bytesize){
   return("$newsize $units[$i]");
 }
 
+//秒数转天数
+function dataformat($num) {
+  $hour = floor($num/3600);
+  $minute = floor(($num-3600*$hour)/60);
+  $second = floor((($num-3600*$hour)-60*$minute)%60);
+  echo $hour.':'.$minute.':'.$second;
+ }
+
 
 //请求字符串安全过滤
 function safefilter($string, $type){

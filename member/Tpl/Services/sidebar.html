@@ -7,7 +7,11 @@
     <li><a href="__URL__/index">推荐商家管理</a></li>
     </if>
     <li><a href="#">动感传媒管理</a></li>
-    <li><a href="#">速查排名管理</a></li>
+    <if condition="(ACTION_NAME eq 'searchrank') OR (ACTION_NAME eq 'addsearchrank') OR (ACTION_NAME eq 'searchrankorder') OR (ACTION_NAME eq 'searchrankorderlist') OR (ACTION_NAME eq 'editsearchrank') OR (ACTION_NAME eq 'editeditsearchrank')">
+    <li class="hover"><a href="__URL__/searchrank">速查排名管理</a></li>
+    <else/>
+    <li><a href="__URL__/searchrank">速查排名管理</a></li>
+    </if>
     <if condition="(ACTION_NAME eq 'qqonline') OR (ACTION_NAME eq 'addqqonline') OR (ACTION_NAME eq 'qqonlineorder') OR (ACTION_NAME eq 'qqonlineorderlist') OR (ACTION_NAME eq 'editqqonline') OR (ACTION_NAME eq 'editeditqqonline')">
     <li class="hover"><a href="__URL__/qqonline">在线QQ管理</a></li>
     <else/>

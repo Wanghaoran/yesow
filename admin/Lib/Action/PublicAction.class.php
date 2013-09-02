@@ -278,6 +278,18 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取速查排名队尾的结束时间和排队人数
+  public function ajaxgetrankstring(){
+    $where = array();
+    $where['fid'] = $this -> _post('fid', 'intval');
+    $where['rank'] = $this -> _post('rank', 'intval');
+    $where['keyword'] = $this -> _post('keyword');
+    $where['endtime'] = array('EGT', time());
+    $result = M('SearchRank') -> field('MAX(endtime) as endtime, COUNT(id) as count') -> where($where) -> select();
+    $result[0]['endtime']  = date('Y-m-d', $result[0]['endtime']);
+    echo json_encode($result[0]);
+  }
+
   //商品图片文件上传
   public function shop_pic_upload(){
     import('ORG.Net.UploadFile');

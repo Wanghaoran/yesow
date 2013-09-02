@@ -2030,6 +2030,90 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //速查排名订单
+  public function searchrankorder(){
+    $SearchRankOrder = M('SearchRankOrder');
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['sro.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['sro.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.id,sro.cid,sro.ordernum,m.name as mname,c.name as cname,rwt.name as fname,srm.months as months,sro.rank,sro.keyword,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where($where) -> order('sro.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    
+    $this -> display();
+  }
+
+  //删除速查排名订单
+  public function delsearchrankorder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SearchRankOrder = M('SearchRankOrder');
+    if($SearchRankOrder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核速查排名订单
+  public function passauditsearchrankorder(){
+    $SearchRankOrder = M('SearchRankOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($SearchRankOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核速查排名订单
+  public function nopassauditsearchrankorder(){
+    $SearchRankOrder = M('SearchRankOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($SearchRankOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //速查排名订单详情
+  public function editsearchrankorder(){
+    $SearchRankOrder = M('SearchRankOrder');
+    $result_o = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.ordernum,sro.ischeck,sro.status,c.name as cname,rwt.name as fname,sro.rank,sro.keyword,m.name as mname,m.tel as mtel,m.fullname as mfullname,srm.months') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result_o', $result_o);
+    $this -> display();
+  }
+
+
+
   /* --------------- 业务订单管理 ---------------- */
 
   /* --------------- 速查业务管理 ---------------- */
@@ -2752,7 +2836,152 @@ class CompanyAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
-  
+
+  //速查排名管理
+  public function searchrank(){
+    $SearchRank = M('SearchRank');
+    $where = array();
+    if(!empty($_POST['cname'])){
+      $where['c.name'] = $this -> _post('cname');
+    }
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    if(!empty($_POST['keyword'])){
+      $where['sr.keyword'] = $this -> _post('keyword');
+    }
+    if(!empty($_POST['rank'])){
+      $where['sr.rank'] = $this -> _post('rank');
+    }
+    if(!empty($_POST['fid'])){
+      $where['sr.fid'] = $this -> _post('fid');
+    }
+    //记录总数
+    $count = $SearchRank -> table('yesow_search_rank as sr') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,m.name as mname,sr.type,c.name as cname,rwt.name as fname,sr.keyword,sr.rank,sr.starttime,sr.endtime,sr.ischeck,sr.cid') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.starttime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //站点分类
+    $result_website_type = M('SearchRankWebsiteType') -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //添加速查排名
+  public function addsearchrank(){
+    if(!empty($_POST['keyword'])){
+      $SearchRank = M('SearchRank');
+      $add_data = array();
+      $add_data['cid'] = $_POST['org2_id'];
+      if(!empty($_POST['org3_id'])){
+	$add_data['mid'] = $_POST['org3_id'];
+      }
+      $add_data['fid'] = $this -> _post('fid', 'intval');
+      $add_data['keyword'] = $this -> _post('keyword');
+      $add_data['rank'] = $this -> _post('rank', 'intval');
+      $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
+      $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['type'] = 1;    
+
+      if(!$SearchRank -> create($add_data)){
+	$this -> error($SearchRank -> getError());
+      }
+      if($SearchRank -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //站点分类
+    $result_website_type = M('SearchRankWebsiteType') -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //删除速查排名
+  public function delsearchrank(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SearchRank = M('SearchRank');
+    if($SearchRank -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑速查排名
+  public function editsearchrank(){
+    $SearchRank = M('SearchRank');
+    //处理更新
+    if(!empty($_POST['id'])){
+      $update_data = array();
+      $update_data['cid'] = $_POST['org2_id'];
+      if(!empty($_POST['org3_id'])){
+	$update_data['mid'] = $_POST['org3_id'];
+      }
+      $update_data['fid'] = $this -> _post('fid', 'intval');
+      $update_data['keyword'] = $this -> _post('keyword');
+      $update_data['rank'] = $this -> _post('rank', 'intval');
+      $update_data['starttime'] = $this -> _post('starttime', 'strtotime');
+      $update_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $update_data['id'] = $this -> _post('id', 'intval');
+      if(!$SearchRank -> create($update_data)){
+	$this -> error($SearchRank -> getError());
+      }
+      if($SearchRank -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.cid,c.name as cname,sr.mid,m.name as mname,sr.fid,sr.keyword,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_member as m ON sr.mid = m.id') -> where(array('sr.id' => $this -> _get('id'))) -> find();
+    $this -> assign('result', $result);
+    //站点分类
+    $result_website_type = M('SearchRankWebsiteType') -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //通过审核速查排名
+  public function passauditsearchrank(){
+    $SearchRank = M('SearchRank');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($SearchRank -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核速查排名
+  public function nopassauditsearchrank(){
+    $SearchRank = M('SearchRank');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($SearchRank -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
   /* --------------- 速查业务管理 ---------------- */
 
 
@@ -3277,6 +3506,204 @@ class CompanyAction extends CommonAction {
     }
     $result = $AdvertMoney -> table('yesow_advert_money as am') -> field('am.id,am.months,am.marketprice,am.promotionprice,am.remark,ad.name as adname,ad.width,ad.height,ap.remark as apremark,cs.name as csname') -> join('yesow_advertise as ad ON am.adid = ad.id') -> join('yesow_advertise_page as ap ON ad.pid = ap.id') -> join('yesow_child_site as cs ON ap.csid = cs.id') -> where(array('am.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //速查包月价格
+  public function searchrankmonthsmoney(){
+    $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
+    $where = array();
+    if(!empty($_POST['fid'])){
+      $where['mm.fid'] = $this -> _post('fid');
+    }
+
+    //记录总数
+    $count = $SearchRankMonthsMoney -> alias('mm') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $SearchRankMonthsMoney -> alias('mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,mm.remark,rwt.name as fname') -> join('yesow_search_rank_website_type as rwt ON mm.fid = rwt.id') -> order('mm.fid ASC, months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //添加速查包月价格
+  public function addsearchrankmonthsmoney(){
+    //处理添加
+    if(!empty($_POST['months'])){
+      $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
+      if(!$SearchRankMonthsMoney -> create()){
+	$this -> error($SearchRankMonthsMoney -> getError());
+      }
+      if($SearchRankMonthsMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //删除速查包月价格 
+  public function delsearchrankmonthsmoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
+    if($SearchRankMonthsMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑速查包月价格
+  public function editsearchrankmonthsmoney(){
+    $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
+    //处理更新
+    if(!empty($_POST['months'])){
+      if(!$SearchRankMonthsMoney -> create()){
+	$this -> error($SearchRankMonthsMoney -> getError());
+      }
+      if($SearchRankMonthsMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SearchRankMonthsMoney -> field('id,fid,months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //速查排名价格设置
+  public function searchrankmoney(){
+    $where = array();
+    if(!empty($_POST['fid'])){
+      $where['srm.fid'] = $this -> _post('fid', 'intval');
+    }
+
+    $SearchRankMoney = M('SearchRankMoney');
+
+    //记录总数
+    $count = $SearchRankMoney -> table('yesow_search_rank_money as srm') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    
+    $result = $SearchRankMoney -> table('yesow_search_rank_money as srm') -> field('srm.id,srfm.name,srm.rank,srm.discount*100 as discount,srm.remark,srm2.ranks+1 as ranks') -> join('yesow_search_rank_website_type as srfm on srm.fid = srfm.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('srm.fid asc,srm.rank asc') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //添加速查排名价格
+  public function addsearchrankmoney(){
+    if(!empty($_POST['fid'])){
+      $SearchRankMoney = M('SearchRankMoney');
+      $_POST['discount'] = $_POST['discount'] / 100;
+      if(!$SearchRankMoney -> create()){
+	$this -> error($SearchRankMoney -> getError());
+      }
+      if($SearchRankMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //删除速查排名价格
+  public function delsearchrankmoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SearchRankMoney = M('SearchRankMoney');
+    if($SearchRankMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑速查排名价格
+  public function editsearchrankmoney(){
+    $SearchRankMoney = M('SearchRankMoney');
+    //处理更新
+    if(!empty($_POST['id'])){
+      $_POST['discount'] = $_POST['discount'] / 100;
+      if(!$SearchRankMoney -> create()){
+	$this -> error($SearchRankMoney -> getError());
+      }
+      if($SearchRankMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SearchRankMoney -> field('id,fid,rank,discount*100 as discount,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //查看折扣后价格
+  public function editdiscountprice(){
+    $SearchRankMoney = M('SearchRankMoney');
+    $result = $SearchRankMoney -> alias('srm') -> field('wt.name as fname,srm.discount*100 as discount,srm.rank,srm2.ranks+1 as ranks,srm.fid,srm.discount as discounts') -> join('yesow_search_rank_website_type as wt on srm.fid = wt.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> where(array('srm.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    //包月价格
+    $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
+    $result_money = $SearchRankMonthsMoney -> field('months,marketprice*' . (1-$result['discounts']) . ' as marketprice,promotionprice*' . (1-$result['discounts']) . ' as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
+    $this -> assign('result_money', $result_money);
     $this -> display();
   }
 

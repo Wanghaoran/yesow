@@ -504,7 +504,21 @@
 		<ul id="ul_mytable" class="ul_mytable">
 		  <volist name="result" id="r">
                     <li>
-		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a> <a href="#" class="a_weizhi">[等候此位]</a> </h2>
+		    <h2><a href="__ROOT__/company/<!--{$r.id}--!>" target="_blank" class="a_title"><!--{$r.name}--!></a>
+		  <eq name="r.searchrank" value="1">
+		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+		  <a href="__ROOT__/member.php/services/addsearchrank/f_fid/<!--{$fid}--!>/f_keyword/<!--{$Think.get.keyword|safefilter='get'}--!>/f_rank/<!--{$r.rank}--!>/type/wait" target="_blank" class="a_weizhi">[等候此位>>>]</a>
+		  <else/>
+		  <a onclick="poplogin();" class="a_weizhi">[等候此位>>>]</a>
+		  </if>
+		  <else/>
+		  <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+		  <a href="__ROOT__/member.php/services/addsearchrank/f_fid/<!--{$fid}--!>/f_keyword/<!--{$Think.get.keyword|safefilter='get'}--!>/f_rank/<!--{$r.rank}--!>/type/buy" target="_blank" class="a_weizhi" style="color:green;">[抢排此位>>>]</a>
+		  <else/>
+		  <a onclick="poplogin();" class="a_weizhi" style="color:green;">[抢排此位>>>]</a>
+		  </if>
+		  </eq> 
+		</h2>
 		    <p class="one"><!--{$r.manproducts}--!></p>
 		    <p class="two" style="color:#8d8d8d;"><span>电话: <!--{$r.companyphone|strip_tags|substr_replace="******",8}--!></span></p>
 		    <p class="two" style="color:#8d8d8d;"><span><span>地址: <!--{$r.address}--!></span></p>

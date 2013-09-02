@@ -1179,12 +1179,10 @@ class ServicesAction extends CommonAction {
 
   //企业形象订单详情
   public function companypicorderlist(){
-
     $oid = $this -> _get('id', 'intval');
     $CompanypicOrder = M('CompanypicOrder');
     $result_order = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.maketype,co.ordernum,co.status,co.ischeck,co.price,c.name as cname,cm.months') -> join('yesow_company as c ON co.cid = c.id') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.id' => $oid)) -> find();
     $this -> assign('result_order', $result_order);
-
     $this -> display();
   }
 
@@ -2404,4 +2402,301 @@ class ServicesAction extends CommonAction {
     exit();
   }
   /* ------  页面广告 ------- */
+
+  /* ------  速查排名 ------- */
+  //速查排名管理
+  public function _before_searchrank(){
+    $this -> _before_index();
+  }
+  public function searchrank(){
+    $this -> display();
+  }
+
+  //添加速查排名
+  public function addsearchrank(){
+    //传递cid
+    if(!empty($_GET['cid'])){
+      $cid = $this -> _get('cid', 'intval');
+
+       //公司信息
+       $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
+       $this -> assign('company_info', $company_info);
+    }
+    //后台搜索公司
+    if(!empty($_REQUEST['keyword'])){
+      $where_company['name'] = array('LIKE', '%' . $_REQUEST['keyword'] . '%');
+      import("ORG.Util.Page");// 导入分页类
+      $count = M('Company') -> where($where_company) -> count();
+      $page = new Page($count, 9);
+      $page -> parameter = "f_keyword=" . $_REQUEST['f_keyword'] . "&f_fid=" . $_REQUEST['f_fid'] . "&keyword=" . $_REQUEST['keyword'];
+      $show = $page -> show();
+      $company_search = M('Company') -> field('id,name,manproducts,address,website,linkman') -> where($where_company) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+      $this -> assign('show', $show);
+      $this -> assign('company_search', $company_search);
+    }
+    //热门搜索词
+    $SearchHot = M('SearchHot');
+    $result_search_hot = $SearchHot -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_search_hot', $result_search_hot);
+    //站点类别
+    $SearchRankWebsiteType = M('SearchRankWebsiteType');
+    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //等待排名页 
+  public function waitrank(){
+    $SearchRank = M('SearchRank');
+    $where = array();
+    $where['r.fid'] = $this -> _get('fid', 'intval');
+    $where['r.keyword'] = $this -> _get('keyword');
+    $where['r.rank'] = $this -> _get('rank', 'intval');
+    $where['r.endtime'] = array('EGT', time());
+    $result = $SearchRank -> alias('r') -> field('c.name as cname,r.endtime-UNIX_TIMESTAMP() as retime') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> order('r.starttime ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //速查排名订单页
+  public function searchrank_pay(){
+    $result_searchrank = array();
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_searchrank = M('SearchRankMonthsMoney') -> field('months,promotionprice') -> find($this -> _post('months'));      
+      //公司id
+      $result_searchrank['cid'] = $this -> _post('cid', 'intval');
+      //站点类别id
+      $result_searchrank['fid'] = $this -> _post('fid', 'intval');
+      //排名位置
+      $result_searchrank['rank'] = $this -> _post('rank', 'intval');
+      //关键词
+      $result_searchrank['keyword'] = $this -> _post('keyword');
+    }else{
+      $order_num_get = $this -> _get('orderid');
+      $SearchRankOrder = M('SearchRankOrder');
+      //srmid
+      $srmid = $SearchRankOrder -> getFieldByordernum($order_num_get, 'srmid');
+      //月份价格
+      $result_searchrank = M('SearchRankMonthsMoney') -> field('months,promotionprice') -> find($srmid);
+      //公司id
+      $result_searchrank['cid'] = $SearchRankOrder -> getFieldByordernum($order_num_get, 'cid');
+      //站点类别id
+      $result_searchrank['fid'] = $SearchRankOrder -> getFieldByordernum($order_num_get, 'fid');
+      //排名位置
+      $result_searchrank['rank'] = $SearchRankOrder -> getFieldByordernum($order_num_get, 'rank');
+      //关键词
+      $result_searchrank['keyword'] = $SearchRankOrder -> getFieldByordernum($order_num_get, 'keyword');
+    }
+
+    //折扣率
+    $where_discount = array();
+    $where_discount['fid'] = $result_searchrank['fid'];
+    $where_discount['rank'] = array('EGT', $result_searchrank['rank']);
+    $result_searchrank['discount'] = M('SearchRankMoney') -> where($where_discount) -> order('rank ASC') -> getField('discount');
+
+    //生成订单号
+    $result_searchrank['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+    //总价
+    $result_searchrank['count'] = $result_searchrank['promotionprice'] * (1-$result_searchrank['discount']);
+    //公司名称
+    $result_searchrank['companyname'] = M('Company') -> getFieldByid($result_searchrank['cid'], 'name');
+    //站点类型名称
+    $result_searchrank['fname'] = M('SearchRankWebsiteType') -> getFieldByid($result_searchrank['fid'], 'name');
+
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $SearchRankOrder = M('SearchRankOrder');
+      $data = array();
+      $data['ordernum'] = $result_searchrank['orderid'];
+      $data['cid'] = $result_searchrank['cid'];
+      $data['fid'] = $this -> _post('fid', 'intval');
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['srmid'] = $this -> _post('months', 'intval');
+      $data['rank'] = $result_searchrank['rank'];
+      $data['keyword'] = $result_searchrank['keyword'];
+      $data['price'] = $result_searchrank['count'];
+      $data['addtime'] = time();
+      if(!$SearchRankOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+
+    //RMB余额是否足够支付
+    $result_searchrank['rmb_enough'] = $_SESSION['rmb_total'] - $result_searchrank['count'] >= 0 ? 1 : 0;
+    $this -> assign('result_searchrank', $result_searchrank);
+    
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+
+  }
+
+  //速查排名RMB支付页
+  public function searchrank_rmb_pay(){
+    $SearchRankOrder = M('SearchRankOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+
+    //根据订单号查询应付总额
+    $const = $SearchRankOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$SearchRankOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功购买 速查排名 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $searchrank_info = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.cid,sro.fid,sro.mid,sro.keyword,sro.rank,srm.months') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $this -> _get('orderid'))) -> find();
+
+    //开始时间
+    $SearchRank = M('SearchRank');
+    $where_starttime = array();
+    $where_starttime['keyword'] = $searchrank_info['keyword'];
+    $where_starttime['fid'] = $searchrank_info['fid'];
+    $where_starttime['rank'] = $searchrank_info['rank'];
+    $where_starttime['endtime'] = array('EGT', time());
+    $endtime = $SearchRank -> where($where_starttime) -> order('endtime DESC') -> getField('endtime');
+
+    //写主表    
+    $searchrank_data = array();
+    $searchrank_data['cid'] = $searchrank_info['cid'];
+    $searchrank_data['mid'] = session(C('USER_AUTH_KEY'));
+    $searchrank_data['fid'] = $searchrank_info['fid'];
+    $searchrank_data['keyword'] = $searchrank_info['keyword'];
+    $searchrank_data['rank'] = $searchrank_info['rank'];
+    $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
+    $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+    if($SearchRank -> add($searchrank_data)){
+      $info_succ = "您已成功购买速查排名相关服务";
+      //更新会员余额和等级
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Register/successjump',array($info_succ, U('Services/searchrank')));
+    }else{
+      R('Register/errorjump',array(L('SEARCHRANK_ERROR')));
+    }
+
+  }
+
+  //速查排名 - 块钱支付
+  public function searchrank_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/searchrank_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('SearchRankOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心速查排名购买';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //速查排名 - 支付宝支付
+  public function searchrank_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/searchrank_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/searchrank_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心速查排名购买';
+    $price = M('SearchRankOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //速查排名 - 财富通支付
+  public function searchrank_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/searchrank_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/searchrank_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心速查排名购买';
+    $order_price = M('SearchRankOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+  //速查排名订单页
+  public function searchrankorder(){
+    $SearchRankOrder = M('SearchRankOrder');
+    $where = array();
+    $where['sro.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    import("ORG.Util.Page");// 导入分页类
+    $count = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.id,sro.ordernum,c.name as cname,sro.keyword,srwt.name as fname,sro.rank,srmm.months,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_search_rank_website_type as srwt ON sro.fid = srwt.id') -> join('yesow_search_rank_months_money as srmm ON sro.srmid = srmm.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sro.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //速查排名订单详情页
+  public function searchrankorderlist(){
+    $oid = $this -> _get('id', 'intval');
+    $SearchRankOrder = M('SearchRankOrder');
+    $result_order = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.id,sro.ordernum,c.name as cname,sro.keyword,srwt.name as fname,sro.rank,srmm.months,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_search_rank_website_type as srwt ON sro.fid = srwt.id') -> join('yesow_search_rank_months_money as srmm ON sro.srmid = srmm.id') -> where(array('sro.id' => $this -> _get('id', 'intval'))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sro.addtime DESC') -> find();
+    $this -> assign('result_order', $result_order);
+    $this -> display();
+  }
+
+  //速查排名管理
+  public function editsearchrank(){
+    $SearchRank = M('SearchRank');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $SearchRank -> table('yesow_search_rank as sr')  -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,sr.cid,c.name as cname,sr.keyword,srwt.name as fname,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as srwt ON sr.fid = srwt.id') -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> order('sr.starttime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //编辑速查排名管理
+  public function editeditsearchrank(){
+    $SearchRank = M('SearchRank');
+    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,sr.cid,c.name as cname,sr.keyword,srwt.name as fname,sr.fid,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as srwt ON sr.fid = srwt.id') -> where(array('sr.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+
+    //查询当前关键词后面有无排队情况
+    $where_wait = array();
+    $where_wait['r.fid'] = $result['fid'];
+    $where_wait['r.keyword'] = $result['keyword'];
+    $where_wait['r.rank'] = $result['rank'];
+    $where_wait['r.starttime'] = array('GT', $result['endtime']);
+    $result_wait = $SearchRank -> alias('r') -> field('c.name as cname,r.starttime,r.endtime') -> join('yesow_company as c ON r.cid = c.id') -> where($where_wait) -> order('r.starttime ASC') -> select();
+    $this -> assign('result_wait', $result_wait);
+
+    //查询当前关键词包月价格
+    ////折扣率
+    $SearchRankMoney = M('SearchRankMoney');
+    $where_discount = array();
+    $where_discount['fid'] = $result['fid'];
+    $where_discount['rank'] = array('EGT', $result['rank']);
+    $discount = $SearchRankMoney -> where($where_discount) -> order('rank ASC') -> getField('discount');
+    ////包月信息
+    $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
+    $searchrank_money = $SearchRankMonthsMoney -> field('id,months,ROUND(marketprice*' . (1-$discount) . ',1) as marketprice,ROUND(promotionprice*' . (1-$discount) . ',1) as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
+    $this -> assign('searchrank_money', $searchrank_money);
+    $this -> display();
+  }
+
+  /* ------  速查排名 ------- */
 }

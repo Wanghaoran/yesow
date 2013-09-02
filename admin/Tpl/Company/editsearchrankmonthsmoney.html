@@ -1,0 +1,47 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/searchrankmonthsmoney" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		  <div class="unit">
+		<label>站点类别：</label>
+				<select class="combox" name="fid">
+					<volist name="result_website_type" id="rwt">
+					<eq name="result.fid" value="$rwt.id">
+					<option value="<!--{$rwt.id}--!>" selected="selected"><!--{$rwt.name}--!></option>
+					<else/>
+					<option value="<!--{$rwt.id}--!>"><!--{$rwt.name}--!></option>
+					</eq>
+					</volist>
+				</select>
+	      </div>
+	<div class="unit">
+		<label>包月数：</label>
+		<input type="text" class="required digits" name="months" value="<!--{$result.months}--!>" />
+	      </div>
+	<div class="unit">
+		<label>市场价：</label>
+		<input type="text" class="required" name="marketprice" value="<!--{$result.marketprice}--!>" />
+	      </div>
+	<div class="unit">
+		<label>促销价：</label>
+		<input type="text" class="required" name="promotionprice" value="<!--{$result.promotionprice}--!>" />
+	</div>
+	
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	</div>
+
+</div>
+<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div> 

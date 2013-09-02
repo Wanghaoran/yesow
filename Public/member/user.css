@@ -33,7 +33,7 @@ a:focus{outline:none;}
 #main_r{width:690px; float:left;}
 #main_rm{ float:left; width:298px; padding-right:5px;}
 .main_rm_tit{ width:267px; height:27px; line-height:27px;  background:#EFEFEF url(images/user/mian.gif) no-repeat; background-position: 0 -130px; padding-left:30px; border-top:#BDBDBD 1px solid; border-right:#BDBDBD 1px solid; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
-.main_rm_con{ width:276px; height:280px; padding:10px; border:1px solid #BDBDBD; border-top:0;}
+.main_rm_con{ width:276px; height:300px; padding:10px; border:1px solid #BDBDBD; border-top:0;}
 ul.user_set li{ float:left; margin-bottom:12px; width:170px;}
 ul.user_set li div{ float:left;}
 ul.user_set li div.div_span{ color:#646464; font-weight:bold;}
@@ -64,7 +64,7 @@ ul.user_set li.btn_img9 a img{ margin:0;}
 
 #main_rr{ float:left; width:385px; border:#BDBDBD 1px solid;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
-.main_rr_con{ width:365px; padding:10px; height:280px;}
+.main_rr_con{ width:365px; padding:10px; height:300px;}
 ul.user_list li{ float:left; width:355px; padding-left:10px; background:url(images/user/mian.gif) no-repeat 0 -97px; height:25px; line-height:25px;}
 ul.user_list li h2{ float:left; font-weight:normal; width:200px;/*宽度，超过即会溢出*/text-overflow:ellipsis;/*当文本溢出时显示…此时还必须定义：强制文本在一行内显示（white-space:nowrap）及溢出内容为隐藏（overflow:hidden）*/white-space:nowrap;/*表示文本不会换行*/overflow:hidden;/*表示溢出的内容会被隐藏*/}
 ul.user_list li h2 a{ color:#646464;  font-size:12px;}
@@ -276,6 +276,7 @@ span.fontnormal{ font-weight:normal;}
 .ml10{ margin-left:10px;}
 .mr10{ margin-left:10px;}
 .clear10{ clear:both; height:10px;}
+.clear5{ clear:both; height:5px;}
 
 .btn_long a{ width:100px; height:20px; display:block; line-height:20px; padding:0; margin:0; border:0; background:url(images/user/longbtn.gif) top center no-repeat; text-align:center;}
 .btn_long a:hover{ background:url(images/user/longbtn.gif) bottom center no-repeat;}
@@ -590,11 +591,11 @@ ul.addqqli li{margin:5px;}
 .qqsq_search{ height:30px; line-height:30px; text-align:center;}
 .qqsq_search input{ vertical-align:middle; margin-right:10px; font-size:12px;}
 
-
+.qqsq_jieguo{}
 
 #help01{font-size:12px;font-weight:normal; width:690px; margin:10px auto;}
 	#help01 ul li{line-height:25px; float:left;width:230px;}
-	#help01 ul li a{color:#127ed6; text-decoration:none; position:relative; display:block;}
+	#help01 ul li a{color:#127ed6; text-decoration:none; position:relative; display:block; }
 	#help01 ul li a div.help01{ width:220px; height:18px; line-height:18px; padding:3px 0 0 0; overflow:hidden;}
 	#help01 ul li a div.poptip{display:none;}
 	#help01 ul li a:hover{ visibility:visible;}
@@ -623,3 +624,28 @@ input.input_sjdxfs2{ width:148px; height:20px; line-height:20px; border:#999 1px
 .select_css2{ width:100px; height:22px; line-height:22px; margin-right:10px}
 .select_css3{ width:210px; height:22px; line-height:22px;}
 .ymsq_tishi{ font-weight:bold; color:#fa0000; text-align:left; width:700px; line-height:30px; padding-left:40px;}
+
+.div_ddh{width:86px; height:30px; display:inline-block; overflow:hidden;}
+.div_gsmc{ width:100px; height:30px; display:inline-block; overflow:hidden;}
+.div_xdsj{ width:74px; height:30px; display:inline-block; overflow:hidden;}
+.div_beizhu{ width:50px; height:30px; display:inline-block; overflow:hidden;}
+
+.scpminfo{ width:380px; line-height:25px;}
+.scpminfo_l{ float:left; width:80px; text-align:right;}
+.scpminfo_r{ float:left; width:250px;}
+.ul_gjc li{ float:left; margin-right:10px;}
+
+ul.pmsx li{ float:left; width:40px; height:32px; line-height:16px; text-align:center; border:#dbdbdb 1px solid; color:#dbdbdb; margin:0 5px 5px  0;}
+ul.pmsx li a{color:#dbdbdb; text-decoration:none;}
+ul.pmsx li.choice{ border:#f99e00 1px solid; color:#f99e00;}
+ul.pmsx li.choice a{color:#f99e00;}
+
+a.shousuo{ color:#1f9eed; text-decoration:none; height:30px; line-height:30px;}
+a.shousuo img{ vertical-align:middle;}
+
+.paidui{ width:550px; height:300px; line-height:25px;padding:10px;}
+.font_blue{ margin:0 10px; color:#0a03fe;}
+.paidui ul{ }
+.paidui ul li{ width:550px; height:30px; line-height:30px;}
+.paidui ul li.now{ color:#F00;}
+.paidui ul li span{ float:right;}

@@ -1,0 +1,84 @@
+<script>
+var getrank = function(){
+  var fid = $('#c_fid').val();
+  var keyword = $('#c_keyword').val();
+  var rank = $('#c_rank').val();
+  if(fid == '' || keyword == '' || rank == ''){
+    alert('请填写关键词和排名位置！');
+    return false;
+  }
+  $.ajax({
+      url:'__APP__/public/ajaxgetrankstring',
+      type:'POST',
+      data:'fid=' + fid + '&rank=' + rank + '&keyword=' + keyword ,
+      success: function(ress){
+        var str = '';
+        if(ress.count == 0){
+	  str += '此关键词排名没有排队信息，开始日期大于当前时间即可';
+	}else{
+	  str += '此关键词排名有<span style="color:red;"> ' + ress.count + ' </span>人排队，开始日期应大于<span style="color:red;"> ' + ress.endtime +  ' </span>';
+	}
+	$('#starttimestring').html(str);
+      },
+      dataType:'json'
+    });
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/searchrank" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>公司名称：</label>
+	  <input name="org2.id" value="<!--{$result.cid}--!>" type="hidden">
+	  <input class="required" name="org2.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetcompanyinfo" lookupGroup="org2" value="<!--{$result.cname}--!>"/>
+	</div>
+	<div class="unit">
+	  <label>所属会员：</label>
+	  <input name="org3.id" value="<!--{$result.mid}--!>" type="hidden">
+	  <input name="org3.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org3" value="<!--{$result.mname}--!>"/>
+	</div>
+	<div class="unit">
+	  <label>站点类别：</label>
+	  <select class="combox" name="fid" id="c_fid">
+	    <volist name="result_website_type" id="rwt">
+	    <eq name="result.fid" value="$rwt.id">
+	    <option value="<!--{$rwt.id}--!>" selected="selected"><!--{$rwt.name}--!></option>
+	    <else/>
+	    <option value="<!--{$rwt.id}--!>"><!--{$rwt.name}--!></option>
+	    </eq>
+	    </volist>
+	  </select>
+	</div>
+	<div class="unit">
+	  <label>关键词：</label>
+	  <input name="keyword" type="text" id="c_keyword" class="required" value="<!--{$result.keyword}--!>" />
+	</div>
+	<div class="unit">
+	  <label>排名：</label>
+	  <input name="rank" type="text" id="c_rank" class="required" value="<!--{$result.rank}--!>" /><label style="width:200px;margin-left:10px;"><a onclick="getrank();" class="button"><span>查看此关键词排名排队情况</span></a></label>
+	</div>
+	
+	<div class="unit">
+		<label>开始日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="starttime"value="<!--{$result.starttime|date='Y-m-d', ###}--!>" /><label id="starttimestring" style="width:400px;"><label>
+	      </div>
+	      <div class="unit">
+		<label>结束日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="endtime"value="<!--{$result.endtime|date='Y-m-d', ###}--!>" />
+	</div>
+
+</div>
+<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

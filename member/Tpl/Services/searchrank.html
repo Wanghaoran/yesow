@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>速查排名管理-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_850">
+        	<div id="main">
+		  <include file="sidebar" />
+				<div id="main_rm">
+					<div class="main_rm_tit">速查排名管理</div>
+                    <div class="main_rm_con">
+                    	<ul class="user_set">
+			  <include file="Index:info" />
+                            <li class="btn_img9"><a href="__URL__/addsearchrank"><img src="__PUBLIC__/member/images/user/img_scpmsq.jpg" width="90" height="90" border="0"/></a><a href="__URL__/editsearchrank"><img src="__PUBLIC__/member/images/user/img_scpmgl.jpg" width="90" height="90" border="0" /></a><a href="__URL__/searchrankorder"><img src="__PUBLIC__/member/images/user/img_scpmdd.jpg" width="90" height="90" border="0" /></a></li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+				</div>
+              <include file="Index:memberbackgroundnotice" />
+                <div class="clear"></div>
+                
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+	<script type="text/javascript">
+		$(function(){
+			$('button').hover(function(){
+				$(this).addClass('hover');	
+			},function(){
+				$(this).removeClass('hover');	
+			})		
+		})
+	</script>
+</body>
+</html>

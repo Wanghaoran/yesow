@@ -1235,3 +1235,7 @@ ul.ul_sjfc3 li div.right_div h4{ font-size:14px; font-weight:bold; color:#e94718
 ul.ul_sjfc3 li div.right_div p{ font-size:12px; color:#7d7d7d;line-height:20px; height:60px; padding-right:10px; overflow:hidden;}
 ul.ul_sjfc3 li div.right_div input{ float:left; margin-right:5px;}
 ul.ul_sjfc3 div.page{ height:40px; background:#fff;}
+
+.font_red{ color:#F00; font-weight:800; text-align:left;}
+.gjczh ul{ padding:25px;}
+.gjczh ul li{ float:left; height:30px; line-height:30px; margin-right:20px;}

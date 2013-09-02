@@ -9,6 +9,21 @@
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/dialog.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript">
+			      function poplogin(){
+				var api = $.dialog({id:'L1360'});
+				/* jQuery ajax */
+				$.ajax({
+				  url:'__ROOT__/public/ajaxlogin',
+				  success:function(data){
+				    api.content(data);
+				  },
+				  cache:false
+				});
+			      }
+			    </script>
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -38,128 +53,56 @@
 			</div>
 			<div class="cat_bod" style="width:630px; overflow:hidden;">
 				<dl class="cat_choice">
-					<dt>关键字</dt>
+				  <dt><a href="__ROOT__/company/keywordrank">关键字</a></dt>
 					<dd>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a>
-						<a href="#">关键字01</a> 
+					<volist name="result_keyword" id="rk">
+					<a href="__ROOT__/company/keywordrank/keyword/<!--{$rk.keyword}--!>"><!--{$rk.keyword}--!></a>
+					</volist>
+
 					</dd>
+<div style="float:right;margin-top:10px;"><a href="__ROOT__/company/morekeyword">更多>>></a></div>
 				</dl>
+				<volist name="result" id="r">
+				<neq name="r.empty" value="1">
 				<dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
+					<dt><a href="__ROOT__/company/<!--{$r.cid}--!>" target="_blank"><!--{$r.cname}--!><span class="address">[<!--{$r.fname}--!>]</span></a>
+						<span class="pm_zy">排名: 第 <!--{$r.rank}--!> 名</span>
+			<span class="gjc">关键词:<a href="__ROOT__/company/keywordrank/keyword/<!--{$r.keyword}--!>"> <!--{$r.keyword}--!></a></span>
 					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
+					<dd>主营: <!--{$r.manproducts}--!></dd>
+					<dd>地址: <!--{$r.address}--!></dd>
+					<dd>
+
+				<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+				<input type="button" class="btn_wyxf" value="抢排此位" onclick="window.open('__ROOT__/member.php/services/addsearchrank/f_fid/<!--{$r.fid}--!>/f_keyword/<!--{$r.keyword}--!>/f_rank/<!--{$r.rank}--!>/type/wait');"/>
+				<else/>
+				<input type="button" class="btn_wyxf" value="抢排此位" onclick="poplogin();"/>
+				</if>
+
+<span class="span_dqsj" style="color:green;">开始时间(<!--{$r.starttime|date="Y-m-d", ###}--!>)</span><span class="span_dqsj">到期时间(<!--{$r.endtime|date="Y-m-d", ###}--!>)</span><a href="__ROOT__/company/<!--{$r.cid}--!>" target="_blank">详情>></a></dd>
 				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
+				<else/>
+				<dl class="gjpm_list">
+				<dt><h1>此处排名位置可购买,请点击左侧的购买链接完成购买</h1>
+<br/>
+<span class="address">[<!--{$r.fname}--!>]</span></a>
+				<span class="pm_zy">排名: 第 <!--{$r.rank}--!> 名</span>
+<span class="gjc">关键词:<a href="__ROOT__/company/keywordrank/keyword/<!--{$r.keyword}--!>"> <!--{$r.keyword}--!></a></span>
+				<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+				<dd><input type="button" class="btn_wyxf" value="立即购买" onclick="window.open('__ROOT__/member.php/services/addsearchrank/f_fid/<!--{$r.fid}--!>/f_keyword/<!--{$r.keyword}--!>/f_rank/<!--{$r.rank}--!>/type/buy');"/></dd>
+				<else/>
+				<dd><input type="button" class="btn_wyxf" value="立即购买" onclick="poplogin();"/></dd>
+				</if>
+				
+				<dd style="margin-top:30px;"></dd>
 				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
-                <dl class="gjpm_list">
-					<dt><a href="#">某某某某笔记本科技有限责任公司<span class="address">[华东]</span></a>
-						<span class="pm_zy">排名: 左1 右2</span>
-                        <span class="gjc">关键词:<a href="#">笔记本</a></span>
-					</dt>
-					<dd>主营: 电脑 计算机 计算器 U盘 移动硬盘 移动电源</dd>
-					<dd>地址: 北京市海淀区中关村南大街2号</dd>
-					<dd><input type="button" class="btn_wyxf" value="抢排此位"/>最后更新(2012-02-02)<span class="span_dqsj">到期时间(2012-12-12)</span><a href="#">详情>></a></dd>
-				</dl>
+				
+				</neq>
+               			</volist>
+             
 				<div class="clear"></div>
 				<div class="page" style="padding-right:10px;">
-					<span>共72条数据</span>
-					<a href="#">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页</a>
+					<!--{$show}--!>
 				</div>
 			</div>
 		</div>

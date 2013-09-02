@@ -474,6 +474,32 @@ class CompanyAction extends CommonAction {
     //查询时间
     $this -> assign('time', $result['time']);
 
+    
+    /* ----- 速查排名 ----- */
+    //站点类型
+    $website_type_name = D('admin://ChildSite') -> getid() ? '分站' : '主站';
+    $fid = M('SearchRankWebsiteType') -> getFieldByname($website_type_name, 'id');
+    $this -> assign('fid', $fid);
+    //查询
+    $where_searchrank = array();
+    $where_searchrank['sr.fid'] = $fid;
+    $where_searchrank['sr.rank'] = array('BETWEEN', array($result['pagenow'] * 20 - 19, $result['pagenow'] * 20));
+    $where_searchrank['sr.keyword'] = $result['keyword'];
+    $where_searchrank['sr.starttime'] = array('ELT', time());
+    $where_searchrank['sr.endtime'] = array('EGT', time());
+    $result_searchrank = M('SearchRank') -> table('yesow_search_rank as sr') -> field('sr.fid,sr.cid as id,sr.rank,c.name as name,c.csid,c.csaid,c.manproducts,c.address,c.companyphone,c.linkman,c.mobilephone,c.addtime,c.updatetime,c.updatetime,c.clickcount,c.content') -> join('yesow_company as c ON sr.cid = c.id') -> where($where_searchrank) -> order('rank ASC') -> select();
+    //替换
+    foreach($result['result'] as $key => $value){
+      $result['result'][$key]['rank'] = $key+($result['pagenow'] * 20 - 19);
+      foreach($result_searchrank as $key2 => $value2){
+	if(($key+($result['pagenow'] * 20 - 19)) == $value2['rank']){
+	  $result['result'][$key] = $result_searchrank[$key2];
+	  $result['result'][$key]['searchrank'] = 1;
+	}
+      }
+    }
+    /* ----- 速查排名 ----- */
+
     //制作复制替换数组
     $replace_arr = array();
     foreach($result['keyword_arr'] as $value){
@@ -587,6 +613,94 @@ class CompanyAction extends CommonAction {
     }
     $hot_result = $company -> table('yesow_company as c') -> field('c.id,c.name,cs.name as csname,c.addtime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> order('clickcount DESC') -> where($wher_hot) -> limit(10) -> select();
     $this -> assign('hot_result', $hot_result);
+
+    $website_type_name = $csid ? '分站' : '主站';
+    $fid = M('SearchRankWebsiteType') -> getFieldByname($website_type_name, 'id');
+    
+    $SearchRank = M('SearchRank');
+    
+    //关键词
+    $where_key = array();
+    $where_key['fid'] = $fid;
+    $where_key['starttime'] = array('ELT', time());
+    $where_key['endtime'] = array('EGT', time());
+    $result_keyword = $SearchRank -> field('keyword') -> where($where_key) -> group('keyword') -> limit(10) -> select();
+    $this -> assign('result_keyword', $result_keyword);
+
+    $where = array();
+    $where['sr.fid'] = $fid;
+    $where['sr.starttime'] = array('ELT', time());
+    $where['sr.endtime'] = array('EGT', time());
+    if(!empty($_GET['keyword'])){
+      $where['sr.keyword'] = $this -> _get('keyword');
+    }
+
+    //查询最大排名数
+    $max_rank = M('SearchRankMoney') -> where(array('fid' => $fid)) -> order('rank DESC') -> getField('rank');
+    import("ORG.Util.Page");// 导入分页类
+    if(!empty($_GET['keyword'])){
+      $count = $max_rank;
+    }else{
+      $count = $SearchRank -> table('yesow_search_rank as sr') -> where($where) -> count();
+    }
+    $page = new Page($count, 10);//每页10条
+    $page->setConfig('header','条数据');
+    $show = $page -> show();
+    $this -> assign('show', $show);
+    //当前页
+    $now_page = $_GET['p'] ? $_GET['p'] : 1;
+    if(!empty($_GET['keyword'])){
+      //循环开始数
+      $for_start = $now_page * 10 - 9;
+      //循环结束数
+      $for_end = ($now_page * 10) > $max_rank ? $max_rank : $now_page * 10;
+    }
+
+    if(!empty($_GET['keyword'])){
+      $result_temp = $SearchRank -> table('yesow_search_rank as sr') -> field('c.id as cid,c.name as cname,c.manproducts,c.address,sr.keyword,rwt.name as fname,sr.starttime,sr.endtime,sr.rank,sr.fid') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.rank ASC,sr.starttime ASC') -> select();
+    }else{
+      $result = $SearchRank -> table('yesow_search_rank as sr') -> field('c.id as cid,c.name as cname,c.manproducts,c.address,sr.keyword,rwt.name as fname,sr.starttime,sr.endtime,sr.rank,sr.fid') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sr.rank ASC,sr.starttime ASC') -> select();
+    }
+    
+    if(!empty($_GET['keyword'])){
+      $result = array();
+      for($i = $for_start; $i <= $for_end; $i++){
+	$result[$i] = array('rank' => $i, 'empty' => 1, 'fname' => $result_temp[0]['fname'], 'fid' => $fid, 'keyword' => $this -> _get('keyword'));
+	foreach($result_temp as $key => $value){
+	  if($value['rank'] == $i){
+	    $result[$i] = $result_temp[$key];
+	  }
+	}
+      }
+    }
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //关键词更多页
+  public function morekeyword(){
+    $SearchRank = M('SearchRank');
+    $website_type_name = $csid ? '分站' : '主站';
+    $fid = M('SearchRankWebsiteType') -> getFieldByname($website_type_name, 'id');
+
+    $where_key = array();
+    $where_key['fid'] = $fid;
+    $where_key['starttime'] = array('ELT', time());
+    $where_key['endtime'] = array('EGT', time());
+    if(!empty($_GET['keyword'])){
+      $where_key['keyword'] = array('LIKE', '%' . $this -> _get('keyword') . '%');
+    }
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = M() -> table('(SELECT keyword,fid,starttime,endtime FROM yesow_search_rank GROUP BY keyword) as a')  -> where($where_key) -> count();
+    $page = new Page($count, 100);//每页100条
+    $page->setConfig('header','条数据');
+    $show = $page -> show();
+    $this -> assign('show', $show);
+
+    $result_keyword = $SearchRank -> field('keyword') -> where($where_key) -> limit($page -> firstRow . ',' . $page -> listRows) -> group('keyword') -> select();
+    $this -> assign('result_keyword', $result_keyword);
+
     $this -> display();
   }
 

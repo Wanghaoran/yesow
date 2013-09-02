@@ -1,0 +1,50 @@
+<br/>
+<div class="divider"></div>
+<p>
+<span><b>订单号:</b></span>
+<span style="color:red;"><!--{$result_o.ordernum}--!></span>
+<span style="margin-left:80px;"><b>订单状态:</b></span>
+<eq name="result_o.ischeck" value="1">
+<span style="color:green;"> 已确认</span>
+<else/>
+<span style="color:red;"> 未确认</span>
+</eq>
+<eq name="result_o.status" value="0">
+<span style="color:red;margin-left:10px;"> 未付款</span>
+<else/>
+<span style="color:green;margin-left:10px;"> 已付款</span>
+</eq>
+</p>
+<div class="divider"></div>
+<br/>
+<table class="table" width="100%">
+		<thead>
+			<tr>
+				<th>公司名称</th>
+				<th>站点类别</th>
+				<th>排名位置</th>
+				<th>关键词</th>
+			</tr>
+		</thead>
+		<tbody>
+		  <tr>
+			<td><!--{$result_o.cname}--!></td>
+			  <td><!--{$result_o.fname}--!></td>
+			  <td>第 <!--{$result_o.rank}--!> 名</td>
+			  <td><!--{$result_o.keyword}--!></td>
+		  </tr>	  
+		</tbody>
+	      </table>
+	      	      <br/>
+	      <hr/>
+<p>
+<span><b>购买用户：</b></span>
+<span><!--{$result_o.mname}--!></span>
+<span style="margin-left:15px;"><b>电话：</b></span>
+<span><!--{$result_o.mtel}--!>(<!--{$result_o.mfullname}--!>)</span>
+<span style="margin-left:15px;"><b>所属公司：</b></span>
+<span><!--{$result_o.cname}--!></span>
+<br/><br/>
+<span style="margin-left:15px;"><b>包月时间：</b></span>
+<span><!--{$result_o.months}--!></span>个月
+</p>

@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>速查排名申请-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/lhgdialog.min.js"></script> 
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+    }
+
+</script>
+<script>
+//等待位
+var waitrank = function(obj){
+  //首先移除全部的active
+  $(".pmsx li").removeClass("choice");
+  //选中的添加acrive
+  $(obj).addClass("choice");
+  var fid = $('#fid').val();
+  var keyword = $('#keyword').val();
+  var rank = $(obj).attr('title');
+  //读取等待页
+  $.dialog({
+    title:"排队窗口",  
+    width:600,  
+    height:320,  
+    content:'url:__URL__/waitrank/fid/' + fid + '/keyword/' + keyword + '/rank/' + rank,
+    button:[{name: '确定', callback: function () {monthmoney(fid,rank)}}, {name: '取消', callback:function(){$(".pmsx li").removeClass("choice");$('#radiolist1').html('请选择站点类别并输入关键词和选择排名');}}],
+    max:false,  
+    min:false,  
+    lock:true
+  }); 
+}
+//无需等待位
+var nowaitrank = function(obj){
+  var fid = $('#fid').val();
+  var rank = $(obj).attr('title');
+  //首先移除全部的active
+  $(".pmsx li").removeClass("choice");
+  //选中的添加acrive
+  $(obj).addClass("choice");
+  monthmoney(fid,rank);
+}
+//生成包月价格
+var monthmoney = function(fid,rank){
+  //Frist Write Rank to Post Arr
+  $("#rank").attr("value",rank);
+  //ajax post
+  $.ajax({
+      url:'__ROOT__/member.php/public/ajaxgetsearchrankprice',
+      type:'POST',
+      data:'fid=' + fid + '&rank=' + rank ,
+      success: function(ress){
+      	var _nstr = '';
+	if(ress != null){
+	$.each(ress, function(i, res){
+	  _nstr += '<input name="months" id="bysjr' + res['id'] + '" type="radio" value="' + res['id'] + '"/><label for="bysjr' + res['id'] + '" class="zxqqsqradio">包月数：' + res['months'] + '个月<br />市场价：' + res['marketprice'] + '元<br />推广价：' + res['promotionprice'] + '元</label>';
+	  });
+	  $('#radiolist1').html(_nstr).show();
+	  }else{
+	  $('#radiolist1').html('暂无包月报价！').show();
+	  }
+	  $('#radiolist1').hradio();
+      },
+      dataType:'json'
+    });
+}
+//生成附带查询条件
+var postlist = function(){
+  $("#f_fid").attr("value",$('#fid').val());
+  $("#f_keyword").attr("value",$('#keyword').val());
+  $("#f_rank").attr("value", $('.choice').attr('title'));
+}
+</script>
+<script>
+var getrank = function(){
+  var fid = $('#fid').val();
+  var keyword = $('#keyword').val();
+  if(fid == '' || keyword == ''){
+    return false;
+  }
+  var sum = 0;
+  $.ajax({
+      url:'__ROOT__/member.php/public/ajaxgetsearchrank',
+      type:'POST',
+      data:'fid=' + fid + '&keyword=' + keyword ,
+      success: function(ress){
+      	var str = '';
+      	$.each(ress, function(i,val){
+	  if(val){
+	   str += '<li onclick="waitrank(this);postlist();" id="rank' + i + '" title="' + i + '"><a>第' + i + '位<br />(等)</a></li>'; 
+	  }else{
+	    str += '<li onclick="nowaitrank(this);postlist();" id="rank' + i + '" title="' + i + '"><a>第' + i + '位<br />(空)</a></li>';
+	  }
+	  if(i == 10){
+	    str += '<div id="show" style="display:none">';
+	  }
+	  sum++;
+	});
+	if(sum >= 10){
+	  str += '</div>';
+	}
+	$('#ranklist').html(str);
+	$("#zk").html("展开<img src='__PUBLIC__/member/images/user/zhankai.jpg'/>");
+	haverank();
+	postlist();
+      },
+      dataType:'json'
+    });
+}
+
+var haverank = function(){
+<notempty name="Think.request.f_rank">
+  <eq name="Think.request.type" value="wait">
+  waitrank($("#rank<!--{$Think.request.f_rank}--!>"));
+  <else/>
+  nowaitrank($("#rank<!--{$Think.request.f_rank}--!>"));
+  </eq>
+  <gt name="Think.request.f_rank" value="10">
+    show();
+  </gt>
+</notempty>
+}
+
+function show(){
+  if ($("#show").css("display") == "none") {
+    $("#show").css("display", "inline");
+    $("#zk").html("收缩<img src='__PUBLIC__/member/images/user/shousuo.jpg'/>");
+  } else {
+    $("#show").css("display", "none");
+    $("#zk").html("展开<img src='__PUBLIC__/member/images/user/zhankai.jpg'/>");
+  }
+}
+
+var checksubmit = function(){
+  if(!$('#cid').val()){
+    alert('请选择公司信息！');
+    return false;
+  }
+  if(!$("#fid").val()){
+    alert('请选择购买站点类型！');
+    return false;
+  }
+  if(!$("#keyword").val()){
+    alert('请输入购买的关键词！');
+    return false;
+  }
+  if(!$("#rank").val()){
+    alert('请选择排名！');
+    return false;
+  }
+  if(!$("input[name='months']:checked ").val()){
+    alert('请选择购买月份！');
+    return false;
+  }
+  return true;
+}
+</script>
+
+</head>
+<body id="body_user">
+<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">速查排名管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">速查排名申请</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                        	<div class="qqsq_tishi">注：您是在会员中心进行的添加，请先进行公司搜索，点选公司后，会在第一步中显示您选择的公司信息。</div>
+                           <form action="__ACTION__" method="post">
+			    <div class="qqsq_search">请输入公司名称：
+			      <input type="text" name="keyword" />
+			      <input type="hidden" id="f_fid" name="f_fid" value="" />
+			      <input type="hidden" id="f_keyword" name="f_keyword" value="" />
+			      <input type="hidden" id="f_rank" name="f_rank" value="" />
+			      <input type="hidden" id="type" name="type" value="noalert" />
+			      <input type="submit" value="搜索" />
+			    </div>
+			    </form>
+
+                            <div class="qqsq_jieguo">
+                            	<div id="help01">
+				  <ul>
+				    <notempty name="company_search">
+				    <volist name="company_search" id="cs">
+				    <li>
+				    <a href="__ACTION__/cid/<!--{$cs.id}--!>/f_fid/<!--{$Think.request.f_fid}--!>/f_keyword/<!--{$Think.request.f_keyword}--!>/f_rank/<!--{$Think.request.f_rank}--!>/type/noalert">
+				      <div class="help01"><!--{$cs.name}--!></div>
+				      <div class="poptip">
+					<div class="poptipcon">
+					  <dl class="dl_help1">
+					    <dd>主营：<!--{$cs.manproducts}--!></dd>
+					    <dd>地址：<!--{$cs.address}--!></dd>
+					    <dd>网址：<!--{$cs.website}--!></dd>
+					    <dd class="last">负责人：<!--{$cs.linkman}--!></dd>
+					  </dl>
+					  <div class="clear"></div>
+					</div>
+					<em>
+					  <i></i>
+					</em>
+				      </div>
+				    </a>
+				    </li>
+				    </volist>
+				    </notempty>					
+				  </ul>
+				</div>
+				<div class="clear"></div>
+				<div class="page"><!--{$show}--!></div>
+                                <div class="clear10"></div>
+                            </div>
+							<!--第一步-->
+                            <div class="div_zxqqsq1">
+								<div class="zxqqsq1_left left"><h2>第一步</h2><h3>确认信息</h3></div>
+								<div class="zxqqsq1_mid left">
+									<ul>
+										<notempty name="company_info">
+								    <li>所属地区：<!--{$company_info.csname}--!> - <!--{$company_info.csaname}--!></li>
+								    <li>商家名称：<!--{$company_info.name}--!></li>
+								    <li>公司地址：<!--{$company_info.address}--!></li>
+								    <li>联&nbsp;&nbsp;系&nbsp;人：<!--{$company_info.linkman}--!></li>
+								    <else/>
+								    <div class="zxqqsq1_right left">请到上面搜索栏搜索出您要添加企业形象的商家名片，然后选择确认在这里</div>
+
+								    </notempty>
+									</ul>
+								</div>
+								<div class="zxqqsq1_right left">此处为您选择的客户公司信息，请核对是否有误。</div>
+							</div>
+                            <div class="clear10"></div>
+							<!--第二步-->
+							<form action="__URL__/searchrank_pay" method="post" onsubmit="return checksubmit();">
+							<div class="div_zxqqsq2">
+								<div class="zxqqsq2_left left"><h2>第二步</h2><h3>选择位置</h3></div>
+								<div class="zxqqsq2_mid left">
+									<div class="scpminfo">
+                                    	<div class="scpminfo_l">排名站点：</div>
+					<div class="scpminfo_r">
+					  <select name="fid" id="fid" onchange="getrank();postlist();">
+					    <option value="">请选择</option>
+					    <volist name="result_website_type" id="rfm" >
+					    <eq name="Think.request.f_fid" value="$rfm.id">
+					    <option value="<!--{$rfm.id}--!>" selected="selected"><!--{$rfm.name}--!></option>
+					    <else/>
+					    <option value="<!--{$rfm.id}--!>"><!--{$rfm.name}--!></option>
+					    </eq>
+					    </volist>
+					  </select>
+					</div>
+                                        <div class="clear5"></div>
+                                        <div class="scpminfo_l">关键词设置：</div>
+                                        <div class="scpminfo_r">
+						<input type="text" class="txtfile" style="width:215px;" name="keyword" id="keyword" value="<!--{$Think.request.f_keyword}--!>" onkeyup="getrank();" />
+                                            <ul class="ul_gjc">
+					      <volist name="result_search_hot" id="rsh">
+					      <li><a onclick="$('#keyword').val(($(this).text()));getrank();postlist();"><!--{$rsh.name}--!></a></li>
+					      </volist>
+
+                                            </ul>
+                                        </div>
+                                        <div class="clear5"></div>
+                                        <div class="scpminfo_l">排名顺序：</div>
+                                        <div class="scpminfo_r">
+                                        	<ul class="pmsx" id="ranklist">
+						<div>请先选择展示站点和关键词</div>
+                                            </ul>
+                                            <div class="clear"></div>
+                                            <a href="javascript;" id="zk" onclick="show();return false;" class="shousuo">展开<img src="__PUBLIC__/member/images/user/zhankai.jpg" /></a> 
+                                        </div>
+                                        <div class="clear5"></div>
+                                    </div>
+								</div>
+								<div class="zxqqsq2_right left">在这里选择您的排名所在的站点，然后输入你所想要排序的关键词，系统会自动匹配您所能排名的位置情况，“空”表示您可以选择此位，“等”表示目前这个位置有商家已经申请了排名。</div>
+							</div>
+                            <div class="clear10"></div>
+							<!--第三步-->
+							<div class="div_zxqqsq3">
+								<div class="zxqqsq3_left left"><h2>第三步</h2><h3>包月时间</h3></div>
+								<div class="zxqqsq3_right left">
+                                    <div id="radiolist1">
+				      请选择站点类别并输入关键词和选择排名
+                                         <div class="clear"></div>
+                                     </div>
+								</div>
+							</div>
+                            <div class="clear10"></div>
+                            <div class="qqsq_tishi">请确认您购买的是本公司的速查排名位置，请勿恶意购买，如经发现，我们将删除该信息，且不予退费！</div>
+                            <div class="div_zxqqsq5">
+			      <input type="hidden" name="rank" value="" id="rank" />
+			        <input type="hidden" name="cid" value="<!--{$Think.get.cid}--!>" id="cid" />
+                            	<input type="submit" class="btn_goumai" value="" />
+                            </div>
+                            <div class="clear10"></div>
+			    </form>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+<script>
+getrank();
+</script>
+
+</html>

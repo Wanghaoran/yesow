@@ -129,7 +129,7 @@ class IndexAction extends CommonAction {
       $where['csid'] = $csid;
     }
     $where['delaid'] = array('exp', 'is NULL');
-    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> where($where) -> limit(20) -> select();
+    $new_company = $company -> field('id,name,updatetime') -> order('id DESC') -> where($where) -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
 
@@ -191,7 +191,7 @@ class IndexAction extends CommonAction {
       $where['csid'] = $csid;
     }
     $where['delaid'] = array('exp', 'is NULL');
-    $recommend_company = $company -> field('id,name') -> order('updatetime DESC') -> where($where) -> limit(32) -> select();
+    $recommend_company = $company -> field('id,name') -> order('id DESC') -> where($where) -> limit(32) -> select();
     $this -> assign('recommend_company', $recommend_company);
   }
 
@@ -205,7 +205,7 @@ class IndexAction extends CommonAction {
   //商家风采
   private function showcompany(){
     $company = M('Company');
-    $show_company = $company -> field('id,name') -> order('updatetime DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 21)) -> limit(20) -> select();
+    $show_company = $company -> field('id,name') -> order('id DESC') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => 21)) -> limit(20) -> select();
     $this -> assign('show_company', $show_company);
   }
 

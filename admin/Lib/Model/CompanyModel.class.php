@@ -123,6 +123,8 @@ class CompanyModel extends Model {
     $result['show'] = $show;
     //总数
     $result['count'] = $count;
+    //当前页数
+    $result['pagenow'] = $_GET['p'] ? $_GET['p'] : 1;
 
     //将存在地名关键词的数据排到首位
     if($place_keyword){
@@ -131,6 +133,7 @@ class CompanyModel extends Model {
     //查询
     G('start');
     $result['result'] = $this -> table($sql . ' a') -> order($order) -> limit($page -> firstRow . ',' . $page -> listRows) -> where($senior_where) -> select();
+
     //查询时间
     $result['time'] = G('start', 'end');
 
