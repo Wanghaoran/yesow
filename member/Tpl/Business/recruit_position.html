@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>岗位管理 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+  var delcompany = function(id){
+    if(confirm('确定要删除此条岗位信息吗?')){
+      $.ajax({
+	url: '__URL__/recruit_delposition/id/' + id,
+	success: function(ress){
+	  if(ress){
+	    location.reload();
+	  }else{
+	    alert('删除失败!');
+	  }
+	}
+      });
+    }   
+  }
+</script>
+</head>
+<body id="body_user">
+<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">商家需求</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="__URL__/recruit">人才交流</a>
+				<a href="__URL__/recruit_addcompany">发布公司</a>
+				<a class="on">岗位管理</a>
+				<a href="#">发布岗位</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+			  <div style="float:left;">
+			    <b><!--{$company_name}--!></b>
+			   </div>
+				<div style="float:right;"><input type="button" value="返回公司列表" onclick="location.href='__URL__/recruit'"/>&nbsp;&nbsp;<input type="button" value="发布岗位" onclick="location.href='__URL__/recruit_addposition/cid/<!--{$Think.get.cid}--!>'"/></div>
+                            <div style="min-height:250px;">
+                                <table class="table_zxqqgl">
+                                    <tr>
+                                        <th>所在地</th>
+                                        <th>岗位名称</th>
+					<th>发布时间</th>
+                                        <th>过期日期</th>
+                                        <th>详情</th>
+                                        <th>操作</th>
+                                        <th>管理操作</th>
+                                    </tr>
+				    <volist name="result" id="r">
+                                    <tr>
+					<td><!--{$r.csname}--!> - <!--{$r.csaname}--!></td>
+                                        <td><!--{$r.name}--!></td>
+                                        <td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
+                                        <td><!--{$r.endtime|date="Y-m-d", ###}--!></td>
+					<td><a href="#">查看</a></td>
+					<eq name="r.ischeck" value="1">
+					<td style="color:blue;">已审</td>
+					<else/>
+					<td style="color:red;">未审</td>
+					</eq>
+					<td><a href="__URL__/recruit_editposition/id/<!--{$r.id}--!>">修改</a>|<a href="javascript:delcompany(<!--{$r.id}--!>);">删除</a></td>
+                                    </tr>
+				    </volist>
+                                   
+									
+                                </table>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="page">
+				<!--{$show}--!>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

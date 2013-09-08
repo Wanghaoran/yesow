@@ -23,6 +23,7 @@ $app_lang = array(
   'ADVERT_LIMIT' => '此广告位已售出，请选择其他广告位',
   'ADVERT_RENEW' => '页面广告信息更新成功，现在跳转到续费订单页面',
   'SEARCHRANK_ERROR' => '更新速查排名信息失败',
+  'ADDPOSITION_SUCCESS' => '岗位信息添加成功,，审核通过后即可在前台显示',
 );
 
 return array_merge($common_lang, $app_lang);

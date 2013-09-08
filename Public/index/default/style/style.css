@@ -645,6 +645,7 @@ a.qq_offline{ width:90px; height:22px; line-height:22px; padding-left:24px; back
 .div_about{ padding:0 10px;}
 .div_about p{ line-height:20px; text-align:left; color:#666666}
 .clear30{ clear:both; height:30px;}
+.clear20{ clear:both; height:20px;}
 .clear10{ clear:both; height:10px;}
 .clear5{ clear:both; padding-top:5px;}
 .cat_bod h3.h3_text{ width:80px; height:30px; line-height:30px; text-align:left; color:#F60; margin:10px;}
@@ -1109,7 +1110,7 @@ ul.ul_czzpgg1 li{ float:left; width:200px; height:22px; line-height:22px;}
 ul.ul_czzpgg1 li a{display:inline-block; height:22px; line-height:22px; text-decoration:none;}
 ul.ul_czzpgg1 li a.new{display:inline-block; height:22px; line-height:22px; background:url(images/new.gif) no-repeat right center; padding-right:26px; _background:url(images/new.gif) no-repeat right 5px;}
 ul.ul_czzpgg1 li a.tuijian{display:inline-block; height:22px; line-height:22px; background:url(images/icon_tuijian.gif) no-repeat right center; padding-right:26px; _background:url(images/icon_tuijian.gif) no-repeat right 5px;}
-ul.ul_czzpgg1 li a div{ float:left; width:130px; height:22px; overflow:hidden;}
+ul.ul_czzpgg1 li a div{ float:left; width:127px; height:22px; overflow:hidden;}
 ul.ul_czzpgg1 li a span{  color:#0000fc;}
 .div_czzpgg div.czzpgg_right{ float:left; width:280px;}
 ul.ul_czzpgg2{ width:200px;}
@@ -1236,6 +1237,50 @@ ul.ul_sjfc3 li div.right_div p{ font-size:12px; color:#7d7d7d;line-height:20px; 
 ul.ul_sjfc3 li div.right_div input{ float:left; margin-right:5px;}
 ul.ul_sjfc3 div.page{ height:40px; background:#fff;}
 
-.font_red{ color:#F00; font-weight:800; text-align:left;}
-.gjczh ul{ padding:25px;}
-.gjczh ul li{ float:left; height:30px; line-height:30px; margin-right:20px;}
+
+#main18{padding-top:5px;}
+#main18_l{ float:left; width:240px;}
+#main18_r{width:705px; padding-left:5px; float:left;}
+#main18_l .cat_header{ width:238px; position:relative;}
+#main18_l .cat_header a.more{display:inline-block; height:20px; position:absolute; top:5px; right:10px;}
+#main18_l .cat_bod{ width:220px;}
+#main18_r .main18_r_con{border:1px solid #f60; border-top:0;padding:4px; width:695px;}
+
+table.zp_list{ border-collapse:collapse; width:690px; border:none;}
+table.zp_list th{ text-align:left; padding-left:10px; border-bottom:#666 1px dotted; font-weight:normal; font-size:14px;  height:30px; line-height:30px;}
+table.zp_list th.thmid{ text-align:center;}
+table.zp_list td{ border-collapse:collapse; padding-left:10px; text-align:left; height:30px; line-height:30px;border-bottom:#666 1px dotted;}
+table.zp_list td.tdmid{ text-align:center;}
+
+.zp_detail{ width:650px; margin:20px auto;}
+.zp_detail_title{ height:40px; line-height:40px; color:#ff1317; border-bottom:#ff1317 1px dotted;}
+.zp_detail_title a{color:#ff1317;}
+.zp_detail_title span.zph2{ float:left; font-size:16px; font-weight:800;}
+.zp_detail_title span.zpaddress{float:left; font-size:12px; margin-left:10px;}
+.zp_detail_title span.zpnum{float:left; font-size:12px; color:#666; margin-left:10px;}
+.zp_detail_title span.zpdate{ float:right;}
+.zph3{ background:#f86311; height:20px; line-height:20px; text-align:left; padding-left:10px; color:#000; font-size:12px;}
+
+.zpxq_tb{ border-collapse:collapse; border:#d7d7d7 1px solid; width:650px;}
+.zpxq_tb th{border-collapse:collapse; border:#d7d7d7 1px solid; text-align:left; padding-left:10px;}
+.zpxq_tb td{border-collapse:collapse; border:#d7d7d7 1px solid; text-align:left; padding-left:10px;}
+
+.lxfsbox{ width:650px;}
+.lxfsbox_left{ float:left; width:210px; margin:0 20px;}
+.lxfsbox_right{ width:500px;}
+.lxfsbox_right li span{ font-weight:bold;}
+
+.xggwbox{ border:#d2d2d2 1px solid; width:685px; margin:0 auto;}
+.xggwbox_title{ text-align:left; height:40px; line-height:40px; padding-left:10px; color:#bf0e2b; font-size:14px; font-weight:800;}
+ul.xggw{}
+ul.xggw li{ float:left; width:330px; height:25px; line-height:25px;}
+ul.xggw li span{ height:30px; padding:0 10px; margin-right:10px; border-right:#000 1px solid;}
+ul.xggw li.lileft{ border-right:#c2c2c2 1px solid; margin-right:20px;}
+.xggwbox_con{ padding:0 10px;}
+.xggwbox_cleft{ float:left; width:460px;}
+.txtpl{ width:450px; height:60px; line-height:20px; text-align:left; border:#d2d2d2 1px solid;}
+.xggwbox_cright{ float:left;}
+.xggwbox_cright input.input_yzm{ border:#d2d2d2 1px solid; height:20px; line-height:20px; width:60px;}
+.btn_tjpl{margin-top:10px; background:url(images/addedit_btn.gif) bottom center no-repeat;font-size:14px; font-weight:bold; display:block;width:90px; height:30px; line-height:30px; text-align:center; color:#fff; border:none;}
+table.zp_list td a.tuijian{background: url("images/icon_tuijian.gif") no-repeat scroll right center transparent;display: inline-block;height: 30px;line-height: 30px;padding-right: 26px;text-decoration: none;
+}

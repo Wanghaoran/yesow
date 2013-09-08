@@ -279,7 +279,7 @@ var checksubmit = function(){
                                         <div class="clear5"></div>
                                         <div class="scpminfo_l">关键词设置：</div>
                                         <div class="scpminfo_r">
-						<input type="text" class="txtfile" style="width:215px;" name="keyword" id="keyword" value="<!--{$Think.request.f_keyword}--!>" onkeyup="getrank();" />
+						<input type="text" class="txtfile" style="width:215px;" name="keyword" id="keyword" value="<!--{$Think.request.f_keyword|safeEncoding}--!>" onkeyup="getrank();" />
                                             <ul class="ul_gjc">
 					      <volist name="result_search_hot" id="rsh">
 					      <li><a onclick="$('#keyword').val(($(this).text()));getrank();postlist();"><!--{$rsh.name}--!></a></li>

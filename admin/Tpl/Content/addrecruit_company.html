@@ -1,0 +1,94 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/recruit_company" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+
+	    <label>所属地区：</label>
+	    <select class="combox" name="csid" ref="sellused_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <option value="">请选择</option>
+	      <volist name="result_childsite" id="s_rc">
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </volist>
+	    </select>
+	    <select class="combox" name="csaid" id="sellused_csaid">
+	      <option value="">请选择</option>
+	    </select>
+	
+	<label style="width:80px;">所属行业：</label>
+	    <select class="combox" name="ciid">
+	      <volist name="result_industry" id="ri">
+	      <option value="<!--{$ri.id}--!>"><!--{$ri.name}--!></option>
+	      </volist>
+	    </select>
+	
+	 </div>
+
+	 <div class="unit">
+	   <label>员工人数：</label>
+	    <select class="combox" name="ceid">
+	      <volist name="result_employnum" id="re">
+	      <option value="<!--{$re.id}--!>"><!--{$re.name}--!></option>
+	      </volist>
+	    </select>
+
+	   <label style="width:60px;">注册资金：</label>
+	    <select class="combox" name="crid">
+	      <volist name="result_registermoney" id="rr">
+	      <option value="<!--{$rr.id}--!>"><!--{$rr.name}--!></option>
+	      </volist>
+	    </select>
+
+	   <label style="width:60px;">公司性质：</label>
+	    <select class="combox" name="cnid">
+	      <volist name="result_nature" id="rn">
+	      <option value="<!--{$rn.id}--!>"><!--{$rn.name}--!></option>
+	      </volist>
+	    </select>
+	 </div>
+	<div class="unit">
+	  <label>公司名称：</label>
+	  <input type="text" class="textInput required" name="name" size="60" />
+	</div>
+	<div class="unit">
+	  <label>联系地址：</label>
+	  <input type="text" class="textInput required" name="address" size="60" />
+	</div>
+	<div class="unit">
+	  <label>公司图片：</label>
+	  <input type="file" name="pic" />
+	</div>
+	<div class="unit">
+	  <label>联系人：</label>
+	  <input type="text" class="textInput" name="linkman" />
+	  <label style="width:80px;">公司主页：</label>
+	  <input type="text" class="textInput" name="website" value="http://" />
+	  
+	</div>
+	<div class="unit">
+	  <label>电子邮件：</label>
+	  <input type="text" class="textInput" name="email" />
+	  <label style="width:80px;">联系电话：</label>
+	  <input type="text" class="textInput" name="tel" />
+	</div>
+	<div class="unit">
+	  <label>联系QQ：</label>
+	  <input type="text" class="textInput" name="qqcode" />
+	</div>
+	<div class="unit">
+		<label>公司简介：</label>
+		<textarea name="abstract"  rows="5" cols="57" ></textarea>
+	      </div>
+	    </div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

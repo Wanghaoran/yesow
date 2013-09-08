@@ -90,6 +90,11 @@ return array(
   //页面广告资料下载地址
   'ADVERT_PIC_DATA_PATH_SAVE' => __ROOT__ . '/Upload/advertpicdata/',
 
+  //人才交流-公司图片保存路径
+  'RECRUIT_PIC_PATH' => './Upload/recruit/',
+  //人才交流-公司图片显示
+  'RECRUIT_PIC_PATH_SAVE' => __ROOT__ . '/Upload/recruit/',
+
   //网站临时上传目录
   'TEMP_UPLOAD_PATH' => './Upload/temp/',
 

@@ -30,6 +30,8 @@ $app_config = array(
     'storerent' => 'hire/storerentlist',//旺铺出租列表页
     'sellused/:id\d' => 'hire/sellusedinfo',//二手滞销详情页
     'sellused' => 'hire/sellusedlist',//二手滞销列表页
+    'recruit/:id\d' => 'hire/recruitinfo',//人才招聘详情页
+    'recruit' => 'hire/recruitlist',//人才招聘列表页
     'applylink' => 'index/applylink',//申请友链
   ),
 );

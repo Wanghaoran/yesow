@@ -252,6 +252,16 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取易搜招聘公司信息
+  public function ajaxgetrecruit_companyinfo(){
+    $companyname = $this -> _post('inputValue');
+    $RecruitCompany = M('RecruitCompany');
+    $where = array();
+    $where['name'] = array('like', '%' . $companyname . '%');
+    $result = $RecruitCompany -> field('id,name') -> where($where) -> limit(10) -> select();
+    echo json_encode($result);
+  }
+
   //ajax获取包月会员类型
   public function ajaxgetmonthlytype(){
     $member_monthly = M('MemberMonthly');
@@ -388,6 +398,21 @@ class PublicAction extends Action {
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
     $upload -> savePath = C('SELLUSED_PIC_PATH') ;//设置上传目录
+    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> saveRule = 'uniqid';
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info;
+    }else{
+      return $upload;
+    }
+  }
+
+  //人才交流- 公司图片文件上传
+  public function recruit_company_pic_upload(){
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('RECRUIT_PIC_PATH') ;//设置上传目录
     $upload -> autoSub = false;//设置使用子目录保存上传文件
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){

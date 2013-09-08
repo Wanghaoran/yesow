@@ -649,3 +649,21 @@ a.shousuo img{ vertical-align:middle;}
 .paidui ul li{ width:550px; height:30px; line-height:30px;}
 .paidui ul li.now{ color:#F00;}
 .paidui ul li span{ float:right;}
+
+.sjdxfs_title{ font-size:14px; font-weight:bold; height:40px; line-height:40px; text-align:center; color:#666;}
+.sjdxfs_input1{ border:#ccc 1px solid; height:20px; line-height:20px; width:150px;}
+.sjdxfs_input2{ border:#ccc 1px solid; height:20px; line-height:20px; width:496px;}
+.sjdxfs_select1{ border:#ccc 1px solid; height:22px; line-height:22px; width:152px;}
+.sjdxfs_select2{ border:#ccc 1px solid; height:22px; line-height:22px; width:70px;}
+.sjdxfs_textarea1{ border:#ccc 1px solid; height:60px; line-height:20px; width:496px;}
+table.table_fabu{ border:none; border-collapse:collapse; width:700px}
+table.table_fabu td{ border:none; border-collapse:collapse; padding:2px 0;}
+table.table_fabu td.fabuleft{ width:80px; text-align:right;}
+table.table_fabu td.faburight{ width:270px; text-align:left;}
+table.table_fabu td.fabulong{ width:620px; text-align:left;}
+
+.input_text{width:250px; border:#ccc 1px solid; height:20px; line-height:20px;}
+.input_file{width:300px; margin-left:-300px; filter:alpha(opacity=0); opacity:0;}
+.liulan{ width:60px; height:24px; line-height:24px; padding:0px 10px; background:#ff8b01; color:#fff; border:none; text-align:center; cursor:pointer}
+.btnmr10{ margin-right:10px;}
+.main_sjdxfs .btn_common{ height:24px; line-height:24px; padding:0px 10px; background:#ff8b01; color:#fff; border:none; text-align:center; cursor:pointer}

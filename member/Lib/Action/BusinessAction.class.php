@@ -400,4 +400,203 @@ class BusinessAction extends CommonAction {
     $this -> display();
   }
 
+  //人才交流
+  public function recruit(){
+    $RecruitCompany = M('RecruitCompany');
+    $where = array();
+    $where['rc.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['rc.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $RecruitCompany -> table('yesow_recruit_company as rc') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $RecruitCompany -> table('yesow_recruit_company as rc') -> field('rc.id,cs.name as csname,rc.name,rc.linkman,rc.tel,rc.addtime,rc.ischeck') -> join('yesow_child_site as cs ON rc.csid = cs.id') -> where($where) -> order('rc.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //发布公司
+  public function recruit_addcompany(){
+    if(!empty($_POST['name'])){
+      $RecruitCompany = M('RecruitCompany');
+      if(!$RecruitCompany -> create()){
+	R('Register/errorjump',array($RecruitCompany -> getError()));
+      }
+      if(!empty($_FILES['pic']['name'])){
+	$up_data = R('admin://Public/recruit_company_pic_upload');
+	$RecruitCompany -> pic = $up_data[0]['savename'];
+      }
+      $RecruitCompany -> mid = !empty($_SESSION[C('USER_AUTH_KEY')]) ? $_SESSION[C('USER_AUTH_KEY')] : NULL;
+      $RecruitCompany -> addtime = time();
+      if($RecruitCompany -> add()){
+	R('Register/successjump',array(L('DATA_ADD_SUCCESS'), U('Business/recruit')));
+      }else{
+	R('Register/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //所属行业
+    $result_industry = M('RecruitCompanyIndustry') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_industry', $result_industry);
+    //员工人数
+    $result_employnum = M('RecruitCompanyEmploynum') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_employnum', $result_employnum);
+    //注册资金
+    $result_registermoney = M('RecruitCompanyRegistermoney') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_registermoney', $result_registermoney);
+    //公司性质
+    $result_nature = M('RecruitCompanyNature') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_nature', $result_nature);
+    $this -> display();
+  }
+
+  //删除公司
+  public function recruit_delcompany(){
+    echo M('RecruitCompany') -> delete($this -> _get('id', 'intval'));
+  }
+
+  //编辑公司
+  public function recruit_editcompany(){
+    $RecruitCompany = M('RecruitCompany');
+    //处理编辑
+    if(!empty($_POST['name'])){
+      if(!$RecruitCompany -> create()){
+	R('Register/errorjump',array($RecruitCompany -> getError()));
+      }
+      if(!empty($_FILES['pic']['name'])){
+	$up_data = R('admin://Public/recruit_company_pic_upload');
+	$RecruitCompany -> pic = $up_data[0]['savename'];
+      }
+      if($RecruitCompany -> save()){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Business/recruit')));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+      }
+    }
+    $result = $RecruitCompany -> field('csid,csaid,ciid,ceid,crid,cnid,pic,name,address,linkman,website,email,tel,qqcode,abstract') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    //所属行业
+    $result_industry = M('RecruitCompanyIndustry') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_industry', $result_industry);
+    //员工人数
+    $result_employnum = M('RecruitCompanyEmploynum') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_employnum', $result_employnum);
+    //注册资金
+    $result_registermoney = M('RecruitCompanyRegistermoney') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_registermoney', $result_registermoney);
+    //公司性质
+    $result_nature = M('RecruitCompanyNature') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_nature', $result_nature);
+    $this -> display();
+  }
+
+  //岗位管理
+  public function recruit_position(){
+    $RecruitJobs = M('RecruitJobs');
+    $where = array();
+    $where['rj.cid'] = $this -> _get('cid', 'intval');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $RecruitJobs -> table('yesow_recruit_jobs as rj') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $RecruitJobs -> table('yesow_recruit_jobs as rj') -> field('rj.id,cs.name as csname,csa.name as csaname,rj.name,rj.addtime,rj.endtime,rj.ischeck') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> join('yesow_child_site_area as csa ON rj.jobs_csaid = csa.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('rj.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    //公司名
+    $RecruitCompany = M('RecruitCompany');
+    $company_name = $RecruitCompany -> getFieldByid($this -> _get('cid', 'intval'), 'name');
+    $this -> assign('company_name', $company_name);
+    $this -> display();
+  }
+
+  //发布岗位
+  public function recruit_addposition(){
+    if(!empty($_POST['name'])){
+      $RecruitJobs = M('RecruitJobs');
+      if(!$RecruitJobs -> create()){
+	R('Register/errorjump',array($RecruitJobs -> getError()));
+      }
+      $RecruitJobs -> addtime = time();
+      $RecruitJobs -> endtime = $this -> _post('endtime', 'strtotime');
+      if($RecruitJobs -> add()){
+	R('Register/successjump',array(L('ADDPOSITION_SUCCESS'), U('Business/recruit_position') . '/cid/' . $_POST['cid']));
+      }else{
+	R('Register/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    //公司名
+    $RecruitCompany = M('RecruitCompany');
+    $company_name = $RecruitCompany -> getFieldByid($this -> _get('cid', 'intval'), 'name');
+    $this -> assign('company_name', $company_name);
+    //最低月薪
+    $result_monthlypay = M('RecruitJobsMonthlypay') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_monthlypay', $result_monthlypay);
+    //学历要求
+    $result_degree = M('RecruitJobsDegree') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_degree', $result_degree);
+    //工作经验
+    $result_experience = M('RecruitJobsExperience') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_experience', $result_experience);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //编辑岗位
+  public function recruit_editposition(){
+    $RecruitJobs = M('RecruitJobs');
+    if(!empty($_POST['name'])){
+      if(!$RecruitJobs -> create()){
+	R('Register/errorjump',array($RecruitJobs -> getError()));
+      }
+      $RecruitJobs -> endtime = $this -> _post('endtime', 'strtotime');
+      if($RecruitJobs -> save()){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Business/recruit_position') . '/cid/' . $_POST['c_cid']));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+      }
+    }
+    $result = $RecruitJobs -> field('cid,jmid,jdid,jeid,name,keyword,english,major,sex,age,jobstype,num,jobs_csid,jobs_csaid,content,endtime') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //公司名
+    $RecruitCompany = M('RecruitCompany');
+    $company_name = $RecruitCompany -> getFieldByid($result['cid'], 'name');
+    $this -> assign('company_name', $company_name);
+    //最低月薪
+    $result_monthlypay = M('RecruitJobsMonthlypay') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_monthlypay', $result_monthlypay);
+    //学历要求
+    $result_degree = M('RecruitJobsDegree') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_degree', $result_degree);
+    //工作经验
+    $result_experience = M('RecruitJobsExperience') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_experience', $result_experience);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['jobs_csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    $this -> display();
+  }
+
+  //删除岗位
+  public function recruit_delposition(){
+    echo M('RecruitJobs') -> delete($this -> _get('id', 'intval'));
+  }
+
 }

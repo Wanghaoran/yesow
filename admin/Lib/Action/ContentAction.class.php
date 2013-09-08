@@ -2172,5 +2172,986 @@ class ContentAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
-  /* ----------- 二手滞销管理 ------------ */
+
+  /* ----------- 人才交流管理 ------------ */
+
+  //公司所属行业管理
+  public function companyindustry(){
+    $RecruitCompanyIndustry = M('RecruitCompanyIndustry');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitCompanyIndustry -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitCompanyIndustry -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加公司所属行业
+  public function addcompanyindustry(){
+    if(!empty($_POST['name'])){
+      $RecruitCompanyIndustry = M('RecruitCompanyIndustry');
+      if(!$RecruitCompanyIndustry -> create()){
+	$this -> error($RecruitCompanyIndustry -> getError());
+      }
+      if($RecruitCompanyIndustry -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除公司所属行业
+  public function delcompanyindustry(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitCompanyIndustry = M('RecruitCompanyIndustry');
+    if($RecruitCompanyIndustry -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑公司所属行业
+  public function editcompanyindustry(){
+    $RecruitCompanyIndustry = M('RecruitCompanyIndustry');
+    if(!empty($_POST['name'])){
+      if(!$RecruitCompanyIndustry -> create()){
+	$this -> error($RecruitCompanyIndustry -> getError());
+      }
+      if($RecruitCompanyIndustry -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitCompanyIndustry -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //公司员工人数管理
+  public function companyemploynum(){
+    $RecruitCompanyEmploynum = M('RecruitCompanyEmploynum');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitCompanyEmploynum -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitCompanyEmploynum -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加公司员工人数
+  public function addcompanyemploynum(){
+    if(!empty($_POST['name'])){
+      $RecruitCompanyEmploynum = M('RecruitCompanyEmploynum');
+      if(!$RecruitCompanyEmploynum -> create()){
+	$this -> error($RecruitCompanyEmploynum -> getError());
+      }
+      if($RecruitCompanyEmploynum -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除公司员工人数
+  public function delcompanyemploynum(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitCompanyEmploynum = M('RecruitCompanyEmploynum');
+    if($RecruitCompanyEmploynum -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑公司员工人数
+  public function editcompanyemploynum(){
+    $RecruitCompanyEmploynum = M('RecruitCompanyEmploynum');
+    if(!empty($_POST['name'])){
+      if(!$RecruitCompanyEmploynum -> create()){
+	$this -> error($RecruitCompanyEmploynum -> getError());
+      }
+      if($RecruitCompanyEmploynum -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitCompanyEmploynum -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //公司注册资金管理
+  public function companyregistermoney(){
+    $RecruitCompanyRegistermoney = M('RecruitCompanyRegistermoney');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitCompanyRegistermoney -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitCompanyRegistermoney -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加公司注册资金
+  public function addcompanyregistermoney(){
+    if(!empty($_POST['name'])){
+      $RecruitCompanyRegistermoney = M('RecruitCompanyRegistermoney');
+      if(!$RecruitCompanyRegistermoney -> create()){
+	$this -> error($RecruitCompanyRegistermoney -> getError());
+      }
+      if($RecruitCompanyRegistermoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除公司注册资金
+  public function delcompanyregistermoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitCompanyRegistermoney = M('RecruitCompanyRegistermoney');
+    if($RecruitCompanyRegistermoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑公司注册资金
+  public function editcompanyregistermoney(){
+    $RecruitCompanyRegistermoney = M('RecruitCompanyRegistermoney');
+    if(!empty($_POST['name'])){
+      if(!$RecruitCompanyRegistermoney -> create()){
+	$this -> error($RecruitCompanyRegistermoney -> getError());
+      }
+      if($RecruitCompanyRegistermoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitCompanyRegistermoney -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //公司性质管理
+  public function companynature(){
+    $RecruitCompanyNature = M('RecruitCompanyNature');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitCompanyNature -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitCompanyNature -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加公司性质
+  public function addcompanynature(){
+    if(!empty($_POST['name'])){
+      $RecruitCompanyNature = M('RecruitCompanyNature');
+      if(!$RecruitCompanyNature -> create()){
+	$this -> error($RecruitCompanyNature -> getError());
+      }
+      if($RecruitCompanyNature -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除公司性质
+  public function delcompanynature(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitCompanyNature = M('RecruitCompanyNature');
+    if($RecruitCompanyNature -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑公司性质
+  public function editcompanynature(){
+    $RecruitCompanyNature = M('RecruitCompanyNature');
+    if(!empty($_POST['name'])){
+      if(!$RecruitCompanyNature -> create()){
+	$this -> error($RecruitCompanyNature -> getError());
+      }
+      if($RecruitCompanyNature -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitCompanyNature -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+
+  //发布公司管理
+  public function recruit_company(){
+    $RecruitCompany = M('RecruitCompany');
+    $where = array();
+     //处理搜索
+    if(!empty($_POST['name'])){
+      $where['rc.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitCompany -> table('yesow_recruit_company as rc') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitCompany -> table('yesow_recruit_company as rc') -> field('rc.id,cs.name as csname,csa.name as csaname,rc.name,m.name as mname,ci.name as ciname,ce.name as cename,cr.name as crname,cn.name as cnname,rc.linkman,rc.tel,rc.addtime,rc.ischeck') -> join('yesow_child_site as cs ON rc.csid = cs.id') -> join('yesow_child_site_area as csa ON rc.csaid = csa.id') -> join('yesow_member as m ON rc.mid = m.id') -> join('yesow_recruit_company_industry as ci ON rc.ciid = ci.id') -> join('yesow_recruit_company_employnum as ce ON rc.ceid = ce.id') -> join('yesow_recruit_company_registermoney as cr ON rc.crid = cr.id') -> join('yesow_recruit_company_nature as cn ON rc.cnid = cn.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('rc.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //添加发布公司
+  public function addrecruit_company(){
+    if(!empty($_POST['name'])){
+      $RecruitCompany = M('RecruitCompany');
+      if(!$RecruitCompany -> create()){
+	$this -> error($RecruitCompany -> getError());
+      }
+      if(!empty($_FILES['pic']['name'])){
+	$up_data = R('Public/recruit_company_pic_upload');
+	$RecruitCompany -> pic = $up_data[0]['savename'];
+      }
+      $RecruitCompany -> addtime = time();
+      if($RecruitCompany -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //所属行业
+    $result_industry = M('RecruitCompanyIndustry') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_industry', $result_industry);
+    //员工人数
+    $result_employnum = M('RecruitCompanyEmploynum') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_employnum', $result_employnum);
+    //注册资金
+    $result_registermoney = M('RecruitCompanyRegistermoney') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_registermoney', $result_registermoney);
+    //公司性质
+    $result_nature = M('RecruitCompanyNature') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_nature', $result_nature);
+    $this -> display();
+  }
+
+  //删除发布公司
+  public function delrecruit_company(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitCompany = M('RecruitCompany');
+    if($RecruitCompany -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑发布公司
+  public function editrecruit_company(){
+    $RecruitCompany = M('RecruitCompany');
+    if(!empty($_POST['name'])){
+      if(!$RecruitCompany -> create()){
+	$this -> error($RecruitCompany -> getError());
+      }
+      if(!empty($_FILES['pic']['name'])){
+	$up_data = R('Public/recruit_company_pic_upload');
+	$RecruitCompany -> pic = $up_data[0]['savename'];
+      }
+      if($RecruitCompany -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitCompany -> field('csid,csaid,ciid,ceid,crid,cnid,pic,name,address,linkman,website,email,tel,qqcode,abstract') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    //所属行业
+    $result_industry = M('RecruitCompanyIndustry') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_industry', $result_industry);
+    //员工人数
+    $result_employnum = M('RecruitCompanyEmploynum') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_employnum', $result_employnum);
+    //注册资金
+    $result_registermoney = M('RecruitCompanyRegistermoney') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_registermoney', $result_registermoney);
+    //公司性质
+    $result_nature = M('RecruitCompanyNature') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_nature', $result_nature);
+    $this -> display();
+  }
+
+  //通过审核发布公司
+  public function passauditrecruit_company(){
+    $RecruitCompany = M('RecruitCompany');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($RecruitCompany -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核发布公司
+  public function nopassauditrecruit_company(){
+    $RecruitCompany = M('RecruitCompany');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($RecruitCompany -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //岗位最低月薪管理
+  public function jobsmonthlypay(){
+    $RecruitJobsMonthlypay = M('RecruitJobsMonthlypay');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitJobsMonthlypay -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitJobsMonthlypay -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加岗位最低月薪
+  public function addjobsmonthlypay(){
+    if(!empty($_POST['name'])){
+      $RecruitJobsMonthlypay = M('RecruitJobsMonthlypay');
+      if(!$RecruitJobsMonthlypay -> create()){
+	$this -> error($RecruitJobsMonthlypay -> getError());
+      }
+      if($RecruitJobsMonthlypay -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除岗位最低月薪
+  public function deljobsmonthlypay(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitJobsMonthlypay = M('RecruitJobsMonthlypay');
+    if($RecruitJobsMonthlypay -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑岗位最低月薪
+  public function editjobsmonthlypay(){
+    $RecruitJobsMonthlypay = M('RecruitJobsMonthlypay');
+    if(!empty($_POST['name'])){
+      if(!$RecruitJobsMonthlypay -> create()){
+	$this -> error($RecruitJobsMonthlypay -> getError());
+      }
+      if($RecruitJobsMonthlypay -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitJobsMonthlypay -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //岗位学历要求管理
+  public function jobsdegree(){
+    $RecruitJobsDegree = M('RecruitJobsDegree');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitJobsDegree -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitJobsDegree -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加岗位学历要求
+  public function addjobsdegree(){
+    if(!empty($_POST['name'])){
+      $RecruitJobsDegree = M('RecruitJobsDegree');
+      if(!$RecruitJobsDegree -> create()){
+	$this -> error($RecruitJobsDegree -> getError());
+      }
+      if($RecruitJobsDegree -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除岗位学历要求
+  public function deljobsdegree(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitJobsDegree = M('RecruitJobsDegree');
+    if($RecruitJobsDegree -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑岗位学历要求
+  public function editjobsdegree(){
+    $RecruitJobsDegree = M('RecruitJobsDegree');
+    if(!empty($_POST['name'])){
+      if(!$RecruitJobsDegree -> create()){
+	$this -> error($RecruitJobsDegree -> getError());
+      }
+      if($RecruitJobsDegree -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitJobsDegree -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //岗位工作经验管理
+  public function jobsexperience(){
+    $RecruitJobsExperience = M('RecruitJobsExperience');
+    $where = array();
+
+    //处理搜索
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    //记录总数
+    $count = $RecruitJobsExperience -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecruitJobsExperience -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加岗位工作经验
+  public function addjobsexperience(){
+    if(!empty($_POST['name'])){
+      $RecruitJobsExperience = M('RecruitJobsExperience');
+      if(!$RecruitJobsExperience -> create()){
+	$this -> error($RecruitJobsExperience -> getError());
+      }
+      if($RecruitJobsExperience -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除岗位工作经验
+  public function deljobsexperience(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitJobsExperience = M('RecruitJobsExperience');
+    if($RecruitJobsExperience -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑岗位工作经验
+  public function editjobsexperience(){
+    $RecruitJobsExperience = M('RecruitJobsExperience');
+    if(!empty($_POST['name'])){
+      if(!$RecruitJobsExperience -> create()){
+	$this -> error($RecruitJobsExperience -> getError());
+      }
+      if($RecruitJobsExperience -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitJobsExperience -> field('name,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //发布岗位管理
+  public function recruit_jobs(){
+    $RecruitJobs = M('RecruitJobs');
+    $time = time();
+    $where = array();
+
+    if(!empty($_POST['name'])){
+      $where['rj.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['rj.addtime'] = array(array('egt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['rj.endtime'] = array('elt', $endtime);
+    }
+
+    //记录总数
+    $count = $RecruitJobs -> alias('rj') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $RecruitJobs -> alias('rj') -> field('rj.id,cs.name as csname,rj.name,rj.num,rj.jobstype,rc.name as rcname,m.name as mname,rj.addtime,rj.ischeck,tmp.id as tmpid,tmp.endtime,tmp.sort') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_member as m ON rc.mid = m.id') -> join("LEFT JOIN (SELECT * FROM yesow_recruit_jobs_sort WHERE starttime <= {$time} AND endtime >= {$time} ORDER BY id DESC) as tmp ON rj.id = tmp.rjid") -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('rj.ischeck ASC,rj.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加发布岗位
+  public function addrecruit_jobs(){
+    if(!empty($_POST['name'])){
+      $RecruitJobs = M('RecruitJobs');
+      if(!$RecruitJobs -> create()){
+	$this -> error($RecruitJobs -> getError());
+      }
+      $RecruitJobs -> endtime = $this -> _post('endtime', 'strtotime');
+      $RecruitJobs -> cid = $this -> _post('org2_id');
+      $RecruitJobs -> addtime = time();
+      if($RecruitJobs -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //最低月薪
+    $result_monthlypay = M('RecruitJobsMonthlypay') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_monthlypay', $result_monthlypay);
+    //学历要求
+    $result_degree = M('RecruitJobsDegree') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_degree', $result_degree);
+    //工作经验
+    $result_experience = M('RecruitJobsExperience') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_experience', $result_experience);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除发布岗位
+  public function delrecruit_jobs(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecruitJobs = M('RecruitJobs');
+    if($RecruitJobs -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑发布岗位
+  public function editrecruit_jobs(){
+    $RecruitJobs = M('RecruitJobs');
+    if(!empty($_POST['name'])){
+      if(!$RecruitJobs -> create()){
+	$this -> error($RecruitJobs -> getError());
+      }
+      $RecruitJobs -> endtime = $this -> _post('endtime', 'strtotime');
+      $RecruitJobs -> cid = $this -> _post('org2_id');
+      if($RecruitJobs -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecruitJobs -> alias('rj') -> field('rj.cid,rc.name as rcname,rj.jmid,rj.jdid,rj.jeid,rj.name,rj.keyword,rj.english,rj.major,rj.sex,rj.age,rj.jobstype,rj.num,rj.jobs_csid,rj.jobs_csaid,rj.content,rj.endtime') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> where(array('rj.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    //最低月薪
+    $result_monthlypay = M('RecruitJobsMonthlypay') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_monthlypay', $result_monthlypay);
+    //学历要求
+    $result_degree = M('RecruitJobsDegree') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_degree', $result_degree);
+    //工作经验
+    $result_experience = M('RecruitJobsExperience') -> field('id,name') -> order('sort ASC') -> select();
+    $this -> assign('result_experience', $result_experience);
+    //查询所有分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    //查询当前分站下地区
+    $result_childsitearea = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result['jobs_csid'])) -> order('id DESC') -> select();
+    $this -> assign('result_childsitearea', $result_childsitearea);
+    $this -> display();
+  }
+
+  //发布岗位推荐设置
+  public function editrecommendrecruit_jobs(){
+    $RecruitJobsSort = M('RecruitJobsSort');
+    if(!empty($_POST['sort'])){
+      //如果此旺铺已经有推荐记录，则先删除原来的推荐记录
+      if($RecruitJobsSort -> where(array('rjid' => $_POST['rjid'])) -> select()){
+	$RecruitJobsSort -> where(array('rjid' => $_POST['rjid'])) -> delete();
+      }
+      if(!$RecruitJobsSort -> create()){
+	$this -> error($RecruitJobsSort -> getError());
+      }
+      $RecruitJobsSort -> starttime = $this -> _post('starttime', 'strtotime');
+      $RecruitJobsSort -> endtime = $this -> _post('endtime', 'strtotime');
+      if($RecruitJobsSort -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $time = time();
+    $where = array();
+    $where['rjid'] = $this -> _get('id', 'intval');
+    $where['starttime'] = array('elt', $time);
+    $where['endtime'] = array('egt', $time);
+    $result = $RecruitJobsSort -> field('starttime,endtime,sort') -> where(array('rjid' => $this -> _get('id', 'intval'))) -> order('id DESC') -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //通过审核发布岗位
+  public function passauditrecruit_jobs(){
+    $RecruitJobs = M('RecruitJobs');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($RecruitJobs -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核发布岗位
+  public function nopassauditrecruit_jobs(){
+    $RecruitJobs = M('RecruitJobs');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($RecruitJobs -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //发布岗位评论管理
+  public function recruit_jobscomment(){
+    $comment = M('RecruitJobsComment');
+    $where = array();
+    //处理搜索
+    if(!empty($_POST['content'])){
+      $where['rjc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $member = M('Member');
+      $authorid = $member -> getFieldByname($this -> _post('author'), 'id');
+      $where['rjc.mid'] = intval($authorid);
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['rjc.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['rjc.addtime'][] = array('lt', $endtime);
+    }
+
+    //记录总数
+    $count = $comment -> alias('rjc') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    //结果
+    $result = $comment -> alias('rjc') -> field('rjc.id,rjc.rjid,rj.name,rjc.floor,rjc.content,m.name as mname,rjc.addtime,rjc.status,rjc.face') -> where($where) -> order('rjc.status ASC,rjc.addtime DESC') -> join('yesow_recruit_jobs as rj ON rjc.rjid = rj.id') -> join('yesow_member as m ON rjc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //编辑发布岗位评论
+  public function editrecruit_jobscomment(){
+    $comment = D('index://RecruitJobsComment');
+    //处理更新
+    if(!empty($_POST['floor'])){
+      if(!$comment -> create()){
+	$this -> error($comment -> getError());
+      }
+      if($comment -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $comment -> alias('rjc') -> field('rj.name,m.name as mname,rjc.floor,rjc.content,rjc.face') -> join('yesow_recruit_jobs as rj ON rjc.rjid = rj.id') -> join('yesow_member as m ON rjc.mid = m.id') -> where(array('rjc.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //删除发布岗位评论
+  public function delrecruit_jobscomment(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $comment = M('RecruitJobsComment');
+    if($comment -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核发布岗位评论
+  public function passauditrecruit_jobscomment(){
+    $comment = M('RecruitJobsComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 2);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核发布岗位评论
+  public function nopassauditrecruit_jobscomment(){
+    $comment = M('RecruitJobsComment');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('status' => 1);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  /* ----------- 人才交流管理 ------------ */
 }

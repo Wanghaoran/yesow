@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易搜-<!--{$childsite_name}--!>IT人才招聘区_易搜人才招聘列表页_易搜-<!--{$childsite_name}--!>IT服务中心</title>
+<meta name="Keywords" content="<!--{$childsite_name}--!>二手,人才招聘,二手信息,二手转让,二手求购,<!--{$childsite_name}--!>IT信息,<!--{$childsite_name}--!>IT,易搜"/>
+<meta name="Description" content="易搜-<!--{$childsite_name}--!>IT人才招聘专区，是<!--{$childsite_name}--!>地区最受人关注的IT行业附加服务区，是一个专为IT爱好者提供寻找人才招聘、二手信息、二手转让、二手求购IT产品的电子商务服务平台。"/>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script type="text/javascript">
+var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#memdizhi').html(_nstr).show();
+	  }else{
+	  $('#memdizhi').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+</script>
+<style type="text/css">
+.code{ height:auto; padding:20px; border:1px solid #9EC9FE; background:#ECF3FD;}
+.code pre{ font-family:"Courier New";font-size:14px;}
+.info{ font-size:12px; color:#666666; font-family:Verdana; margin:20px 0 50px 0;}
+.info p{ margin:0; padding:0; line-height:22px; text-indent:40px;}
+h2.title{ margin:0; padding:0; margin-top:50px; font-size:18px; font-family:"微软雅黑",Verdana;}
+h3.title{ font-size:16px; font-family:"微软雅黑",Verdana;}
+.importInfo{ font-family:Verdana; font-size:14px;}
+</style>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header"/>
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<span>人才招聘</span>
+			
+		<div style="float:right;">
+		  <form action="__ROOT__/recruit" method="post">
+		  职位查询：
+		  <select name="ciid">
+		    <option value="">请选择</option>
+		    <volist name="result_industry" id="ri">
+		    <option value="<!--{$ri.id}--!>"><!--{$ri.name}--!></option>
+		    </volist>
+		  </select>
+		所在地：
+		<select class="prov" name="jobs_csid" id="province" onchange="getchildsitearea($(this).val());">
+		<option value="">请选择</option>
+		<volist name="result_childsite" id="rcs">
+		<option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+		</volist>
+		</select> 
+		<select class="city" name="jobs_csaid" id="memdizhi">
+		<option value="">请选择</option>
+		</select>
+		职位：
+		<input type="text" name="name" size="10" />
+		<input type="submit" value="搜索" />
+		</form>
+		</div>
+		
+
+	</div>
+	<!--咨询文章-->
+	<div id="main18">
+			<div id="main18_l">
+				<div class="cat_header">
+					<h3>推荐信息</h3>
+				</div>
+				<div class="cat_bod">
+					<ul class="main18_l_ul">
+					  <volist name="recommended_result" id="rr">
+					  <li><a href="__ROOT__/recruit/<!--{$rr.id}--!>" ><!--{$rr.name}--!></a></li>
+					  </volist>
+					</ul>
+				</div>
+			</div>
+			<div id="main18_r">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>人才招聘</h3>
+						</div>
+					</div>
+				</div>
+                <div class="main18_r_con">
+                    <table class="zp_list">
+                        <tr><th>岗位</th><th>公司</th><th width="60" class="thmid">人数</th><th width="100">发布时间</th><th width="60" class="thmid">所在地区</th></tr>
+			<volist name="result_sort" id="rs">	
+			<tr><td><a href="__ROOT__/recruit/<!--{$rs.id}--!>" class="tuijian"><!--{$rs.name}--!></a></td><td><a href="__ROOT__/recruit/<!--{$rs.id}--!>/type/all"><!--{$rs.rcname}--!></a></td><td class="tdmid"><!--{$rs.num|default="若干"}--!></td><td><!--{$rs.addtime|date="Y-m-d", ###}--!></td><td class="tdmid">[<a href="__ROOT__/recruit/jobs_csid/<!--{$rs.csid}--!>"><!--{$rs.csname}--!></a>]</td></tr>
+			</volist>
+			<volist name="result" id="r">	
+			<tr><td><a href="__ROOT__/recruit/<!--{$r.id}--!>"><!--{$r.name}--!></a></td><td><a href="__ROOT__/recruit/<!--{$r.id}--!>/type/all"><!--{$r.rcname}--!></a></td><td class="tdmid"><!--{$r.num|default="若干"}--!></td><td><!--{$r.addtime|date="Y-m-d", ###}--!></td><td class="tdmid">[<a href="__ROOT__/recruit/jobs_csid/<!--{$r.csid}--!>"><!--{$r.csname}--!></a>]</td></tr>
+			</volist>
+                    </table>
+					<div class="clear"></div>
+                    <div class="page">
+			<!--{$show}--!>
+                    </div>
+                    <div class="clear"></div>
+                 </div>
+			</div>
+			<div class="clear"></div>
+	</div>
+	<!--咨询文章结束-->
+
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

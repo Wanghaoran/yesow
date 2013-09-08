@@ -1,0 +1,135 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/recruit_jobs" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+
+	    <label>工作地点：</label>
+	    <select class="combox" name="jobs_csid" ref="sellused_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <volist name="result_childsite" id="s_rc">
+	      <eq name="result.jobs_csid" value="$s_rc.id">
+	      <option value="<!--{$s_rc.id}--!>" selected="selected"><!--{$s_rc.name}--!></option>
+	      <else/>
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    <select class="combox" name="jobs_csaid" id="sellused_csaid">
+	      <volist name="result_childsitearea" id="s_rca">
+	      <eq name="result.jobs_csaid" value="$s_rca.id">
+	      <option value="<!--{$s_rca.id}--!>" selected="selected"><!--{$s_rca.name}--!></option>
+	      <else/>
+	      <option value="<!--{$s_rca.id}--!>"><!--{$s_rca.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	
+	<label style="width:80px;">最低月薪：</label>
+	    <select class="combox" name="jmid">
+	      <volist name="result_monthlypay" id="rm">
+	      <eq name="result.jmid" value="$rm.id">
+	      <option value="<!--{$rm.id}--!>" selected="selected"><!--{$rm.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rm.id}--!>"><!--{$rm.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	
+	 </div>
+
+	 <div class="unit">
+	   <label>学历要求：</label>
+	    <select class="combox" name="jdid">
+	      <volist name="result_degree" id="rd">
+	      <eq name="result.jdid" value="$rd.id">
+	      <option value="<!--{$rd.id}--!>" selected="selected"><!--{$rd.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rd.id}--!>"><!--{$rd.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+
+	   <label style="width:60px;margin-left:50px;">工作经验：</label>
+	    <select class="combox" name="jeid">
+	      <volist name="result_experience" id="re">
+	      <eq name="result.jeid" value="$re.id">
+	      <option value="<!--{$re.id}--!>" selected="selected"><!--{$re.name}--!></option>
+	      <else/>
+	      <option value="<!--{$re.id}--!>"><!--{$re.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+
+	 </div>
+	<div class="unit">
+	  <label>招聘岗位：</label>
+	  <input type="text" class="textInput required" name="name" size="60" value="<!--{$result.name}--!>" />
+	</div>
+	<div class="unit">
+	  <label>关键词：</label>
+	  <input type="text" class="textInput required" name="keyword" size="60" value="<!--{$result.keyword}--!>" />
+	</div>
+	<div class="unit">
+	  <label>所属公司：</label>
+	  <input name="org2.id"  value="<!--{$result.cid}--!>" type="hidden">
+	  <input class="required" name="org2.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetrecruit_companyinfo" lookupGroup="org2"  value="<!--{$result.rcname}--!>"/>
+	  <label style="width:80px;">到期时间：</label>
+	  <input type="text" name="endtime" readonly="true" class="date textInput readonly" value="<!--{$result.endtime|date='Y-m-d', ###}--!>"/>
+	</div>
+	<div class="unit">
+	  <label>外语要求：</label>
+	  <input type="text" class="textInput" name="english" value="<!--{$result.english}--!>" />
+	  <label style="width:80px;">专业要求：</label>
+	  <input type="text" class="textInput" name="major" value="<!--{$result.major}--!>" />
+	</div>
+	<div class="unit">
+	  <label>年龄要求：</label>
+	  <input type="text" class="textInput" name="age" value="<!--{$result.age}--!>" />
+	  <label style="width:80px;">招聘人数：</label>
+	  <input type="text" class="textInput" name="num" value="<!--{$result.num}--!>" />
+	</div>
+	<div class="unit">
+	  <label>性别要求：</label>
+	 <eq name="result.sex" value="男">
+	<input type="radio" name="sex" value="男" checked  />男
+	<input type="radio" name="sex" value="女" />女
+	<input type="radio" name="sex" value="不限"/>不限</td>
+	</eq>
+	<eq name="result.sex" value="女">
+	<input type="radio" name="sex" value="男"  />男
+	<input type="radio" name="sex" value="女" checked />女
+	<input type="radio" name="sex" value="不限"/>不限</td>
+	</eq>
+	<eq name="result.sex" value="不限">
+	<input type="radio" name="sex" value="男" />男
+	<input type="radio" name="sex" value="女" />女
+	<input type="radio" name="sex" value="不限" checked />不限</td>
+	</eq>
+	  <span style="margin-left:50px;">招聘方式：</span>
+	  <eq name="result.jobstype" value="全职">
+	<input type="radio" name="jobstype" value="全职" checked />全职
+	<input type="radio" name="jobstype" value="兼职" />兼职</td>
+	</eq>
+	<eq name="result.jobstype" value="兼职">
+	<input type="radio" name="jobstype" value="全职" />全职
+	<input type="radio" name="jobstype" value="兼职" checked  />兼职</td>
+	</eq>
+	</div>
+	<div class="unit">
+		<label>岗位要求：</label>
+		<textarea name="content"  rows="5" cols="57" ><!--{$result.content}--!></textarea>
+	      </div>
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>"/>
+	    </div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

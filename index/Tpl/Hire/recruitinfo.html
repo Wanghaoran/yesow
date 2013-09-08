@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>招聘详情页 - 易搜</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script>
+  $(document).ready(function(){
+    //点击图片更换验证码
+    $("#code").click(function(){
+      $(this).attr("src","__ROOT__/admin.php/public/verify/temp="+new Date().getTime());
+      });
+    });
+
+ function submitcommit(){
+    if($('#content')[0].value == ''){
+      alert('评论内容不能为空');
+      }else if($('#verify')[0].value == ''){
+      alert('验证码不能为空');
+      }else{
+      var p = $('#content')[0].value;
+      var m = $('#verify')[0].value;
+      var f = $("input:checked[name='face']").val();
+      $.ajax({
+	type: "POST",
+	url: "__URL__/recruitcomment",
+	dataType: "json",
+	data: "content=" + p + "&code=" + m + "&rjid=<!--{$Think.get.id}--!>&face=" + f,
+	success: function(msg){
+	  if(msg.status == 0){
+	    alert('错误提示：' + msg.message);
+	    }else{
+	    alert('成功提示：' + msg.message);
+	    location.reload();
+	    }
+	}
+	});
+    }
+  }
+
+</script>
+
+<style type="text/css">
+.code{ height:auto; padding:20px; border:1px solid #9EC9FE; background:#ECF3FD;}
+.code pre{ font-family:"Courier New";font-size:14px;}
+.info{ font-size:12px; color:#666666; font-family:Verdana; margin:20px 0 50px 0;}
+.info p{ margin:0; padding:0; line-height:22px; text-indent:40px;}
+h2.title{ margin:0; padding:0; margin-top:50px; font-size:18px; font-family:"微软雅黑",Verdana;}
+h3.title{ font-size:16px; font-family:"微软雅黑",Verdana;}
+.importInfo{ font-family:Verdana; font-size:14px;}
+</style>
+</head>
+<body id="body_index">
+<div id="warp_body">
+  <include file="Index:header"/>
+	<div id="mbx">
+		<span>您的位置:</span>
+		<a href="__ROOT__">易搜首页</a> &gt;
+		<a href="__ROOT__/recruit">人才招聘</a> &gt;
+		<span>人才招聘详情页</span> 
+	</div>
+	<!--咨询文章-->
+	<div id="main18">
+			<div id="main18_l">
+				<div class="cat_header">
+					<h3>推荐信息</h3>
+				</div>
+				<div class="cat_bod">
+					<ul class="main18_l_ul">
+					  <volist name="recommended_result" id="rr">
+					  <li><a href="__ROOT__/recruit/<!--{$rr.id}--!>" ><!--{$rr.name}--!></a></li>
+					  </volist>
+					</ul>
+				</div>
+			</div>
+			<div id="main18_r">
+				<div class="huang_ui">
+					<div class="huang_ui_r">
+						<div class="huang_ui_c">
+							<h3>人才招聘</h3>
+						</div>
+					</div>
+				</div>
+                <div class="main18_r_con">
+                    <div class="zp_detail">
+                    	<div class="zp_detail_title">
+			  <span class="zpdate">发布日期:<!--{$result.addtime|date="Y-m-d", ###}--!></span>
+				<span class="zph2"><!--{$result.rcname}--!></span>
+			    <span class="zpaddress">[<a><!--{$result.csname}--!>地区</a>]</span>
+			    <span class="zpnum">人气指数：<!--{$result.clickcount}--!></span>
+                        </div>
+                        <div class="clear10"></div>
+                        <h3 class="zph3">招聘岗位</h3>
+                        <div class="clear10"></div>
+                        <table class="zpxq_tb">
+                        	<tr><th>招聘岗位</th><th>人数</th><th>最低月薪</th><th>学历要求</th><th>工作经验</th><th>外语要求</th><th>专业要求</th><th>性别要求</th><th>年龄要求</th><th>岗位要求</th></tr>
+				<volist name="result_jobs" id="rj">
+				<tr><td><!--{$rj.name}--!></td><td><!--{$rj.num|default='若干'}--!></td><td><!--{$rj.jmname}--!></td><td><!--{$rj.jdname}--!></td><td><!--{$rj.jename}--!></td><td><!--{$rj.english|default='不限'}--!></td><td><!--{$rj.major|default='不限'}--!></td><td><!--{$rj.sex|default='不限'}--!></td><td><!--{$rj.age|default='不限'}--!></td><td><!--{$rj.content|default='无'}--!></td></tr>
+				</volist>
+                            
+                        </table>
+                        <div class="clear20"></div>
+                        <h3 class="zph3">联系方式</h3>
+                        <div class="clear10"></div>
+                        <div class="lxfsbox">
+				<div class="lxfsbox_left"><img width="205" height="205" src="<!--{$Think.config.RECRUIT_PIC_PATH_SAVE}--!><!--{$result.pic|default='imgzpxq.jpg'}--!>" /></div>
+                            <div class="lxfsbox_right">
+                            	<ul>
+					<li><span>联系地址：</span><!--{$result.address}--!></li>
+                                    <li><span>联系人：</span><!--{$result.linkman}--!></li>
+                                    <li><span>联系电话：</span><!--{$result.tel}--!></li>
+                                    <li><span>电子邮件：</span><!--{$result.email}--!></li>
+                                    <li><span>公司主页：</span><!--{$result.website}--!></li>
+                                    <li><span>公司性质：</span><!--{$result.rcnname}--!></li>
+                                    <li><span>所属行业：</span><!--{$result.rciname}--!></li>
+                                    <li><span>员工人数：</span><!--{$result.rcename}--!></li>
+                                    <li><span>注册资金：</span><!--{$result.rcrname}--!></li>
+                                    <li><span>在线QQ：</span><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<!--{$result.qqcode}--!>&site=qq&menu=yes">
+				    <img border="0" src="http://wpa.qq.com/pa?p=2:<!--{$result.qqcode}--!>:44" alt="点击这里给我留言" title="点击这里给我留言">
+				</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear20"></div>
+                        <h3 class="zph3">公司简介</h3>
+                        <div class="clear10"></div>
+                        <div class="gsjjbox">
+                        	<div class="showtext">
+			    <!--{$result.abstract|nl2br}--!>
+                            </div>  
+                            
+                        </div>
+                    </div>
+                    <div class="clear30"></div>
+                    <!--相关岗位-->
+                    <div class="xggwbox">
+                    	<div class="xggwbox_title">相关岗位</div>
+                    	<ul class="xggw">
+			  <volist name="result_about" id="ra">
+			  <eq name="mod" value="1">
+			  <li><span><a href="#">招聘</a></span><a href="__ROOT__/recruit/<!--{$ra.id}--!>"><!--{$ra.name}--!> [<!--{$ra.csname}--!>]</a></li>
+			  <div class="clear"></div>
+			  <else/>
+			  <li class="lileft"><span><a href="#">招聘</a></span><a href="__ROOT__/recruit/<!--{$ra.id}--!>"><!--{$ra.name}--!> [<!--{$ra.csname}--!>]</a></li>
+			  </eq>
+			  </volist>
+
+                        </ul>
+                        <div class="clear10"></div>
+                    </div>
+                    <div class="clear10"></div>
+<div class="xgljbox">
+                        	<h2>网友评论</h2>
+                            <ul class="ul_wypl">
+                                 <volist name="result_comment" id="rc">
+                                  <li>
+                                      <dl>
+					<dt><!--{$rc.content|nl2br}--!></dt>
+                                      <dd style="width:200px;">留言者：<!--{$rc.name|default="游客"}--!></dd>
+                                      <dd style="width:250px;">留言日期：<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></dd>
+				      <dd>表情:
+				      <notempty name="rc.face">
+				      <img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/<!--{$rc.face}--!>.gif" width="20" height="20" border="0" />
+				      <else/>
+				      无
+				      </notempty>
+				      </dd>
+                                                </dl>
+					</li>
+				   </volist>
+                                </ul>
+                                <div class="clear"></div>
+                                <div class="page" style="padding-right:10px;">
+				  <!--{$show}--!>
+                                </div>
+                                <div class="clear"></div>
+                        </div>
+                    <!--评论-->
+		    <div class="xgljbox">
+                        	<h2>我要评论</h2>
+                            <div class="ul_pldetail">
+                                <div style="float:left;">
+                                <textarea class="txt_pldetail" id="content"></textarea><span>&nbsp;*&nbsp;</span>
+                                <br/>
+				<p>表情:
+				<input type="radio" name="face" value="" checked="checked"/>无
+		<input type="radio" name="face" value="1"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/1.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="2"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/2.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="3"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/3.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="4"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/4.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="5"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/5.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="6"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/6.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="7"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/7.gif" width="20" height="20" border="0" />
+		<input type="radio" name="face" value="8"/><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/face/8.gif" width="20" height="20" border="0" />
+				</p>
+                                </div>
+                                <div style="float:left">
+                                 <input type="text" class="div_input4" id="verify" /><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /><br/><a onclick="submitcommit();" class="btn_fbpl" style="margin-top:10px; float:left;">提交评论</a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    <div class="clear20"></div>
+                 </div>
+			</div>
+			<div class="clear"></div>
+	</div>
+	<!--咨询文章结束-->
+	<include file="Index:footer" />
+</div>
+</body>
+</html>

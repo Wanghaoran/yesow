@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑公司 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#csaid').html(_nstr).show();
+	  }else{
+	  $('#csaid').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+
+var checkSubmit = function(){
+  if($('#csaid')[0].value == ''){
+      $('#csaid').focus();
+      alert('所在地区不能为空');
+      return false;
+  }
+  if($('#name')[0].value == ''){
+      $('#name').focus();
+      alert('公司名称不能为空');
+      return false;
+  }
+  if($('#address')[0].value == ''){
+      $('#address').focus();
+      alert('公司地址不能为空');
+      return false;
+  }
+  if($('#ciid')[0].value == ''){
+      $('#ciid').focus();
+      alert('所属行业不能为空');
+      return false;
+  }
+  if($('#ceid')[0].value == ''){
+      $('#ceid').focus();
+      alert('员工人数不能为空');
+      return false;
+  }
+  if($('#crid')[0].value == ''){
+      $('#crid').focus();
+      alert('注册资金不能为空');
+      return false;
+  }
+  if($('#crid')[0].value == ''){
+      $('#crid').focus();
+      alert('注册资金不能为空');
+      return false;
+  }
+  if($('#cnid')[0].value == ''){
+      $('#cnid').focus();
+      alert('公司性质不能为空');
+      return false;
+  }
+  if($('#linkman')[0].value == ''){
+      $('#linkman').focus();
+      alert('公司联系人不能为空');
+      return false;
+  }
+  if($('#email')[0].value == ''){
+      $('#email').focus();
+      alert('电子邮件不能为空');
+      return false;
+  }
+  if($('#abstract')[0].value == ''){
+      $('#abstract').focus();
+      alert('公司简介不能为空');
+      return false;
+  }
+  if($('#tel')[0].value == ''){
+      $('#tel').focus();
+      alert('联系电话不能为空');
+      return false;
+  }
+  return true;
+}
+</script>
+</head>
+<body id="body_user">
+<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">商家需求</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="__URL__/recruit">人才交流</a>
+				<a href="" class="on">编辑公司</a>
+				<a href="#">岗位管理</a>
+				<a href="#">发布岗位</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                        	<div class="sjdxfs_title">编辑公司信息</div>
+                            <div style="min-height:250px;">
+			      	<form action="__ACTION__" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();" >
+                                <table class="table_fabu">
+                                	<tr>
+                                    	<td class="fabuleft">所在地区：</td>
+                                        <td colspan="3" class="fabulong">
+                                        	<select class="prov" name="csid" id="csid" onchange="getchildsitearea($(this).val());">
+				      <option value="">请选择</option>
+				      <volist name="result_childsite" id="rcs">
+				      <eq name="result.csid" value="$rcs.id">
+				      <option value="<!--{$rcs.id}--!>" selected="selected"><!--{$rcs.name}--!></option>
+				      <else/>
+				      <option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+				      </eq>
+				      </volist>
+				    </select> 
+				    <select class="city" name="csaid" id="csaid">
+				      <option value="">请选择</option>
+				      <volist name="result_childsitearea" id="rca">
+				      <eq name="result.csaid" value="$rca.id">
+				      <option value="<!--{$rca.id}--!>" selected="selected"><!--{$rca.name}--!></option>
+				      <else/>
+				      <option value="<!--{$rca.id}--!>"><!--{$rca.name}--!></option>
+				      </eq>
+				      </volist>
+				
+				    </select>
+				   <font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">公司图片：</td>
+                                        <td colspan="3"  class="fabulong">
+                                        <input class="input_text" type="text" id="txt" />
+<input type="button" value="浏览" class="liulan btnmr10" />
+<input class="input_file" size="30" type="file" onchange="txt.value=this.value" name="pic" />
+<input type="button" value="上传" class="liulan"/> <notempty name="result.pic"><a target="_blank" href="<!--{$Think.config.RECRUIT_PIC_PATH_SAVE}--!><!--{$result.pic}--!>">查看</a></notempty>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">公司名称：</td>
+					<td colspan="3" class="fabulong"><input type="text" class="sjdxfs_input2" name="name" id="name" value="<!--{$result.name}--!>" /><font color="#FF0000">*</font></td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">联系地址：</td>
+                                        <td colspan="3"><input type="text" class="sjdxfs_input2" name="address" id="address" value="<!--{$result.address}--!>" /><font color="#FF0000">*</font></td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">所属行业：</td>
+                                        <td colspan="3"  class="fabulong">
+                                        	<select class="sjdxfs_select1" name="ciid" id="ciid">
+						<option value="">请选择</option>
+						<volist name="result_industry" id="ri">
+						<eq name="result.ciid" value="$ri.id">
+						<option value="<!--{$ri.id}--!>" selected="selected"><!--{$ri.name}--!></option>
+						<else/>
+						<option value="<!--{$ri.id}--!>"><!--{$ri.name}--!></option>
+						</eq>
+						</volist>
+						</select>
+						<font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">员工人数：</td>
+                                        <td colspan="3"  class="fabulong">
+                                        	<select class="sjdxfs_select1" name="ceid" id="ceid">
+						<option value="">请选择</option>
+						<volist name="result_employnum" id="re">
+						<eq name="result.ceid" value="$re.id">
+						<option value="<!--{$re.id}--!>" selected="selected"><!--{$re.name}--!></option>
+						<else/>
+						<option value="<!--{$re.id}--!>"><!--{$re.name}--!></option>
+						</eq>
+						</volist>
+						</select>
+						<font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">注册资金：</td>
+                                        <td colspan="3"  class="fabulong">
+                                        	<select class="sjdxfs_select1" name="crid" id="crid">
+						<option value="">请选择</option>
+						<volist name="result_registermoney" id="rr">
+						<eq name="result.crid" value="$rr.id">
+						<option value="<!--{$rr.id}--!>" selected="selected"><!--{$rr.name}--!></option>
+						<else/>
+						<option value="<!--{$rr.id}--!>"><!--{$rr.name}--!></option>
+						</eq>
+						</volist>
+						</select>
+						<font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">公司性质：</td>
+                                        <td class="faburight">
+                                        	<select class="sjdxfs_select1" name="cnid" id="cnid">
+						<option value="">请选择</option>
+						<volist name="result_nature" id="rn">
+						<eq name="result.cnid" value="$rn.id">
+						<option value="<!--{$rn.id}--!>" selected="selected"><!--{$rn.name}--!></option>
+						<else/>
+						<option value="<!--{$rn.id}--!>"><!--{$rn.name}--!></option>
+						</eq>	
+						</volist>
+						</select>
+						<font color="#FF0000">*</font>
+                                        </td>
+                                        <td class="fabuleft">联系人：</td>
+					<td class="faburight"><input type="text" class="sjdxfs_input1" name="linkman" value="<!--{$result.linkman}--!>" id="linkman" /><font color="#FF0000">*</font></td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">公司主页：</td>
+					<td class="faburight"><input type="text" class="sjdxfs_input1" value="<!--{$result.website}--!>" name="website" /></td>
+                                        <td class="fabuleft">电子邮件：</td>
+                                        <td class="faburight"><input type="text" class="sjdxfs_input1" name="email" id="email" value="<!--{$result.email}--!>" /><font color="#FF0000">*</font></td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">联系电话：</td>
+                                        <td class="faburight"><input type="text" class="sjdxfs_input1" name="tel" id="tel" value="<!--{$result.tel}--!>" /><font color="#FF0000">*</font></td>
+                                        <td class="fabuleft">联系QQ：</td>
+                                        <td class="faburight"><input type="text" class="sjdxfs_input1" name="qqcode" value="<!--{$result.qqcode}--!>" /></td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">公司简介:</td>
+                                        <td colspan="3"  class="fabulong">
+					<textarea class="sjdxfs_textarea1" name="abstract" id="abstract"><!--{$result.abstract}--!></textarea><font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+				<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+                                    <tr>
+                                    	<td colspan="4" align="center" height="50"><input type="submit" value="编辑" class="rmb_fanhui"/>&nbsp;&nbsp;<input type="button" value="放弃并返回前页" class="rmb_fanhui" onclick="history.go(-1);"/></td>
+                                    </tr>
+                                </table>
+				</form>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

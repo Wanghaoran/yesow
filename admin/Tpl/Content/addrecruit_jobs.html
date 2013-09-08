@@ -1,0 +1,92 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/recruit_jobs" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+
+	    <label>工作地点：</label>
+	    <select class="combox" name="jobs_csid" ref="sellused_csaid" refUrl="__APP__/public/ajaxgetcsaid/id/{value}">
+	      <option value="">请选择</option>
+	      <volist name="result_childsite" id="s_rc">
+	      <option value="<!--{$s_rc.id}--!>"><!--{$s_rc.name}--!></option>
+	      </volist>
+	    </select>
+	    <select class="combox" name="jobs_csaid" id="sellused_csaid">
+	      <option value="">请选择</option>
+	    </select>
+	
+	<label style="width:80px;">最低月薪：</label>
+	    <select class="combox" name="jmid">
+	      <volist name="result_monthlypay" id="rm">
+	      <option value="<!--{$rm.id}--!>"><!--{$rm.name}--!></option>
+	      </volist>
+	    </select>
+	
+	 </div>
+
+	 <div class="unit">
+	   <label>学历要求：</label>
+	    <select class="combox" name="jdid">
+	      <volist name="result_degree" id="rd">
+	      <option value="<!--{$rd.id}--!>"><!--{$rd.name}--!></option>
+	      </volist>
+	    </select>
+
+	   <label style="width:60px;margin-left:50px;">工作经验：</label>
+	    <select class="combox" name="jeid">
+	      <volist name="result_experience" id="re">
+	      <option value="<!--{$re.id}--!>"><!--{$re.name}--!></option>
+	      </volist>
+	    </select>
+
+	 </div>
+	<div class="unit">
+	  <label>招聘岗位：</label>
+	  <input type="text" class="textInput required" name="name" size="60" />
+	</div>
+	<div class="unit">
+	  <label>关键词：</label>
+	  <input type="text" class="textInput required" name="keyword" size="60" />
+	</div>
+	<div class="unit">
+	  <label>所属公司：</label>
+	  <input name="org2.id" value="" type="hidden">
+	  <input class="required" name="org2.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetrecruit_companyinfo" lookupGroup="org2"/>
+	  <label style="width:80px;">到期时间：</label>
+	  <input type="text" name="endtime" readonly="true" class="date textInput readonly"/>
+	</div>
+	<div class="unit">
+	  <label>外语要求：</label>
+	  <input type="text" class="textInput" name="english" />
+	  <label style="width:80px;">专业要求：</label>
+	  <input type="text" class="textInput" name="major" />
+	</div>
+	<div class="unit">
+	  <label>年龄要求：</label>
+	  <input type="text" class="textInput" name="age" />
+	  <label style="width:80px;">招聘人数：</label>
+	  <input type="text" class="textInput" name="num" />
+	</div>
+	<div class="unit">
+	  <label>性别要求：</label>
+	  <input type="radio" name="sex" value="男" />男<input type="radio" name="sex" value="女" />女<input type="radio" name="sex" value="不限" checked />不限
+	  <span style="margin-left:50px;">招聘方式：</span>
+	  <input type="radio" name="jobstype" value="全职" checked />全职<input type="radio" name="jobstype" value="兼职" />兼职
+	</div>
+	<div class="unit">
+		<label>岗位要求：</label>
+		<textarea name="content"  rows="5" cols="57" ></textarea>
+	      </div>
+	    </div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑岗位 - 易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<link type="text/css" href="__PUBLIC__/index/default/datepicker/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="__PUBLIC__/index/default/datepicker/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/index/default/datepicker/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/datepicker/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#sdate").datepicker()
+})
+var getchildsitearea = function(val){
+    $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcsaid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#memdizhi').html(_nstr).show();
+	  }else{
+	  $('#memdizhi').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+  }
+var checkSubmit = function(){
+  if($('#sdate')[0].value == ''){
+      $('#sdate').focus();
+      alert('到期时间不能为空');
+      return false;
+  }
+  if($('#name')[0].value == ''){
+      $('#name').focus();
+      alert('招聘岗位不能为空');
+      return false;
+  }
+  if($('#keyword')[0].value == ''){
+      $('#keyword').focus();
+      alert('关键字不能为空');
+      return false;
+  }
+  if($('#memdizhi')[0].value == ''){
+      $('#memdizhi').focus();
+      alert('工作地点不能为空');
+      return false;
+  }
+  if($('#content')[0].value == ''){
+      $('#content').focus();
+      alert('岗位要求不能为空');
+      return false;
+  }
+  
+  return true;
+}
+</script>
+</head>
+<body id="body_user">
+<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+                <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">商家需求</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="__URL__/recruit">人才交流</a>
+				<a href="__URL__/recruit_addcompany">发布公司</a>
+				<a href="#">岗位管理</a>
+				<a href="#" class="on">编辑岗位</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+			  <div class="sjdxfs_title"><!--{$company_name}--!> - 编辑岗位</div>
+                            <div style="min-height:250px;">
+				<form action="__ACTION__" method="post" onsubmit="return checkSubmit();">
+                                <table class="table_fabu">
+                                	<tr>
+                                    	<td class="fabuleft">到期时间：</td>
+                                        <td colspan="3" class="fabulong">
+						<input type="text" id="sdate" name="endtime" class="inputclass1 Wdate" readonly="readonly" value="<!--{$result.endtime|date='Y-m-d', ###}--!>"><font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">招聘岗位：</td>
+                                        <td colspan="3" class="fabulong">
+						<input type="text" class="sjdxfs_input2" id="name" name="name" value="<!--{$result.name}--!>" /><font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">关键词：</td>
+                                        <td colspan="3" class="fabulong">
+                                        	<input type="text" class="sjdxfs_input2" id="keyword" name="keyword" value="<!--{$result.keyword}--!>" /><font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">最低月薪：</td>
+                                        <td class="faburight">
+                                        	<select class="sjdxfs_select1" name="jmid">
+						<volist name="result_monthlypay" id="rm">
+						<eq name="result.jmid" value="$rm.id">
+						<option value="<!--{$rm.id}--!>" selected="selected"><!--{$rm.name}--!></option>
+						<else/>
+						<option value="<!--{$rm.id}--!>"><!--{$rm.name}--!></option>
+						</eq>
+						</volist>
+                                            </select>
+                                        </td>
+                                        <td class="fabuleft">学历要求：</td>
+                                        <td class="faburight">
+                                        	<select class="sjdxfs_select1" name="jdid">
+						<volist name="result_degree" id="rd">
+						<eq name="result.jdid" value="$rd.id">
+						<option value="<!--{$rd.id}--!>" selected="selected"><!--{$rd.name}--!></option>
+						<else/>
+						<option value="<!--{$rd.id}--!>"><!--{$rd.name}--!></option>
+						</eq>
+						</volist>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">外语要求：</td>
+					<td class="faburight"><input type="text" class="sjdxfs_input1" name="english" value="<!--{$result.english}--!>"/><font color="#FF0000">为空表示不限</font></td>
+                                        <td class="fabuleft">专业要求：</td>
+					<td class="faburight"><input type="text" class="sjdxfs_input1" name="major" value="<!--{$result.major}--!>" /><font color="#FF0000">为空表示不限</font></td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">性别要求：</td>
+                                        <td class="faburight">
+					<eq name="result.sex" value="男">
+					<input type="radio" name="sex" value="男" checked  />男
+					<input type="radio" name="sex" value="女" />女
+					<input type="radio" name="sex" value="不限"/>不限</td>
+					</eq>
+					<eq name="result.sex" value="女">
+					<input type="radio" name="sex" value="男"  />男
+					<input type="radio" name="sex" value="女" checked />女
+					<input type="radio" name="sex" value="不限"/>不限</td>
+					</eq>
+					<eq name="result.sex" value="不限">
+					<input type="radio" name="sex" value="男" />男
+					<input type="radio" name="sex" value="女" />女
+					<input type="radio" name="sex" value="不限" checked />不限</td>
+					</eq>
+                                        <td class="fabuleft">工作经验：</td>
+                                        <td class="faburight">
+                                        	<select class="sjdxfs_select1" name="jeid">
+						<volist name="result_experience" id="re">
+						<eq name="result.jeid" value="$re.id">
+						<option value="<!--{$re.id}--!>" selected="selected"><!--{$re.name}--!></option>
+						<else/>
+						<option value="<!--{$re.id}--!>"><!--{$re.name}--!></option>
+						</eq>
+						</volist>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">年龄要求：</td>
+					<td class="faburight"><input type="text" class="sjdxfs_input1" name="age" value="<!--{$result.age}--!>"/><font color="#FF0000">为空表示不限</font></td>
+                                        <td class="fabuleft">招聘方式：</td>
+                                        <td class="faburight">
+					<eq name="result.jobstype" value="全职">
+					<input type="radio" name="jobstype" value="全职" checked />全职
+					<input type="radio" name="jobstype" value="兼职" />兼职</td>
+					</eq>
+					<eq name="result.jobstype" value="兼职">
+					<input type="radio" name="jobstype" value="全职" />全职
+					<input type="radio" name="jobstype" value="兼职" checked  />兼职</td>
+					</eq>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">招聘人数：</td>
+					<td class="faburight"><input type="text" class="sjdxfs_input1" name="num" value="<!--{$result.num}--!>" />人<font color="#FF0000">（不填表示若干）</font></td>
+                                        <td class="fabuleft">工作地点：</td>
+                                        <td class="faburight">
+                                        <select class="prov" name="jobs_csid" id="province" onchange="getchildsitearea($(this).val());">
+				      <volist name="result_childsite" id="rcs">
+					<eq name="result.jobs_csid" value="$rcs.id">
+				      <option value="<!--{$rcs.id}--!>" selected="selected"><!--{$rcs.name}--!></option>
+					<else/>
+				      <option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+					</eq>
+				      </volist>
+				    </select> 
+				    <select class="city" name="jobs_csaid" id="memdizhi">
+					<volist name="result_childsitearea" id="rcsa">
+					<eq name="result.jobs_csaid" value="$rcsa.id">
+				      <option value="<!--{$rcsa.id}--!>" selected="selected"><!--{$rcsa.name}--!></option>
+					<else/>
+				      <option value="<!--{$rcsa.id}--!>"><!--{$rcsa.name}--!></option>
+					</eq>
+					</volist>
+				    </select><font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    	<td class="fabuleft">岗位要求：</td>
+                                        <td colspan="3" class="fabulong">
+						<textarea class="sjdxfs_textarea1" id="content" name="content"><!--{$result.content}--!></textarea><font color="#FF0000">*</font>
+                                        </td>
+                                    </tr>
+					<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+					<input type="hidden" name="c_cid" value="<!--{$result.cid}--!>" />
+                                    <tr>
+                                    	<td colspan="4" align="center" height="50"><input type="submit" value="编辑" class="rmb_fanhui"/>&nbsp;&nbsp;<input type="button" value="放弃并返回前页" class="rmb_fanhui" onclick="history.go(-1);"/></td>
+                                    </tr>
+                                </table>
+				</form>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>
