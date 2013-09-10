@@ -184,14 +184,26 @@ class IndexAction extends CommonAction {
 
   //推荐商家
   private function recommendcompany(){
-    $company = M('Company');
-    $where = array();
-    //判断是否是分站
-    if($csid = D('admin://ChildSite') -> getid()){
-      $where['csid'] = $csid;
+    //站点类型
+    $website_type_name = D('admin://ChildSite') -> getid() ? '分站' : '主站';
+    $fid = M('RecommendCompanyWebsiteType') -> getFieldByname($website_type_name, 'id');
+    $this -> assign('fid', $fid);
+    //查询
+    $RecommendCompany = M('RecommendCompany');
+    $where_recommendcompany = array();
+    $where_recommendcompany['fid'] = $fid;
+    $where_recommendcompany['starttime'] = array('ELT', time());
+    $where_recommendcompany['endtime'] = array('EGT', time());
+    $result_recommendcompany = $RecommendCompany -> alias('rc') -> field('rc.cid,rc.rank,c.name as cname') -> join('yesow_company as c ON rc.cid = c.id') -> where($where_recommendcompany) -> order('rc.rank ASC') -> select();
+    $recommend_company = array();
+    for($i=1; $i<=32; $i++){
+      $recommend_company[$i] = array();
+      foreach($result_recommendcompany as $value){
+	if($i == $value['rank']){
+	  $recommend_company[$i] = array('cid' => $value['cid'], 'cname' => $value['cname']);
+	}
+      }
     }
-    $where['delaid'] = array('exp', 'is NULL');
-    $recommend_company = $company -> field('id,name') -> order('id DESC') -> where($where) -> limit(32) -> select();
     $this -> assign('recommend_company', $recommend_company);
   }
 

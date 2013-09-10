@@ -1,0 +1,136 @@
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="mname" value="<!--{$Think.request.mname}--!>" />
+  <input type="hidden" name="cname" value="<!--{$Think.request.cname}--!>" />
+  <input type="hidden" name="rank" value="<!--{$Think.request.rank}--!>" />
+  <input type="hidden" name="fid" value="<!--{$Think.request.fid}--!>" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li style="width:220px;">
+				<label style="width:60px;">会员帐号：</label>
+				<input type="text" name="mname" />
+			</li>
+			<li style="width:220px;">
+				<label style="width:60px;">公司名称：</label>
+				<input type="text" name="cname" />
+			</li>
+			<li style="width:115px;">
+				<label style="width:50px;">排名：</label>
+				<input type="text" name="rank" size="5" />
+			</li>
+			<li style="width:150px;">
+				<label style="width:60px;">站点类别：</label>
+				<select class="combox" name="fid">
+					<option value="">请选择</option>
+					<volist name="result_website_type" id="rwt">
+					<option value="<!--{$rwt.id}--!>"><!--{$rwt.name}--!></option>
+					</volist>
+				</select>
+			</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addrecommendcompany" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delrecommendcompany/navTabId/recommendcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editrecommendcompany/id/{sid_role}" target="dialog" mask="true" warn="请选择记录"><span>编辑</span></a></li>
+	    <li class="line">line</li>
+	    <li class=""><a class="icon" href="__URL__/passauditrecommendcompany/navTabId/recommendcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些记录吗?" warn="请选择记录"><span>通过审核</span></a></li>
+	    <li class=""><a class="icon" href="__URL__/nopassauditrecommendcompany/navTabId/recommendcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些订单吗?" warn="请选择记录"><span>不通过审核</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['company']['addrecommendcompany'])">
+	    <li><a class="add" href="__URL__/addrecommendcompany" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['delrecommendcompany'])">	    
+	    <li class=""><a class="delete" href="__URL__/delrecommendcompany/navTabId/recommendcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['editrecommendcompany'])">
+	    <li><a class="edit" href="__URL__/editrecommendcompany/id/{sid_role}" target="dialog" mask="true" warn="请选择记录"><span>编辑</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['passauditrecommendcompany'])">
+	    <li class="line">line</li>
+	    <li class=""><a class="icon" href="__URL__/passauditrecommendcompany/navTabId/recommendcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要通过审核这些记录吗?" warn="请选择记录"><span>通过审核</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['nopassauditrecommendcompany'])">
+	    <li class=""><a class="icon" href="__URL__/nopassauditrecommendcompany/navTabId/recommendcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要不通过审核这些订单吗?" warn="请选择记录"><span>不通过审核</span></a></li>
+	    </if>
+	    </if>
+	    
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+			<th width="20">编号</th>
+			<th width=40">用户名</th>
+			<th width=40">购买方式</th>
+			<th width="170">公司名称</th>
+			<th width="40">站点类型</th>
+			<th width="60">排名</th>
+			<th width="90">开始时间</th>
+			<th width="90">结束时间</th>
+			<th width="40">当前状态</th>
+			<th width="30">审核</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+		  <td><!--{$r.id}--!></td>
+		  <td><!--{$r.mname}--!></td>
+		  <eq name="r.type" value="1">
+		  <td style="color:green;">后台添加</td>
+		  <else/>
+		  <td style="color:blue;">前台购买</td>
+		  </eq>
+		  <td><a href="__ROOT__/company/<!--{$r.cid}--!>" target="_blank"><!--{$r.cname}--!></a></td>
+		  <td><!--{$r.fname}--!></td>
+		  <td>第 <!--{$r.rank}--!> 位</td>
+			  <td><!--{$r.starttime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$r.endtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <if condition="$r['starttime'] gt time()">
+			  <td style="color:red;">排队中</td>
+			  <elseif condition="$r['endtime'] lt time()" />
+			  <td style="color:red;">已过期</td>
+			  <else/>
+		  	  <td style="color:green;">已生效</td>
+			  </if>
+			  <eq name="r.ischeck" value="1">
+			  <td style="color:green">已审核</td>
+			  <else/>
+			  <td style="color:red">未审核</td>
+			  </eq>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

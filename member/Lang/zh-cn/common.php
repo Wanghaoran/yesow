@@ -24,6 +24,7 @@ $app_lang = array(
   'ADVERT_RENEW' => '页面广告信息更新成功，现在跳转到续费订单页面',
   'SEARCHRANK_ERROR' => '更新速查排名信息失败',
   'ADDPOSITION_SUCCESS' => '岗位信息添加成功,，审核通过后即可在前台显示',
+  'RECOMMENDCOMPANY_ERROR' => '更新推荐商家信息失败',
 );
 
 return array_merge($common_lang, $app_lang);

@@ -273,6 +273,50 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取推荐商家排名情况
+  public function ajaxgetrecommendcompany(){
+    //最大排名数
+    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    $where_money = array();
+    $where_money['fid'] = $this -> _post('fid');
+    $max_rank = $RecommendCompanyMoney -> where($where_money) -> order('rank DESC') -> getField('rank');
+    //已生效排名数
+    $RecommendCompany = M('RecommendCompany');
+    $where_rank = array();
+    $where_rank['fid'] = $this -> _post('fid');
+    $where_rank['starttime'] = array('ELT', time());
+    $where_rank['endtime'] = array('EGT', time());
+    $result_rank_temp = $RecommendCompany -> field('rank') -> where($where_rank) -> select();
+    $result_rank = array();
+    foreach($result_rank_temp as $value){
+      $result_rank[] = $value['rank'];
+    }
+    $result = array();
+    //创建排名数组
+    for($i=1; $i<=$max_rank; $i++){
+      if(in_array($i, $result_rank)){
+	$result[$i] = true;
+      }else{
+	$result[$i] = false;
+      }
+    }
+    echo json_encode($result);
+  }
+
+  //ajax获取推荐商家价格
+  public function ajaxgetrecommendcompanyprice(){
+    //折扣率
+    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    $where = array();
+    $where['fid'] = $this -> _post('fid', 'intval');
+    $where['rank'] = array('EGT', $this -> _post('rank', 'intval'));
+    $discount = $RecommendCompanyMoney -> where($where) -> order('rank ASC') -> getField('discount');
+    //包月信息
+    $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
+    $result = $RecommendCompanyMonthsMoney -> field('id,months,ROUND(marketprice*' . (1-$discount) . ',1) as marketprice,ROUND(promotionprice*' . (1-$discount) . ',1) as promotionprice') -> where(array('fid' => $this -> _post('fid', 'intval'))) -> order('months ASC') -> select();
+    echo json_encode($result);
+  }
+
   //获得底部关于我们
   public function getfooternav(){
     $aboutus =  M('Aboutus');

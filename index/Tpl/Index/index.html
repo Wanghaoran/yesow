@@ -10,6 +10,21 @@
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
 <script src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.KinSlideshow-1.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/dialog.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript">
+function poplogin(){
+  var api = $.dialog({id:'L1360'});
+  /* jQuery ajax */
+  $.ajax({
+    url:'__ROOT__/public/ajaxlogin',
+    success:function(data){
+      api.content(data);
+    },
+    cache:false
+    });
+  }
+</script>
 <script type="text/javascript">
 $(function(){
     $("#KinSlideshow").KinSlideshow();
@@ -161,7 +176,15 @@ $(function(){
 			<div class="main02_r_bod">
 			  <ul id="main02_r_bod_ul">
 			    <volist name="recommend_company" id="rc">
-			    <li><a href="__ROOT__/company/<!--{$rc.id}--!>" target="_blank" ><!--{$rc.name}--!></a></li>
+			    <empty name="rc">
+			    <if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+			    <li><a href="__ROOT__/member.php/services/addrecommendcompany/f_fid/<!--{$fid}--!>/f_rank/<!--{$i}--!>" target="_blank" style="color:green;" >点击购买此位 >></a></li>		    
+			    <else/>
+			    <li><a href="javascript:poplogin();"style="color:green;" >点击购买此位 >></a></li>
+			    </if>
+			    <else/>
+			    <li><a href="__ROOT__/company/<!--{$rc.cid}--!>" target="_blank" ><!--{$rc.cname}--!></a></li>
+			    </empty>
 			    </volist>
 			  </ul>				
 			</div>

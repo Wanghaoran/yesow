@@ -1,7 +1,7 @@
 <div id="main_l">
   <div id="main_l_tit"><h3>业务服务</h3></div>
   <ul>
-    <if condition="(ACTION_NAME eq 'index')">
+    <if condition="(ACTION_NAME eq 'index') OR (ACTION_NAME eq 'addrecommendcompany') OR (ACTION_NAME eq 'recommendcompanyorder') OR (ACTION_NAME eq 'editrecommendcompany') OR (ACTION_NAME eq 'editeditrecommendcompany')">
     <li class="hover"><a href="__URL__/index">推荐商家管理</a></li>
     <else/>
     <li><a href="__URL__/index">推荐商家管理</a></li>

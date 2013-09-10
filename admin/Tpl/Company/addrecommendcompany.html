@@ -1,0 +1,74 @@
+<script>
+var getrank = function(){
+  var fid = $('#c_fid').val();
+  var rank = $('#c_rank').val();
+  if(fid == '' || rank == ''){
+    alert('请填写排名位置！');
+    return false;
+  }
+  $.ajax({
+      url:'__APP__/public/ajaxgetrecommendcompanystring',
+      type:'POST',
+      data:'fid=' + fid + '&rank=' + rank,
+      success: function(ress){
+        var str = '';
+        if(ress.count == 0){
+	  str += '此关键词排名没有排队信息，开始日期大于当前时间即可';
+	}else{
+	  str += '此关键词排名有<span style="color:red;"> ' + ress.count + ' </span>人排队，开始日期应大于<span style="color:red;"> ' + ress.endtime +  ' </span>';
+	}
+	$('#starttimestring').html(str);
+      },
+      dataType:'json'
+    });
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/recommendcompany" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>公司名称：</label>
+	  <input name="org2.id" value="" type="hidden">
+	  <input class="required" name="org2.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetcompanyinfo" lookupGroup="org2"/>
+	</div>
+	<div class="unit">
+	  <label>所属会员：</label>
+	  <input name="org3.id" value="" type="hidden">
+	  <input name="org3.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org3"/>
+	</div>
+	<div class="unit">
+	  <label>站点类别：</label>
+	  <select class="combox" name="fid" id="c_fid">
+	    <volist name="result_website_type" id="rwt">
+	    <option value="<!--{$rwt.id}--!>"><!--{$rwt.name}--!></option>
+	    </volist>
+	  </select>
+	</div>
+	<div class="unit">
+	  <label>排名：</label>
+	  <input name="rank" type="text" id="c_rank" class="required" /><label style="width:200px;margin-left:10px;"><a onclick="getrank();" class="button"><span>查看此关键词排名排队情况</span></a></label>
+	</div>
+	
+	<div class="unit">
+		<label>开始日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="starttime" /><label id="starttimestring" style="width:400px;"><label>
+	      </div>
+	      <div class="unit">
+		<label>结束日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly required" name="endtime" />
+	</div>
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

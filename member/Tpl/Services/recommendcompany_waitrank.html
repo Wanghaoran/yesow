@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>等待排名页面</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+</head>
+<body>
+<div class="paidui"> 
+  <p>这个位置目前有<span class="font_blue"><!--{$result|count}--!></span>位会员排队了，如果您想排此位置的话请点击下方确认按钮进入队列，等待排名！</p>
+<div class="clear10"></div>
+<ul>
+  <volist name="result" id="r">
+  <eq name="i" value="1">
+  <li class="now"><span>剩余 <php>echo intval($r['retime']/3600/24).'天'.date('H小时i分s秒',$r['retime']);</php></span><!--{$i}--!>、<!--{$r.cname}--!></li>
+  <else/>
+  <li><span>剩余 <php>echo intval($r['retime']/3600/24).'天'.date('H小时i分s秒',$r['retime']);</php></span><!--{$i}--!>、<!--{$r.cname}--!></li>
+  </eq>
+  </volist>
+</ul>
+<div class="clear10"></div>
+</div>
+</body>
+</html>
+

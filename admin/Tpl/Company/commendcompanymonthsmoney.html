@@ -1,0 +1,90 @@
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="fid" value="<!--{$Think.request.fid}--!>"/>
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li style="width:300px;">
+				<label>站点类别：</label>
+				<select class="combox" name="fid">
+					<option value="">请选择</option>
+					<volist name="result_website_type" id="rwt">
+					<option value="<!--{$rwt.id}--!>"><!--{$rwt.name}--!></option>
+					</volist>
+				</select>
+			</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+			
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addcommendcompanymonthsmoney" target="dialog" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delcommendcompanymonthsmoney/navTabId/commendcompanymonthsmoney" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editcommendcompanymonthsmoney/id/{sid_role}" target="dialog" mask="true" warn="请选择记录"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['company']['addcommendcompanymonthsmoney'])">
+	    <li><a class="add" href="__URL__/addcommendcompanymonthsmoney" target="dialog" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['delcommendcompanymonthsmoney'])">	    
+	    <li class=""><a class="delete" href="__URL__/delcommendcompanymonthsmoney/navTabId/commendcompanymonthsmoney" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['company']['editcommendcompanymonthsmoney'])">
+	    <li><a class="edit" href="__URL__/editcommendcompanymonthsmoney/id/{sid_role}" target="dialog" mask="true" warn="请选择记录"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+	    
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+			<th width="20">编号</th>
+			<th width="30">站点类别</th>
+			<th width="40">包月数</th>
+			<th width="40">市场价</th>
+			<th width="60">促销价</th>
+			<th width="220">备注</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.fname}--!></td>
+			  <td><!--{$r.months}--!></td>
+			  <td><!--{$r.marketprice}--!></td>
+			  <td><!--{$r.promotionprice}--!></td>
+			  <td><!--{$r.remark}--!></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+

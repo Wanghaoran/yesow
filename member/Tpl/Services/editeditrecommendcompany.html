@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑推荐商家-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist1').hradio();
+	});
+
+var checksubmit = function(){
+  return true;
+}
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">推荐商家管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">推荐商家管理</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                        	<ul class="ul_zxqqbj">
+				  <li><span class="">公司名称：</span><input type="text" class="input_sjdxfs1" value="<!--{$result.cname}--!>" disabled="disabled"/></li>
+                                <li>
+				<div class="right"><span class="">结束日期：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.endtime|date='Y-m-d', ###}--!>" disabled="disabled"/></div>
+                                    <div class="left"><span class="">开始日期：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.starttime|date='Y-m-d', ###}--!>" disabled="disabled"/></div>
+                                </li>
+				<li>
+                                    <div class="left"><span class="">站点类别：</span><input type="text" class="input_sjdxfs2" value="<!--{$result.fname}--!>" disabled="disabled"/></div>
+                                </li>
+				<li>
+				<div class="left"><span class="">排名：</span><input type="text" class="input_sjdxfs2" value="第 <!--{$result.rank}--!> 位" disabled="disabled"/></div>
+                                </li>
+                            <div class="clear"></div>
+                            <div class="sjdxfs_tishi">当前购买的 <!--{$result.fname}--!> - 第<!--{$result.rank}--!>位，您后面的排队情况为:</div>
+                            <div class="">
+
+				
+				   <empty name="result_wait">
+				   <h2 style="margin:10px;color:red;">您后面没有排队信息，您可以直接续费</h2>
+
+				   <else/>
+				   <table class="table_zxqqgl">
+                                    <tr>
+                                        <th>公司名称</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+				      </tr>
+				   <volist name="result_wait" id="rw">
+				     <tr>
+					<td><!--{$rw.cname}--!></td>
+					<td><!--{$rw.starttime|date="Y-m-d H:i:s", ###}--!></td>
+					<td><!--{$rw.endtime|date="Y-m-d H:i:s", ###}--!></td>
+				     </tr>
+				   </volist>
+				   </table>
+				   <h2 style="margin:10px;color:red;">您现在续费，将排在队尾，开始时间为: <php>echo date('Y-m-d H:i:s', ($result_wait[count($result_wait)-1]['endtime'])+1)</php></h2>	
+				   </empty>
+				<div class="sjdxfs_tishi">选择续包信息：</div>
+				<form action="__URL__/recommendcompany_pay" method="post">
+                            	<div id="radiolist1">
+				  <volist name="searchrank_money" id="qp">
+				<input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+				<label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+				</volist>
+                                         <div class="clear"></div>
+                                     </div>
+                            </div>							
+			    <div class="div_zxqqsq5">
+				<input type="hidden" name="cid" value="<!--{$result.cid}--!>" />
+				<input type="hidden" name="fid" value="<!--{$result.fid}--!>" />
+				<input type="hidden" name="rank" value="<!--{$result.rank}--!>" />
+			      <input type="button" class="rmb_fanhui" value="返回" onclick="history.go(-1);" />
+                            	<input type="submit" class="rmb_fanhui" value="确认提交"/>
+			      </div>
+				</form>
+                            <div class="clear10"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

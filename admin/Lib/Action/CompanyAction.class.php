@@ -2112,7 +2112,87 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  //推荐商家订单
+  public function recommendcompanyorder(){
+    $RecommendCompanyOrder = M('RecommendCompanyOrder');
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['sro.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['sro.addtime'][] = array('lt', $endtime);
+    }
+    //记录总数
+    $count = $RecommendCompanyOrder -> alias('sro') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
 
+    $result = $RecommendCompanyOrder -> alias('sro') -> field('sro.id,sro.cid,sro.ordernum,m.name as mname,c.name as cname,rwt.name as fname,srm.months as months,sro.rank,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where($where) -> order('sro.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    
+    $this -> display();
+  }
+
+  //删除推荐商家订单
+  public function delrecommendcompanyorder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecommendCompanyOrder = M('RecommendCompanyOrder');
+    if($RecommendCompanyOrder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //通过审核推荐商家订单
+  public function passauditrecommendcompanyorder(){
+    $RecommendCompanyOrder = M('RecommendCompanyOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($RecommendCompanyOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核推荐商家订单
+  public function nopassauditrecommendcompanyorder(){
+    $RecommendCompanyOrder = M('RecommendCompanyOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($RecommendCompanyOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //推荐商家订单详情
+  public function editrecommendcompanyorder(){
+    $RecommendCompanyOrder = M('RecommendCompanyOrder');
+    $result_o = $RecommendCompanyOrder -> alias('sro') -> field('sro.ordernum,sro.ischeck,sro.status,c.name as cname,rwt.name as fname,sro.rank,m.name as mname,m.tel as mtel,m.fullname as mfullname,srm.months') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result_o', $result_o);
+    $this -> display();
+  }
 
   /* --------------- 业务订单管理 ---------------- */
 
@@ -2982,6 +3062,148 @@ class CompanyAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
+
+  //推荐商家管理
+  public function recommendcompany(){
+    $RecommendCompany = M('RecommendCompany');
+    $where = array();
+    if(!empty($_POST['cname'])){
+      $where['c.name'] = $this -> _post('cname');
+    }
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    if(!empty($_POST['rank'])){
+      $where['sr.rank'] = $this -> _post('rank');
+    }
+    if(!empty($_POST['fid'])){
+      $where['sr.fid'] = $this -> _post('fid');
+    }
+    //记录总数
+    $count = $RecommendCompany -> alias('sr') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $RecommendCompany -> alias('sr') -> field('sr.id,m.name as mname,sr.type,c.name as cname,rwt.name as fname,sr.rank,sr.starttime,sr.endtime,sr.ischeck,sr.cid') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.starttime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //站点分类
+    $result_website_type = M('RecommendCompanyWebsiteType') -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //添加推荐商家
+  public function addrecommendcompany(){
+    if(!empty($_POST['rank'])){
+      $RecommendCompany = M('RecommendCompany');
+      $add_data = array();
+      $add_data['cid'] = $_POST['org2_id'];
+      if(!empty($_POST['org3_id'])){
+	$add_data['mid'] = $_POST['org3_id'];
+      }
+      $add_data['fid'] = $this -> _post('fid', 'intval');
+      $add_data['rank'] = $this -> _post('rank', 'intval');
+      $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
+      $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['type'] = 1;    
+
+      if(!$RecommendCompany -> create($add_data)){
+	$this -> error($RecommendCompany -> getError());
+      }
+      if($RecommendCompany -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //站点分类
+    $result_website_type = M('RecommendCompanyWebsiteType') -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //删除推荐商家
+  public function delrecommendcompany(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecommendCompany = M('RecommendCompany');
+    if($RecommendCompany -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑推荐商家
+  public function editrecommendcompany(){
+    $RecommendCompany = M('RecommendCompany');
+    //处理更新
+    if(!empty($_POST['id'])){
+      $update_data = array();
+      $update_data['cid'] = $_POST['org2_id'];
+      if(!empty($_POST['org3_id'])){
+	$update_data['mid'] = $_POST['org3_id'];
+      }
+      $update_data['fid'] = $this -> _post('fid', 'intval');
+      $update_data['rank'] = $this -> _post('rank', 'intval');
+      $update_data['starttime'] = $this -> _post('starttime', 'strtotime');
+      $update_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $update_data['id'] = $this -> _post('id', 'intval');
+      if(!$RecommendCompany -> create($update_data)){
+	$this -> error($RecommendCompany -> getError());
+      }
+      if($RecommendCompany -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecommendCompany -> alias('sr') -> field('sr.cid,c.name as cname,sr.mid,m.name as mname,sr.fid,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_member as m ON sr.mid = m.id') -> where(array('sr.id' => $this -> _get('id'))) -> find();
+    $this -> assign('result', $result);
+    //站点分类
+    $result_website_type = M('RecommendCompanyWebsiteType') -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //通过审核推荐商家
+  public function passauditrecommendcompany(){
+    $RecommendCompany = M('RecommendCompany');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($RecommendCompany -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //不通过审核推荐商家
+  public function nopassauditrecommendcompany(){
+    $RecommendCompany = M('RecommendCompany');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($RecommendCompany -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
   /* --------------- 速查业务管理 ---------------- */
 
 
@@ -3703,6 +3925,204 @@ class CompanyAction extends CommonAction {
     //包月价格
     $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
     $result_money = $SearchRankMonthsMoney -> field('months,marketprice*' . (1-$result['discounts']) . ' as marketprice,promotionprice*' . (1-$result['discounts']) . ' as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
+    $this -> assign('result_money', $result_money);
+    $this -> display();
+  }
+
+  //推荐包月价格
+  public function commendcompanymonthsmoney(){
+    $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
+    $where = array();
+    if(!empty($_POST['fid'])){
+      $where['mm.fid'] = $this -> _post('fid');
+    }
+
+    //记录总数
+    $count = $RecommendCompanyMonthsMoney -> alias('mm') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $RecommendCompanyMonthsMoney -> alias('mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,mm.remark,rwt.name as fname') -> join('yesow_recommend_company_website_type as rwt ON mm.fid = rwt.id') -> order('mm.fid ASC, months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    
+    //站点类别
+    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
+    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //添加推荐包月价格
+  public function addcommendcompanymonthsmoney(){
+    //处理添加
+    if(!empty($_POST['months'])){
+      $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
+      if(!$RecommendCompanyMonthsMoney -> create()){
+	$this -> error($RecommendCompanyMonthsMoney -> getError());
+      }
+      if($RecommendCompanyMonthsMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //站点类别
+    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
+    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //删除推荐包月价格 
+  public function delcommendcompanymonthsmoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
+    if($RecommendCompanyMonthsMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑推荐包月价格
+  public function editcommendcompanymonthsmoney(){
+    $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
+    //处理更新
+    if(!empty($_POST['months'])){
+      if(!$RecommendCompanyMonthsMoney -> create()){
+	$this -> error($RecommendCompanyMonthsMoney -> getError());
+      }
+      if($RecommendCompanyMonthsMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecommendCompanyMonthsMoney -> field('id,fid,months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //站点类别
+    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
+    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //推荐排名价格设置
+  public function commendcompanymoney(){
+    $where = array();
+    if(!empty($_POST['fid'])){
+      $where['srm.fid'] = $this -> _post('fid', 'intval');
+    }
+
+    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+
+    //记录总数
+    $count = $RecommendCompanyMoney -> alias('srm') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    //当前页数
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    
+    $result = $RecommendCompanyMoney -> alias('srm') -> field('srm.id,srfm.name,srm.rank,srm.discount*100 as discount,srm.remark,srm2.ranks+1 as ranks') -> join('yesow_recommend_company_website_type as srfm on srm.fid = srfm.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('srm.fid asc,srm.rank asc') -> select();
+    $this -> assign('result', $result);
+    //每页条数
+    $this -> assign('listRows', $listRows);
+    //当前页数
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    //站点类别
+    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
+    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //添加推荐排名价格
+  public function addcommendcompanymoney(){
+    if(!empty($_POST['fid'])){
+      $RecommendCompanyMoney = M('RecommendCompanyMoney');
+      $_POST['discount'] = $_POST['discount'] / 100;
+      if(!$RecommendCompanyMoney -> create()){
+	$this -> error($RecommendCompanyMoney -> getError());
+      }
+      if($RecommendCompanyMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    //站点类别
+    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
+    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //删除推荐排名价格
+  public function delcommendcompanymoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    if($RecommendCompanyMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑推荐排名价格
+  public function editcommendcompanymoney(){
+    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    //处理更新
+    if(!empty($_POST['id'])){
+      $_POST['discount'] = $_POST['discount'] / 100;
+      if(!$RecommendCompanyMoney -> create()){
+	$this -> error($RecommendCompanyMoney -> getError());
+      }
+      if($RecommendCompanyMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $RecommendCompanyMoney -> field('id,fid,rank,discount*100 as discount,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    //站点类别
+    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
+    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
+    $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  //查看推荐折扣后价格
+  public function editcommendcompanydiscountprice(){
+    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    $result = $RecommendCompanyMoney -> alias('srm') -> field('wt.name as fname,srm.discount*100 as discount,srm.rank,srm2.ranks+1 as ranks,srm.fid,srm.discount as discounts') -> join('yesow_recommend_company_website_type as wt on srm.fid = wt.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> where(array('srm.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    //包月价格
+    $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
+    $result_money = $RecommendCompanyMonthsMoney -> field('months,marketprice*' . (1-$result['discounts']) . ' as marketprice,promotionprice*' . (1-$result['discounts']) . ' as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
     $this -> assign('result_money', $result_money);
     $this -> display();
   }
