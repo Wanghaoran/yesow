@@ -7,29 +7,6 @@
 <meta name="description" content="<!--{$index_seo.2.value|str_replace='{site}', $childsite_name, ###}--!>">
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
-<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
-<script src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.KinSlideshow-1.2.1.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/dialog.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
-<script type="text/javascript">
-function poplogin(){
-  var api = $.dialog({id:'L1360'});
-  /* jQuery ajax */
-  $.ajax({
-    url:'__ROOT__/public/ajaxlogin',
-    success:function(data){
-      api.content(data);
-    },
-    cache:false
-    });
-  }
-</script>
-<script type="text/javascript">
-$(function(){
-    $("#KinSlideshow").KinSlideshow();
-    });
-</script>
 </head>
 <body id="body_index">
   <div id="warp_body">
@@ -420,5 +397,30 @@ $(function(){
 	<include file="footer" />
 	
 </div>
+
 </body>
 </html>
+
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.KinSlideshow-1.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/dialog.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
+<script type="text/javascript">
+function poplogin(){
+  var api = $.dialog({id:'L1360'});
+  /* jQuery ajax */
+  $.ajax({
+    url:'__ROOT__/public/ajaxlogin',
+    success:function(data){
+      api.content(data);
+    },
+    cache:false
+    });
+  }
+</script>
+<script type="text/javascript">
+$(function(){
+    $("#KinSlideshow").KinSlideshow();
+    });
+</script>
