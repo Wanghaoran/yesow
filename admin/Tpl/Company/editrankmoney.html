@@ -1,20 +1,8 @@
 <div class="page">
 	<div class="pageContent">
 	
-	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/searchrankmoney" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/rankmoney" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
 		<div class="pageFormContent" layoutH="58">
-		  <div class="unit">
-		<label>站点类别:</label>
-		<select class="combox" name="fid">
-		  <volist name="result_website_type" id="rfm">
-		  <eq name="result.fid" value="$rfm.id">
-		  <option value="<!--{$rfm.id}--!>" selected="selected"><!--{$rfm.name}--!></option>
-		  <else/>
-		  <option value="<!--{$rfm.id}--!>"><!--{$rfm.name}--!></option>
-		  </eq>
-		    </volist>
-		  </select>
-		  </div>
 	<div class="unit">
 		<label>排名阈值：</label>
 		<input type="text" class="required digits" name="rank" value="<!--{$result.rank}--!>" />

@@ -2492,9 +2492,8 @@ class ServicesAction extends CommonAction {
 
     //折扣率
     $where_discount = array();
-    $where_discount['fid'] = $result_searchrank['fid'];
     $where_discount['rank'] = array('EGT', $result_searchrank['rank']);
-    $result_searchrank['discount'] = M('SearchRankMoney') -> where($where_discount) -> order('rank ASC') -> getField('discount');
+    $result_searchrank['discount'] = M('RankMoney') -> where($where_discount) -> order('rank ASC') -> getField('discount');
 
     //生成订单号
     $result_searchrank['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
@@ -2686,11 +2685,10 @@ class ServicesAction extends CommonAction {
 
     //查询当前关键词包月价格
     ////折扣率
-    $SearchRankMoney = M('SearchRankMoney');
+    $RankMoney = M('RankMoney');
     $where_discount = array();
-    $where_discount['fid'] = $result['fid'];
     $where_discount['rank'] = array('EGT', $result['rank']);
-    $discount = $SearchRankMoney -> where($where_discount) -> order('rank ASC') -> getField('discount');
+    $discount = $RankMoney -> where($where_discount) -> order('rank ASC') -> getField('discount');
     ////包月信息
     $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
     $searchrank_money = $SearchRankMonthsMoney -> field('id,months,ROUND(marketprice*' . (1-$discount) . ',1) as marketprice,ROUND(promotionprice*' . (1-$discount) . ',1) as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
@@ -2772,9 +2770,8 @@ class ServicesAction extends CommonAction {
 
     //折扣率
     $where_discount = array();
-    $where_discount['fid'] = $result_recommendcompany['fid'];
     $where_discount['rank'] = array('EGT', $result_recommendcompany['rank']);
-    $result_recommendcompany['discount'] = M('RecommendCompanyMoney') -> where($where_discount) -> order('rank ASC') -> getField('discount');
+    $result_recommendcompany['discount'] = M('RankMoney') -> where($where_discount) -> order('rank ASC') -> getField('discount');
 
     //生成订单号
     $result_recommendcompany['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
@@ -2961,11 +2958,10 @@ class ServicesAction extends CommonAction {
 
     //查询当前关键词包月价格
     ////折扣率
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    $RankMoney = M('RankMoney');
     $where_discount = array();
-    $where_discount['fid'] = $result['fid'];
     $where_discount['rank'] = array('EGT', $result['rank']);
-    $discount = $RecommendCompanyMoney -> where($where_discount) -> order('rank ASC') -> getField('discount');
+    $discount = $RankMoney -> where($where_discount) -> order('rank ASC') -> getField('discount');
     ////包月信息
     $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
     $searchrank_money = $RecommendCompanyMonthsMoney -> field('id,months,ROUND(marketprice*' . (1-$discount) . ',1) as marketprice,ROUND(promotionprice*' . (1-$discount) . ',1) as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();

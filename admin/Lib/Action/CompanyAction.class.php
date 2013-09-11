@@ -3824,17 +3824,14 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
-  //速查排名价格设置
-  public function searchrankmoney(){
+  //排名优惠管理
+  public function rankmoney(){
     $where = array();
-    if(!empty($_POST['fid'])){
-      $where['srm.fid'] = $this -> _post('fid', 'intval');
-    }
 
-    $SearchRankMoney = M('SearchRankMoney');
+    $RankMoney = M('RankMoney');
 
     //记录总数
-    $count = $SearchRankMoney -> table('yesow_search_rank_money as srm') -> where($where) -> count();
+    $count = $RankMoney -> alias('srm') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -3846,86 +3843,63 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     
-    $result = $SearchRankMoney -> table('yesow_search_rank_money as srm') -> field('srm.id,srfm.name,srm.rank,srm.discount*100 as discount,srm.remark,srm2.ranks+1 as ranks') -> join('yesow_search_rank_website_type as srfm on srm.fid = srfm.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('srm.fid asc,srm.rank asc') -> select();
+    $result = $RankMoney -> alias('srm') -> field('srm.id,srm.rank,srm.discount*100 as discount,srm.remark,tmp1.ranks') -> join('LEFT JOIN (SELECT rank,ranks+1 as ranks FROM (SELECT a.rank,b.rank as ranks FROM yesow_rank_money as a LEFT JOIN yesow_rank_money as b ON a.rank > b.rank ORDER BY a.rank ASC,b.rank DESC) as tmp GROUP BY rank) as tmp1 ON srm.rank = tmp1.rank') -> order('srm.rank ASC') -> where($whrer) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
     //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
-    //站点类别
-    $SearchRankWebsiteType = M('SearchRankWebsiteType');
-    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
-    $this -> assign('result_website_type', $result_website_type);
     $this -> display();
   }
 
-  //添加速查排名价格
-  public function addsearchrankmoney(){
-    if(!empty($_POST['fid'])){
-      $SearchRankMoney = M('SearchRankMoney');
+  //添加排名优惠
+  public function addrankmoney(){
+    if(!empty($_POST['rank'])){
+      $RankMoney = M('RankMoney');
       $_POST['discount'] = $_POST['discount'] / 100;
-      if(!$SearchRankMoney -> create()){
-	$this -> error($SearchRankMoney -> getError());
+      if(!$RankMoney -> create()){
+	$this -> error($RankMoney -> getError());
       }
-      if($SearchRankMoney -> add()){
+      if($RankMoney -> add()){
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //站点类别
-    $SearchRankWebsiteType = M('SearchRankWebsiteType');
-    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
-    $this -> assign('result_website_type', $result_website_type);
     $this -> display();
   }
 
-  //删除速查排名价格
-  public function delsearchrankmoney(){
+  //删除排名优惠
+  public function delrankmoney(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
-    $SearchRankMoney = M('SearchRankMoney');
-    if($SearchRankMoney -> where($where_del) -> delete()){
+    $RankMoney = M('RankMoney');
+    if($RankMoney -> where($where_del) -> delete()){
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
   }
 
-  //编辑速查排名价格
-  public function editsearchrankmoney(){
-    $SearchRankMoney = M('SearchRankMoney');
+  //编辑排名优惠
+  public function editrankmoney(){
+    $RankMoney = M('RankMoney');
     //处理更新
     if(!empty($_POST['id'])){
       $_POST['discount'] = $_POST['discount'] / 100;
-      if(!$SearchRankMoney -> create()){
-	$this -> error($SearchRankMoney -> getError());
+      if(!$RankMoney -> create()){
+	$this -> error($RankMoney -> getError());
       }
-      if($SearchRankMoney -> save()){
+      if($RankMoney -> save()){
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $SearchRankMoney -> field('id,fid,rank,discount*100 as discount,remark') -> find($this -> _get('id', 'intval'));
+    $result = $RankMoney -> field('id,rank,discount*100 as discount,remark') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //站点类别
-    $SearchRankWebsiteType = M('SearchRankWebsiteType');
-    $result_website_type = $SearchRankWebsiteType -> field('id,name') -> select();
-    $this -> assign('result_website_type', $result_website_type);
-    $this -> display();
-  }
-
-  //查看折扣后价格
-  public function editdiscountprice(){
-    $SearchRankMoney = M('SearchRankMoney');
-    $result = $SearchRankMoney -> alias('srm') -> field('wt.name as fname,srm.discount*100 as discount,srm.rank,srm2.ranks+1 as ranks,srm.fid,srm.discount as discounts') -> join('yesow_search_rank_website_type as wt on srm.fid = wt.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_search_rank_money as tmp1 left join yesow_search_rank_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> where(array('srm.id' => $this -> _get('id', 'intval'))) -> find();
-    $this -> assign('result', $result);
-    //包月价格
-    $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
-    $result_money = $SearchRankMonthsMoney -> field('months,marketprice*' . (1-$result['discounts']) . ' as marketprice,promotionprice*' . (1-$result['discounts']) . ' as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
-    $this -> assign('result_money', $result_money);
     $this -> display();
   }
 
@@ -4019,111 +3993,6 @@ class CompanyAction extends CommonAction {
     $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
     $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
     $this -> assign('result_website_type', $result_website_type);
-    $this -> display();
-  }
-
-  //推荐排名价格设置
-  public function commendcompanymoney(){
-    $where = array();
-    if(!empty($_POST['fid'])){
-      $where['srm.fid'] = $this -> _post('fid', 'intval');
-    }
-
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
-
-    //记录总数
-    $count = $RecommendCompanyMoney -> alias('srm') -> where($where) -> count();
-    import('ORG.Util.Page');
-    if(! empty ( $_REQUEST ['listRows'] )){
-      $listRows = $_REQUEST ['listRows'];
-    } else {
-      $listRows = 15;
-    }
-    $page = new Page($count, $listRows);
-    //当前页数
-    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
-    $page -> firstRow = ($pageNum - 1) * $listRows;
-    
-    $result = $RecommendCompanyMoney -> alias('srm') -> field('srm.id,srfm.name,srm.rank,srm.discount*100 as discount,srm.remark,srm2.ranks+1 as ranks') -> join('yesow_recommend_company_website_type as srfm on srm.fid = srfm.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('srm.fid asc,srm.rank asc') -> select();
-    $this -> assign('result', $result);
-    //每页条数
-    $this -> assign('listRows', $listRows);
-    //当前页数
-    $this -> assign('currentPage', $pageNum);
-    $this -> assign('count', $count);
-    //站点类别
-    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
-    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
-    $this -> assign('result_website_type', $result_website_type);
-    $this -> display();
-  }
-
-  //添加推荐排名价格
-  public function addcommendcompanymoney(){
-    if(!empty($_POST['fid'])){
-      $RecommendCompanyMoney = M('RecommendCompanyMoney');
-      $_POST['discount'] = $_POST['discount'] / 100;
-      if(!$RecommendCompanyMoney -> create()){
-	$this -> error($RecommendCompanyMoney -> getError());
-      }
-      if($RecommendCompanyMoney -> add()){
-	$this -> success(L('DATA_ADD_SUCCESS'));
-      }else{
-	$this -> error(L('DATA_ADD_ERROR'));
-      }
-    }
-    //站点类别
-    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
-    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
-    $this -> assign('result_website_type', $result_website_type);
-    $this -> display();
-  }
-
-  //删除推荐排名价格
-  public function delcommendcompanymoney(){
-    $where_del = array();
-    $where_del['id'] = array('in', $_POST['ids']);
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
-    if($RecommendCompanyMoney -> where($where_del) -> delete()){
-      $this -> success(L('DATA_DELETE_SUCCESS'));
-    }else{
-      $this -> error(L('DATA_DELETE_ERROR'));
-    }
-  }
-
-  //编辑推荐排名价格
-  public function editcommendcompanymoney(){
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
-    //处理更新
-    if(!empty($_POST['id'])){
-      $_POST['discount'] = $_POST['discount'] / 100;
-      if(!$RecommendCompanyMoney -> create()){
-	$this -> error($RecommendCompanyMoney -> getError());
-      }
-      if($RecommendCompanyMoney -> save()){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
-      }
-    }
-    $result = $RecommendCompanyMoney -> field('id,fid,rank,discount*100 as discount,remark') -> find($this -> _get('id', 'intval'));
-    $this -> assign('result', $result);
-    //站点类别
-    $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
-    $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
-    $this -> assign('result_website_type', $result_website_type);
-    $this -> display();
-  }
-
-  //查看推荐折扣后价格
-  public function editcommendcompanydiscountprice(){
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
-    $result = $RecommendCompanyMoney -> alias('srm') -> field('wt.name as fname,srm.discount*100 as discount,srm.rank,srm2.ranks+1 as ranks,srm.fid,srm.discount as discounts') -> join('yesow_recommend_company_website_type as wt on srm.fid = wt.id') -> join('left join (select * from ((select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 1 group by rank) union all (select tmp1.fid,tmp1.rank,max(tmp2.rank) as ranks from yesow_recommend_company_money as tmp1 left join yesow_recommend_company_money as tmp2 on tmp2.rank < tmp1.rank and tmp1.fid = tmp2.fid where tmp1.fid = 2 group by rank)) as tt) as srm2 on srm.rank = srm2.rank and srm2.fid = srm.fid') -> where(array('srm.id' => $this -> _get('id', 'intval'))) -> find();
-    $this -> assign('result', $result);
-    //包月价格
-    $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
-    $result_money = $RecommendCompanyMonthsMoney -> field('months,marketprice*' . (1-$result['discounts']) . ' as marketprice,promotionprice*' . (1-$result['discounts']) . ' as promotionprice') -> where(array('fid' => $result['fid'])) -> order('months ASC') -> select();
-    $this -> assign('result_money', $result_money);
     $this -> display();
   }
 

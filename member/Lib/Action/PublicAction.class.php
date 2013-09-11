@@ -231,10 +231,9 @@ class PublicAction extends Action {
   //ajax获取速查排名情况
   public function ajaxgetsearchrank(){
     //最大排名数
-    $SearchRankMoney = M('SearchRankMoney');
+    $RankMoney = M('RankMoney');
     $where_money = array();
-    $where_money['fid'] = $this -> _post('fid');
-    $max_rank = $SearchRankMoney -> where($where_money) -> order('rank DESC') -> getField('rank');
+    $max_rank = $RankMoney -> where($where_money) -> order('rank DESC') -> getField('rank');
     //已生效排名数
     $SearchRank = M('SearchRank');
     $where_rank = array();
@@ -262,11 +261,10 @@ class PublicAction extends Action {
   //ajax获取速查排名价格
   public function ajaxgetsearchrankprice(){
     //折扣率
-    $SearchRankMoney = M('SearchRankMoney');
+    $RankMoney = M('RankMoney');
     $where = array();
-    $where['fid'] = $this -> _post('fid', 'intval');
     $where['rank'] = array('EGT', $this -> _post('rank', 'intval'));
-    $discount = $SearchRankMoney -> where($where) -> order('rank ASC') -> getField('discount');
+    $discount = $RankMoney -> where($where) -> order('rank ASC') -> getField('discount');
     //包月信息
     $SearchRankMonthsMoney = M('SearchRankMonthsMoney');
     $result = $SearchRankMonthsMoney -> field('id,months,ROUND(marketprice*' . (1-$discount) . ',1) as marketprice,ROUND(promotionprice*' . (1-$discount) . ',1) as promotionprice') -> where(array('fid' => $this -> _post('fid', 'intval'))) -> order('months ASC') -> select();
@@ -276,10 +274,10 @@ class PublicAction extends Action {
   //ajax获取推荐商家排名情况
   public function ajaxgetrecommendcompany(){
     //最大排名数
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    $RankMoney = M('RankMoney');
     $where_money = array();
-    $where_money['fid'] = $this -> _post('fid');
-    $max_rank = $RecommendCompanyMoney -> where($where_money) -> order('rank DESC') -> getField('rank');
+    $max_rank = $RankMoney -> where($where_money) -> order('rank DESC') -> getField('rank');
+    $max_rank = $max_rank > 32 ? 32 : $max_rank;
     //已生效排名数
     $RecommendCompany = M('RecommendCompany');
     $where_rank = array();
@@ -306,11 +304,10 @@ class PublicAction extends Action {
   //ajax获取推荐商家价格
   public function ajaxgetrecommendcompanyprice(){
     //折扣率
-    $RecommendCompanyMoney = M('RecommendCompanyMoney');
+    $RankMoney = M('RankMoney');
     $where = array();
-    $where['fid'] = $this -> _post('fid', 'intval');
     $where['rank'] = array('EGT', $this -> _post('rank', 'intval'));
-    $discount = $RecommendCompanyMoney -> where($where) -> order('rank ASC') -> getField('discount');
+    $discount = $RankMoney -> where($where) -> order('rank ASC') -> getField('discount');
     //包月信息
     $RecommendCompanyMonthsMoney = M('RecommendCompanyMonthsMoney');
     $result = $RecommendCompanyMonthsMoney -> field('id,months,ROUND(marketprice*' . (1-$discount) . ',1) as marketprice,ROUND(promotionprice*' . (1-$discount) . ',1) as promotionprice') -> where(array('fid' => $this -> _post('fid', 'intval'))) -> order('months ASC') -> select();
