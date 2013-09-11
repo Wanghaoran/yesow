@@ -2435,8 +2435,8 @@ class ServicesAction extends CommonAction {
       $this -> assign('company_search', $company_search);
     }
     //热门搜索词
-    $SearchHot = M('SearchHot');
-    $result_search_hot = $SearchHot -> field('id,name') -> order('sort ASC') -> select();
+    $SearchKeyword = M('SearchKeyword');
+    $result_search_hot = $SearchKeyword -> field('id,keyword as name') -> order('addtime DESC') -> limit(10) -> select();
     $this -> assign('result_search_hot', $result_search_hot);
     //站点类别
     $SearchRankWebsiteType = M('SearchRankWebsiteType');

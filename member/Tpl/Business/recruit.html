@@ -39,8 +39,8 @@
                             <dt>
                                 <a href="__URL__/recruit" class="on">人才交流</a>
 				<a href="__URL__/recruit_addcompany">发布公司</a>
-				<a href="#">岗位管理</a>
-				<a href="#">发布岗位</a>
+				<a href="javascript:alert('请在【人才交流】选项卡中点选对应的公司右侧【岗位信息】进行岗位的添加操作！');">岗位管理</a>
+				<a href="javascript:alert('请点选【岗位管理】选项卡右上角的【发布岗位】按钮来发布该公司的岗位信息！');">发布岗位</a>
                             </dt>
                                                  
                         </dl>
@@ -64,10 +64,10 @@
 				    <volist name="result" id="r">
                                     <tr>
 				      <td><!--{$r.csname}--!></td>
-					<td><!--{$r.name}--!></td>
+					<td><a href="__ROOT__/recruit/<!--{$r.id}--!>/type/all" target="_blank"><!--{$r.name}--!></a></td>
 					<td><!--{$r.linkman}--!></td>
 					<td><!--{$r.tel}--!></td>
-					<td><a href="#">查看</a></td>
+					<td><a href="__ROOT__/recruit/<!--{$r.id}--!>/type/all" target="_blank">查看</a></td>
 					<td><!--{$r.addtime|date="Y-m-d", ###}--!></td>
                                         <eq name="r.ischeck" value="1">
 					<td><span style="color:blue;">已审</span></td>

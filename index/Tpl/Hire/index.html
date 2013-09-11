@@ -71,18 +71,18 @@
 			    <ul class="ul_czzpgg1">
 				<elt name="recruit_sort_num" value="5" >
 			        <volist name="result_recruit_sort" id="rs">
-				<li><a href="__ROOT__/recruit/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.name}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
+				<li><a href="__ROOT__/recruit/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.rcname}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
 				</volist>
 				<volist name="recruit_result" id="r" offset="0" length="$recruit_sort_num_down">
 				<if condition="time() - $r['addtime'] elt 24*60*60">
-				<li><a href="__ROOT__/recruit/<!--{$r.id}--!>" class="new" target="_blank"><div><!--{$r.name}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+				<li><a href="__ROOT__/recruit/<!--{$r.id}--!>" class="new" target="_blank"><div><!--{$r.rcname}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
 				<else/>
-				<li><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank"><div><!--{$r.name}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+				<li><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank"><div><!--{$r.rcname}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
 				</if>
 				</volist>
 			      <else/>
 			        <volist name="result_recruit_sort" id="rs" offset="0" length="5">
-				  <li><a href="__ROOT__/recruit/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.name}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
+				  <li><a href="__ROOT__/recruit/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.rcname}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
 			        </volist>
 			      </elt>
                             </ul>
@@ -93,20 +93,20 @@
                             	<elt name="recruit_sort_num" value="5" >
 			    <volist name="recruit_result" id="r" offset="$recruit_sort_num_down" length="12">
 			    <if condition="time() - $r['addtime'] elt 24*60*60">
-			    <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.name}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.rcname}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
 			    <else/>
-			    <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank"><div><!--{$r.name}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			    <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank"><div><!--{$r.rcname}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
 			    </if>
 			      </volist>
 			    <else/>
 			      <volist name="result_recruit_sort" id="rs" offset="5">
-			        <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.name}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
+			        <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$rs.id}--!>" target="_blank" class="tuijian"><div><!--{$rs.rcname}--!></div>[<span><!--{$rs.csname}--!></span>]</a></li>
 			      </volist>
 			      <volist name="recruit_result" id="r">
 			      <if condition="time() - $r['addtime'] elt 24*60*60">
-			      <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.name}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			      <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank" class="new"><div><!--{$r.rcname}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
 			      <else/>
-			      <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank"><div><!--{$r.name}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
+			      <li><span class="span_left">招聘&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="__ROOT__/recruit/<!--{$r.id}--!>" target="_blank"><div><!--{$r.rcname}--!></div>[<span><!--{$r.csname}--!></span>]</a></li>
 			      </if>
 			      </volist>
 			    </elt>
