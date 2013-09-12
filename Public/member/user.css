@@ -583,7 +583,7 @@ input.btn_goumai{ width:173px; height:43px; background:url(images/user/btn_gouma
 
 .qq_add{ width:80px; height:20px; line-height:20px; padding-left:12px; margin:10px; background:url(images/user/add.gif) left center no-repeat; border:none; font-size:14px; cursor:pointer;}
 ul.addqqli li{margin:5px;}
-.qqsq_tishi{ font-weight:bold; color:#fa0000; text-align:center; width:740px; height:30px; line-height:30px;}
+.qqsq_tishi{ font-weight:bold; color:#fa0000; text-align:center; width:740px; height:60px; line-height:30px;}
 .zxddqx_tishi{font-weight:bold; color:#fa0000; text-align:left; width:740px; height:30px; line-height:30px;}
 .zxddqx_tishi span{ float:right; font-weight:normal; color:#555;}
 .zxddqx_jiage{ text-align:left; width:740px; height:30px; line-height:30px;}

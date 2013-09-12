@@ -2948,7 +2948,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,m.name as mname,sr.type,c.name as cname,rwt.name as fname,sr.keyword,sr.rank,sr.starttime,sr.endtime,sr.ischeck,sr.cid') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.starttime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,m.name as mname,sr.type,c.name as cname,rwt.name as fname,sr.keyword,sr.rank,sr.starttime,sr.endtime,sr.ischeck,sr.cid,sr.updatetime') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -2975,6 +2975,7 @@ class CompanyAction extends CommonAction {
       $add_data['rank'] = $this -> _post('rank', 'intval');
       $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
       $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['updatetime'] = time();
       $add_data['type'] = 1;    
 
       if(!$SearchRank -> create($add_data)){
@@ -3019,6 +3020,7 @@ class CompanyAction extends CommonAction {
       $update_data['rank'] = $this -> _post('rank', 'intval');
       $update_data['starttime'] = $this -> _post('starttime', 'strtotime');
       $update_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $update_data['updatetime'] = time();
       $update_data['id'] = $this -> _post('id', 'intval');
       if(!$SearchRank -> create($update_data)){
 	$this -> error($SearchRank -> getError());
@@ -3091,7 +3093,7 @@ class CompanyAction extends CommonAction {
     //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $RecommendCompany -> alias('sr') -> field('sr.id,m.name as mname,sr.type,c.name as cname,rwt.name as fname,sr.rank,sr.starttime,sr.endtime,sr.ischeck,sr.cid') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.starttime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $RecommendCompany -> alias('sr') -> field('sr.id,m.name as mname,sr.type,c.name as cname,rwt.name as fname,sr.rank,sr.starttime,sr.endtime,sr.ischeck,sr.cid,sr.updatetime') -> join('yesow_member as m ON sr.mid = m.id') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sr.fid = rwt.id') -> where($where) -> order('sr.updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     //每页条数
     $this -> assign('listRows', $listRows);
@@ -3117,6 +3119,7 @@ class CompanyAction extends CommonAction {
       $add_data['rank'] = $this -> _post('rank', 'intval');
       $add_data['starttime'] = $this -> _post('starttime', 'strtotime');
       $add_data['endtime'] = $this -> _post('endtime', 'strtotime');
+      $add_data['updatetime'] = time();
       $add_data['type'] = 1;    
 
       if(!$RecommendCompany -> create($add_data)){
@@ -3161,6 +3164,7 @@ class CompanyAction extends CommonAction {
       $update_data['starttime'] = $this -> _post('starttime', 'strtotime');
       $update_data['endtime'] = $this -> _post('endtime', 'strtotime');
       $update_data['id'] = $this -> _post('id', 'intval');
+      $update_data['updatetime'] = time();
       if(!$RecommendCompany -> create($update_data)){
 	$this -> error($RecommendCompany -> getError());
       }

@@ -91,6 +91,7 @@
 			<th width="60">排名</th>
 			<th width="90">开始时间</th>
 			<th width="90">结束时间</th>
+			<th width="90">更新时间</th>
 			<th width="40">当前状态</th>
 			<th width="30">审核</th>
 
@@ -113,6 +114,7 @@
 		  <td>第 <!--{$r.rank}--!> 位</td>
 			  <td><!--{$r.starttime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.endtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><!--{$r.updatetime|date="Y-m-d", ###}--!></td>
 			  <if condition="$r['starttime'] gt time()">
 			  <td style="color:red;">排队中</td>
 			  <elseif condition="$r['endtime'] lt time()" />

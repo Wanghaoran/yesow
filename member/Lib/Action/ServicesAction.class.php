@@ -2435,8 +2435,8 @@ class ServicesAction extends CommonAction {
       $this -> assign('company_search', $company_search);
     }
     //热门搜索词
-    $SearchKeyword = M('SearchKeyword');
-    $result_search_hot = $SearchKeyword -> field('id,keyword as name') -> order('addtime DESC') -> limit(10) -> select();
+    $SearchKeyword = M('AuditSearchKeyword');
+    $result_search_hot = $SearchKeyword -> field('id,name') -> order('addtime DESC') -> limit(10) -> select();
     $this -> assign('result_search_hot', $result_search_hot);
     //站点类别
     $SearchRankWebsiteType = M('SearchRankWebsiteType');
@@ -2588,6 +2588,7 @@ class ServicesAction extends CommonAction {
     $searchrank_data['rank'] = $searchrank_info['rank'];
     $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
     $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+    $searchrank_data['updatetime'] = time();
     if($SearchRank -> add($searchrank_data)){
       $info_succ = "您已成功购买速查排名相关服务";
       //更新会员余额和等级
@@ -2662,7 +2663,7 @@ class ServicesAction extends CommonAction {
     $count = $SearchRank -> table('yesow_search_rank as sr')  -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,sr.cid,c.name as cname,sr.keyword,srwt.name as fname,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as srwt ON sr.fid = srwt.id') -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> order('sr.starttime DESC') -> select();
+    $result = $SearchRank -> table('yesow_search_rank as sr') -> field('sr.id,sr.cid,c.name as cname,sr.keyword,srwt.name as fname,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_search_rank_website_type as srwt ON sr.fid = srwt.id') -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> order('sr.updatetime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
@@ -2863,6 +2864,7 @@ class ServicesAction extends CommonAction {
     $searchrank_data['rank'] = $recommendcompany_info['rank'];
     $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
     $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($recommendcompany_info['months'] * 30 * 24 * 60 * 60);
+    $searchrank_data['updatetime'] = time();
     if($RecommendCompany -> add($searchrank_data)){
       $info_succ = "您已成功购买推荐商家相关服务";
       //更新会员余额和等级
@@ -2936,7 +2938,7 @@ class ServicesAction extends CommonAction {
     $count = $RecommendCompany -> alias('sr')  -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $RecommendCompany -> alias('sr') -> field('sr.id,sr.cid,c.name as cname,srwt.name as fname,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_recommend_company_website_type as srwt ON sr.fid = srwt.id') -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> order('sr.starttime DESC') -> select();
+    $result = $RecommendCompany -> alias('sr') -> field('sr.id,sr.cid,c.name as cname,srwt.name as fname,sr.rank,sr.starttime,sr.endtime') -> join('yesow_company as c ON sr.cid = c.id') -> join('yesow_recommend_company_website_type as srwt ON sr.fid = srwt.id') -> where(array('sr.mid' => session(C('USER_AUTH_KEY')))) -> order('sr.updatetime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();

@@ -3425,6 +3425,7 @@ class PayAction extends Action {
 	    $searchrank_data['rank'] = $searchrank_info['rank'];
 	    $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
 	    $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+	    $searchrank_data['updatetime'] = time();
 	    if($SearchRank -> add($searchrank_data)){
 	      $info_succ = "您已成功购买速查排名相关服务";
 	      R('Register/successjump',array($info_succ, U('Services/searchrank')));
@@ -3516,6 +3517,7 @@ class PayAction extends Action {
 	  $searchrank_data['rank'] = $searchrank_info['rank'];
 	  $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
 	  $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+	  $searchrank_data['updatetime'] = time();
 	  $SearchRank -> add($searchrank_data);
 	}
 	ob_end_clean();
@@ -3708,6 +3710,7 @@ class PayAction extends Action {
 	      $searchrank_data['rank'] = $searchrank_info['rank'];
 	      $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
 	      $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+	      $searchrank_data['updatetime'] = time();
 	      $SearchRank -> add($searchrank_data);
 	      ob_end_clean();
 	      echo "success";
@@ -3846,6 +3849,7 @@ class PayAction extends Action {
 	    $searchrank_data['rank'] = $searchrank_info['rank'];
 	    $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
 	    $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+	    $searchrank_data['updatetime'] = time();
 	    if($RecommendCompany -> add($searchrank_data)){
 	      $info_succ = "您已成功购买推荐商家相关服务";
 	      R('Register/successjump',array($info_succ, U('Services/index')));
@@ -3935,6 +3939,7 @@ class PayAction extends Action {
 	  $searchrank_data['rank'] = $searchrank_info['rank'];
 	  $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
 	  $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+	  $searchrank_data['updatetime'] = time();
 	  $RecommendCompany -> add($searchrank_data);
 	}
 	ob_end_clean();
@@ -4125,6 +4130,7 @@ class PayAction extends Action {
 	      $searchrank_data['rank'] = $searchrank_info['rank'];
 	      $searchrank_data['starttime'] = $endtime ? $endtime + 1 : time();
 	      $searchrank_data['endtime'] = $searchrank_data['starttime'] + ($searchrank_info['months'] * 30 * 24 * 60 * 60);
+	      $searchrank_data['updatetime'] = time();
 	      $RecommendCompany -> add($searchrank_data);
 	      ob_end_clean();
 	      echo "success";

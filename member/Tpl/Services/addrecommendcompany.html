@@ -187,7 +187,7 @@ var checksubmit = function(){
                                                  
                         </dl>
                         <div class="main_sjdxfs">
-                        	<div class="qqsq_tishi">注：您是在会员中心进行的添加，请先进行公司搜索，点选公司后，会在第一步中显示您选择的公司信息。</div>
+                        	<div class="qqsq_tishi">注：您是在会员中心进行的添加，请先进行公司搜索，点选公司后，会在第一步中显示您选择的公司信息。如果无法搜索到您的公司信息，您也可以免费添入我们的数据库。为了让客户更容易的找到您，请详细填写您的公司信息。</div>
                            <form action="__ACTION__" method="post">
 			    <div class="qqsq_search">请输入公司名称：
 			      <input type="text" name="keyword" />
@@ -195,6 +195,7 @@ var checksubmit = function(){
 			      <input type="hidden" id="f_rank" name="f_rank" value="" />
 			      <input type="hidden" id="type" name="type" value="noalert" />
 			      <input type="submit" value="搜索" />
+			      <input type="button" value="添加" onclick="location.href='__ROOT__/company/add'" />
 			    </div>
 			    </form>
 
@@ -202,9 +203,15 @@ var checksubmit = function(){
                             	<div id="help01">
 				  <ul>
 				    <notempty name="company_search">
-				    <volist name="company_search" id="cs">
+				    <volist name="company_search" id="cs" mod="3">
 				    <li>
-				    <a href="__ACTION__/cid/<!--{$cs.id}--!>/f_fid/<!--{$Think.request.f_fid}--!>/f_rank/<!--{$Think.request.f_rank}--!>/type/noalert">
+				    <if condition="$i elt 3">
+				    <a href="__ACTION__/cid/<!--{$cs.id}--!>/f_fid/<!--{$Think.request.f_fid}--!>/f_keyword/<!--{$Think.request.f_keyword}--!>/f_rank/<!--{$Think.request.f_rank}--!>/type/noalert" style="z-index:9998">
+				    <elseif condition="$i elt 6" />
+				    <a href="__ACTION__/cid/<!--{$cs.id}--!>/f_fid/<!--{$Think.request.f_fid}--!>/f_keyword/<!--{$Think.request.f_keyword}--!>/f_rank/<!--{$Think.request.f_rank}--!>/type/noalert" style="z-index:9997">
+				    <elseif condition="$i elt 9" />
+				    <a href="__ACTION__/cid/<!--{$cs.id}--!>/f_fid/<!--{$Think.request.f_fid}--!>/f_keyword/<!--{$Think.request.f_keyword}--!>/f_rank/<!--{$Think.request.f_rank}--!>/type/noalert" style="z-index:9996">
+				    </if>
 				      <div class="help01"><!--{$cs.name}--!></div>
 				      <div class="poptip">
 					<div class="poptipcon">
