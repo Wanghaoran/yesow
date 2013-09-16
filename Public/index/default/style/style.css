@@ -1118,7 +1118,7 @@ ul.ul_czzpgg2 li{ float:left; width:280px; height:22px; line-height:22px;}
 ul.ul_czzpgg2 li span.span_left{ float:left;}
 ul.ul_czzpgg2 li a{display:inline-block; height:22px; line-height:22px; }
 ul.ul_czzpgg2 li a.new{display:inline-block; height:22px; line-height:22px; background:url(images/new.gif) no-repeat right center; padding-right:26px; _background:url(images/new.gif) no-repeat right 5px;}
-ul.ul_czzpgg2 li a div{ float:left; width:165px; height:22px; overflow:hidden;}
+ul.ul_czzpgg2 li a div{ float:left; width:160px; height:22px; overflow:hidden;}
 ul.ul_czzpgg2 li a span{  color:#0000fc;}
 
 .czzp_title{ float:right; height:30px; line-height:30px;}

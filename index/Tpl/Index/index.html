@@ -290,13 +290,9 @@ $(function(){
 			</div></div></div>
 			<div class="main04_item_bod tab_bod">
 				<ul>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
-					<li><a href="#">[<b>推荐</b>] 企业招聘分类标题文字。</a><span>2012-12-12</span></li>
+				<volist name="company_recruit" id="cr">
+				<li><a href="__ROOT__/recruit/<!--{$cr.id}--!>" target="_blank">[<b>推荐</b>] <!--{$cr.rcname}--!></a><span><!--{$cr.addtime|date="Y-m-d", ###}--!></span></li>
+				</volist>
 				</ul>
 				<ul class="none">
 					<li><a href="#">[<b>推荐</b>] 人才求职分类标题文字。。</a><span>2012-12-12</span></li>

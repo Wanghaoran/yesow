@@ -6,30 +6,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <style>
-.suggestionsBox {
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  background: none repeat scroll 0 0 #FFFFFF;
-  border-color: -moz-use-text-color #CDCDCD #CDCDCD;
-  border-image: none;
-  border-right: 1px double #CDCDCD;
-  border-style: none double double;
-  border-width: medium 1px 1px;
-  color: #666666;
-  left: 576px;
-  margin: 0;
-  position: absolute;
-  top: 484px;
-  width: 216px;
-  z-index: 9999;
-}
-.suggestionList { margin: 0px; padding: 0px; } 
-.suggestionList li { margin: 0px 0px 3px 0px; padding: 3px; cursor: pointer; } 
-.suggestionList li:hover { background: #ccc; } 
-.suggestionsBox table td{ width:500px;}
-.suggestionsBox table td:hover{ background:#ebebeb;}
+.suggestionsBox {background:#FFFFFF;border:#CDCDCD 1px solid;border-top: none;color: #666666;left: 0px;margin: 0;position: absolute;top: 24px;width: 217px;z-index: 9999;}
 </style>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
@@ -354,7 +331,7 @@ var checksubmit = function(){
 					</div>
                                         <div class="clear5"></div>
                                         <div class="scpminfo_l">关键词设置：</div>
-                                        <div class="scpminfo_r">
+                                        <div class="scpminfo_r" style="position:relative;">
 						<input type="text" class="txtfile" style="width:215px;" name="keyword" id="keyword" value="<!--{$Think.request.f_keyword|safeEncoding}--!>" onkeyup="lookup(this.value);" onblur="fill();" />
 					<div id="result_id" class="suggestionsBox" style="display:none;"></div>
                                             <ul class="ul_gjc">

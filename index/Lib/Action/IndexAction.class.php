@@ -35,6 +35,8 @@ class IndexAction extends CommonAction {
     R('Public/getsellused_buy');
     //最新渠道动态
     R('Public/getnewarticle');
+    //企业招聘
+    R('Public/company_recruit');
     $this -> display();
   }
 

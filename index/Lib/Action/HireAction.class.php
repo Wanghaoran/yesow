@@ -18,7 +18,7 @@ class HireAction extends CommonAction {
     $where_sort['rj.ischeck'] = 1;
     $where_sort['rjs.starttime'] = array('elt', $time);
     $where_sort['rjs.endtime'] = array('egt', $time);
-    $result_recruit_sort = $RecruitJobsSort -> alias('rjs') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,cs.name as csname') -> join('yesow_recruit_jobs as rj ON rjs.rjid = rj.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(16) -> where($where_sort) -> order('rjs.sort DESC') -> select();
+    $result_recruit_sort = $RecruitJobsSort -> alias('rjs') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,cs.name as csname') -> join('yesow_recruit_jobs as rj ON rjs.rjid = rj.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(16) -> group('rj.cid') -> where($where_sort) -> order('rjs.sort DESC') -> select();
     $this -> assign('result_recruit_sort', $result_recruit_sort);
     //推荐的数量
     $recruit_sort_num = count($result_recruit_sort);
@@ -47,7 +47,7 @@ class HireAction extends CommonAction {
     if(!empty($del_id_arr)){
       $where['rj.id'] = array('not in', $del_id_arr);
     }
-    $recruit_result = $RecruitJobs -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit($recruit_not_sort_num) -> order('rj.addtime DESC') -> where($where) -> select();
+    $recruit_result = $RecruitJobs -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit($recruit_not_sort_num) -> order('rj.addtime DESC') -> group('rj.cid') -> where($where) -> select();
     $this -> assign('recruit_result', $recruit_result);
     /* ---------------- 人才招聘 ---------------- */
 
@@ -95,7 +95,7 @@ class HireAction extends CommonAction {
     $this -> assign('result', $result);
     /* ---------------- 旺铺出租 ---------------- */
 
-    /* ---------------- 二手滞销 ---------------- */
+    /* ---------------- 二手交易 ---------------- */
     $sell_used_sort = M('SellUsedSort');
     //先读取推荐商家
     $where_sort = array();
@@ -105,6 +105,7 @@ class HireAction extends CommonAction {
     $where_sort['su.ischeck'] = 1;
     $where_sort['sus.starttime'] = array('elt', $time);
     $where_sort['sus.endtime'] = array('egt', $time);
+    $where_sort['su.tid_one'] = 1;
     $result_sellused_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(16) -> where($where_sort) -> order('sus.sort DESC') -> select();
     $this -> assign('result_sellused_sort', $result_sellused_sort);
     //推荐的数量
@@ -131,42 +132,160 @@ class HireAction extends CommonAction {
     $where = array();
     $where['su.ischeck'] = 1;
     $where['su.endtime'] = array('egt', $time);
+    $where['su.tid_one'] = 1;
     if(!empty($del_id_arr)){
       $where['su.id'] = array('not in', $del_id_arr);
     }
     $result_sellused = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit($sellused_not_sort_num) -> order('su.updatetime DESC') -> where($where) -> select();
     $this -> assign('result_sellused', $result_sellused);
-    /* ---------------- 二手滞销 ---------------- */
+    /* ---------------- 二手交易 ---------------- */
+
+    /* ---------------- 库存滞销 ---------------- */
+    $sell_used_sort = M('SellUsedSort');
+    //先读取推荐商家
+    $where_sort = array();
+    if($csid){
+      $where_sort['su.csid'] = $csid;
+    }
+    $where_sort['su.ischeck'] = 1;
+    $where_sort['sus.starttime'] = array('elt', $time);
+    $where_sort['sus.endtime'] = array('egt', $time);
+    $where_sort['su.tid_one'] = 2;
+    $result_old_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(16) -> where($where_sort) -> order('sus.sort DESC') -> select();
+    $this -> assign('result_old_sort', $result_old_sort);
+    //推荐的数量
+    $sellused_old_num = count($result_old_sort);
+    $this -> assign('sellused_old_num', $sellused_old_num);
+    //如果推荐的数量大于5，则计算超出的数量，否则计算差值
+    if($sellused_old_num > 5){
+      $sellused_old_num_up = $sellused_old_num - 5;
+      $this -> assign('sellused_old_num_up', $sellused_old_num_up);
+    }else{
+      $sellused_old_num_down = 5 - $sellused_old_num;
+      $this -> assign('sellused_old_num_down', $sellused_old_num_down);
+    }
+    
+    //非推荐读取的数量
+    $sellused_not_old_num = 16 - $sellused_old_num;
+    //再读取其他商家
+    $sell_used = M('SellUsed');
+    //过滤掉推荐中已有的商家
+    $del_id_arr = array();
+    foreach($result_old_sort as $value){
+      $del_id_arr[] = $value['id'];
+    }
+    $where = array();
+    $where['su.ischeck'] = 1;
+    $where['su.endtime'] = array('egt', $time);
+    $where['su.tid_one'] = 2;
+    if(!empty($del_id_arr)){
+      $where['su.id'] = array('not in', $del_id_arr);
+    }
+    $result_old = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,sut.name,cs.name as csname,su.updatetime') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit($sellused_not_sort_num) -> order('su.updatetime DESC') -> where($where) -> select();
+    $this -> assign('result_old', $result_old);
+    /* ---------------- 库存滞销 ---------------- */
 
     /* ---------------- 最新更新 ---------------- */
-    //出租八条
+    //招聘5条
+    $where_new_update_recruit = array();
+    $where_new_update_recruit['rj.ischeck'] = 1;
+    $where_new_update_recruit['rj.endtime'] = array('egt', $time);
+    $result_new_update_recruit = $RecruitJobs -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> order('rj.addtime DESC') -> group('rj.cid') -> where($where_new_update_recruit) -> select();
+    $this -> assign('result_new_update_recruit', $result_new_update_recruit);
+
+    //出租5条
     $where_new_update_store = array();
     $where_new_update_store['sr.ischeck'] = 1;
     $where_new_update_store['sr.endtime'] = array('egt', $time);
-    $result_new_update_store = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where_new_update_store) -> order('sr.updatetime DESC') -> limit(8) -> select();
+    $result_new_update_store = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where_new_update_store) -> order('sr.updatetime DESC') -> limit(6) -> select();
     $this -> assign('result_new_update_store', $result_new_update_store);
-    //二手八条
+    //二手5条
     $where_new_update_used = array();
     $where_new_update_used['su.ischeck'] = 1;
     $where_new_update_used['su.endtime'] = array('egt', $time);
-    $result_new_update_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_new_update_used) -> order('su.updatetime DESC') -> limit(8) -> select();
+    $where_new_update_used['su.tid_one'] = 1;
+    $result_new_update_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_new_update_used) -> order('su.updatetime DESC') -> limit(6) -> select();
     $this -> assign('result_new_update_used', $result_new_update_used);
+    //滞销5条
+    $where_new_update_old = array();
+    $where_new_update_old['su.ischeck'] = 1;
+    $where_new_update_old['su.endtime'] = array('egt', $time);
+    $where_new_update_old['su.tid_one'] = 2;
+    $result_new_update_old = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_new_update_old) -> order('su.updatetime DESC') -> limit(6) -> select();
+    $this -> assign('result_new_update_old', $result_new_update_old);
     /* ---------------- 最新更新 ---------------- */
 
     /* ---------------- 热门信息/本月最热 ---------------- */
-    //出租八条
+    //招聘7条
+    $where_hot_recruit = array();
+    $where_hot_recruit['rj.ischeck'] = 1;
+    $where_hot_recruit['rj.endtime'] = array('egt', $time);
+    $result_hot_recruit = $RecruitJobs -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> order('rc.clickcount DESC') -> group('rj.cid') -> where($where_hot_recruit) -> select();
+    $this -> assign('result_hot_recruit', $result_hot_recruit);
+    //出租6条
     $where_hot_store = array();
     $where_hot_store['sr.ischeck'] = 1;
     $where_hot_store['sr.endtime'] = array('egt', $time);
-    $result_hot_store = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where_hot_store) -> order('sr.clickcount DESC') -> limit(8) -> select();
+    $result_hot_store = $store_rent -> table('yesow_store_rent as sr') -> field('sr.id,sr.title,cs.name as csname') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> where($where_hot_store) -> order('sr.clickcount DESC') -> limit(6) -> select();
     $this -> assign('result_hot_store', $result_hot_store);
-    //二手八条
+    //二手8条
     $where_hot_used = array();
     $where_hot_used['su.ischeck'] = 1;
     $where_hot_used['su.endtime'] = array('egt', $time);
-    $result_hot_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_hot_used) -> order('su.updatetime DESC') -> limit(8) -> select();
+    $where_hot_used['su.tid_one'] = 1;
+    $result_hot_used = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_hot_used) -> order('su.clickcount DESC') -> limit(6) -> select();
     $this -> assign('result_hot_used', $result_hot_used); 
+    //滞销6条
+    $where_hot_old = array();
+    $where_hot_old['su.ischeck'] = 1;
+    $where_hot_old['su.endtime'] = array('egt', $time);
+    $where_hot_old['su.tid_one'] = 2;
+    $result_hot_old = $sell_used -> table('yesow_sell_used as su') -> field('su.id,su.title,cs.name as csname') -> join('yesow_child_site as cs ON su.csid = cs.id') -> where($where_hot_old) -> order('su.clickcount DESC') -> limit(6) -> select();
+    $this -> assign('result_hot_old', $result_hot_old);
     /* ---------------- 热门信息/本月最热 ---------------- */
+
+
+    /* ---------------- 特推商家 ---------------- */
+    //招聘7条
+    $where_go_sort = array();
+    $where_go_sort['rj.ischeck'] = 1;
+    $where_go_sort['rjs.starttime'] = array('elt', $time);
+    $where_go_sort['rjs.endtime'] = array('egt', $time);
+    $result_go_recruit = $RecruitJobsSort -> alias('rjs') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,cs.name as csname') -> join('yesow_recruit_jobs as rj ON rjs.rjid = rj.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> group('rj.cid') -> where($where_go_sort) -> order('rjs.sort DESC') -> select();
+    $this -> assign('result_go_recruit', $result_go_recruit);
+    //出租6条
+    $where_go_store = array();
+    if($csid){
+      $where_go_store['sr.csid'] = $csid;
+    }
+    $where_go_store['sr.ischeck'] = 1;
+    $where_go_store['srs.starttime'] = array('elt', $time);
+    $where_go_store['srs.endtime'] = array('egt', $time);
+    $result_go_store = $store_rent_sort -> table('yesow_store_rent_sort as srs') -> field('sr.id,sr.title,srt.name,cs.name as csname') -> join('yesow_store_rent as sr ON srs.srid = sr.id') -> join('yesow_store_rent_type as srt ON sr.tid = srt.id') -> join('yesow_child_site as cs ON sr.csid = cs.id') -> limit(6) -> where($where_go_store) -> order('srs.sort DESC') -> select();
+    $this -> assign('result_go_store', $result_go_store);
+    //二手6条
+    $where_go_sellused = array();
+    if($csid){
+      $where_go_sellused['su.csid'] = $csid;
+    }
+    $where_go_sellused['su.ischeck'] = 1;
+    $where_go_sellused['sus.starttime'] = array('elt', $time);
+    $where_go_sellused['sus.endtime'] = array('egt', $time);
+    $where_go_sellused['su.tid_one'] = 1;
+    $result_go_sellused = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(6) -> where($where_go_sellused) -> order('sus.sort DESC') -> select();
+    $this -> assign('result_go_sellused', $result_go_sellused);
+    //滞销6条
+    $where_go_old = array();
+    if($csid){
+      $where_go_old['su.csid'] = $csid;
+    }
+    $where_go_old['su.ischeck'] = 1;
+    $where_go_old['sus.starttime'] = array('elt', $time);
+    $where_go_old['sus.endtime'] = array('egt', $time);
+    $where_go_old['su.tid_one'] = 2;
+    $result_go_old = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(6) -> where($where_go_old) -> order('sus.sort DESC') -> select();
+    $this -> assign('result_go_old', $result_go_old);
+    /* ---------------- 特推商家 ---------------- */
     
 
 
@@ -569,10 +688,15 @@ class HireAction extends CommonAction {
     $RecruitJobsSort = M('RecruitJobsSort');
     $time = time();
     //公司信息
-     $result = $RecruitJobs -> alias('rj') -> field('rj.cid,rc.name as rcname,cs.name as csname,rc.clickcount,rj.addtime,rc.address,rc.tel,rc.linkman,rc.email,rc.website,rci.name as rciname,rcn.name as rcnname,rcr.name as rcrname,rce.name as rcename,rc.qqcode,rc.pic,rc.abstract') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rc.csid = cs.id') -> join('yesow_recruit_company_industry as rci ON rc.ciid = rci.id') -> join('yesow_recruit_company_nature as rcn ON rc.cnid = rcn.id') -> join('yesow_recruit_company_registermoney as rcr ON rc.crid = rcr.id') -> join('yesow_recruit_company_employnum as rce ON rc.ceid = rce.id') -> where(array('rj.id' => $this -> _get('id', 'intval'))) -> find();
+    if($_GET['type'] == 'company'){
+      $result = $RecruitCompany -> alias('rc') -> field('rc.name as rcname,cs.name as csname,rc.clickcount,rc.address,rc.tel,rc.linkman,rc.email,rc.website,rci.name as rciname,rcn.name as rcnname,rcr.name as rcrname,rce.name as rcename,rc.qqcode,rc.pic,rc.abstract,csa.name as csaname') -> join('yesow_child_site as cs ON rc.csid = cs.id') -> join('yesow_child_site_area as csa ON rc.csaid = csa.id') -> join('yesow_recruit_company_industry as rci ON rc.ciid = rci.id') -> join('yesow_recruit_company_nature as rcn ON rc.cnid = rcn.id') -> join('yesow_recruit_company_registermoney as rcr ON rc.crid = rcr.id') -> join('yesow_recruit_company_employnum as rce ON rc.ceid = rce.id') -> where(array('rc.id' => $this -> _get('id', 'intval'))) -> find();
+    }else{
+      $result = $RecruitJobs -> alias('rj') -> field('rj.cid,rc.name as rcname,cs.name as csname,rc.clickcount,rj.addtime,rc.address,rc.tel,rc.linkman,rc.email,rc.website,rci.name as rciname,rcn.name as rcnname,rcr.name as rcrname,rce.name as rcename,rc.qqcode,rc.pic,rc.abstract,csa.name as csaname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rc.csid = cs.id') -> join('yesow_child_site_area as csa ON rc.csaid = csa.id') -> join('yesow_recruit_company_industry as rci ON rc.ciid = rci.id') -> join('yesow_recruit_company_nature as rcn ON rc.cnid = rcn.id') -> join('yesow_recruit_company_registermoney as rcr ON rc.crid = rcr.id') -> join('yesow_recruit_company_employnum as rce ON rc.ceid = rce.id') -> where(array('rj.id' => $this -> _get('id', 'intval'))) -> find();
+    }
+     
     $this -> assign('result', $result);
     //岗位信息
-    if($_GET['type'] == 'all'){
+    if($_GET['type'] == 'all' || $_GET['type'] == 'company'){
       $result_jobs = $RecruitJobs -> alias('rj') -> field('rj.id,rj.name,rj.num,jm.name as jmname,jd.name as jdname,je.name as jename,rj.english,rj.major,rj.sex,rj.age,rj.content,rj.keyword') -> join('yesow_recruit_jobs_monthlypay as jm ON rj.jmid = jm.id') -> join('yesow_recruit_jobs_degree as jd ON rj.jdid = jd.id') -> join('yesow_recruit_jobs_experience as je ON rj.jeid = je.id') -> where(array('rj.cid' => $result['cid'])) -> select();    
     }else{
       $result_jobs = $RecruitJobs -> alias('rj') -> field('rj.id,rj.name,rj.num,jm.name as jmname,jd.name as jdname,je.name as jename,rj.english,rj.major,rj.sex,rj.age,rj.content,rj.keyword') -> join('yesow_recruit_jobs_monthlypay as jm ON rj.jmid = jm.id') -> join('yesow_recruit_jobs_degree as jd ON rj.jdid = jd.id') -> join('yesow_recruit_jobs_experience as je ON rj.jeid = je.id') -> where(array('rj.id' => $this -> _get('id', 'intval'))) -> select();

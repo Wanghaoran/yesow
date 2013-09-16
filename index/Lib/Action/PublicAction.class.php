@@ -1100,6 +1100,15 @@ class PublicAction extends Action {
     $this -> assign('sellused_buy', $sellused_buy);
   }
 
+  //商家招聘
+  public function company_recruit(){
+    $where = array();
+    $where['rj.ischeck'] = 1;
+    $where['rj.endtime'] = array('egt', time());
+    $company_recruit = M('RecruitJobs') -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> order('rj.addtime DESC') -> group('rj.cid') -> where($where) -> select();
+    $this -> assign('company_recruit', $company_recruit);
+  }
+
   //获取最新渠道动态
   public function getnewarticle(){
     $where = array();
