@@ -1102,10 +1102,18 @@ class PublicAction extends Action {
 
   //商家招聘
   public function company_recruit(){
+    $RecruitJobsSort = M('RecruitJobsSort');
+    $where_sort = array();
+    $where_sort['rj.ischeck'] = 1;
+    $where_sort['rjs.starttime'] = array('elt', time());
+    $where_sort['rjs.endtime'] = array('egt', time());
+    $result_recruit_sort = $RecruitJobsSort -> alias('rjs') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,cs.name as csname') -> join('yesow_recruit_jobs as rj ON rjs.rjid = rj.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> group('rj.cid') -> where($where_sort) -> order('rjs.sort DESC') -> select();
+    $r_num = count($result_recruit_sort) >= 7 ? 0 : 7 - count($result_recruit_sort);
     $where = array();
     $where['rj.ischeck'] = 1;
     $where['rj.endtime'] = array('egt', time());
-    $company_recruit = M('RecruitJobs') -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> order('rj.addtime DESC') -> group('rj.cid') -> where($where) -> select();
+    $company_recruit = M('RecruitJobs') -> alias('rj') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,rj.addtime,cs.name as csname') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit($r_num) -> order('rj.addtime DESC') -> group('rj.cid') -> where($where) -> select();
+    $company_recruit = array_merge($result_recruit_sort, $company_recruit);
     $this -> assign('company_recruit', $company_recruit);
   }
 

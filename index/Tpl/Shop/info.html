@@ -10,19 +10,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
 <script type="text/javascript">
-  function poplogin(){
-    var api = $.dialog({id:'L1360'});
-    /* jQuery ajax */
-    $.ajax({
-      url:'__ROOT__/public/ajaxlogin',
-      success:function(data){
-        api.content(data);
-       },
-       cache:false
-    });
-  }
 
   function buynow(){
     var shopnum = $('#shopnums').val();
@@ -182,7 +170,7 @@ function submitcommit(){
 						<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 					      <input type="button" class="btn_scgw" value="立即购买" onclick="buynow();" />
 					      <else/>
-					      <input type="button" class="btn_scgw" value="立即购买" onclick="poplogin();"/>
+					      <input type="button" class="btn_scgw" value="立即购买" onclick="window.open('__ROOT__/member.php/public/login');"/>
 					      </if>
 					      <input type="button" class="btn_scgw" value="加入购物车" onclick="addshopcart();"/>
 					      </h6>    

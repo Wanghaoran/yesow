@@ -9,19 +9,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/lhgdialog.min.js"></script>
 <script type="text/javascript">
-  function poplogin(){
-    var api = $.dialog({id:'L1360'});
-    /* jQuery ajax */
-    $.ajax({
-      url:'__ROOT__/public/ajaxlogin',
-      success:function(data){
-        api.content(data);
-       },
-       cache:false
-    });
-  }
 
   function buynow(shopid){
     $.ajax({
@@ -142,7 +130,7 @@
 				<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
 				<input type="button" class="btn_scgw" value="立即购买" onclick="buynow('<!--{$r.id}--!>')"/></li>
 				<else/>
-				<input type="button" class="btn_scgw" value="立即购买" onclick="poplogin();"/></li>
+				<input type="button" class="btn_scgw" value="立即购买" onclick="window.open('__ROOT__/member.php/public/login');"/></li>
 				</if>
                                     </ul>
                                     <div class="clear"></div>
