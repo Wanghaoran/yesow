@@ -11,6 +11,9 @@
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
 <script>
+
+  var checkcode = false;
+
   $(function(){
      //点击图片更换验证码
      $("#code").click(function(){
@@ -145,7 +148,25 @@
       alert('添加人身份证号格式不对');
       return false;
     }
-    return true
+    if(!checkcode){
+      $('#verify').focus();
+      alert('验证码不正确');
+      return false;
+    }
+    return true;
+  }
+
+  function checkberify(code){
+    $.ajax({
+      url: '__ROOT__/index.php/public/checkverify/code/' + code,
+      success: function(ress){
+        if(ress == 1){
+	  checkcode = true;
+	  }else{
+	  checkcode = false;
+	  }
+      }
+    });
   }
 
   function createabout(){
@@ -373,7 +394,7 @@ var checkcompanylinkman = function(){
                 <div class="clear"></div>
 <li>
                 	<div class="div_left">验证码</div>
-					<div class="div_mid2"><div class="fl" style=" padding-top:2px;"><input type="text" class="div_input4" name="verify" /></div><div class="fl" style="padding:3px 0 0 5px;"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div></div>
+					<div class="div_mid2"><div class="fl" style=" padding-top:2px;"><input type="text" class="div_input4" name="verify" id="verify" onkeyup="checkberify(this.value);" /></div><div class="fl" style="padding:3px 0 0 5px;"><img id="code" src="__ROOT__/admin.php/public/verify" title="点击更换图像" border="0" /></div></div>
                     <div class="div_right"></div>
                 </li>
                 <div class="clear"></div>

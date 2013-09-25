@@ -1,6 +1,5 @@
-﻿<?php
+<?php
 class ContentAction extends CommonAction {
-  
   /* ------------  资讯一级栏目管理   -------------- */
   //资讯一级栏目管理
   public function infomationonecolumn(){

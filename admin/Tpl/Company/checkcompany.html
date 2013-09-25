@@ -115,14 +115,11 @@
 	<div class="panelBar" style="height:50px;">
 	  
 	  
-		<div class="pages">
-		  <span>共<!--{$count}--!>条&nbsp;其中<!--{$count_del}--!>条已被删除</span>
+		<div class="pages" style="width:260px;">
+		  <span>共<!--{$count}--!>条,其中<!--{$count_del}--!>条已删除&nbsp;&nbsp;共 <b><!--{$countNum}--!></b> 页</span>
 		</div>
 		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="1" currentPage="<!--{$currentPage}--!>"></div>
-		<div class="pages">
-		  <span style="color:green;">绿色信息代表，已被分站删除</span>
-		</div>
-		<div class="pages" style="float:right;width:40%;"><span style="float:right;">共 <b><!--{$countNum}--!></b> 页</span></div>
+		
 		
 	</div>
 

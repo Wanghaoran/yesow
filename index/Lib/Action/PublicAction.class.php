@@ -1126,6 +1126,15 @@ class PublicAction extends Action {
     $this -> assign('new_article', $new_article);
   }
 
+  //验证验证码
+  public function checkverify(){
+    if($this -> _get('code', 'md5') != $_SESSION['verify']){
+      echo 0;
+    }else{
+      echo 1;
+    }
+  }
+
 
 
 }
