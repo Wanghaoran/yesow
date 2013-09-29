@@ -1,88 +1,67 @@
 <?php
 class ShopAction extends CommonAction {
 
-  //商城购物首页
   public function index(){
     $shop = M('Shop');
     $where = array();
     if(!empty($_GET['cid'])){
       $where['cid_one'] = $this -> _get('cid', 'intval');
     }
-    //读取分站名称
+    if(!empty($_POST['title'])){
+      $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     $child_name = D('admin://ChildSite') -> getname();
     $this -> assign('child_name', $child_name);
-
-    import("ORG.Util.Page");// 导入分页类
+    import("ORG.Util.Page");
     $count = $shop -> where($where) -> count('id');
     $page = new Page($count, 10);
     $show = $page -> show();
-    //查分类下的商品信息，10条
     $result = $shop -> field('id,title,issend,marketprice,promotionprice,small_pic,remark') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
-    //查20个最新商品
     $result_new_shop = $shop -> field('id,title') -> order('addtime DESC') -> limit(20) -> select();
     $this -> assign('result_new_shop', $result_new_shop);
-    //20个热门商品
     $result_hot_shop = $shop -> field('id,title') -> order('clickcount DESC') -> limit(20) -> select();
     $this -> assign('result_hot_shop', $result_hot_shop);
-
     $this -> display();
-  
   }
 
-  //商品详情页
   public function info(){
     $shop = M('Shop');
-    //点击量加1
     $shop -> where(array('id' => $this -> _get('id', 'intval'))) -> setInc('clickcount');
-    //读取分站名称
     $child_name = D('admin://ChildSite') -> getname();
     $this -> assign('child_name', $child_name);
-    //商品详细信息
     $result = $shop -> field('id,cid_one,issend,marketprice,promotionprice,big_pic,remark,title,content,keyword,clickcount') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //如果需要运费，则查询运费信息
     if($result['issend'] == 1){
       $result_send = M('SendType') -> field('name,money') -> order('sort ASC') -> select();
       $this -> assign('result_send', $result_send);
     }
-    //查20个最新商品
     $result_new_shop = $shop -> field('id,title') -> order('addtime DESC') -> limit(20) -> select();
     $this -> assign('result_new_shop', $result_new_shop);
-
-    //20个热门商品
     $result_hot_shop = $shop -> field('id,title') -> order('clickcount DESC') -> limit(20) -> select();
     $this -> assign('result_hot_shop', $result_hot_shop);
-
-    //查询4个同类商品
     $result_like = $shop -> field('id,title,small_pic,marketprice,promotionprice') -> where(array('cid_one' => $result['cid_one'], 'id' => array('neq', $result['id']))) -> order('addtime DESC') -> limit(4) -> select();
     $this -> assign('result_like', $result_like);
-
     $id = $this -> _get('id', 'intval');
     $comment = M('ShopComment');
-    //读取评论
     $comment_where = "cc.sid={$id} AND cc.status=2";
-    //如果会员基本设置允许会员看到自己的未经审核的评论，则在这里加上查询条件
     if(M('MemberSetup') -> getFieldByname('viewcomment', 'value') == 1 && isset($_SESSION[C('USER_AUTH_KEY')])){
       $mid = session(C('USER_AUTH_KEY'));
       $where_setup = "cc.sid={$id} AND cc.mid={$mid}";
       $comment_where = '(' . $comment_where . ')' . 'OR' . '(' . $where_setup . ')';
     }
-    import("ORG.Util.Page");// 导入分页类
+    import("ORG.Util.Page");
     $count = $comment -> table('yesow_shop_comment as cc') -> where($comment_where) -> count('id');
-    $page = new Page($count, 10);//每页10条
+    $page = new Page($count, 10);
     $page->setConfig('header','条评论');
     $show = $page -> show();
     $result_comment = $comment -> table('yesow_shop_comment as cc') -> field('m.name,cc.content,cc.addtime,cc.floor,cc.score,cc.face') -> where($comment_where) -> join('yesow_member as m ON cc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('floor ASC') -> select();
     $this -> assign('result_comment', $result_comment);
     $this -> assign('show', $show);
-
-
     $this -> display();
   }
 
-  //提交评论
   public function commit(){
     if($this -> _post('code', 'md5') != $_SESSION['verify']){
       $this -> error(L('VERIFY_ERROR'));
@@ -102,10 +81,8 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //购物车
   public function shopcart(){
     $shop_cart = D('ShopCart');
-    //查询当前用户的订单
     $result = $shop_cart -> usercart();
     //判断购物车中的商品是否全部都是免运费的
     $nosendprice = 0;
@@ -124,7 +101,6 @@ class ShopAction extends CommonAction {
     $this -> display();
   }
 
-  //向购物车添加商品
   public function addshopcart(){
     $shop_cart = D('ShopCart');
     if($shop_cart -> addshop($this -> _get('sid', 'intval'), $this -> _get('num', 'intval'))){
@@ -134,7 +110,6 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //向购物车删除商品
   public function delshopcart(){
     $shop_cart = D('ShopCart');
     if($shop_cart -> delshop($_GET['ids'])){
@@ -144,7 +119,6 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //更新购物车中商品数量
   public function editshopcare(){
     $shop_cart = D('ShopCart');
     if($shop_cart -> editshop($this -> _get('id', 'intval'), $this -> _get('shopnum', 'intval'))){

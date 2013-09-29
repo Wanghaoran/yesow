@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/<default/javascript/user.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
 <script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
 <script charset="utf-8" src="__PUBLIC__/kindeditor/zh_CN.js"></script>
 <script>
@@ -104,6 +104,11 @@
     return true;
   }
 </script>
+<script>
+var checkall = function(obj){
+  $('input[name="childsite[]"]').attr("checked",obj); 
+}
+</script>
 </head>
 <body id="body_user">
 <include file="Index:header" />
@@ -171,6 +176,7 @@
 								  <volist name="result_site" id="rs">
 								  <input type="checkbox" name="childsite[]" value="<!--{$rs.id}--!>" id="rs<!--{$rs.id}--!>" /><label for="rs<!--{$rs.id}--!>"><!--{$rs.name}--!></label>
 								  </volist>
+								  <input type="checkbox" onclick="checkall(this.checked);" id="allcheck"><label for="allcheck"><b>全选</b></label>
 								</td>
 							</tr>
 							<tr>
@@ -184,9 +190,9 @@
 							</tr>
 							<tr>
 								<td colspan="2" style="text-align:center">
-									<button class="add_article_btn" name="" id="" onClick="$('#article').submit();" >发布文章</button>
-									<button class="add_article_btn" name="" id="" >取消发布</button>
-									<button class="add_article_btn" name="" id="" >清空内容</button>
+									<input type="submit" value="发布文章" class="add_article_btn">
+									<input type="button" value="返回前页" class="add_article_btn" onclick="history.go(-1);" />
+									<input type="reset" value="清空内容" class="add_article_btn" />
 								</td>
 							      </tr> 
 						</tbody>

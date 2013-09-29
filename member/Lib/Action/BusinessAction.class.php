@@ -31,19 +31,29 @@ class BusinessAction extends CommonAction {
   //添加文章
   public function addarticle(){
     if(!empty($_POST['title'])){
-      $info_article = D('admin://InfoArticle');
-      $_POST['authorid'] = $this -> _session(C('USER_AUTH_KEY'));
-      $_POST['addtime'] = time();
-      if(!empty($_POST['conid2'])){
-	$_POST['conid'] = $_POST['conid2'];
-	unset($_POST['conid2']);
-      }
 
-       if(!$info_article -> create()){
-	R('Register/errorjump',array($info_article -> getError()));
-       }
-           
-      if($iaid = $info_article -> add()){
+      $info_article = M('InfoArticle');
+      $add_data = array();
+      $add_data['classid'] = $_POST['classid'];
+      $add_data['colid'] = $_POST['colid'];
+      $add_data['tid'] = $_POST['tid'];
+      $add_data['conid'] = $_POST['conid'];
+      if(!empty($_POST['conid2'])){
+	$add_data['conid'] = $_POST['conid2'];
+      }
+      $add_data['title'] = $_POST['title'];
+      $add_data['content'] = $_POST['content'];
+      $add_data['authorid'] = $_SESSION[C('USER_AUTH_KEY')];
+      $add_data['addtime'] = time();
+      $add_data['source'] = $_POST['source'];
+      $add_data['keyword'] = $_POST['keyword'];
+      $add_data['tel'] = $_POST['tel'];
+      $add_data['qqcode'] = $_POST['qqcode'];
+      $add_data['address'] = $_POST['address'];
+      $add_data['email'] = $_POST['email'];
+      $add_data['unit'] = $_POST['unit'];
+      if($iaid = $info_article -> add($add_data)){
+
 	//使用文章id写文章分站表
 	if(!empty($_POST['childsite'])){
 	  $childsite_infoatricle = M('ChildsiteInfoarticle');

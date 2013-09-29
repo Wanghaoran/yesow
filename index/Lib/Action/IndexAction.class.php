@@ -196,13 +196,13 @@ class IndexAction extends CommonAction {
     $where_recommendcompany['fid'] = $fid;
     $where_recommendcompany['starttime'] = array('ELT', time());
     $where_recommendcompany['endtime'] = array('EGT', time());
-    $result_recommendcompany = $RecommendCompany -> alias('rc') -> field('rc.cid,rc.rank,c.name as cname,c.manproducts') -> join('yesow_company as c ON rc.cid = c.id') -> where($where_recommendcompany) -> order('rc.rank ASC') -> select();
+    $result_recommendcompany = $RecommendCompany -> alias('rc') -> field('rc.cid,rc.rank,c.name as cname,c.manproducts,c.mobilephone,c.linkman') -> join('yesow_company as c ON rc.cid = c.id') -> where($where_recommendcompany) -> order('rc.rank ASC') -> select();
     $recommend_company = array();
     for($i=1; $i<=32; $i++){
       $recommend_company[$i] = array();
       foreach($result_recommendcompany as $value){
 	if($i == $value['rank']){
-	  $recommend_company[$i] = array('cid' => $value['cid'], 'cname' => $value['cname'], 'manproducts' => $value['manproducts']);
+	  $recommend_company[$i] = array('cid' => $value['cid'], 'cname' => $value['cname'], 'manproducts' => $value['manproducts'], 'mobilephone' => $value['mobilephone'], 'linkman' => $value['linkman']);
 	}
       }
     }

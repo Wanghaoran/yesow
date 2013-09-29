@@ -82,9 +82,9 @@
       <select class="combox" ref="change_ccid" refUrl="__APP__/public/ajaxgetcompanycategorytwo/id/{value}">
 	<volist name="result_company_category_one" id="rcco">
 	<eq name="result_ccid_one" value="$rcco.id">
-	<option value="<!--{$rcco.id}--!>" selected="selected"><!--{$rcco.name}--!></option>
+	<option value="<!--{$rcco.id}--!>" selected="selected"><!--{$rcco.name}--!>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 	<else/>
-	<option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!></option>
+	<option value="<!--{$rcco.id}--!>"><!--{$rcco.name}--!>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 	</eq>
 	</volist>
       </select>

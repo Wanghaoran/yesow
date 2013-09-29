@@ -113,6 +113,7 @@ table.table_list td.fz label{ display:inline-block; zoom:1; padding-right:5px;}
 .w100{width:100px;}
 .w80{width:80px;}
 button.add_article_btn{ margin:10px;width:160px; height:30px; line-height:30px; background:url(images/user/RightColumn_Btn.gif) 0 -60px no-repeat; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center; cursor:pointer;}
+input.add_article_btn{ margin:10px;width:160px; height:30px; line-height:30px; background:url(images/user/RightColumn_Btn.gif) 0 -60px no-repeat; color:#FFF; font-weight:bold; font-size:14px; padding:0; border:0; text-align:center; cursor:pointer;}
 /**分页**/
 .page{ padding:10px 0; text-align:right;}
 .page a, .page span{display:inline-block; margin-left:5px; height:20px; line-height:20px; padding:0 8px; border:1px solid #ccc;
