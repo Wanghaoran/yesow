@@ -1,14 +1,11 @@
 <?php
-/*
- * 系统设置
- */
 class SystemAction extends CommonAction {
 
-  public function ad_upload(){//广告管理文件上传
+  public function ad_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
-    $upload -> savePath = C('AD_PIC_PATH') ;//设置上传目录
-    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> savePath = C('AD_PIC_PATH') ;
+    $upload -> autoSub = false;
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
@@ -18,16 +15,13 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //节点管理
   public function node(){
     $node = M('Node');
-    //构建查询条件
     $where = array();
     $where['pid'] = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
     if(!empty($_REQUEST['name'])){
       $where['name'] = array('LIKE', '%' .  $_REQUEST['name'] . '%');
     }
-    //记录总数
     $count = $node -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -36,25 +30,20 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     
     $result = $node -> field('id,name,title,remark,sort') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) ->  order('sort') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //增加节点
   public function addnode(){
     $node = D('Node');
-    //处理新增
     if(!empty($_POST['name'])){
       if(!$node -> create()){
 	$this -> error($node -> getError());
@@ -65,7 +54,6 @@ class SystemAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }    
-    //查询并计算父级名称 和 本次更新的level、pid
     $pid = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
     if(!empty($_REQUEST['id'])){
       $result = $node -> field('title,level') -> find($this -> _get('id', 'intval'));
@@ -78,12 +66,9 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除节点
   public function delnode(){
     $node = M('Node');
-    //待删除的id数组
     $id = array();
-    //查出所有要删除的id
     $id[] = $this -> _get('id', 'intval');
     $where = array();
     $where['pid'] = $this -> _get('id', 'intval');
@@ -91,10 +76,8 @@ class SystemAction extends CommonAction {
     $temp_arr = array();
     if(!empty($result)){
       foreach($result as $value){
-	//待删除的二级id
 	$temp_arr[] = intval($value['id']);
       }
-      //查3级
       $where['pid'] = array('in', $temp_arr);
       $result3 = $node -> field('id') -> where($where) -> select();
       if(!empty($result3)){
@@ -104,7 +87,6 @@ class SystemAction extends CommonAction {
       }
     }
     $id = array_merge($temp_arr, $id);
-    //构建删除条件
     $del_where = array();
     $del_where['id'] = array('in', $id);
     if($node -> where($del_where) -> delete()){
@@ -114,10 +96,8 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑节点
   public function editnode(){
     $node = D('Node');
-    //处理更新
     if(!empty($_POST['name'])){
       if(!$node -> create()){
 	$this -> error($node -> getError());
@@ -133,17 +113,14 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //管理员管理
   public function adminer(){
     $admin = M('Admin');
-    //处理查询条件
     $where = array();
     $where_page = array();
     if(!empty($_POST['name'])){
       $where['a.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
       $where_page['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
-    //记录总数
     $count = $admin -> where($where_page) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -152,31 +129,24 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    //查询结果
     $result = $admin -> table('yesow_admin as a') -> field('a.id,a.name,cs.name as csname,cs.domain as domain,a.status,a.last_login_ip,a.last_login_time,a.login_count,a.remark,r.name as rolename') -> join('yesow_child_site as cs ON cs.id = a.csid') -> join('yesow_role_admin as ra ON a.id = ra.admin_id') -> join('yesow_role as r ON ra.role_id = r.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> assign('result', $result);
     $this -> display();
   }
 
-  //添加管理员
   public function addadminer(){
     $admin = D('Admin');
-    //处理新增
     if(!empty($_POST['name'])){
       $_POST['password'] = sha1($_POST['password']);
       if(!$admin -> create()){
 	$this -> error($admin -> getError());
       }
       $uid = $admin -> add();
-      //添加管理组信息
       if(!empty($_POST['roleid'])){
 	$role_admin = M('RoleAdmin');
 	$data['role_id'] = $this -> _post('roleid', 'intval');
@@ -188,12 +158,10 @@ class SystemAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
-    //查所有管理组
     $role = M('Role');
     $result_role = $role -> field('id,name') -> select();
     $this -> assign('result_role', $result_role);
@@ -201,7 +169,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除管理员
   public function deladminer(){
     $admin = M('Admin');
     if($admin -> delete($this -> _get('id', 'intval'))){
@@ -211,10 +178,8 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑管理员
   public function editadminer(){
     $admin = D('Admin');
-    //处理更新数据
     if(!empty($_POST['name'])){
       if(empty($_POST['password'])){
 	unset($_POST['password']);
@@ -225,7 +190,6 @@ class SystemAction extends CommonAction {
 	$this -> error($admin -> getError());
       }
 
-      //更新管理组信息
       if($_POST['oldroleid'] != $_POST['roleid']){
 	$data = array();
 	$where = array();
@@ -242,29 +206,23 @@ class SystemAction extends CommonAction {
     }
     $result = $admin -> field('id,csid,name,status,remark') -> find($this -> _get('id'));
     $this -> assign('result', $result);
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查所有管理组
     $role = M('Role');
     $result_role = $role -> field('id,name') -> select();
     $this -> assign('result_role', $result_role);
-    //查本管理员的所属组
     $result_myrole = M('RoleAdmin') -> getFieldByadmin_id($this -> _get('id', 'intval'), 'role_id');
     $this -> assign('result_myrole', $result_myrole);
     $this -> display();
   }
 
-  //管理组管理
   public function admingroup(){
     $role = M('Role');
-    //构造条件
     $where = array();
     if(!empty($_POST['name'])){
       $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
-    //记录总数
     $count = $role -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -273,21 +231,16 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    //管理组信息
     $result = $role -> table('yesow_role as r') -> field('id,name,remark,create_time,update_time,c') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('(SELECT role_id,COUNT(admin_id) as c FROM yesow_role_admin GROUP BY role_id) as tmp ON tmp.role_id = r.id') -> order('id DESC') -> select();
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> assign('result', $result);
     $this -> display();
   }
 
-  //增加管理组
   public function addadmingroup(){
     $role = D('Role');
     if(!empty($_POST['name'])){
@@ -303,7 +256,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除管理组
   public function deladmingroup(){
     $role = M('Role');
     if($role -> delete($this -> _get('id', 'intval'))){
@@ -313,7 +265,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑管理组
   public function editadmingroup(){
     $role = D('Role');
     if(!empty($_POST['name'])){
@@ -331,16 +282,13 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //成员管理
   public function groupuser(){
     $role_admin = M('RoleAdmin');
     $num = 0;
     if(!empty($_POST['role_id'])){
-      //先删除
       $where_del = array();
       $where_del['role_id'] = $this -> _post('role_id', 'intval');
       $num = $role_admin -> where($where_del) -> delete();
-      //再添加
       if(!empty($_POST['admin_id'])){
 	$num = 0;
 	foreach($_POST['admin_id'] as $value){
@@ -349,7 +297,6 @@ class SystemAction extends CommonAction {
       }
       if($num > 0){
 	$role = M('Role');
-	//更新时间
 	$up_id = $this -> _post('role_id', 'intval');
 	$up_time = time();
 	$role -> save(array('id' => $up_id, 'update_time' => $up_time));
@@ -358,7 +305,6 @@ class SystemAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    //查现有组中的成员
     
     $where_role_admin = array();
     $role_id = $this -> _get('id', 'intval');
@@ -369,27 +315,22 @@ class SystemAction extends CommonAction {
       $result_ra[] = $value['admin_id'];
     }
     $this -> assign('result_ra', $result_ra);
-    //查管理员，此管理员不属于任何一个管理组，或者是本组成员
     $admin = M('Admin');
     $result_admin = $admin -> query("SELECT id,name FROM yesow_admin WHERE id NOT IN (select admin_id FROM yesow_role_admin) UNION SELECT id,name FROM yesow_admin WHERE id IN(SELECT admin_id FROM yesow_role_admin WHERE role_id = {$role_id})");
     $this -> assign('result_admin', $result_admin);
     $this -> display();
   }
 
-  //授权管理 - 应用授权
   public function app(){
     $node = M('Node');
     $access = M('Access');
-    //处理更新
     if(!empty($_POST['role_id'])){
       $num = 0;
-      //先删除
       $where_del = array();
       $where_del['role_id'] = $this -> _post('role_id', 'intval');
       $where_del['node_pid'] = 0;
       $where_del['level'] = 1;
       $num +=$access -> where($where_del) -> delete();
-      //再添加
       if(!empty($_POST['node_id'])){
 	$num = 0;
 	$data = array();
@@ -408,7 +349,6 @@ class SystemAction extends CommonAction {
       }
     }
 
-    //查询已授权 应用
     $where_acc = array();
     $where_acc['role_id'] = $this -> _get('rid', 'intval');
     $where_acc['level'] = 1;
@@ -418,26 +358,21 @@ class SystemAction extends CommonAction {
       $result_access[] = $value['node_id'];
     }
     $this -> assign('result_access', $result_access);
-    //查询应用
     $result_app = $node -> field('id,title') -> where('level = 1') -> order('sort') -> select();
     $this -> assign('result_app', $result_app);
     $this -> display();
   }
 
-  //授权管理 - 模块授权
   public function module(){
     $access = M('Access');
     $node = M('Node');
-    //处理更新
     if(!empty($_POST['role_id'])){
-      //先删除
       $num = 0;
       $where_del = array();
       $where_del['role_id'] = $this -> _post('role_id', 'intval');
       $where_del['node_pid'] = $this -> _post('appid', 'intval');
       $where_del['level'] = 2;
       $num += $access -> where($where_del) -> delete();
-      //再添加
       if(!empty($_POST['moduleid'])){
 	$num = 0;
 	$data= array();
@@ -455,14 +390,12 @@ class SystemAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    //查此 应用下的 模块
     if(!empty($_GET['appid'])){
       $where_module = array();
       $where_module['pid'] = $this -> _get('appid', 'intval');
       $where_module['level'] = 2;
       $result_module = $node -> where($where_module) -> field('id,title') -> select();
       $this -> assign('result_module', $result_module);
-      //查已授权的 模块
       $where_acc = array();
       $where_acc['role_id'] = $this -> _get('rid', 'intval');
       $where_acc['node_pid'] = $this -> _get('appid', 'intval');
@@ -474,7 +407,6 @@ class SystemAction extends CommonAction {
       }
       $this -> assign('result_access2', $result_access2);
     }
-    //先查已授权的应用
     $where_acc = array();
     $where_acc['a.role_id'] = $this -> _get('rid', 'intval');
     $where_acc['a.level'] = 1;
@@ -483,20 +415,16 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //授权管理 - 操作授权
   public function action(){
     $access = M('Access');
     $node = M('Node');
-    //处理更新
     if(!empty($_POST['rid'])){
-      //先删除
       $num = 0;
       $where_del = array();
       $where_del['role_id'] = $this -> _post('rid', 'intval');
       $where_del['node_pid'] = $this -> _post('moduleid', 'intval');
       $where_del['level'] = 3;
       $num += $access -> where($where_del) -> delete();
-      //再添加
       if(!empty($_POST['action_id'])){
 	$num = 0;
 	$data= array();
@@ -514,7 +442,6 @@ class SystemAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    //查出此 应用 下已授权模块
     if(!empty($_GET['appid'])){
       $where_module = array();
       $where_module['a.node_pid'] = $this -> _get('appid', 'intval');
@@ -524,15 +451,12 @@ class SystemAction extends CommonAction {
       $this -> assign('result_module', $result_module);
     }
 
-    //查出此 模块下的 操作
     if(!empty($_GET['appid']) && !empty($_GET['moduleid'])){
-      //先查所有操作
       $where_no = array();
       $where_no['pid'] = $this -> _get('moduleid', 'intval');
       $where_no['level'] = 3;
       $result_action = $node -> where($where_no) -> field('id,title') -> select();
       $this -> assign('result_action' ,$result_action);
-      //再查已授权的操作
       $where_ac = array();
       $where_ac['role_id'] = $this -> _get('rid', 'intval');
       $where_ac['node_pid'] = $this -> _get('moduleid', 'intval');
@@ -545,7 +469,6 @@ class SystemAction extends CommonAction {
       $this -> assign('result_access', $result_access);
     }
     
-    //先查已授权的应用
     $where_app = array();
     $where_app['a.role_id'] = $this -> _get('rid', 'intval');
     $where_app['a.level'] = 1;
@@ -555,15 +478,12 @@ class SystemAction extends CommonAction {
   }
 
 
-  //辖区管理
   public function area(){
     $Area = M('Area');
     $where = array();
-    //判断查询条件
     if(!empty($_REQUEST['name'])){
       $where['name'] = array('LIKE', '%' .  $_REQUEST['name'] . '%');
     }
-    //记录总数
     $count = $Area -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -572,29 +492,23 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     $result = $Area -> field('id,name,remark,isshow') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> assign('result', $result);
     $this -> display();
   }
 
-  //编辑辖区信息
   public function editarea(){
     $area = D('Area');
-    //处理编辑辖区
     if(isset($_POST['name'])){
       if(!$area -> create()){
 	$this -> error($area -> getError());
       }
       if($area -> save()){
-	//删除缓存
 	S('header_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
@@ -606,16 +520,13 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //添加辖区信息
   public function addarea(){
-    //验证添加信息
     if(isset($_POST['name'])){
       $area = D('Area');
       if(!$area -> create()){
 	$this -> error($area -> getError());
       }
       if($area -> add()){
-	//删除缓存
 	S('header_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
@@ -625,11 +536,9 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除辖区信息
   public function deletearea(){
     $area = M('Area');
     if($area -> delete($this -> _get('id', 'intval'))){
-      //删除缓存
       S('header_child_site', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
@@ -637,15 +546,12 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //分站模板管理
   public function childsitetemplate(){
     $childsitetemplate = M('ChildSiteTemplate');
     $where = array();
-     //判断查询条件
     if(!empty($_REQUEST['name'])){
       $where['name'] = array('LIKE', '%' .  $_REQUEST['name'] . '%');
     }
-    //记录总数
     $count = $childsitetemplate -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -654,22 +560,17 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     $result = $childsitetemplate -> field('id,name,address') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> assign('result', $result);
     $this -> display();
   }
 
-  //添加分站模板
   public function addchildsitetemplate(){
-    //处理添加信息
     if(isset($_POST['name'])){
       $childsitetemplate = D('ChildSiteTemplate');
       if(!$childsitetemplate -> create()){
@@ -684,7 +585,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除分站模板
   public function delchildsitetemplate(){
     $childsitetemplate = M('ChildSiteTemplate');
     if($childsitetemplate -> delete($this -> _get('id', 'intval'))){
@@ -694,10 +594,8 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑分站模板
   public function editchildsitetemplate(){
     $childsitetemplate = D('ChildSiteTemplate');
-    //处理编辑地区
     if(isset($_POST['name'])){
       if(!$childsitetemplate -> create()){
 	$this -> error($childsitetemplate -> getError());
@@ -713,12 +611,10 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //分站管理
   public function childsite(){
     $childsite = M('ChildSite');
     $where = array();
-    $where_page = array(); //分页用查询条件
-    //构建查询条件
+    $where_page = array();
     if(!empty($_POST['name'])){
       $where['cs.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
       $where_page['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
@@ -727,7 +623,6 @@ class SystemAction extends CommonAction {
       $where['cs.aid'] = $this -> _post('aid', 'intval');
       $where_page['aid'] = $this -> _post('aid', 'intval');
     }
-    //记录总数
     $count = $childsite -> where($where_page) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -736,59 +631,46 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    //查询地区数据
     $area = M('area');
     $result_area = $area -> field('id,name') -> select();
     $this -> assign('result_area', $result_area);
-    //查询分站数据
     $result = $childsite -> table('yesow_child_site as cs') -> field('cs.id as id,cs.name as name,a.name as aname,cst.name as cstname,css.name as pname,cs.domain,cs.code,cs.create_time,cs.isshow') -> join('yesow_area as a ON a.id = cs.aid ') -> join('yesow_child_site_template as cst ON cst.id = cs.tid') -> join('yesow_child_site as css ON css.id = cs.pid') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('id DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //添加分站
   public function addchildsite(){
     $childsite = D('ChildSite');
-    //处理添加数据
     if(isset($_POST['name'])){
       if(!$childsite -> create()){
 	$this -> error($childsite -> getError());
       }
       if($childsite -> add()){
-	//删除缓存
 	S('header_child_site', NULL, NULL, '', NULL, 'index');
       	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查询地区数据
     $area = M('area');
     $result_area = $area -> field('id,name') -> select();
     $this -> assign('result_area', $result_area);
-    //查询模板
     $childsitetemplate = M('ChildSiteTemplate');
     $result_template = $childsitetemplate -> field('id,name') -> select();
     $this -> assign('result_template', $result_template);
-    //查询省级分站
     $result_site = $childsite -> field('id,name') -> where('pid = 0') -> select();
     $this -> assign('result_site', $result_site);
     $this -> display();
   }
 
-  //删除分站
   public function delchildsite(){
     $childsite = M('ChildSite');
     if($childsite -> delete($this -> _get('id', 'intval'))){
-      //删除缓存
       S('header_child_site', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
@@ -796,7 +678,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑分站
   public function editchildsite(){    
     $childsite = D('ChildSite');
     if(isset($_POST['name'])){
@@ -804,41 +685,33 @@ class SystemAction extends CommonAction {
 	$this -> error($childsite -> getError());
       }
       if($childsite -> save()){
-	//删除缓存
 	S('header_child_site', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    //查询分站信息
     $result = $childsite -> field('id,aid,tid,pid,name,domain,code,isshow') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //查询地区数据
     $area = M('area');
     $result_area = $area -> field('id,name') -> select();
     $this -> assign('result_area', $result_area);
-    //查询模板
     $childsitetemplate = M('ChildSiteTemplate');
     $result_template = $childsitetemplate -> field('id,name') -> select();
     $this -> assign('result_template', $result_template);
-    //查询省级分站
     $result_site = $childsite -> field('id,name') -> where('pid = 0') -> select();
     $this -> assign('result_site', $result_site);
     $this -> display();
   }
 
-  //地区管理
   public function childsitearea(){
     $childsitearea = M('ChildSiteArea');
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
-    $where = array();//连查用条件
-    $where_page = array(); //分页用条件
-    //构建查询条件
+    $where = array();
+    $where_page = array();
     if(!empty($_POST['name'])){
       $where['csa.name'] = array('LIKE', '%' . $this -> _post('name')  . '%');
       $where_page['name'] = array('LIKE', '%' . $this -> _post('name')  . '%');
@@ -848,7 +721,6 @@ class SystemAction extends CommonAction {
       $where_page['csid'] = $this -> _post('csid', 'intval');
     }
 
-    //记录总数
     $count = $childsitearea -> where($where_page) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -857,24 +729,18 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    //查询地区数据
     $result = $childsitearea -> table('yesow_child_site_area as csa') -> field('csa.id,csa.name,cs.name as csname,csa.code,csa.create_time') -> where($where) -> join('yesow_child_site as cs ON cs.id = csa.csid') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //新增地区
   public function addchildsitearea(){
-    //处理新增数据
     if(isset($_POST['name'])){
       $childsitearea = D('ChildSiteArea');
       if(!$childsitearea -> create()){
@@ -886,14 +752,12 @@ class SystemAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
 
-  //删除地区
   public function delchildsitearea(){
     $childsitearea = M('ChildSiteArea');
     if($childsitearea -> delete($this -> _get('id', 'intval'))){
@@ -903,10 +767,8 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑地区
   public function editchildsitearea(){
     $childsitearea = D('ChildSiteArea');
-    //处理编辑
     if(isset($_POST['name'])){
       if(!$childsitearea -> create()){
 	$this -> error($childsitearea -> getError());
@@ -917,26 +779,21 @@ class SystemAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查询对应地区数据
     $result = $childsitearea -> field('id,csid,name,code') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
 
-  //消费产品分类管理
   public function accountclass(){
     $account_class = M('AccountClass');
     $where = array();
-    //构建查询条件
     if(!empty($_POST['name'])){
       $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $account_class -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -945,24 +802,19 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     
     $result = $account_class -> field('id,name,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //新增消费产品分类
   public function addaccountclass(){
     $account_class = D('AccountClass');
-    //处理新增
     if(!empty($_POST['name'])){
       if(!$account_class -> create()){
 	$this -> error($account_class -> getError());
@@ -976,7 +828,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除消费产品分类
   public function delaccountclass(){
     $account_class = M('AccountClass');
     if($account_class -> delete($this -> _get('id', 'intval'))){
@@ -986,10 +837,8 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑消费产品分类
   public function editaccountclass(){
     $account_class = D('AccountClass');
-    //处理更新
     if(!empty($_POST['name'])){
       if(!$account_class -> create()){
 	$this -> error($account_class -> getError());
@@ -1005,24 +854,17 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //账目系统管理
   public function account(){
     $account = M('Account');
     $childsite = M('ChildSite');
     $where = array();
-    //处理查询条件
     if(!empty($_POST['csid'])){
       $where['a.csid'] = $this -> _post('csid', 'intval');
     }
 
-    //权限验证开始
-    //如果是总管理员,可以查看所有账目,否则只能查看自己所属分站的账目
     if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
       $where['a.csid'] = $_SESSION['csid'];
     }
-    //权限验证结束
-    
-    //记录总数
     $count = $account -> table('yesow_account as a') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1031,11 +873,9 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    //如果是总管理员，则查出所有分站，否则只查出管理员所属分站
     if(!$_SESSION[C('ADMIN_AUTH_KEY')]){
       $result_childsite = $childsite -> field('id,name') -> select(session('csid'));
     }else{
@@ -1043,39 +883,30 @@ class SystemAction extends CommonAction {
     }
     $this -> assign('result_childsite', $result_childsite);
 
-    //查询数据
     $result = $account -> table('yesow_account as a') -> field('a.id,cs.name as csname,ac.name as acname,a.create_time,a.type,a.company,a.money,a.remark') -> where($where) -> join('yesow_child_site as cs ON a.csid = cs.id') -> join('yesow_account_class as ac ON a.acid = ac.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('id DESC') -> select();
     $this -> assign('result', $result);
 
-    //查询总入款
     $where['a.type'] = 2;
     $inmoney = $account -> table('yesow_account as a') -> field('SUM(money) as sum') -> where($where) -> select();
     $this -> assign('inmoney', $inmoney);
 
-    //查询总扣款
     $where['a.type'] = 1;
     $outmoney = $account -> table('yesow_account as a') -> field('SUM(money) as sum') -> where($where) -> select();
     $this -> assign('outmoney', $outmoney);
 
-    //余额
     $this -> assign('balance', $inmoney[0]['sum'] - $outmoney[0]['sum']);
 
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
-    //管理员位
     $this -> assign('admin', $_SESSION[C('ADMIN_AUTH_KEY')] === true ? 'true' : 'false');
     $this -> display();
   }
 
-  //添加账目
   public function addaccount(){
     $childsite = M('ChildSite');
     $accountclass = M('AccountClass');
     $account = D('Account');
-    //处理添加
     if(!empty($_POST['create_time'])){
       if(!$account -> create()){
 	$this -> error($account -> getError());
@@ -1087,18 +918,15 @@ class SystemAction extends CommonAction {
       }
     }
 
-    //查出所有站点
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
-    //查出所有产品分类
     $result_accountclass = $accountclass -> field('id,name') -> select();
     $this -> assign('result_accountclass', $result_accountclass);
 
     $this -> display();
   }
 
-  //批量删除账目
   public function delaccount(){
     $account = M('Account');
     $where_del = array();
@@ -1110,13 +938,11 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑账目
   public function editaccount(){
     $account = D('Account');
     $accountclass = M('AccountClass');
     $childsite = M('ChildSite');
 
-    //处理更新
     if(!empty($_POST['create_time'])){
       if(!$account -> create()){
 	$this -> error($account -> getError());
@@ -1129,25 +955,19 @@ class SystemAction extends CommonAction {
 
     }
 
-    //查出所有产品分类
     $result_accountclass = $accountclass -> field('id,name') -> select();
     $this -> assign('result_accountclass', $result_accountclass);
 
-    //查出所有站点
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
-    //查编辑数据
     $result = $account -> field('id,acid,csid,create_time,type,company,money,remark') -> find($this -> _get('id', intval));
     $this -> assign('result', $result);
     $this -> display();
   }
 
-  /* ------------  系统设置   -------------- */
-  //SEO设置
   public function systemseo(){
     $system = D('System');
-    //处理更新
     if(!empty($_POST['sy_title'])){
       foreach($_POST as $key => $value){
 	if(substr($key, 0, 3) == 'sy_'){
@@ -1158,7 +978,6 @@ class SystemAction extends CommonAction {
 	  $system -> where($where) -> save($data);
 	}
       }
-      //删除缓存
       S('index_seo', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }
@@ -1169,7 +988,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //非法词过滤
   public function illegalword(){
     $illegalword = M('IllegalWord');
     $where = array();
@@ -1177,7 +995,6 @@ class SystemAction extends CommonAction {
       $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $illegalword -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1186,23 +1003,18 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $illegalword -> field('id,name,replace,addtime,remark') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //添加非法词
   public function addillegalword(){
-    //处理添加
     if(!empty($_POST['name'])){
       $illegalword = D('IllegalWord');
       if(!$illegalword -> create()){
@@ -1217,7 +1029,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //编辑非法词
   public function editillegalword(){
     $illegalword = D('IllegalWord');
     if(!empty($_POST['name'])){
@@ -1235,7 +1046,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除非法词
   public function delillegalword(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -1247,7 +1057,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //支付接口管理
   public function payport(){
     $payport = M('payport');
     $result = $payport -> field('name,enname,remark,status') -> select();
@@ -1255,7 +1064,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //配置支付接口信息
   public function editport(){
     $payport = M('payport');
     if(!empty($_POST['id'])){
@@ -1274,10 +1082,8 @@ class SystemAction extends CommonAction {
     $this -> display('editport_' . $mod);
   }
 
-  //网站地图管理
   public function websitemap(){
     $sitemap_upload = M('SitemapUpload');
-    //查询时间
     $system = M('System');
     $time = $system -> getFieldByname('updatesitemaptime', 'value');
     $this -> assign('time', $time);
@@ -1291,7 +1097,6 @@ class SystemAction extends CommonAction {
 	$this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    //记录总数
     $count = $sitemap_upload -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1300,20 +1105,16 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
     $result = $sitemap_upload -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //删除网站地图更新记录
   public function delwebsitemap(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -1325,21 +1126,14 @@ class SystemAction extends CommonAction {
     }
   }
 
-  /* ------------  系统设置   -------------- */
-
-  /* ----------- 关于我们 ------------ */
-
-  //关于我们管理
   public function aboutus(){
     $aboutus = M('Aboutus');
     $where = array();
 
-    //处理搜索
     if(!empty($_POST['title'])){
       $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
     }
 
-    //记录总数
     $count = $aboutus -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1348,31 +1142,25 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $aboutus -> field('id,title,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
     $this -> assign('result', $result);
 
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //增加关于我们
   public function addaboutus(){
-    //处理增加
     if(!empty($_POST['title'])){
       $aboutus = M('Aboutus');
       if(!$aboutus -> create()){
 	$this -> error($aboutus -> getError());
       }
       if($aboutus -> add()){
-	//删除缓存
 	S('index_footer_nav', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
@@ -1382,13 +1170,11 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除关于我们
   public function delaboutus(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
     $aboutus = M('Aboutus');
     if($aboutus -> where($where_del) -> delete()){
-      //删除缓存
       S('index_footer_nav', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
@@ -1396,7 +1182,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑关于我们
   public function editaboutus(){
     $aboutus = M('Aboutus');
     if(!empty($_POST['title'])){
@@ -1404,7 +1189,6 @@ class SystemAction extends CommonAction {
 	$this -> error($aboutus -> getError());
       }
       if($aboutus -> save()){
-	//删除缓存
 	S('index_footer_nav', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
@@ -1417,12 +1201,10 @@ class SystemAction extends CommonAction {
   
   }
 
-  //在线QQ管理
   public function qqonline(){
     $qqonline = M('Qqonline');
 
     $where = array();
-    //处理搜索
     if(!empty($_POST['qqcode'])){
       $where['q.qqcode'] = $this -> _post('qqcode');
     }
@@ -1430,7 +1212,6 @@ class SystemAction extends CommonAction {
       $where['q.csid'] = $this -> _post('csid');
     }
 
-    //记录总数
     $count = $qqonline -> table('yesow_qqonline as q') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1439,27 +1220,21 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $qqonline -> table('yesow_qqonline as q') -> field('q.id,q.qqcode,cs.name as csname,q.nickname,q.sex,qt.name as qtname') -> join('yesow_child_site as cs ON q.csid = cs.id') -> join('yesow_qqonline_type as qt ON q.tid = qt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('q.id DESC') -> select();
     $this -> assign('result', $result);
-    //查出所有站点
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
 
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //添加在线QQ
   public function addqqonline(){
-    //处理添加
     if(!empty($_POST['qqcode'])){
       $qqonline = M('Qqonline');
       if(!$qqonline -> create()){
@@ -1469,7 +1244,6 @@ class SystemAction extends CommonAction {
 	$qqonline -> csid = null;
       }
       if($qqonline -> add()){
-	//删除缓存
 	S('index_qqonline', NULL, NULL, '', NULL, 'index');
 	S('member_qqonline', NULL, NULL, '', NULL, 'member');
 	$this -> success(L('DATA_ADD_SUCCESS'));
@@ -1477,23 +1251,19 @@ class SystemAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查出所有站点
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查出在线QQ类型
     $result_type = M('QqonlineType') -> field('id,name') -> select();
     $this -> assign('result_type', $result_type);
     $this -> display();
   
   }
 
-  //删除在线QQ
   public function delqqonline(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
     $qqonline = M('Qqonline');
     if($qqonline -> where($where_del) -> delete()){
-      //删除缓存
       S('index_qqonline', NULL, NULL, '', NULL, 'index');
       S('member_qqonline', NULL, NULL, '', NULL, 'member');
       $this -> success(L('DATA_DELETE_SUCCESS'));
@@ -1502,7 +1272,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑在线QQ
   public function editqqonline(){
     $qqonline = M('Qqonline');
 
@@ -1514,7 +1283,6 @@ class SystemAction extends CommonAction {
 	$qqonline -> csid = null;
       }
       if($qqonline -> save()){
-	//删除缓存
 	S('index_qqonline', NULL, NULL, '', NULL, 'index');
 	S('member_qqonline', NULL, NULL, '', NULL, 'member');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
@@ -1526,27 +1294,20 @@ class SystemAction extends CommonAction {
     $result = $qqonline -> field('id,csid,tid,qqcode,nickname,sex') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     
-    //查出所有站点
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查出在线QQ类型
     $result_type = M('QqonlineType') -> field('id,name') -> select();
     $this -> assign('result_type', $result_type);
 
     $this -> display();
   }
 
-  /* ----------- 关于我们 ------------ */
-
-  /* ----------- 广告管理 ------------ */
-  //广告管理
   public function advertiseset(){
     if(!empty($_REQUEST['csid'])){
       $advertisepage = M('AdvertisePage');
       $where = array();
 
       $where['csid'] = $this -> _request('csid', 'intval');
-      //记录总数
       $count = $advertisepage -> where($where) -> count('id');
       import('ORG.Util.Page');
       if(! empty ( $_REQUEST ['listRows'] )){
@@ -1555,30 +1316,22 @@ class SystemAction extends CommonAction {
 	$listRows = 15;
       }
       $page = new Page($count, $listRows);
-      //当前页数
       $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
       $page -> firstRow = ($pageNum - 1) * $listRows;
 
       $result = $advertisepage -> field('id,module_name,action_name,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
       $this -> assign('result', $result);
 
-      //每页条数
       $this -> assign('listRows', $listRows);
-      //当前页数
       $this -> assign('currentPage', $pageNum);
       $this -> assign('count', $count);
     }
-    //查出所有分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
-
-    //右侧广告位管理页面
     $this -> editadvertiseinfo($_POST['pid']);
   }
 
-  //增加广告页面
   public function addadvertisepage(){
-    //处理增加
     if(!empty($_POST['csid'])){
       $advertisepage = M('AdvertisePage');
       if(!$advertisepage -> create()){
@@ -1590,14 +1343,12 @@ class SystemAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查出所有分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   
   }
 
-  //删除广告页面
   public function deladvertisepage(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -1609,7 +1360,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑广告页面
   public function editadvertisepage(){
     $advertisepage = M('AdvertisePage');
     if(!empty($_POST['csid'])){
@@ -1624,13 +1374,11 @@ class SystemAction extends CommonAction {
     }
     $result = $advertisepage -> field('csid,module_name,action_name,remark') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //查出所有分站
     $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
 
-  //广告位管理
   public function editadvertiseinfo($pid){
     $pid = !empty($pid) ? $pid : $_GET['pid'];
     if(!empty($pid)){
@@ -1643,9 +1391,7 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //增加广告位
   public function addeditadvertiseinfo(){
-    //处理增加
     if(!empty($_POST['name'])){
       $advertise = M('Advertise');
       if(!$advertise -> create()){
@@ -1663,7 +1409,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除广告位
   public function deleditadvertiseinfo(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -1675,10 +1420,8 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑广告位
   public function editeditadvertiseinfo(){
     $advertise = M('Advertise');
-    //处理编辑
     if(!empty($_POST['name'])){
       if(!$advertise -> create()){
 	$this -> error($advertise -> getError());
@@ -1697,26 +1440,20 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //查看广告图片
   public function editseeadimage(){
     $advertise = M('Advertise');
     $result = $advertise -> field('address,width,height') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
-  /* ----------- 广告管理 ------------ */
 
-  /* ----------- 友情链接管理 ------------ */
-  //友链申请管理
   public function applylink(){
     $applylink = M('LinkApply');
     $where = array();
-    //处理搜索
     if(!empty($_POST['name'])){
       $where['la.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $applylink -> table('yesow_link_apply as la') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1725,24 +1462,19 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $applylink -> table('yesow_link_apply as la') -> field('la.id,la.linktype,cs.name as csname,lwt.name as lwtname,la.name,la.website,la.linkman,la.tel,la.email,la.addtime,la.ischeck') -> join('yesow_child_site as cs ON la.csid = cs.id') -> join('yesow_link_website_type as lwt ON la.tid = lwt.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('la.addtime DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //编辑友联申请
   public function editapplylink(){
     $applylink = M('LinkApply');
-    //处理编辑
     if(!empty($_POST['name'])){
       if(!$applylink -> create()){
 	$this -> error($applylink -> getError());
@@ -1755,18 +1487,15 @@ class SystemAction extends CommonAction {
     }
     $result = $applylink -> field('csid,tid,linktype,name,website,logo,linkman,tel,email,remark') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查询网站类型
     $LinkWebsiteType = M('LinkWebsiteType');
     $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_website_type', $result_website_type);
     $this -> display();
   }
 
-  //删除友联申请
   public function delapplylink(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -1778,7 +1507,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //通过审核友链
   public function passauditapplylink(){
     $applylink = M('LinkApply');
     $link = M('Link');
@@ -1786,13 +1514,11 @@ class SystemAction extends CommonAction {
     $where_audit['id'] = array('IN', $this -> _post('ids'));  
     $data_audit = array('ischeck' => 1);
     if($applylink -> where($where_audit) -> save($data_audit)){
-      //将已审核数据填入友情链接表
       $id_arr = explode(',', $this -> _post('ids'));
       foreach($id_arr as $value){
 	$insert_data = $applylink -> field('csid,tid,linktype,name,website,logo') -> find($value);
 	$link -> add($insert_data);
       }
-      //删除缓存
       S('index_friend_link', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
@@ -1800,7 +1526,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //不通过审核友链
   public function nopassauditapplylink(){
     $applylink = M('LinkApply');
     $where_audit = array();
@@ -1813,16 +1538,13 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //网站类型管理
   public function websitetype(){
     $LinkWebsiteType = M('LinkWebsiteType');
     $where = array();
-    //处理搜索
     if(!empty($_POST['name'])){
       $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $LinkWebsiteType -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1831,23 +1553,18 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $LinkWebsiteType -> field('id,name,sort,remark') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> where($where) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //添加网站类型
   public function addwebsitetype(){
-    //处理添加
     if(!empty($_POST['name'])){
       $LinkWebsiteType = M('LinkWebsiteType');
       if(!$LinkWebsiteType -> create()){
@@ -1862,7 +1579,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //编辑网站类型
   public function editwebsitetype(){
     $LinkWebsiteType = M('LinkWebsiteType');
     if(!empty($_POST['name'])){
@@ -1880,7 +1596,6 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
-  //删除网站类型
   public function delwebsitetype(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -1892,16 +1607,13 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //友情链接管理
   public function friendlink(){
     $link = M('Link');
     $where = array();
-    //处理搜索
     if(!empty($_POST['name'])){
       $where['l.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $link -> table('yesow_link as l') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -1910,54 +1622,44 @@ class SystemAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $link -> table('yesow_link as l') -> field('l.id,l.name,cs.name as csname,t.name as tname,l.linktype,l.website,l.sort') -> join('yesow_child_site as cs ON l.csid = cs.id') -> join('yesow_link_website_type as t ON l.tid = t.id') -> order('l.csid DESC,l.sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //添加友情链接
   public function addfriendlink(){
-    //处理添加
     if(!empty($_POST['name'])){
       $link = M('Link');
       if(!$link -> create()){
 	$this -> error($link -> getError());
       }
       if($link -> add()){
-	//删除缓存
 	S('index_friend_link', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查询网站类型
     $LinkWebsiteType = M('LinkWebsiteType');
     $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_website_type', $result_website_type);
     $this -> display();
   }
 
-  //删除友情链接
   public function delfriendlink(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
     $link = M('Link');
     if($link -> where($where_del) -> delete()){
-      //删除缓存
       S('index_friend_link', NULL, NULL, '', NULL, 'index');
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
@@ -1965,7 +1667,6 @@ class SystemAction extends CommonAction {
     }
   }
 
-  //编辑友情链接
   public function editfriendlink(){
     $link = M('Link');
     if(!empty($_POST['name'])){
@@ -1973,7 +1674,6 @@ class SystemAction extends CommonAction {
 	$this -> error($link -> getError());
       }
       if($link -> save()){
-	//删除缓存
 	S('index_friend_link', NULL, NULL, '', NULL, 'index');
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
@@ -1982,17 +1682,14 @@ class SystemAction extends CommonAction {
     }
     $result = $link -> field('csid,tid,linktype,name,website,logo,sort') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查询网站类型
     $LinkWebsiteType = M('LinkWebsiteType');
     $result_website_type = $LinkWebsiteType -> field('id,name') -> order('sort ASC') -> select();
     $this -> assign('result_website_type', $result_website_type);
 
     $this -> display();
   }
-  /* ----------- 友情链接管理 ------------ */
 
 }

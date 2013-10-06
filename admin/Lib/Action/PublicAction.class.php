@@ -1,25 +1,16 @@
 <?php
 class PublicAction extends Action {
 
-  /*
-   * 检测用户是否登录
-   */
   public function checkuser(){
     if(!isset($_SESSION[C('USER_AUTH_KEY')])){
       $this -> error(L('LOGIN_NOT'), U(C('USER_AUTH_GATEWAY')));
     }
   }
 
-  /*
-   * 用户登录界面
-   */
   public function login(){
     $this -> display();
   }
 
-  /*
-   * 验证用户登录
-   */
   public function checklogin(){
     if(empty($_POST['account'])){
       $this -> error(L('LOGIN_NAME_EMPTY'));
@@ -32,7 +23,6 @@ class PublicAction extends Action {
       $this -> error(L('VERIFY_ERROR'));
     }
     import('ORG.Util.RBACI');
-    //生成认证条件
     $cond = array();
     $cond['name'] = $this -> _post('account');
     $cond['status'] = '1';
@@ -43,7 +33,6 @@ class PublicAction extends Action {
     if($authInfo['password'] != sha1($this -> _post('password'))){
       $this -> error(L('PASSWORD_ERROR'));
     }
-    //生成登录信息
     session(C('USER_AUTH_KEY'), $authInfo['id']);
     session('admin_name', $authInfo['name']);
     session('lastLoginTime', $authInfo['last_login_time']);
@@ -53,7 +42,6 @@ class PublicAction extends Action {
     if($authInfo['name'] == 'admin'){
       session(C('ADMIN_AUTH_KEY'), true);
     }
-    //保存登录信息
     $admin = M('Admin');
     $data = array();
     $data['id'] = $authInfo['id'];
@@ -61,14 +49,10 @@ class PublicAction extends Action {
     $data['last_login_time'] = time();
     $data['login_count'] = array('exp', 'login_count+1');
     $admin -> save($data);
-    //缓存访问权限
     RBAC::saveAccessList();
     $this -> success(L('LOGIN_SUCCESS'), U('Index/index'));
   }
 
-  /*
-   * 退出登录
-   */
   public function logout(){
     session(C('USER_AUTH_KEY'), null);
     session(null);
@@ -76,17 +60,11 @@ class PublicAction extends Action {
     $this -> success(L('LOGOUT_SUCCESS'), U(C('USER_AUTH_GATEWAY')));
   }
 
-  /*
-   * 生成验证码
-   */
   public function verify(){
     import('ORG.Util.Image');
     ob_end_clean();
     Image::buildImageVerify();
   }
-  /*
-   * 后台首页 查看系统信息
-   */
   public function main(){
    $info = array(
      '操作系统'=>PHP_OS,
@@ -107,20 +85,12 @@ class PublicAction extends Action {
    $this->display();  
   }
 
-  /*
-   * 后台首页 修改密码
-   */
   public function password(){
     $this -> display(); 
   }
 
-  /*
-   * 验证 修改 密码
-   */
   public function changepwd(){
-    //验证是否登录
     $this -> checkuser();
-    //数据完整性检测
     if(empty($_POST['oldpassword'])){
       $this -> error(L('OLDPASSWORD_EMPTY'));
     }else if(empty($_POST['password'])){
@@ -132,7 +102,6 @@ class PublicAction extends Action {
     }else if(md5($_POST['verify']) != $_SESSION['verify']){
       $this -> error(L('VERIFY_ERROR'));
     }
-    //构建查询条件
     $cond = array();
     $cond['password'] = sha1($this -> _post('oldpassword'));
     $cond['id'] = session(C('USER_AUTH_KEY'));
@@ -140,7 +109,6 @@ class PublicAction extends Action {
     if(!$admin -> field('id') -> where($cond) -> find()){
       $this -> error(L('OLDPASSWORD_ERROR'));
     }
-    //构建更新条件
     $cond['password'] = sha1($this -> _post('password'));
     if($admin -> save($cond)){
       $this -> success(L('CHANGE_PWD_SUCCESS'));
@@ -149,9 +117,6 @@ class PublicAction extends Action {
     }
   }
 
-  /*
-   * 后台首页 修改资料
-   */
   public function profile(){
     $this -> checkuser();
     $admin = M('Admin');
@@ -160,13 +125,9 @@ class PublicAction extends Action {
     $this -> display();
   }
 
-  /*
-   * 更改资料
-   */
   public function change(){
     $this -> checkuser();
     $admin = D('Admin');
-    //构建更新条件
     $data = array();
     $data['id'] = session(C('USER_AUTH_KEY'));
     $data['email'] = $this -> _post('email');
@@ -181,7 +142,6 @@ class PublicAction extends Action {
     }
   }
 
-  //ajax获取资讯二级分类、内容属性、标题属性
   public function ajaxinfotwocolumn(){
     if(!empty($_GET['code'])){
       $where = array();
@@ -194,7 +154,6 @@ class PublicAction extends Action {
     }
   }
 
-  //ajax获取二级内容属性
   public function ajaxinfocontentattribute(){
     if(!empty($_GET['code'])){
       $where = array();
@@ -208,31 +167,26 @@ class PublicAction extends Action {
     }
   }
 
-    //ajax获取分站下地区
   public function ajaxgetcsaid(){
     $result_temp = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $this -> _get('id', 'intval'))) -> select();
     $result = array();
     $result[] = array('', '请选择');
-    //格式化结果集
     foreach($result_temp as $key => $value){
       $result[] = array($value['id'], $value['name']);
     }
     echo json_encode($result);
   }
 
-  //ajax获取速查主营类别 - 二级
   public function ajaxgetcompanycategorytwo(){
     $result_temp = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $this -> _get('id', 'intval'))) -> order('sort ASC') -> select();
     $result = array();
     $result[] = array('', '请选择');
-    //格式化结果集
     foreach($result_temp as $key => $value){
       $result[] = array($value['id'], $value['name']);
     }
     echo json_encode($result);
   }
 
-  //ajax获取用户名及id
   public function ajaxgetmemberinfo(){
     $username = $this -> _post('inputValue');
     $member = M('Member');
@@ -242,7 +196,6 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
-  //ajax获取速查公司名及id
   public function ajaxgetcompanyinfo(){
     $companyname = $this -> _post('inputValue');
     $company = M('Company');
@@ -252,7 +205,6 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
-  //ajax获取易搜招聘公司信息
   public function ajaxgetrecruit_companyinfo(){
     $companyname = $this -> _post('inputValue');
     $RecruitCompany = M('RecruitCompany');
@@ -262,33 +214,28 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
-  //ajax获取包月会员类型
   public function ajaxgetmonthlytype(){
     $member_monthly = M('MemberMonthly');
     $lid = $this -> _get('id', 'intval');
     $result_tmp = $member_monthly -> field('id,months') -> where(array('lid' => $lid)) -> order('months ASC') -> select();
     $result = array();
-    //格式化结果集
     foreach($result_tmp as $key => $value){
       $result[] = array($value['id'], $value['months'] . '个月');
     }
     echo json_encode($result);
   }
 
-  //ajax获取商品二级分类
   public function ajaxgetshoptwoclass(){
     $pid = $this -> _get('id', 'intval');
     $shop_class = M('ShopClass');
     $result_tmp = $shop_class -> field('id,name') -> where(array('pid' => $pid)) -> order('sort ASC') -> select();
     $result = array();
-    //格式化结果集
     foreach($result_tmp as $key => $value){
       $result[] = array($value['id'], $value['name']);
     }
     echo json_encode($result);
   }
 
-  //ajax获取速查排名队尾的结束时间和排队人数
   public function ajaxgetrankstring(){
     $where = array();
     $where['fid'] = $this -> _post('fid', 'intval');
@@ -300,7 +247,6 @@ class PublicAction extends Action {
     echo json_encode($result[0]);
   }
 
-  //ajax获取推荐商家名队尾的结束时间和排队人数
   public function ajaxgetrecommendcompanystring(){
     $where = array();
     $where['fid'] = $this -> _post('fid', 'intval');
@@ -311,12 +257,11 @@ class PublicAction extends Action {
     echo json_encode($result[0]);
   }
 
-  //商品图片文件上传
   public function shop_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
-    $upload -> savePath = C('SHOP_PIC_PATH') ;//设置上传目录
-    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> savePath = C('SHOP_PIC_PATH') ;
+    $upload -> autoSub = false;
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
@@ -326,12 +271,11 @@ class PublicAction extends Action {
     }
   }
 
-  //动感传媒图片文件上传
   public function media_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
-    $upload -> savePath = C('MEDIA_PIC_PATH') ;//设置上传目录
-    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> savePath = C('MEDIA_PIC_PATH') ;
+    $upload -> autoSub = false;
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
@@ -341,12 +285,11 @@ class PublicAction extends Action {
     }
   }
 
-  //旺铺出租图片文件上传
   public function store_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
-    $upload -> savePath = C('STORE_PIC_PATH') ;//设置上传目录
-    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> savePath = C('STORE_PIC_PATH') ;
+    $upload -> autoSub = false;
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
@@ -356,60 +299,51 @@ class PublicAction extends Action {
     }
   }
 
-  //ajax获取二手滞销发布类别 - 二级
   public function ajaxgetselltid(){
     $result_temp = M('SellUsedType') -> field('id,name') -> where(array('pid' => $this -> _get('id', 'intval'))) -> select();
     $result = array();
     $result[] = array('', '请选择');
-    //格式化结果集
     foreach($result_temp as $key => $value){
       $result[] = array($value['id'], $value['name']);
     }
     echo json_encode($result);
   }
 
-  //ajax获取分站广告页面列表
   public function ajaxgetchildsiteadvertpage(){
     $result_temp = M('AdvertisePage') -> field('id,remark') -> where(array('csid' => $this -> _get('id', 'intval'))) -> select();
     $result = array();
     $result[] = array('', '请选择');
-    //格式化结果集
     foreach($result_temp as $key => $value){
       $result[] = array($value['id'], $value['remark']);
     }
     echo json_encode($result);
   }
 
-  //ajax获取分站页面广告位列表
   public function ajaxgetchildsiteadvert(){
     $result_temp = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _get('id', 'intval'), 'isopen' => 1)) -> select();
     $result = array();
     $result[] = array('', '请选择');
-    //格式化结果集
     foreach($result_temp as $key => $value){
       $result[] = array($value['id'], $value['name'] . '(' . $value['width'] . 'x' . $value['height'] . ')');
     }
     echo json_encode($result);
   }
 
-  //ajax获取分站页面广告位价格
   public function ajaxgetchildsiteadvertprice(){
     $result = M('AdvertMoney') -> field('id,months,marketprice,promotionprice') -> where(array('adid' => $this -> _get('id', 'intval'))) -> select();
     echo json_encode($result);
   }
 
-  //ajax获取分站页面广告位尺寸
   public function ajaxgetchildsiteadvertsize(){
     $result = M('Advertise') -> field('width,height') -> where(array('id' => $this -> _get('id', 'intval'))) -> find();
     echo json_encode($result);
   }
 
-  //二手滞销图片文件上传
   public function sellused_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
-    $upload -> savePath = C('SELLUSED_PIC_PATH') ;//设置上传目录
-    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> savePath = C('SELLUSED_PIC_PATH') ;
+    $upload -> autoSub = false;
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
@@ -419,12 +353,11 @@ class PublicAction extends Action {
     }
   }
 
-  //人才交流- 公司图片文件上传
   public function recruit_company_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();
-    $upload -> savePath = C('RECRUIT_PIC_PATH') ;//设置上传目录
-    $upload -> autoSub = false;//设置使用子目录保存上传文件
+    $upload -> savePath = C('RECRUIT_PIC_PATH') ;
+    $upload -> autoSub = false;
     $upload -> saveRule = 'uniqid';
     if($upload -> upload()){
       $info = $upload -> getUploadFileInfo();
@@ -434,18 +367,12 @@ class PublicAction extends Action {
     }
   }
 
-  //ajax获取后台邮件发送模板
   public function ajaxgetemailtemplate(){
     echo M('BackgroundEmailTemplate') -> getFieldByid($this -> _get('id', 'intval'),'content');
   }
 
-  //生成网站地图
   public function setwebsitemap(){
     $time = time();
-    
-
-
-    //分站信息
     $ChildSite = M('ChildSite') -> field('id,domain,name') -> select();
     foreach($ChildSite as $value){
       $content_xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -514,8 +441,6 @@ $content_xml .= '
 <priority>1.0</priority>
 </url>';
 
-
-//速查
 $company_data = M('Company') -> field('id') -> where(array('delaid' => array('exp', 'is NULL'), 'csid' => $value['id'])) -> select();
     foreach($company_data as $value2){
       $content_xml .= '
@@ -527,7 +452,6 @@ $company_data = M('Company') -> field('id') -> where(array('delaid' => array('ex
 </url>';
     }
 
-//商城
     $shop_data = M('Shop') -> field('id,title') -> select();
     foreach($shop_data as $value3){
       $content_xml .= '
@@ -539,14 +463,12 @@ $company_data = M('Company') -> field('id') -> where(array('delaid' => array('ex
 </url>';
     }
 
-    //资讯文章 - 分站对应
     $ChildsiteInfoarticle = M('ChildsiteInfoarticle');
     $iaid_temp = $ChildsiteInfoarticle -> field('iaid') -> where(array('csid' => $value['id'])) -> select();
     $iaid = array();
     foreach($iaid_temp as $iaid_value){
       $iaid[] = $iaid_value['iaid'];
     }
-    //资讯文章
     $article_data = M('InfoArticle') -> field('id') -> where(array('id' => array('IN', $iaid))) -> select();
     foreach($article_data as $value4){
                   $content_xml .= '
@@ -558,7 +480,6 @@ $company_data = M('Company') -> field('id') -> where(array('delaid' => array('ex
 </url>';
     }
 
-    //公告
     $notice_data = M('Notice') -> field('id,title') -> select();
     foreach($notice_data as $value5){
        $content_xml .= '
@@ -570,7 +491,6 @@ $company_data = M('Company') -> field('id') -> where(array('delaid' => array('ex
 </url>';
     }
 
-    //旺铺出租
     $storerent_data = M('StoreRent') -> field('id') -> where(array('csid' => $value['id'])) -> select();
     foreach($storerent_data as $value6){
       $content_xml .= '
