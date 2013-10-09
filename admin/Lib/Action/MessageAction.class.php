@@ -490,11 +490,13 @@ class MessageAction extends CommonAction {
     $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
     $mail_password = $setting -> getFieldByname('mail_password', 'value');
     $group_limit = $setting -> getFieldByname('group_limit', 'value');
+    $search_money = $setting -> getFieldByname('search_money', 'value');
     $this -> assign('mail_address', $mail_address);
     $this -> assign('mail_smtp', $mail_smtp);
     $this -> assign('mail_loginname', $mail_loginname);
     $this -> assign('mail_password', $mail_password);
     $this -> assign('group_limit', $group_limit);
+    $this -> assign('search_money', $search_money);
     $this -> display();
   }
 

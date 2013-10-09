@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>发送邮件-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+
+  function radioShow(){
+    var myradio=document.getElementsByName("phonetype"); 
+    if(myradio[0].checked){
+      $("#sendnumber").show();
+      $("#searchphone").show();
+      $("#inputtxt").show();
+      $("#phonegroup").hide();
+      $("#groupname").show();
+    }
+    else{
+      $("#sendnumber").hide();
+      $("#searchphone").hide();
+      $("#inputtxt").hide();
+      $("#phonegroup").show();
+      $("#groupname").hide();
+    }
+  }
+  
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">邮件群发业务</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">邮件群发管理</a>
+                            </dt>                    
+                        </dl>
+                        <div class="main_sjdxfs">
+                                <div class="text_sjdxfs">
+                                    <h2>邮件群发平台功能介绍</h2>
+                                    <ul>
+                                        <li>1、如果您有电子邮箱，可直接选择导入文本，就可以发送您想要发的信息。</li>
+                                        <li>2、如果您没有电子邮箱，那么您可以在易搜网上搜索您想要的邮箱地址，然后进行群发操作。</li>
+                                        <li>3、<span>温馨提示：</span>本平台有重复号码过滤功能，减少您不必要的短信资费！</li>
+                                    </ul>
+                                </div>
+                                <div class="clear"></div>
+				<table class="table_sjdxfs">
+				  <form action="__URL__/tosendemail" method="post" enctype="multipart/form-data">
+                                    <tr>
+                                        <td class="tdleft">发送类型：</td>
+					<td class="tdright">
+					  <select name="sendtype">
+					    <volist name="result_sendtype" id="rs">
+					    <option value="<!--{$rs.id}--!>"><!--{$rs.email_address}--!></option>
+					    </volist>
+					</select>
+					<input type="button" value="设置" onclick="location.href='__URL__/setsmtp'" />
+					</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">邮件方式：</td>
+                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked" onclick="radioShow();"/>邮件地址列表发送<input type="radio" name="phonetype" value="group" onclick="radioShow();" />邮件群发簿发送</td>
+                                    </tr>
+                                    <tr id="sendnumber">
+                                        <td class="tdleft">发送地址：</td>
+                                        <td class="tdright">
+					  <textarea name="sendnumber" id="sendnumber"><!--{$sendemail}--!></textarea>
+                                        <p>如果您是在此输入邮箱地址，输入多个邮箱地址时每行以一个英文逗号分隔。</p>
+                                        <P>如果您是在易搜上找的邮箱地址，在上列框中显示为：122****@qq.com是正常的，请放心发送！</P>			  </td>
+                                    </tr>
+                                    <tr id="searchphone">
+                                        <td class="tdleft">易搜邮件：</td>
+                                        <td class="tdright">
+                                        <input type="button" value="易搜网上搜索邮箱地址" onclick="location.href='__URL__/searchemail'" class="wydh_btn"/>在易搜网上搜索您想要的邮箱地址。
+                                        </td>
+                                    </tr>
+                                    <tr id="inputtxt">
+                                        <td class="tdleft">导入文本：</td>
+                                        <td class="tdright">
+                                        <div class="file-box"><input type='text' name='textfield' id='textfield' class='txtfile' /><input type='button' class='btnfile' value='浏览...' /><input type="file" name="fileField" class="fileinput" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" /></div>
+<div class="left"><input type="submit" value="导入" class="rmb_fanhui"/></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">发送内容：</td>
+					<td class="tdright">
+					  <textarea id="txtContents" name="content"></textarea>
+					  <P class="p_bottom">注：请勿发送反动，暴力，色情等违反中国法律法规，国家政策和社会道德规范的内容，否则对您造成的一切后果，易搜将不承担任何责任</P>
+                                        </td>
+                                    </tr>
+                                    <tr id="groupname">
+                                        <td class="tdleft">号码簿名：</td>
+                                        <td class="tdright">
+                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="<!--{:date('Ymd')}--!>群发号码" />
+                                        </td>
+				      </tr>
+				      <tr style="display:none;" id="phonegroup">
+                                        <td class="tdleft">号码簿名：</td>
+					<td class="tdright">
+					  <select name="phonegroup">
+					    <volist name="sms_group" id="sg">
+					    <option value="<!--{$sg.id}--!>"><!--{$sg.name}--!></option>
+					    </volist>
+					  </select>
+					</td>
+                                    </tr>
+				    <tr>
+				      <notempty name="issearch">
+				      <input type="hidden" name="issearch" value="<!--{$issearch}--!>" />
+				      </empty>
+				      <notempty name="isupload">
+				      <input type="hidden" name="isupload" value="<!--{$isupload}--!>" />
+				      </empty>
+                                        <td colspan="2"><input type="submit" value="确认发送" style="margin-right:20px" class="rmb_fanhui"/><input type="reset" value="重置" class="rmb_fanhui"/></td>
+				      </tr>
+				      </form>
+                                </table>
+                            </div>
+                            <div class="clear30"></div>  
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+  </body>
+</html>

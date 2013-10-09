@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>邮件群发薄-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">邮件群发业务</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">我的电话号簿</a>
+                            </dt>                     
+                        </dl>
+                        <div class="main_sjdxfs">
+                            <ul class="ul_wddhhb2">
+			      <volist name="result" id="r">
+			      <li><!--{$r.hidenumber}--!></li>
+			      </volist>
+                            </ul>
+                            <div class="clear"></div>
+                            <div class="page">
+			      <!--{$show}--!>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear30"></div> 
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

@@ -314,6 +314,44 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax更改会员发送邮箱设置
+  public function ajaxchangeemailsetting(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    if(!$MemberEmailSetting -> create()){
+      $this -> error($MemberEmailSetting -> getError());
+    }
+    if($MemberEmailSetting -> save()){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //添加邮箱设置
+  public function ajaxaddemailsetting(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    if(!$MemberEmailSetting -> create()){
+      $this -> error($MemberEmailSetting -> getError());
+    }
+    $MemberEmailSetting -> mid = session(C('USER_AUTH_KEY'));
+    $MemberEmailSetting -> addtime = time();
+    if($MemberEmailSetting -> add()){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  //删除邮箱设置
+  public function ajaxdelemailsetting(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    if($MemberEmailSetting -> delete($this -> _get('id', 'intval'))){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
   //获得底部关于我们
   public function getfooternav(){
     $aboutus =  M('Aboutus');

@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>邮件群发设置-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+function Bind(thisObj, thisObjID) {
+var $td = $(thisObj).parents('tr').children('td');
+
+var text_add = $td.eq(0).find("input").val();//第二个Td的ID的值，attr("id");获取该对象的Id值
+var text_smtp = $td.eq(1).find("input").val();
+var text_email = $td.eq(2).find("input").val();
+var text_pwd = $td.eq(3).find("input").val();
+var text_id = thisObjID;
+$.ajax({
+  url: '__ROOT__/member.php/public/ajaxchangeemailsetting',
+  type: 'POST',
+  data: 'email_address=' + text_add + '&email_SMTP=' + text_smtp + '&email_account=' + text_email + '&email_pwd=' + text_pwd + '&id=' + text_id,
+      success: function(ress){
+        if(ress.status == 1){
+	  alert(ress.message);
+	  location.reload();
+	}else{
+          alert(ress.message);
+          return;	  
+	}
+      },
+      dataType:'json'
+    });
+}
+function Delete(thisObjID, thisObj) {
+  $.ajax({
+  url: '__ROOT__/member.php/public/ajaxdelemailsetting/id/' + thisObjID,
+      success: function(ress){
+        if(ress.status == 1){
+	  alert(ress.message);
+	  var $tr = $(thisObj).parents('tr');
+	$tr.remove();//删除当前行
+	  location.reload();
+	}else{
+          alert(ress.message);
+          return;	  
+	}
+      },
+      dataType:'json'
+    });
+}
+
+var addemail = function(thisObj){
+  var $td = $(thisObj).parents('tr').children('td');
+
+var text_add = $td.eq(0).find("input").val();//第二个Td的ID的值，attr("id");获取该对象的Id值
+var text_smtp = $td.eq(1).find("input").val();
+var text_email = $td.eq(2).find("input").val();
+var text_pwd = $td.eq(3).find("input").val();
+if(!text_add || !text_smtp || !text_email || !text_pwd){
+  alert('发送邮件设置内容填写不完整，请重新填写!');
+  return;
+}
+$.ajax({
+  url: '__ROOT__/member.php/public/ajaxaddemailsetting',
+  type: 'POST',
+  data: 'email_address=' + text_add + '&email_SMTP=' + text_smtp + '&email_account=' + text_email + '&email_pwd=' + text_pwd,
+      success: function(ress){
+        if(ress.status == 1){
+	  alert(ress.message);
+	  location.reload();
+	}else{
+          alert(ress.message);
+          return;	  
+	}
+      },
+      dataType:'json'
+    });
+}
+</script>
+</head>
+<body id="body_user">
+	<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+                <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">邮件群发业务</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">发送邮箱设置</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+                            <h2></h2>
+                            <div style="min-height:250px;">
+                                <table class="table_wdfsjl">
+                                    <tr>
+                                          <th>发送邮箱地址</th>
+                                          <th>发送邮箱SMTP</th>
+                                          <th>发送邮箱帐号</th>
+                                          <th>发送邮箱密码</th>
+                                          <th>操作</th>
+                                    </tr>
+				    <volist name="result" id="r">
+                                    <tr>
+				      <td><input type="text" value="<!--{$r.email_address}--!>"></td>
+					  <td><input type="text" value="<!--{$r.email_SMTP}--!>"></td> 
+					  <td><input type="text" value="<!--{$r.email_account}--!>"></td>
+					  <td><input type="text" value="<!--{$r.email_pwd}--!>"></td>
+					  <td><a id="<!--{$r.id}--!>" href="javascript:;" onclick="Bind(this,this.id);">修改</a>|<a id="<!--{$r.id}--!>"  href="javascript:;" onclick="Delete(this.id,this);">删除</a></td>
+                                     </tr>
+				     </volist>
+                                     <tr>
+                                          <td><input type="text" value=""></td>
+                                          <td><input type="text" value=""></td> 
+                                          <td><input type="text" value=""></td>
+                                          <td><input type="text" value=""></td>
+                                          <td><a onclick="addemail(this)">添加</a></td>
+                                      </tr>
+                                </table>
+                            </div>
+                            <div class="clear"></div>
+                            <div style="margin:10px auto; text-align:center"><input type="button" onclick="history.go(-1);" value="返回" /></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

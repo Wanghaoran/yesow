@@ -491,6 +491,7 @@ ul.ul_price2 li.li_price2{ width:680px;}
 /*我的电话号簿*/
 .ul_wddhhb{ width:740px; margin:10px auto;}
 .ul_wddhhb li{ float:left; width:100px; height:25px; margin-right:5px; line-height:25px;}
+.ul_wddhhb2 li{ float:left; height:25px; margin-right:5px; line-height:25px;}
 h2.h2_yue{ float:right; background:url(images/user/icon_yue.gif) left center no-repeat; height:40px; line-height:40px; text-align:left; padding-left:30px; font-size:12px; font-weight:normal;}
 table.table_wdfsjl{ float:left;width:740px; border:none; border-collapse:collapse; margin:10px auto;}
 table.table_wdfsjl th{border:none; font-size:12px; font-weight:bold; border:#a6a6a6 1px solid; border-collapse:collapse; height:30px; line-height:30px; text-align:left; padding-left:10px;}

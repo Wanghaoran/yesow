@@ -3465,4 +3465,376 @@ class ServicesAction extends CommonAction {
     $this -> assign('result_order', $result_order);
     $this -> display();
   }
+
+  //群发邮件
+  public function _before_emails(){
+    $this -> _before_index();
+  }
+  public function emails(){
+    $this -> display();
+  }
+
+  public function setsmtp(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    $result = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function sendemail(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    $result_sendtype = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
+    $this -> assign('result_sendtype', $result_sendtype);
+    //没有帐号先去设置
+    if(!$result_sendtype){
+      R('Register/errorjump',array(L('SEND_EMAIL_SETTING_EMPTY'), U('Services/setsmtp')));
+    }
+
+    //将要发送的号码
+    $sendemail = '';
+    //后台搜索号码
+    if(!empty($_SESSION['member_search_email_send_list'])){
+      foreach($_SESSION['member_search_email_send_list'] as $value){
+	if(empty($sendemail)){
+	  $sendemail .= substr($value, 0 ,3) . '****' . strstr($value, '@');
+	}else{
+	  $sendemail .= ',' . substr($value, 0 ,3) . '****' . strstr($value, '@');
+	}
+      }
+      $this -> assign('issearch', 'true');
+    //上传号码
+    }else if(!empty($_SESSION['member_upload_email_send_list'])){
+      foreach($_SESSION['member_upload_email_send_list'] as $value){
+	if(empty($sendemail)){
+	  $sendemail .= substr($value, 0 ,3) . '****' . strstr($value, '@');
+	}else{
+	  $sendemail .= ',' . substr($value, 0 ,3) . '****' . strstr($value, '@');
+	}
+      }
+      $this -> assign('isupload', 'true');   
+    }
+    $this -> assign('sendemail', $sendemail);
+
+    //个人号码薄
+    $MemberEmailGroup = M('MemberEmailGroup');
+    $sms_group = $MemberEmailGroup -> field('id,name') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> select();
+    $this -> assign('sms_group', $sms_group);
+
+
+    $this -> display();
+  }
+
+  public function tosendemail(){
+    set_time_limit(0);
+    //文本上传
+    if(!empty($_POST['textfield'])){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('TEMP_UPLOAD_PATH') ;//设置上传目录
+      $upload -> autoSub = false;//设置使用子目录保存上传文件
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('txt');// 设置附件上传类型
+      $upload -> maxSize  = 409600 ;// 设置附件上传大小
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+	//读取上传文件
+	$string_upload = file_get_contents($info[0]['savepath'] . $info[0]['savename']);
+	$arr_upload = explode(',', $string_upload); 
+	
+	//上传文档号码
+	$_SESSION['member_upload_email_send_list'] = array();
+	foreach($arr_upload as $value){
+	  $_SESSION['member_upload_email_send_list'][] = $value;
+	}
+	R('Register/successjump',array('上传成功,现在跳转到发送页面'));
+      }else{
+	R('Register/errorjump', array('上传文档失败，请检查上传文件合法性'));
+      }
+    }
+
+    $sHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>正在发送-易搜</title>
+<style>
+  .zhifu_tz{ width:320px; height:150px; border:#e78c55 3px solid; margin:0 auto 50px; position:absolute; top:50%; left:50%; margin-top:-75px; margin-left:-160px;
+    /*圆角*/
+    -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+    behavior: url(style/PIE.htc);/*IE6、7、8下支持一些 CSS3 html5 属性*/}
+  .zhifu_tz p{ padding:40px 0 0 60px; font-size:14px; line-height:30px; font-weight:bold;}
+  .zhifu_tz p img{ vertical-align:middle; margin:0 10px 5px 0;}
+  .zhifu_tz p.jishi{padding:20px 0 0 100px; font-size:12px; line-height:30px; font-weight:normal;}
+</style>
+</head>
+<body id="body_user">
+      <div class="zhifu_tz">
+        <p><img src="' . __ROOT__ .'/Public/member/images/user/loading.gif" width="25" height="25" border="0" />正在发送，请耐心等待...</p>
+	</div></body></html>';
+    echo $sHtml;
+    flush();//输出送出的缓冲内容
+
+    //提交来的号码列表
+    $sendnumber_arr = explode(',', $_POST['sendnumber']);
+
+    //要发送的号码
+    $to_send = array();
+
+    //输入框发送
+    if($_POST['phonetype'] == 'list'){
+
+      /* -- 保存通讯录 Start -- */
+      if($_POST['savegroup'] == 'true'){
+	$MemberEmailGroup = D('MemberEmailGroup');
+	$MemberEmailGroupList = M('MemberEmailGroupList');
+	$data = array();
+	$data['mid'] = session(C('USER_AUTH_KEY'));
+	$data['name'] = $this -> _post('savegroupname');
+	$data['addtime'] = time();
+	if(!$MemberEmailGroup -> create($data)){
+	  R('Register/errorjump', array('添加通讯录失败'));
+	}
+	//添加通讯录详情
+	if($gid = $MemberEmailGroup -> add()){
+	  //搜索得到的记录
+	  if(!empty($_POST['issearch'])){
+	    foreach($_SESSION['member_search_email_send_list'] as $value){
+	      $list_data = array();
+	      $list_data['gid'] = $gid;
+	      $list_data['realnumber'] = $value;
+	      $list_data['hidenumber'] = substr($value, 0 ,3) . '****' . strstr($value, '@');
+	      $MemberEmailGroupList -> add($list_data);
+	    }
+	  }else if(!empty($_POST['isupload'])){
+	    foreach($_SESSION['member_upload_email_send_list'] as $value){
+	      $list_data = array();
+	      $list_data['gid'] = $gid;
+	      $list_data['realnumber'] = $value;
+	      $list_data['hidenumber'] = substr($value, 0 ,3) . '****' . strstr($value, '@');
+	      $MemberEmailGroupList -> add($list_data);
+	    }
+	  }
+	  //后添加的
+	  foreach($sendnumber_arr as $value){
+	    if(!strpos($value, '*')){
+	      $list_data = array();
+	      $list_data['gid'] = $gid;
+	      $list_data['realnumber'] = $value;
+	      $list_data['hidenumber'] = substr($value, 0 ,3) . '****' . strstr($value, '@');
+	      $MemberEmailGroupList -> add($list_data);
+	    }
+	  }
+	}else{
+	  R('Register/errorjump', array('添加通讯录失败'));
+	}
+      }
+      /* -- 保存通讯录 End -- */
+
+      //组合发送号码
+      //搜索号码
+      if(!empty($_POST['issearch'])){
+	$to_send = array_merge($to_send, $_SESSION['member_search_email_send_list']);
+      }else if(!empty($_POST['isupload'])){
+	$to_send = array_merge($to_send, $_SESSION['member_upload_email_send_list']);
+      }
+      //后添加号码
+      foreach($sendnumber_arr as $value){
+	if(!strpos($value, '*')){
+	  $to_send[] = $value;
+	}
+      }
+
+    //号码薄发送
+    }else if($_POST['phonetype'] == 'group'){
+      $MemberEmailGroupList = M('MemberEmailGroupList');
+      $group_list = $MemberEmailGroupList -> field('realnumber') -> where(array('gid' => $_POST['phonegroup'])) -> select();
+      foreach($group_list as $value){
+	$to_send[] = $value['realnumber'];
+      }
+    }
+
+    /*  ----  执行发送  ----- */
+
+    //读取发送配置
+    $MemberEmailSetting = M('MemberEmailSetting');
+    $send_setting = $MemberEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd') -> find($this -> _post('sendtype', 'intval'));
+    C('MAIL_ADDRESS', $send_setting['email_address']);
+    C('MAIL_SMTP', $send_setting['email_SMTP']);
+    C('MAIL_LOGINNAME', $send_setting['email_account']);
+    C('MAIL_PASSWORD', $send_setting['email_pwd']);
+    import('ORG.Util.Mail');
+
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    $re_data = array();
+    $re_data['mid'] = session(C('USER_AUTH_KEY'));
+    $re_data['content'] = $this -> _post('content');
+
+    foreach($to_send as $value){
+      $re_data['sendtime'] = time();
+      $re_data['sendemail'] = $value;
+      if(@SendMail($value, '易搜会员中心邮件群发', $this -> _post('content'), 'yesow-易搜')){
+        $re_data['statuscode'] = 1;
+      }else{
+	$re_data['statuscode'] = 0;
+      }
+      $MemberSendEmailRecord -> add($re_data);
+    }
+
+    //清空信息
+    $_SESSION['member_search_email_send_list'] = array();
+    $_SESSION['member_upload_email_send_list'] = array();
+    echo "<script>location.href='" . __URL__ ."/sendemailendjump';</script>";
+  }
+
+  //发送完毕跳转
+  public function sendemailendjump(){
+    R('Register/successjump',array('发送完毕,现在跳转到发送记录', U('Services/emails')));
+  }
+
+  public function searchemail(){
+    if(!empty($_GET['keyword'])){
+      $keyword = $this -> _get('keyword');
+      $company = M('Company');
+      $map['_string'] = "LENGTH(email) > 1";
+      $where = array();
+      $where['delaid']  = array('exp', 'is NULL');
+      $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+      if($_GET['searchscope'] == 'city'){
+	$where['csid'] = $this -> _get('csid', 'intval');
+	if(!empty($_GET['csaid'])){
+	  $where['csaid'] = $this -> _get('csaid', 'intval');
+	}
+      }
+      $where['_complex'] = $map;
+
+      import("ORG.Util.Page");// 导入分页类
+      $count = $company -> where($where) -> count('id');
+      $page = new Page($count, 10);//每页10条
+      $show = $page -> show();
+      $this -> assign('show', $show);
+
+      $result = $company -> field('id,name,manproducts,email') -> where($where) -> order('id DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+      foreach($result as $key => $value){
+	$result[$key]['email'] = substr($value['email'], 0 ,3) . '****' . strstr($value['email'], '@');
+      }
+      $this -> assign('result', $result);
+      $this -> assign('count', $count);
+
+      //搜索价格
+      $setting = M('BackgroundEmailSetting');
+      $search_phone_price = $setting -> getFieldByname('search_money', 'value');
+      $this -> assign('search_phone_price', $search_phone_price);
+    }
+    //查询分站
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //ajax处理搜索结果添加到待发送列表
+  public function ajaxaddemailsearchsendlist(){
+    if(!is_array($_SESSION['member_search_email_list'])){
+      $_SESSION['member_search_email_list'] = array();
+    }
+    if(in_array($_GET['cid'], $_SESSION['member_search_email_list'])){
+      unset($_SESSION['member_search_email_list'][array_search($_GET['cid'], $_SESSION['member_search_email_list'])]);
+    }else{
+      $_SESSION['member_search_email_list'][] = $_GET['cid'];
+    } 
+    echo count($_SESSION['member_search_email_list']);
+  }
+
+
+  //提取搜索结果并扣费
+  public function searchemailresult(){
+    //搜索价格
+    $setting = M('BackgroundEmailSetting');
+    $search_phone_price = $setting -> getFieldByname('search_money', 'value');
+    //消费金额
+    $cost = count($_SESSION['member_search_email_list']) * $search_phone_price;
+    //扣费
+    $MemberRmb = D('member://MemberRmb');
+    if($MemberRmb -> autolessmoney($cost)){
+      //写消费日志
+      $MemberRmbDetail = D('member://MemberRmbDetail');
+      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心搜索邮箱地址', '消费', '-' . $cost);
+      //处理待发送数组
+      $company = M('Company');
+      $_SESSION['member_search_email_send_list'] = array();
+      foreach($_SESSION['member_search_email_list'] as $value){
+	$_SESSION['member_search_email_send_list'][] = $company -> getFieldByid($value, 'email');
+      }
+      $_SESSION['member_search_email_list'] = array();
+      //记录搜索日志
+      $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
+      $data_rec = array();
+      $data_rec['mid'] = session(C('USER_AUTH_KEY'));
+      $data_rec['keyword'] = $this -> _get('keyword');
+      $data_rec['checknum'] = count($_SESSION['member_search_email_send_list']);
+      $data_rec['ip'] = get_client_ip();
+      $data_rec['searchtime'] = time();
+      $MemberSearchEmailRecord -> add($data_rec);
+      //更新RMB缓存
+      if(!$MemberRmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Register/successjump',array('扣费成功！现在转入待发送页面', U('Services/sendemail')));
+    }else{
+      R('Register/errorjump', array('用户余额不足，请充值', U('Services/sendemail')));
+    }
+  }
+
+  //邮件发送记录
+  public function emailsendrecord(){
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    $where = array();
+    $where['mid'] = session(C('USER_AUTH_KEY'));
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberSendEmailRecord -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $MemberSendEmailRecord -> field('sendtime,content,sendemail,statuscode') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
+    foreach($result as $key => $value){
+      $result[$key]['sendemail'] = substr($value['sendemail'], 0 ,3) . '****' . strstr($value['sendemail'], '@');
+    }
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //邮件群发薄
+  public function sendemailgroup(){
+    $MemberEmailGroup = D('MemberEmailGroup');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberEmailGroup -> alias('msg') -> where(array('msg.mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $MemberEmailGroup -> alias('msg') -> field('msg.id,msg.name,msg.addtime,tmp.count') -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_email_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('msg.mid' => session(C('USER_AUTH_KEY')))) -> order('msg.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  //邮件群发薄详情
+  public function sendemailgrouplist(){
+    $MemberEmailGroupList = D('MemberEmailGroupList');
+    $where = array();
+    $where['gid'] = $this -> _get('id', 'intval');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberEmailGroupList -> where($where) -> count();
+    $page = new Page($count, 42);
+    $show = $page -> show();
+
+    $result = $MemberEmailGroupList -> field('hidenumber') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+
 }

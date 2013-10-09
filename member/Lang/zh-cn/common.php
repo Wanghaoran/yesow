@@ -27,6 +27,7 @@ $app_lang = array(
   'RECOMMENDCOMPANY_ERROR' => '更新推荐商家信息失败',
   'COMPANYSHOW_ERROR' => '更新动感传媒信息失败',
   'COMPANYSHOW_RENEW' => '动感传媒信息更新成功，现在跳转到续费订单页面',
+  'SEND_EMAIL_SETTING_EMPTY' => '您还没有设置发送帐号,请先设置发送帐号相关信息!',
 );
 
 return array_merge($common_lang, $app_lang);
