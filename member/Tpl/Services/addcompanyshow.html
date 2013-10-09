@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加动感传媒-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+	    event.stopPropagation();
+	    countprice();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist1').hradio();
+	});
+
+var tosubmits = function(){
+  if(!$("#companyname").val()){
+    alert('公司名称不能为空！');
+    $('#companyname').focus();
+    return false;
+  }
+  if(!$("#ccidone").val()){
+    alert('所属分类不能为空！');
+    $('#ccidone').focus();
+    return false;
+  }
+  if(!$("#ccidtwo").val()){
+    alert('所属分类不能为空！');
+    $('#ccidtwo').focus();
+    return false;
+  }
+  if(!$("#csid").val()){
+    alert('所属分站不能为空！');
+    $('#csid').focus();
+    return false;
+  }
+  if(!$("input[name='months']:checked ").val()){
+    alert('请选择购买月份！');
+    return false;
+  }
+  if(!$("input[name='maketype']:checked ").val()){
+    alert('请至少选择一种动感传媒上传方式！');
+    return false;
+  }
+  if(!$('#bigpicname').val() && !$('#dataname').val() && !$('#smallpicname').val()){
+    alert('请至上传完整资料或图片！');
+    return false;
+  }
+  return true;
+}
+
+var countprice = function(){
+  //包月价格
+  var everymonthprice = $("input[name='months']:checked ").next().find(".tuiguangjia").html();
+  everymonthprice = everymonthprice ? everymonthprice : 0;
+  //包月份数
+  var monthsnum2 = $("input[name='months']:checked ").next().find(".baoyueshu").html();
+  monthsnum2 = monthsnum2 ? monthsnum2 : 0;
+
+  //总价格
+  var totalprice = everymonthprice;
+
+  $('#qqmonths').html(monthsnum2);
+  $('#monthsnum').html(everymonthprice);
+  $('#totalnum').html(totalprice);
+}
+
+var getccidtwo = function(id){
+  $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcompanycategorytwo/id/' + id,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#ccidtwo').html(_nstr).show();
+	  }else{
+	  $('#ccidtwo').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+}
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">动感传媒管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">动感传媒申请</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+							<!--第一步-->
+							<form action="__URL__/companyshow_pay" method='post' enctype="multipart/form-data" onsubmit="return tosubmits();">
+                            <div class="div_zxqqsq1">
+								<div class="zxqqsq1_left left"><h2>第一步</h2><h3>基本信息</h3></div>
+								<div class="zxqqsq1_mid left">
+									<ul>
+									  <li>公司名称：&nbsp;<input type="text" name="name" id="companyname" class="txtfile2" style="width:310px;" /></li>
+									  <li>所属分类：
+									  <select class="select_css2" id="ccidone" name="ccid_one" onchange="getccidtwo(this.value);">
+									    <option value="">请选择</option>
+									    <volist name="result_ccid" id="rc">
+									    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+									    </volist>
+									  </select>
+									  <select class="select_css2" name="ccid_two" id="ccidtwo">
+									   <option value="">请选择</option>
+									  </select>
+									  </li>
+									  <li>所属分站：
+									  <select class="select_css2" name="csid" id="csid">
+									    <option value="">请选择</option>
+									    <volist name="result_childsite" id="rcs">
+									    <option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+									    </volist>
+									  </select>
+									  </li>
+									<li>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input type="text" name="linkman" class="txtfile2" style="width:115px;" />&nbsp;&nbsp;移动电话：<input type="text" name="mobliephone" class="txtfile2" style="width:124px;" /></li>
+									<li>联系电话：&nbsp;<input type="text" name="companyphone" class="txtfile2" style="width:115px;" />&nbsp;&nbsp;在线Q Q：<input type="text" name="qqcode" class="txtfile2" style="width:124px;" /></li>
+									<li>公司地址：&nbsp;<input type="text" name="address" class="txtfile2" style="width:310px;" /></li>
+									<li>关&nbsp;&nbsp;键&nbsp;&nbsp;词：<input type="text" name="keyword" class="txtfile2" style="width:310px;" /></li>
+									<li>简单描述：<textarea name="remark" style="width:368px;height:100px;"></textarea></li>
+
+									</ul>
+								</div>
+								<div class="zxqqsq1_right left">这里是填写基本信息用的。后期我们的客服人员将会对客户进行回访服务，为保障您的权益，请认真填写。</div>
+							</div>
+                            <div class="clear10"></div>
+			    <!--第二步-->
+			    
+							<div class="div_zxqqsq2">
+								<div class="zxqqsq2_left left"><h2>第二步</h2><h3>设置图片</h3></div>
+								<div class="zxqqsq2_mid left">
+									<div class="qiye_info">
+									  动感传媒有两个广告图：小图尺寸为 153 ×192 PX(像素)<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大图尺寸为 930 ×1200 PX(像素)
+                                        <div class="clear"></div>
+                                        <input type="radio" name="maketype" value="1"/>你可以自己上传
+                                        <div class="clear"></div>
+                                        <div style="padding-left:20px;">
+					  
+					  <div class="file-box" style="width:175px;">
+					    <div style="float:left">小图：</div>
+					    <input type='text' id='smallpicname' class='txtfile' style="width:55px;" />
+					    <input type='button' class='btnfile' value='浏览...'/>
+					    <input type="file" name="smallpic" class="fileinput" size="28" onchange="document.getElementById('smallpicname').value=this.value" />
+					    </div>
+					    <div class="file-box" style="width:180px;">
+					    <span style="margin-left:5px;">大图：</span>
+					    <input type='text' id='bigpicname' class='txtfile' style="width:55px;" />
+					    <input type='button' class='btnfile' value='浏览...'/>
+					    <input type="file" name="bigpic" class="fileinput" size="28" onchange="document.getElementById('bigpicname').value=this.value" />
+					  </div>
+
+                                           
+                                             <div class="clear10"></div>
+                                            <div style="float:left">网址：</div>
+                                            <div style="float:left"><input type="text" class="txtfile" name="website" style="width:215px;"/></div>
+                                            <div class="clear10"></div>
+                                         </div>
+                                         <div class="clear"></div>
+                                         <input type="radio" name="maketype" value="2"/>您可以把广告资料提交给我们，让我们来帮您设计
+                                         <div style="padding-left:20px;">
+					   <div class="file-box">
+					     <input type='text' id='dataname' class='txtfile' />
+					     <input type='button' class='btnfile' value='浏览...' />
+					     <input type="file" name="data" class="fileinput" size="28" onchange="document.getElementById('dataname').value=this.value" /></div>
+                                         </div>
+                                         <div class="clear10"></div>
+                                    </div>
+								</div>
+								<div class="zxqqsq2_right left">这里可以看到动感传媒两块广告的大小，您可以自己上传，也可以提交资料给我们，让我们来设计。</div>
+							</div>
+                            <div class="clear10"></div>
+							<!--第三步-->
+							<div class="div_zxqqsq3">
+			  <div class="zxqqsq3_left left"><h2>第三步</h2><h3>包月时间</h3></div>
+			  <div class="zxqqsq3_right left">
+			    <div id="radiolist1">
+			      <volist name="companyshow_money" id="qp">
+			      <input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+			      <label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+			      </volist>
+			      <div class="clear"></div>
+			    </div>
+			  </div>
+			</div>
+			<div class="clear10"></div>
+							<!--第四步-->
+							<div class="div_zxqqsq4">
+								<div class="zxqqsq4_left left"><h2>第四步</h2><h3>核对总价</h3></div>
+								<div class="zxqqsq4_mid left">
+								  合计费用 ：<span id="qqmonths"> 0 </span> 个月/<span id="monthsnum"> 0 </span> 元 = <span id="totalnum"> 0 </span> 元
+								</div>
+								<div class="zxqqsq4_right left">(费用自动计算，数量乘以时间)</div>
+							</div>
+                            <div class="clear10"></div>
+                            <div class="clear10"></div>
+                            <div class="div_zxqqsq5">
+
+			      <div class="qqsq_tishi" style="height:130px;text-align:left;padding-left:20px;">注意：<br/>
+				1、请确认您选择的位置时正确的之后再进行提交；<br/>
+				2、我们会不定期检查网站广告，如发现有反动或者侵权等情况的广告，我们会删除该广告，并不予退款；<br/>
+				3、最终解释权归易搜所有。
+				
+			      </div>
+			      <input type="submit" class="btn_goumai" value="" />
+			    </div>
+
+			    </form>
+                            <div class="clear10"></div>
+                            
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

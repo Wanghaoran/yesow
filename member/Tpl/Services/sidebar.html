@@ -6,7 +6,11 @@
     <else/>
     <li><a href="__URL__/index">推荐商家管理</a></li>
     </if>
-    <li><a href="#">动感传媒管理</a></li>
+    <if condition="(ACTION_NAME eq 'companyshow') OR (ACTION_NAME eq 'addcompanyshow') OR (ACTION_NAME eq 'companyshoworder') OR (ACTION_NAME eq 'companyshoworderlist') OR (ACTION_NAME eq 'editcompanyshow') OR (ACTION_NAME eq 'editeditcompanyshow')">
+    <li class="hover"><a href="__URL__/companyshow">动感传媒管理</a></li>
+    <else/>
+    <li><a href="__URL__/companyshow">动感传媒管理</a></li>
+    </if>
     <if condition="(ACTION_NAME eq 'searchrank') OR (ACTION_NAME eq 'addsearchrank') OR (ACTION_NAME eq 'searchrankorder') OR (ACTION_NAME eq 'searchrankorderlist') OR (ACTION_NAME eq 'editsearchrank') OR (ACTION_NAME eq 'editeditsearchrank')">
     <li class="hover"><a href="__URL__/searchrank">速查排名管理</a></li>
     <else/>

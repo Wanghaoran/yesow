@@ -60,6 +60,9 @@ return array(
   //动感传媒图片显示
   'MEDIA_PIC_PATH_SAVE' => __ROOT__ . '/Upload/media/',
 
+  'MEDIA_PIC_DATA_PATH' => './Upload/mediadata/',
+  'MEDIA_PIC_DATA_PATH_SAVE' =>  __ROOT__ . '/Upload/mediadata/',
+
   //旺铺出租图片保存路径
   'STORE_PIC_PATH' => './Upload/store/',
   //旺铺出租图片显示

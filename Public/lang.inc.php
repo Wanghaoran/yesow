@@ -70,5 +70,6 @@ return array(
   'MONEY_ERROR' => '充值金额错误',
   'TRADERSPASSWORD_EMPTY_ERROR' => '您还未设置交易密码,请先到会员中心设置',
   'TRADERSPASSWORD_ERROR' => '交易密码错误',
+  'ORDER_ERROR' => '生成订单错误',
 
 );

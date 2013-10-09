@@ -1,9 +1,6 @@
 <?php
 class MessageAction extends CommonAction {
 
-  /* ------------ 邮件群发管理 ------------ */
-
-  //速查邮件搜索
   public function searchemail(){
     if(!empty($_POST['issearch'])){
       $result = array();
@@ -20,8 +17,7 @@ class MessageAction extends CommonAction {
 	$where['csaid'] = $this -> _post('bgsearch_email_csaid', 'intval');
       }
 
-      //page
-      $count_sql = $company -> field('id,email') -> where($where) -> group('email') -> buildSql();//去重
+      $count_sql = $company -> field('id,email') -> where($where) -> group('email') -> buildSql();
       $count = $company -> table($count_sql . ' T') -> count();
       import('ORG.Util.Page');
       if(! empty ( $_REQUEST ['listRows'] )){
@@ -30,20 +26,14 @@ class MessageAction extends CommonAction {
 	$listRows = 10;
       }
       $page = new Page($count, $listRows);
-      //当前页数
       $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
       $page -> firstRow = ($pageNum - 1) * $listRows;
-      //每页条数
       $result['listRows'] = $listRows;
-      //当前页数
       $result['currentPage'] = $pageNum;
       $result['count'] = $count;
 
-      //search time
       G('start');
-      //result
       $result['result'] = $company -> field('id,name,email,addtime,updatetime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> group('email') -> select();
-      //将查询时间写入结果数组
       $result['time'] = G('start', 'end');
       $this -> assign('result', $result);
     }
@@ -54,13 +44,11 @@ class MessageAction extends CommonAction {
   
   }
 
-  //添加到待发送列表
   public function addwaitsendlist($send_arrs){
     $send_arr = array();
     $company = M('Company');
     $count_old = count($_SESSION['admin_send_email_list']);
     if(empty($send_arrs)){
-      //全部下载，重新搜索
       if(!empty($_GET['issearch'])){
 	$where = array();
 	$where['email'] = array('neq', '');
@@ -75,7 +63,6 @@ class MessageAction extends CommonAction {
 	}
 	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
 	foreach($result_temp as $value){
-	  //过滤多个邮箱
 	  $value['email'] = preg_replace('/\s{2,}|　/U',' ',$value['email']);
 	  $temp_arr = explode(' ', $value['email']);
 	  foreach($temp_arr as $values){
@@ -109,7 +96,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //编辑待发送列表
   public function editwaitsendlist(){
     $company = M('Company');
     $result = array();
@@ -122,11 +108,8 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //添加全部到通讯录
   public function addsendlisttoemailgroup(){
-    //处理添加
     if(!empty($_POST['name'])){
-      //重新搜索
 	$where = array();
 	$data = array();
 	$data['gid'] = $gid;
@@ -144,7 +127,6 @@ class MessageAction extends CommonAction {
 	}
 	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
 
-	//每个通讯录的数量限制
 	$setting = M('BackgroundEmailSetting');
 	$group_limit = $setting -> getFieldByname('group_limit', 'value');
 	$group_num = (int)ceil(count($result) / $group_limit);
@@ -153,7 +135,6 @@ class MessageAction extends CommonAction {
 	  $result_finish[] = array_slice($result, $i*$group_limit, $group_limit);
 	}
 
-	//批量添加通讯录
 	$email_group_list = D('BackgroundEmailGroupList');
 	$email_group = M('BackgroundEmailGroup');
 	foreach($result_finish as $key => $value){
@@ -164,7 +145,6 @@ class MessageAction extends CommonAction {
 	  $data['name'] = $_POST['name'] . '(' . ($key+1) . ')';
 
 	  if($gid = $email_group -> add($data)){
-	    //添加组内记录
 	    foreach($result_finish[$key] as $valuetwo){
 	      $valuetwo['email'] = preg_replace('/\s{2,}|　/U',' ',$valuetwo['email']);
 	      $temp_arr = explode(' ', $valuetwo['email']);
@@ -187,22 +167,18 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //清空待发送列表
   public function delwaitsendlist(){
     session('admin_send_email_list', null);
     $this -> success(L('DATA_DELETE_SUCCESS'));
   }
 
-  //删除待发送邮箱
   public function delwaitsendemail(){
     unset($_SESSION['admin_send_email_list'][array_search($_GET['email'], $_SESSION['admin_send_email_list'])]);
     $this -> success(L('DATA_DELETE_SUCCESS'));
   }
 
-  //速查邮件群发
   public function sendmassemail(){
     $email_list = D('BackgroundSendEmail');
-    //执行发送
     if(!empty($_POST['recipient'])){
       $company = M('Company');
       set_time_limit(0);
@@ -211,7 +187,6 @@ class MessageAction extends CommonAction {
 	unset($recipient_arr[count($recipient_arr) - 1]);
       }
 
-      //读取发送邮件配置
       $setting = M('BackgroundEmailSetting');
       $mail_address = $setting -> getFieldByname('mail_address', 'value');
       $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
@@ -230,7 +205,6 @@ class MessageAction extends CommonAction {
 	$send_email = substr($value, 0 , strpos($value, '(')) ? substr($value, 0 , strpos($value, '(')) : $value;
 	$company_info = $company -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $cid)) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
 	
-	//模板替换
 	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
 	$email_content = str_replace($search, $company_info, $_POST['content']);
 	$email_title = str_replace($search, $company_info, $_POST['title']);
@@ -243,22 +217,18 @@ class MessageAction extends CommonAction {
 	  $error_num++;
 	}
       }
-      //清除待发送列表
       session('admin_send_email_list', null);
       $this -> success('邮件发送完毕！成功：' . $success_num . ' 条。失败：' . $error_num . ' 条。可到邮件发送列表查看相信信息');
     }
-    //读取收件人列表
     foreach($_SESSION['admin_send_email_list'] as $key => $value){
       $recipientstring .= $value . '(' . $key . ');';
     }
     $this -> assign('recipientstring', $recipientstring);
-    //读取模板
     $send_template = M('BackgroundEmailTemplate') -> field('id,name') -> select();
     $this -> assign('send_template', $send_template);
     $this -> display();
   }
 
-  //后台发送记录
   public function backgroundsendrecord(){
     $email_list = M('BackgroundSendEmail');
     $where = array();
@@ -266,17 +236,15 @@ class MessageAction extends CommonAction {
       $where['bse.email'] = $this -> _post('email');
     }
 
-    //今日已发送数量
     $year = date("Y");
     $month = date("m");
     $day = date("d");
-    $dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
-    $dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+    $dayBegin = mktime(0,0,0,$month,$day,$year);
+    $dayEnd = mktime(23,59,59,$month,$day,$year);
 
     $today_count = $email_list -> where(array('sendtime' => array(array('egt', $dayBegin),array('elt', $dayEnd)))) -> count('id');
     $this -> assign('today_count', $today_count);
 
-    //记录总数
     $count = $email_list -> table('yesow_background_send_email as bse') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -285,22 +253,18 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $email_list -> table('yesow_background_send_email as bse') -> field('bse.id,a.name as aname,bse.email,bse.title,bse.sendtime,bse.status') -> join('yesow_admin as a ON bse.aid = a.id') -> where($where) -> order('sendtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
 
     $this -> display();
   }
 
-  //删除后台发送记录
   public function delbackgroundsendrecord(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -312,7 +276,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //全部删除后台发送记录
   public function alldelbackgroundsendrecord(){
     $email_list = M('BackgroundSendEmail');
     if($email_list -> where(1) -> delete()){
@@ -322,7 +285,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //区间删除后台发送记录
   public function intervaldelbackgroundsendrecord(){
     if(!empty($_POST['isdel'])){
       $where_del = array();
@@ -344,14 +306,12 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //查看后台已发送记录正文
   public function editbackgroundsendrecordinfo(){
     $content = M('BackgroundSendEmail') -> getFieldByid($this -> _get('id', 'intval'), 'content');
     $this -> assign('content', $content);
     $this -> display();
   }
 
-  //速查邮件通讯录
   public function backgroundemailgroup(){
     $email_group = M('BackgroundEmailGroup');
     $where = array();
@@ -360,7 +320,6 @@ class MessageAction extends CommonAction {
       $where['g.name'] = array('like', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $email_group -> table('yesow_background_email_group as g') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -369,21 +328,17 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $email_group -> table('yesow_background_email_group as g') -> field('g.id,g.name,g.remark,g.addtime,tmp.count') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_background_email_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.id DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //添加后台邮件通讯录
   public function addbackgroundemailgroup(){
     if(!empty($_POST['name'])){
       $email_group = D('BackgroundEmailGroup');
@@ -400,7 +355,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //编辑后台邮件通讯录
   public function editbackgroundemailgroup(){
     $email_group = M('BackgroundEmailGroup');
     if(!empty($_POST['name'])){
@@ -419,7 +373,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //删除后台邮件通讯录
   public function delbackgroundemailgroup(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -431,7 +384,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //查看后台邮件通讯录详情
   public function editemailgrouplist(){
     $email_group_list = M('BackgroundEmailGroupList');
     $where = array();
@@ -440,7 +392,6 @@ class MessageAction extends CommonAction {
       $where['name'] = array('like', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $email_group_list -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -449,22 +400,18 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $email_group_list -> field('id,name,email,addtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
 
     $this -> display();
   }
 
-  //添加后台邮件通讯录详情
   public function addeditemailgrouplist(){
     if(!empty($_POST['email'])){
       $email_group_list = D('BackgroundEmailGroupList');
@@ -480,7 +427,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //删除后台邮件通讯录详情
   public function deleditemailgrouplist(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -492,7 +438,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //编辑后台邮件通讯录详情
   public function editeditemailgrouplist(){
     $email_group_list = M('BackgroundEmailGroupList');
     if(!empty($_POST['email'])){
@@ -510,7 +455,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //添加到待发送列表
   public function addgroupwaitsendlist(){
     $email_group_list = M('BackgroundEmailGroupList');
     $where = array();
@@ -524,7 +468,6 @@ class MessageAction extends CommonAction {
     
   }
 
-  //群发邮件参数设置
   public function sendemailsetting(){
     $setting = M('BackgroundEmailSetting');
     if(!empty($_POST['mail_address'])){
@@ -555,7 +498,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //邮件模板管理
   public function emailtemplate(){
     $template = M('BackgroundEmailTemplate');
     $where = array();
@@ -563,7 +505,6 @@ class MessageAction extends CommonAction {
       $where['name'] = array('like', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $template -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -572,15 +513,12 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $template -> field('id,name,addtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
 
@@ -588,7 +526,6 @@ class MessageAction extends CommonAction {
   
   }
 
-  //新增邮件模板
   public function addemailtemplate(){
     if(!empty($_POST['name'])){
       $template = D('BackgroundEmailTemplate');
@@ -604,7 +541,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //删除邮件模板
   public function delemailtemplate(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -616,7 +552,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //编辑邮件模板
   public function editemailtemplate(){
     $template = M('BackgroundEmailTemplate');
     if(!empty($_POST['name'])){
@@ -634,11 +569,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  /* ------------ 邮件群发管理 ------------ */
-
-  /* ------------ 短信群发管理 ------------ */
-
-  //接入通道管理
   public function apisendtype(){
     $sendtype = M('SmsSendType');
     $where = array();
@@ -646,7 +576,6 @@ class MessageAction extends CommonAction {
       $where['name'] = array('like', '%' . $this -> _post('name') . '%');
     }
 
-    //记录总数
     $count = $sendtype -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -655,22 +584,18 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $sendtype -> field('id,name,apicode,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
 
     $this -> display();
   }
 
-  //添加接入通道
   public function addapisendtype(){
     if(!empty($_POST['name'])){
       $sendtype = M('SmsSendType');
@@ -686,7 +611,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //删除接入通道
   public function delapisendtype(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -698,7 +622,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //编辑接入通道
   public function editapisendtype(){
     $sendtype = M('SmsSendType');
     if(!empty($_POST['name'])){
@@ -716,7 +639,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //群发短信参数设置
   public function sendsmssetting(){
     $setting = M('SmsSetting');
     if(!empty($_POST['sms_username'])){
@@ -745,7 +667,6 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
-  //用户发送记录
   public function membersmssendrecord(){
     $MemberSendSmsRecord = M('MemberSendSmsRecord');
 
@@ -755,7 +676,6 @@ class MessageAction extends CommonAction {
       $where['mssr.mid'] = $mid;
     }
 
-    //记录总数
     $count = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -764,21 +684,17 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendphone,mssr.statuscode') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //删除用户发送记录
   public function delmembersmssendrecord(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -790,7 +706,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //用户搜索记录
   public function membersmssearchrecord(){
     $MemberSearchSmsRecord = M('MemberSearchSmsRecord');
     $where = array();
@@ -806,7 +721,6 @@ class MessageAction extends CommonAction {
       $where['mssr.searchtime'][] = array('lt', $endtime);
     }
 
-    //记录总数
     $count = $MemberSearchSmsRecord -> table('yesow_member_search_sms_record as mssr') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -815,23 +729,19 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $MemberSearchSmsRecord -> table('yesow_member_search_sms_record as mssr') -> field('mssr.id,mssr.keyword,m.name as mname,tmp.count,mssr.checknum,mssr.ip,mssr.searchtime') -> join('yesow_member as m ON mssr.mid = m.id') -> join('LEFT JOIN (SELECT keyword,count(id) as count FROM yesow_member_search_sms_record GROUP BY keyword) as tmp ON mssr.keyword = tmp.keyword') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('mssr.searchtime DESC') -> select();
     $this -> assign('result', $result);
 
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
 
     $this -> display();
   }
 
-  //删除用户搜索记录
   public function delmembersmssearchrecord(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -843,7 +753,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //用户群发电话簿
   public function membersmsgroup(){
     $MemberSmsGroup = M('MemberSmsGroup');
     $where = array();
@@ -859,7 +768,6 @@ class MessageAction extends CommonAction {
       $where['msg.addtime'][] = array('lt', $endtime);
     }
 
-    //记录总数
     $count = $MemberSmsGroup -> table('yesow_member_sms_group as msg') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -868,21 +776,17 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $MemberSmsGroup -> table('yesow_member_sms_group as msg') -> field('msg.id,msg.name,msg.addtime,tmp.count,m.name as mname') -> join('yesow_member as m ON msg.mid = m.id') -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_sms_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('msg.addtime DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //删除用户群发电话簿
   public function delmembersmsgroup(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -894,7 +798,6 @@ class MessageAction extends CommonAction {
     }
   }
 
-  //编辑用户群发电话薄
   public function editmembersmsgroup(){
     $MemberSmsGroupList = M('MemberSmsGroupList');
     $id = $this -> _request('id', 'intval');
@@ -904,7 +807,6 @@ class MessageAction extends CommonAction {
       $where['realnumber'] = $this -> _post('name');
     }
 
-    //记录总数
     $count = $MemberSmsGroupList -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -913,23 +815,18 @@ class MessageAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $MemberSmsGroupList -> field('id,realnumber') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //新增用户群发电话簿详情
   public function addeditmembersmsgroup(){
-    //处理添加
     if(!empty($_POST['realnumber'])){
       $MemberSmsGroupList = M('MemberSmsGroupList');
       if(!$MemberSmsGroupList -> create()){
@@ -945,7 +842,6 @@ class MessageAction extends CommonAction {
     $this -> display(); 
   }
 
-  //编辑用户群发电话簿详情
   public function editeditmembersmsgroup(){
     $MemberSmsGroupList = M('MemberSmsGroupList');
 
@@ -967,7 +863,6 @@ class MessageAction extends CommonAction {
   
   }
 
-  //删除用户群发电话簿详情
   public function deleditmembersmsgroup(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -978,7 +873,5 @@ class MessageAction extends CommonAction {
       $this -> error(L('DATA_DELETE_ERROR'));
     }
   }
-
-  /* ------------ 短信群发管理 ------------ */
 
 }

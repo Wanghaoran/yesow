@@ -1,9 +1,7 @@
 <?php
 class ServicesAction extends CommonAction {
 
-  //首页前置操作
   public function _before_index(){
-    //获取公告
     if(S('index_yesow_notice')){
       $this -> assign('index_yesow_notice', S('index_yesow_notice'));
     }else{
@@ -13,35 +11,25 @@ class ServicesAction extends CommonAction {
     }
   }
 
-  //首页
   public function index(){
     $this -> display();
   
   }
 
-  //在线QQ管理前置操作
   public function _before_qqonline(){
     $this -> _before_index();
   }
 
-
-  /* ------  在线QQ ------- */
-
-  //在线QQ管理
   public function qqonline(){
     $this -> display();
   }
 
-  //添加在线QQ
   public function addqqonline(){
-    //传递cid
     if(!empty($_GET['cid'])){
        $cid = $this -> _get('cid', 'intval');
-       //公司信息
        $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.linkman,cs.name as csname,csa.name as csaname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.id' => $cid)) -> find();
        $this -> assign('company_info', $company_info);
        $CompanyQqonline = M('CompanyQqonline');
-       //查询该公司已有QQ所属会员id与此次添加会员id是否相等，不相等则禁止添加
        $where_limit = array();
        $where_limit['cid'] = $cid;
        $where_limit['starttime'] = array('ELT', time());
@@ -50,7 +38,6 @@ class ServicesAction extends CommonAction {
        if($add_limit & $add_limit['mid'] != session(C('USER_AUTH_KEY'))){
 	 R('Register/errorjump',array(L('QQONLINE_LIMIT')));
        }
-       //查询该公司已有QQ数量
        $where_qqonline = array();
        $where_qqonline['cid'] = $cid;
        $where_qqonline['starttime'] = array('ELT', time());
@@ -58,14 +45,12 @@ class ServicesAction extends CommonAction {
        $have_qq_num = $CompanyQqonline -> where($where_qqonline) -> count();
        $this -> assign('have_qq_num', $have_qq_num);
        $this -> assign('add_qq_num', 8 - $have_qq_num);
-       //查询已有QQ
        $qqonline_list = $CompanyQqonline -> field('qqcode,qqname') -> where($where_qqonline) -> select();
        $this -> assign('qqonline_list', $qqonline_list);
     }
-    //后台搜索公司
     if(!empty($_REQUEST['keyword'])){
       $where_company['name'] = array('LIKE', '%' . $_REQUEST['keyword'] . '%');
-      import("ORG.Util.Page");// 导入分页类
+      import("ORG.Util.Page");
       $count = M('Company') -> where($where_company) -> count();
       $page = new Page($count, 9);
       $page -> parameter = "keyword=" . $_POST['keyword'];
@@ -74,7 +59,6 @@ class ServicesAction extends CommonAction {
       $this -> assign('show', $show);
       $this -> assign('company_search', $company_search);
     }
-    //查询价格
     $QqonlineMoney = M('QqonlineMoney');
     $qq_price = $QqonlineMoney -> field('id,months,marketprice,promotionprice') -> order('months ASC') -> select();
     $this -> assign('qq_price', $qq_price);
@@ -2972,4 +2956,513 @@ class ServicesAction extends CommonAction {
   }
 
   /* ------- 推荐商家 ------------ */
+
+  //动感传媒
+  public function _before_companyshow(){
+    $this -> _before_index();
+  }
+  public function companyshow(){
+    $this -> display();
+  }
+
+  public function addcompanyshow(){
+    $CompanyCategory = M('CompanyCategory');
+    $result_ccid = $CompanyCategory -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_ccid', $result_ccid);
+    $ChildSite = M('ChildSite');
+    $result_childsite = $ChildSite -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $MediaShowMoney = M('MediaShowMoney');
+    $companyshow_money = $MediaShowMoney -> field('id,months,marketprice,promotionprice') -> order('months ASC') -> select();
+    $this -> assign('companyshow_money', $companyshow_money);
+    $this -> display();
+  }
+
+  public function companyshow_pay(){
+    $result_companyshow = array();
+    //上传图片
+    if($_POST['maketype'] == 1){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('MEDIA_PIC_PATH') ;
+      $upload -> autoSub = false;
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('gif', 'jpg', 'jpeg');
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传动感传媒图片失败，请检查文件合理性'));
+      }
+    }else if($_POST['maketype'] == 2){
+      import('ORG.Net.UploadFile');
+      $upload = new UpLoadFile();
+      $upload -> savePath = C('MEDIA_PIC_DATA_PATH') ;
+      $upload -> autoSub = false;
+      $upload -> saveRule = 'uniqid';
+      $upload -> allowExts  = array('rar', 'zip');
+      if($upload -> upload()){
+	$info = $upload -> getUploadFileInfo();
+      }else{
+	R('Register/errorjump', array('上传动感传媒资料失败，请检查文件合理性'));
+      }
+    }
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_companyshow = M('MediaShowMoney') -> field('months,promotionprice') -> find($this -> _post('months'));
+      //公司名称
+      $result_companyshow['name'] = $this -> _post('name');
+      //网址
+      $result_companyshow['website'] = $this -> _post('website');;
+    }else{
+      $MediaShowOrder = M('MediaShowOrder');
+      $smid = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'smid');
+      $result_companyshow = M('MediaShowMoney') -> field('months,promotionprice') -> find($cmid);
+      //公司名称
+      $result_companyshow['name'] = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'name');
+      //网址
+      $result_companyshow['website'] = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'website');;
+    }
+
+    if($_POST['maketype'] == 1){
+      $result_companyshow['smallpic'] = $info[0]['savename'];
+      $result_companyshow['bigpic'] = $info[1]['savename'];
+    }else{
+      $result_companyshow['filename'] = $info[0]['savename'];
+    }
+    $result_companyshow['maketype'] = $this -> _post('maketype', 'intval');
+
+    //生成订单号
+    $result_companyshow['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+    //总价
+    $result_companyshow['count'] = $result_companyshow['promotionprice'];
+
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $MediaShowOrder = M('MediaShowOrder');
+      $data = array();
+      $data['ordernum'] = $result_companyshow['orderid'];
+      $data['csid'] = $this -> _post('csid', 'intval');
+      $data['ccid_one'] = $this -> _post('ccid_one', 'intval');
+      $data['ccid_two'] = $this -> _post('ccid_two', 'intval');
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['smid'] = $this -> _post('months', 'intval');
+      $data['price'] = $result_companyshow['count'];
+      $data['maketype'] = $result_companyshow['maketype'];
+      $data['website'] = $result_companyshow['website'];
+      if($result_companyshow['maketype'] == 1){
+	$data['smallpic'] = $result_companyshow['smallpic'];
+	$data['bigpic'] = $result_companyshow['bigpic'];
+      }else{
+	$data['filename'] = $result_companyshow['filename'];
+      }
+      $data['name'] = $result_companyshow['name'];
+      $data['address'] = $this -> _post('address');
+      $data['linkman'] = $this -> _post('linkman');
+      $data['mobliephone'] = $this -> _post('mobliephone');
+      $data['companyphone'] = $this -> _post('companyphone');
+      $data['qqcode'] = $this -> _post('qqcode');
+      $data['keyword'] = $this -> _post('keyword');
+      $data['remark'] = $this -> _post('remark');
+      $data['addtime'] = time();
+
+      if(!$MediaShowOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+    
+    //RMB余额是否足够支付
+    $result_companyshow['rmb_enough'] = $_SESSION['rmb_total'] - $result_companyshow['count'] >= 0 ? 1 : 0;
+
+    $this -> assign('result_companyshow', $result_companyshow);
+
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+
+  }
+
+  //人民币余额结算
+  public function companyshow_rmb_pay(){
+
+    $MediaShowOrder = M('MediaShowOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+    //根据订单号查询应付总额
+    $const = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$MediaShowOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功购买 动感传媒 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $companyshow_info = $MediaShowOrder -> alias('mso') -> field('mso.csid,mso.ccid_one,mso.ccid_two,mso.mid,mso.name,mso.address,mso.linkman,mso.mobliephone,mso.companyphone,mso.qqcode,mso.keyword,mso.smallpic,mso.bigpic,mso.filename,mso.maketype,mso.remark,msm.months,mso.website') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('ordernum' => $this -> _get('orderid'))) -> find();
+
+    //写主表
+    $MediaShow = M('MediaShow');
+    $show_data = array();
+    $show_data['csid'] = $companyshow_info['csid'];
+    $show_data['ccid_one'] = $companyshow_info['ccid_one'];
+    $show_data['ccid_two'] = $companyshow_info['ccid_two'];
+    $show_data['mid'] = $companyshow_info['mid'];
+    $show_data['name'] = $companyshow_info['name'];
+    $show_data['address'] = $companyshow_info['address'];
+    $show_data['linkman'] = $companyshow_info['linkman'];
+    $show_data['mobliephone'] = $companyshow_info['mobliephone'];
+    $show_data['companyphone'] = $companyshow_info['companyphone'];
+    $show_data['qqcode'] = $companyshow_info['qqcode'];
+    $show_data['keyword'] = $companyshow_info['keyword'];
+    $show_data['remark'] = $companyshow_info['remark'];
+    $show_data['website'] = $companyshow_info['website'];
+    $show_data['maketype'] = $companyshow_info['maketype'];
+    if($companyshow_info['maketype'] == 1){
+      $show_data['image'] = $companyshow_info['smallpic'];
+      $url = C('MEDIA_PIC_PATH_SAVE');
+      $show_data['content'] = '<img src="' . $url . $companyshow_info['bigpic'] . '">';
+    }else{
+      $show_data['image'] = $companyshow_info['filename'];
+    }
+    $show_data['starttime'] = time();
+    $show_data['endtime'] = $show_data['starttime'] + ($companyshow_info['months'] * 30 * 24 * 60 * 60);
+    $show_data['addtime'] = time();
+    $show_data['updatetime'] = time();
+    $show_data['type'] = 1;
+    
+
+    if($aid = $MediaShow -> add($show_data)){
+      $info_succ = "您已成功购买动感传媒相关服务";
+      //更新会员余额和等级
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Services/companyshowsuccess',array($info_succ, 'success', $aid));
+    }else{
+      R('Register/errorjump',array(L('COMPANYSHOW_ERROR')));
+    }
+  }
+
+  //动感传媒快钱支付
+  public function companyshow_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/companyshow_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('MediaShowOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心动感传媒购买';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //动感传媒支付宝支付
+  public function companyshow_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/companyshow_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/companyshow_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心动感传媒购买';
+    $price = M('MediaShowOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //动感传媒财付通支付
+  public function companyshow_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/companyshow_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/companyshow_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心动感传媒购买';
+    $order_price = M('MediaShowOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+  //动感传媒购买成功
+  public function companyshowsuccess($title, $status, $aid){
+    $this -> assign('status', $status);
+    $this -> assign('aid', $aid);
+    $this -> assign('title', $title);
+    $this -> display('services:companyshowsuccess');
+    exit();
+  }
+
+  public function editcompanyshow(){
+    $MediaShow = M('MediaShow');
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MediaShow -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $MediaShow -> alias('ms') -> field('ms.id,ms.name,cs.name as csname,cc.name as name_one,cc2.name as name_two,ms.starttime,ms.endtime') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> join('yesow_company_category as cc ON ms.ccid_one = cc.id') -> join('yesow_company_category as cc2 ON ms.ccid_two = cc2.id') -> where(array('ms.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('ms.starttime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  public function editeditcompanyshow(){
+    $MediaShow = M('MediaShow');
+    if(!empty($_POST['id'])){
+      //上传图片
+      if($_POST['maketype'] == 1){
+	import('ORG.Net.UploadFile');
+	$upload = new UpLoadFile();
+	$upload -> savePath = C('MEDIA_PIC_PATH') ;
+	$upload -> autoSub = false;
+	$upload -> saveRule = 'uniqid';
+	$upload -> allowExts  = array('gif', 'jpg', 'jpeg');
+	if($upload -> upload()){
+	  $info = $upload -> getUploadFileInfo();
+	}else{
+	  R('Register/errorjump', array('上传动感传媒图片失败，请检查文件合理性'));
+	}
+      }else if($_POST['maketype'] == 2){
+	import('ORG.Net.UploadFile');
+	$upload = new UpLoadFile();
+	$upload -> savePath = C('MEDIA_PIC_DATA_PATH') ;
+	$upload -> autoSub = false;
+	$upload -> saveRule = 'uniqid';
+	$upload -> allowExts  = array('rar', 'zip');
+	if($upload -> upload()){
+	  $info = $upload -> getUploadFileInfo();
+	}else{
+	  R('Register/errorjump', array('上传动感传媒资料失败，请检查文件合理性'));
+	}
+      }
+
+      $upload_data = array();
+      if(!empty($_POST['maketype'])){
+	if($_POST['maketype'] == 1){
+	  $upload_data['image'] = $info[0]['savename'];
+	  $url = C('MEDIA_PIC_PATH_SAVE');
+	  $upload_data['content'] = '<img src="' . $url . $info[1]['savename'] . '">';
+	}else{
+	  $upload_data['filename'] = $info[0]['savename'];
+	}
+      }
+      
+      $upload_data['maketype'] = $this -> _post('maketype', 'intval');
+      $upload_data['name'] = $this -> _post('name');
+      $upload_data['ccid_one'] = $this -> _post('ccid_one', 'intval');
+      $upload_data['ccid_two'] = $this -> _post('ccid_two', 'intval');
+      $upload_data['csid'] = $this -> _post('csid', 'intval');
+      $upload_data['linkman'] = $this -> _post('linkman');
+      $upload_data['mobliephone'] = $this -> _post('mobliephone');
+      $upload_data['companyphone'] = $this -> _post('companyphone');
+      $upload_data['qqcode'] = $this -> _post('qqcode');
+      $upload_data['address'] = $this -> _post('address');
+      $upload_data['keyword'] = $this -> _post('keyword');
+      $upload_data['website'] = $this -> _post('website');
+      $upload_data['remark'] = $this -> _post('remark');
+      $upload_data['id'] = $this -> _post('id', 'intval');
+      $upload_data['updatetime'] = time();
+      $upload_data['ischeck'] = 0;
+      if($MediaShow -> save($upload_data)){
+	if(!empty($_POST['months'])){
+	  R('Register/successjump',array(L('COMPANYSHOW_RENEW'), U('Services/companyshow_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/qid/' . $this -> _post('id', 'intval')));
+	}else{
+	  R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Services/editcompanyshow')));
+	}
+      }else{
+	if(!empty($_POST['months'])){
+	  R('Register/successjump',array(L('COMPANYSHOW_RENEW'), U('Services/companyshow_renew_pay') . '/oid/' . $this -> _post('months', 'intval') . '/qid/' . $this -> _post('id', 'intval')));
+	}else{
+	  R('Register/errorjump',array(L('DATA_UPDATE_ERROR')));
+	}
+      }
+    }
+    $result = $MediaShow -> field('name,csid,ccid_one,ccid_two,linkman,address,mobliephone,companyphone,qqcode,keyword,remark,website') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $CompanyCategory = M('CompanyCategory');
+    $result_ccid = $CompanyCategory -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_ccid', $result_ccid);
+    $result_ccid_two = $CompanyCategory -> field('id,name') -> where(array('pid' => $result['ccid_one'])) -> order('sort ASC') -> select();
+    $this -> assign('result_ccid_two', $result_ccid_two);
+    $ChildSite = M('ChildSite');
+    $result_childsite = $ChildSite -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $MediaShowMoney = M('MediaShowMoney');
+    $companyshow_money = $MediaShowMoney -> field('id,months,marketprice,promotionprice') -> order('months ASC') -> select();
+    $this -> assign('companyshow_money', $companyshow_money);
+    $this -> display();
+  }
+
+  public function companyshow_renew_pay(){
+    $result_companyshow = array();
+
+    if(empty($_GET['orderid'])){
+      //月份价格
+      $result_companyshow = M('MediaShowMoney') -> field('months,promotionprice') -> find($this -> _get('oid'));
+      $result_companyshow['companyname'] = M('MediaShow') -> getFieldByid($this -> _get('qid', 'intval'), 'name');
+    }else{
+      $MediaShowOrder = M('MediaShowOrder');
+      $smid = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'smid');
+      $result_companyshow = M('MediaShowMoney') -> field('months,promotionprice') -> find($smid);
+      $result_companyshow['companyname'] = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'name');
+    }
+
+    $show_info = M('MediaShow') -> field('csid,ccid_one,ccid_two,website,image,content,maketype,name,address,linkman,mobliephone,companyphone,qqcode,keyword,remark') -> find($this -> _get('qid', 'intval'));
+
+    //生成订单号
+    $result_companyshow['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+    //总价
+    $result_companyshow['count'] = $result_companyshow['promotionprice'];
+    
+    if(empty($_GET['orderid'])){
+      //生成订单
+      $MediaShowOrder = M('MediaShowOrder');
+      $data = array();
+      $data['ordernum'] = $result_companyshow['orderid'];
+      $data['csid'] = $show_info['csid'];
+      $data['ccid_one'] = $show_info['ccid_one'];
+      $data['ccid_two'] = $show_info['ccid_two'];
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['smid'] = $this -> _get('oid', 'intval');
+      $data['price'] = $result_companyshow['count'];
+      if(strstr($show_info['image'], '.') == '.rar' || strstr($show_info['image'], '.') == '.zip'){
+	$data['maketype'] = 2;
+	$data['filename'] = $show_info['image'];
+      }else{
+	$data['maketype'] = 1;
+	$data['smallpic'] = $show_info['image'];
+      }
+      $data['maketype'] = $show_info['maketype'];
+      $data['website'] = $show_info['website']; 
+      $data['name'] = $show_info['name'];
+      $data['address'] = $show_info['address'];
+      $data['linkman'] = $show_info['linkman'];
+      $data['mobliephone'] = $show_info['mobliephone'];
+      $data['companyphone'] = $show_info['companyphone'];
+      $data['qqcode'] = $show_info['qqcode'];
+      $data['keyword'] = $show_info['keyword'];
+      $data['remark'] = $show_info['remark'];
+      $data['addtime'] = time();
+      $data['isrenew'] = 1;
+      $data['msid'] = $this -> _get('qid', 'intval');
+      if(!$MediaShowOrder -> add($data)){
+	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }
+    }
+    
+    //RMB余额是否足够支付
+    $result_companyshow['rmb_enough'] = $_SESSION['rmb_total'] - $result_companyshow['count'] >= 0 ? 1 : 0;
+
+    $this -> assign('result_companyshow', $result_companyshow);
+
+    //查询接口信息
+    $payport = M('Payport');
+    $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
+    $this -> assign('result_pay', $result_pay);
+    $this -> display();
+  }
+
+  public function companyshow_renew_rmb_pay(){
+    $MediaShowOrder = M('MediaShowOrder');
+    //获取交易密码
+    $pay_pwd = M('Member') -> getFieldByid($_SESSION[C('USER_AUTH_KEY')], 'traderspassword');
+    //未设置交易密码的先去设置交易密码
+    if(!$pay_pwd){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_EMPTY_ERROR'), '__ROOT__/member.php/index/setsafepwd'));
+    }
+    //交易密码错误
+    if($pay_pwd != $_GET['pwd']){
+      R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/services/qqonline_pay/orderid/' . $_GET['orderid']));
+    }
+    //根据订单号查询应付总额
+    $const = $MediaShowOrder -> getFieldByordernum($_GET['orderid'], 'price');
+    //扣费
+    $rmb = D('MemberRmb');
+    if(!$rmb -> lessrmb($const)){
+      R('Register/errorjump',array(L('RMB_ERROR')));
+    }
+
+    //扣费成功更新订单状态
+    if(!$MediaShowOrder -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('status' => 3, 'paytype' => 'RMB余额'))){
+      R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
+    }
+
+    //写RMB消费记录
+    $log_content = "您已成功续费 动感传媒 服务,订单号{$_GET['orderid']}";
+    if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){
+      R('Register/errorjump',array(L('RMB_LOG_ERROR')));
+    }
+
+    //订单相关信息
+    $companyshow_info = $MediaShowOrder -> alias('mso') -> field('msm.months,mso.msid') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('ordernum' => $this -> _get('orderid'))) -> find();
+
+    $MediaShow = M('MediaShow');
+    if($MediaShow -> where(array('id' => $companyshow_info['msid'])) -> setInc('endtime', $companyshow_info['months'] * 30 * 24 * 60 * 60)){
+      $info_succ = "您已成功续费动感传媒相关服务";
+      if(!$rmb -> rmbtotal()){
+	R('Register/errorjump',array(L('RMB_CACHE')));
+      }
+      R('Services/companyshowsuccess',array($info_succ, 'success', $companyshow_info['msid']));
+    }else{
+      R('Register/errorjump',array(L('COMPANYSHOW_ERROR')));
+    }
+  }
+
+  //动感传媒快钱支付
+  public function companyshow_renew_k99bill_pay(){
+    $pageUrl = C('WEBSITE') . "member.php/pay/companyshow_renew_k99billreturn";;
+    $orderId = $this -> _get('oid');
+    $rmb_amount = M('MediaShowOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    $productName = '易搜会员中心动感传媒续费';
+    R('Public/k99bill_pay',array($pageUrl, $orderId, $rmb_amount, $productName));
+  }
+
+  //动感传媒支付宝支付
+  public function companyshow_renew_alipay_pay(){
+    $notify_url = C('WEBSITE') . "member.php/pay/companyshow_renew_alipaynotify";
+    $return_url = C('WEBSITE') . "member.php/pay/companyshow_renew_alipayreturn";
+    $out_trade_no = $this -> _get('oid');
+    $subject = '易搜会员中心动感传媒续费';
+    $price = M('MediaShowOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/alipay_pay',array($notify_url, $return_url, $out_trade_no, $subject, $price));
+  }
+
+  //动感传媒财付通支付
+  public function companyshow_renew_tenpay_pay(){
+    $return_url = C('WEBSITE') . "member.php/pay/companyshow_renew_tenpayreturn";
+    $notify_url = C('WEBSITE') . "member.php/pay/companyshow_renew_tenpaynotify";
+    $out_trade_no = $this -> _get('oid');
+    $desc = '易搜会员中心动感传媒续费';
+    $order_price = M('MediaShowOrder') -> getFieldByordernum($this -> _get('oid'), 'price');
+    R('Public/tenpay_pay',array($return_url, $notify_url, $out_trade_no, $desc, $order_price));
+  }
+
+  public function companyshoworder(){
+    $MediaShowOrder = M('MediaShowOrder');
+    $where = array();
+    $where['mso.mid'] = $_SESSION[C('USER_AUTH_KEY')];
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MediaShowOrder -> alias('mso') -> where($where) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+    $result = $MediaShowOrder -> alias('mso') -> field('mso.id,mso.ordernum,mso.name,msm.months,mso.price,mso.status,mso.ischeck,mso.paytype,mso.addtime,mso.isrenew') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> order('mso.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
+  public function companyshoworderlist(){
+    $oid = $this -> _get('id', 'intval');
+    $MediaShowOrder = M('MediaShowOrder');
+    $result_order = $MediaShowOrder -> alias('mso') -> field('mso.name,mso.maketype,msm.months,mso.price,mso.ordernum,mso.ischeck,mso.status') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('mso.id' => $oid)) -> find();
+    $this -> assign('result_order', $result_order);
+    $this -> display();
+  }
 }

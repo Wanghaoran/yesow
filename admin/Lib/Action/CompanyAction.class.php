@@ -1862,6 +1862,79 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+
+  public function companyshoworder(){
+    $MediaShowOrder = M('MediaShowOrder');
+    $where = array();
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['mso.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['mso.addtime'][] = array('lt', $endtime);
+    }
+    $count = $MediaShowOrder -> alias('mso') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MediaShowOrder -> alias('mso') -> field('mso.id,mso.ordernum,m.name as mname,mso.name as cname,msm.months,mso.price,mso.status,mso.ischeck,mso.paytype,mso.addtime,mso.isrenew,mso.maketype') -> join('yesow_member as m ON mso.mid = m.id') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> order('mso.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delcompanyshoworder(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MediaShowOrder = M('MediaShowOrder');
+    if($MediaShowOrder -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function passauditcompanyshoworder(){
+    $MediaShowOrder = M('MediaShowOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($MediaShowOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  public function nopassauditcompanyshoworder(){
+    $MediaShowOrder = M('MediaShowOrder');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($MediaShowOrder -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  public function editcompanyshoworder(){
+    $MediaShowOrder = M('MediaShowOrder');
+    $result_o = $MediaShowOrder -> alias('mso') -> field('mso.id,mso.ordernum,m.name as mname,m.tel as mtel,m.fullname as mfullname,mso.name as cname,msm.months,mso.price,mso.status,mso.ischeck,mso.paytype,mso.addtime,mso.isrenew,mso.maketype,mso.smallpic,mso.bigpic,mso.filename') -> join('yesow_member as m ON mso.mid = m.id') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('mso.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result_o', $result_o);
+    $this -> display();
+  }
+
   public function memberrmb(){
     $member_rmb_detail = M('MemberRmbDetail');
     $where = array();
@@ -3429,6 +3502,73 @@ class CompanyAction extends CommonAction {
     $RecommendCompanyWebsiteType = M('RecommendCompanyWebsiteType');
     $result_website_type = $RecommendCompanyWebsiteType -> field('id,name') -> select();
     $this -> assign('result_website_type', $result_website_type);
+    $this -> display();
+  }
+
+  public function companyshowmoney(){
+    $MediaShowMoney = M('MediaShowMoney');
+    $where = array();
+
+    $count = $MediaShowMoney -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MediaShowMoney -> field('id,months,marketprice,promotionprice,remark') -> order('months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addcompanyshowmoney(){
+    if(!empty($_POST['months'])){
+      $MediaShowMoney = M('MediaShowMoney');
+      if(!$MediaShowMoney -> create()){
+	$this -> error($MediaShowMoney -> getError());
+      }
+      if($MediaShowMoney -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delcompanyshowmoney(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MediaShowMoney = M('MediaShowMoney');
+    if($MediaShowMoney -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editcompanyshowmoney(){
+    $MediaShowMoney = M('MediaShowMoney');
+    if(!empty($_POST['months'])){
+      if(!$MediaShowMoney -> create()){
+	$this -> error($MediaShowMoney -> getError());
+      }
+      if($MediaShowMoney -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MediaShowMoney -> field('months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
     $this -> display();
   }
 

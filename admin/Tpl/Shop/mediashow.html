@@ -77,13 +77,17 @@
 			<th width="30">编号</th>
 			<th width="40">所属分站</th>
 			<th width="40">所属类别</th>
-			<th width="190">公司名称</th>
+			<th width="40">所属会员</th>
+			<th width="40">购买方式</th>
+			<th width="40">制作方</th>
+			<th width="170">公司名称</th>
 			<th width="40">联系人</th>
 			<th width="40">联系电话</th>
 			<th width="40">排序位置</th>
 			<th width="30">开始时间</th>
 			<th width="30">结束时间</th>
 			<th width="30">状态</th>
+			<th width="40">设计</th>
 
 		</tr>
 		</thead>
@@ -94,6 +98,17 @@
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.csname}--!></td>
 			  <td><!--{$r.ccname}--!></td>
+			  <td><!--{$r.mname}--!></td>
+			  <eq name="r.type" value="1">
+			  <td style="color:blue;">前台购买</td>
+			  <else/>
+			  <td style="color:green;">后台添加</td>
+			  </eq>
+			  <eq name="r.maketype" value="1">
+			  <td style="color:blue;"><!--{$r.mname}--!></td>
+			  <else/>
+			  <td style="color:red;">易搜</td>
+			  </eq>
 			  <td><a href="__ROOT__/index/companyshowinfo/id/<!--{$r.id}--!>" target="_blank"><!--{$r.name}--!></a></td>			 
 			  <td><!--{$r.linkman}--!></td>			 
 			  <td><!--{$r.companyphone}--!></td>
@@ -105,6 +120,11 @@
 			  <else/>
 			  <td style="color:red;">未审核</td>
 			  </eq>
+			  <if condition="(strstr($r['image'], '.') eq '.rar') OR (strstr($r['image'], '.') eq '.zip')">
+					<td><a href="<!--{$Think.config.MEDIA_PIC_DATA_PATH_SAVE}--!><!--{$r.image}--!>" target="_blank" style="color:red;">等待设计</a></td>
+					<else/>
+					<td><a style="color:green;" href="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" target="_blank">查看</a></td>
+					</if>
 			</tr>
 		</volist>
 		</tbody>

@@ -25,6 +25,8 @@ $app_lang = array(
   'SEARCHRANK_ERROR' => '更新速查排名信息失败',
   'ADDPOSITION_SUCCESS' => '岗位信息添加成功,，审核通过后即可在前台显示',
   'RECOMMENDCOMPANY_ERROR' => '更新推荐商家信息失败',
+  'COMPANYSHOW_ERROR' => '更新动感传媒信息失败',
+  'COMPANYSHOW_RENEW' => '动感传媒信息更新成功，现在跳转到续费订单页面',
 );
 
 return array_merge($common_lang, $app_lang);

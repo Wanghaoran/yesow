@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑动感传媒-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script type="text/javascript">
+$.fn.hradio = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+            event.stopPropagation();
+        })
+        .prev().hide();
+    }
+	
+$(function(){
+	$('#radiolist1').hradio();
+	});
+
+var checksubmit = function(){
+  return true;
+}
+
+var getccidtwo = function(id){
+  $.ajax({
+      url:'__ROOT__/admin.php/public/ajaxgetcompanycategorytwo/id/' + id,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#ccidtwo').html(_nstr).show();
+	  }else{
+	  $('#ccidtwo').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+}
+
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">动感传媒管理</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox" id="switchBox2">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">动感传媒管理</a>
+                            </dt>
+                                                 
+                        </dl>
+                        <div class="main_sjdxfs">
+			  <div class="sjdxfs_tishi">以下内容可手动修改:</div>
+			  <form action="__ACTION__" method="post" enctype="multipart/form-data" onsubmit="return checksubmit();">
+                        	<ul class="ul_zxqqbj">
+				  
+                                
+				  <li>公司名称：&nbsp;<input type="text" name="name" id="companyname" class="txtfile2" style="width:310px;" value="<!--{$result.name}--!>" /></li>
+									  <li>所属分类：
+									  <select class="select_css2" id="ccidone" name="ccid_one" onchange="getccidtwo(this.value);">
+									    <volist name="result_ccid" id="rc">
+									    <eq name="result.ccid_one" value="$rc.id">
+									    <option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+									    <else/>
+									    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+									    </eq>
+									    </volist>
+									  </select>
+									  <select class="select_css2" name="ccid_two" id="ccidtwo">
+									   <volist name="result_ccid_two" id="rct">
+										<eq name="result.ccid_two" value="$rct.id">
+										<option value="<!--{$rct.id}--!>" selected="selected"><!--{$rct.name}--!></option>
+										<else/>
+										<option value="<!--{$rct.id}--!>"><!--{$rct.name}--!></option>
+										</eq>
+									   </volist>
+									  </select>
+									  </li>
+									  <li>所属分站：
+									  <select class="select_css2" name="csid" id="csid">
+									    <option value="">请选择</option>
+									    <volist name="result_childsite" id="rcs">
+									    <eq name="result.csid" value="$rcs.id">
+									    <option value="<!--{$rcs.id}--!>" selected="selected"><!--{$rcs.name}--!></option>
+									    <else/>
+									    <option value="<!--{$rcs.id}--!>"><!--{$rcs.name}--!></option>
+									    </eq>
+									    </volist>
+									  </select>
+									  </li>
+									<li>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input type="text" name="linkman" class="txtfile2" style="width:115px;" value="<!--{$result.linkman}--!>" />&nbsp;&nbsp;移动电话：<input type="text" name="mobliephone" class="txtfile2" style="width:124px;" value="<!--{$result.mobliephone}--!>" /></li>
+									<li>联系电话：&nbsp;<input type="text" name="companyphone" class="txtfile2" style="width:115px;" value="<!--{$result.companyphone}--!>" />&nbsp;&nbsp;在线Q Q：<input type="text" name="qqcode" class="txtfile2" style="width:124px;" value="<!--{$result.qqcode}--!>" /></li>
+									<li>公司地址：&nbsp;<input type="text" name="address" class="txtfile2" style="width:310px;" value="<!--{$result.address}--!>" /></li>
+									<li>关&nbsp;&nbsp;键&nbsp;&nbsp;词：<input type="text" name="keyword" class="txtfile2" style="width:310px;" value="<!--{$result.keyword}--!>" /></li>
+									<li style="height:100%;">简单描述：<textarea name="remark" style="width:310px;height:100px;"><!--{$result.remark}--!></textarea></li>
+					<div class="sjdxfs_tishi">以下内容可选择修改:</div>
+                                <li style="width:100%;">
+                                	<div class="qiye_info" style="width:600px;">
+									  动感传媒有两个广告图：小图尺寸为 153 ×192 PX(像素)&nbsp;大图尺寸为 930 ×1200 PX(像素)
+                                        <div class="clear"></div>
+                                        <input type="radio" name="maketype" value="1"/>你可以自己上传
+                                        <div class="clear"></div>
+                                        <div style="padding-left:20px;">
+					  
+					  <div class="file-box" style="width:180px;">
+					    <div style="float:left">小图：</div>
+					    <input type='text' id='smallpicname' class='txtfile' style="width:55px;" />
+					    <input type='button' class='btnfile' value='浏览...'/>
+					    <input type="file" name="smallpic" class="fileinput" size="28" onchange="document.getElementById('smallpicname').value=this.value" />
+					    </div>
+					    <div class="file-box" style="width:240px;">
+					    <span style="margin-left:5px;">大图：</span>
+					    <input type='text' id='bigpicname' class='txtfile' style="width:55px;" />
+					    <input type='button' class='btnfile' value='浏览...'/>
+					    <input type="file" name="bigpic" class="fileinput" size="28" onchange="document.getElementById('bigpicname').value=this.value" />
+					  </div>
+
+                                           
+                                             <div class="clear10"></div>
+                                            <div style="float:left">网址：</div>
+					    <div style="float:left"><input type="text" class="txtfile" name="website" style="width:365px;" value="<!--{$result.website}--!>" /></div>
+                                            <div class="clear10"></div>
+                                         </div>
+                                         <div class="clear"></div>
+                                         <input type="radio" name="maketype" value="2"/>您可以把广告资料提交给我们，让我们来帮您设计
+                                         <div style="padding-left:20px;">
+					   <div class="file-box" style="width:450px;">
+					     <input type='text' id='dataname' class='txtfile' style="width:325px;" />
+					     <input type='button' class='btnfile' value='浏览...' />
+					     <input type="file" name="data" class="fileinput" size="28" onchange="document.getElementById('dataname').value=this.value" style="width:430px;" /></div>
+                                         </div>
+                                         <div class="clear10"></div>
+                                    </div>
+                                </li>
+                                <div class="clear"></div>
+                            </ul>
+                            <div class="clear"></div>
+                            <div class="sjdxfs_tishi">续包月可选择以下选项，不选择则视为不续包。</div>
+                            <div class="">
+                            	<div id="radiolist1">
+				  <volist name="companyshow_money" id="qp">
+				<input name="months" id="qqonlinemonth<!--{$qp.id}--!>" type="radio" value="<!--{$qp.id}--!>"/>
+				<label for="qqonlinemonth<!--{$qp.id}--!>" class="zxqqsqradio">包月数：<span class="baoyueshu"><!--{$qp.months}--!></span>个月<br />市场价：<!--{$qp.marketprice}--!>元<br />推广价：<span class="tuiguangjia"><!--{$qp.promotionprice}--!></span>元</label>
+				</volist>
+                                         <div class="clear"></div>
+                                     </div>
+                            </div>							
+			    <div class="div_zxqqsq5">
+			      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+			      <input type="reset" class="rmb_fanhui" value="重置"/>
+                            	<input type="submit" class="rmb_fanhui" value="确认提交"/>
+			      </div>
+			      </form>
+                            <div class="clear10"></div>
+                        </div>
+                        <div class="clear30"></div>     
+                    </div>
+                    <div class="clear"></div>
+					<!--main结束-->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+</body>
+</html>

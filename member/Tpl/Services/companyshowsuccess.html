@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>支付结果-动感传媒购买-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+</head>
+<body id="body_user">
+	<include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+                <include file="services:sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit">动感传媒</div>
+                   <div class="clear30"></div>
+                    <!--內容 開始-->
+                    <div class="rmb">
+                	<div class="rmb_title">
+                        <div class="clear"></div>
+                    </div>
+		    <div class="rmb_con">
+		      <eq name="status" value="success">
+		      <div class="currect"><!--{$title}--!></div>
+		      <else/>
+		      <div class="failed"><!--{$title}--!></div>
+		      </eq>
+                          <div class="rmb_btn" style="width:300px;">
+			    <input type="button" value="返回购买页" onclick="location.href='__APP__/services/addcompanyshow';" class="rmb_fanhui" />
+			<input type="button" value="查看动感传媒" onclick="location.href='__ROOT__/companyshow/<!--{$aid}--!>';" class="rmb_fanhui" />    
+                          </div>
+                    </div>
+                </div>
+                    <!--內容 結束-->
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+	<include file="Index:footer" />
+</body>
+</html>

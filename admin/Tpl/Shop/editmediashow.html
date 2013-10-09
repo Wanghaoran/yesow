@@ -69,9 +69,17 @@
       </p>
       <p>
       <label>栏目图片：</label>
-      <input name="image" type="file" size="5" />
+      <input name="image" type="file" style="width:150px;" />
       <notempty name="result.image">
+      <eq name="result.maketype" value="1">
       <a href="__URL__/editshowimage/id/<!--{$Think.get.id}--!>" target="dialog">点击查看</a>
+      <else/>
+      <if condition="(strstr($result['image'], '.') eq '.rar') OR (strstr($result['image'], '.') eq '.zip')">
+      <a href="<!--{$Think.config.MEDIA_PIC_DATA_PATH_SAVE}--!><!--{$result.image}--!>" target="_blank">下载资料</a>
+      <else/>
+      <a href="__URL__/editshowimage/id/<!--{$Think.get.id}--!>" target="dialog">点击查看</a>
+      </if>
+      </eq>
       </notempty>
       </p>
       <p>

@@ -65,6 +65,11 @@
       <label>排序位置：</label>
       <input type="text" class="textInput" name="sort" value="0" />
       </p>
+      <p>
+      <label>所属会员：</label>
+	  <input name="org3.id" value="" type="hidden">
+	  <input name="org3.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org3"/>
+      </p>
       <p style="width:90%;">
       <label>公司地址：</label>
       <input type="text" class="textInput" size="90" name="address" />
