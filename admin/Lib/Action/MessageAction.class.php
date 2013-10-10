@@ -571,6 +571,217 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  public function memberemailsendrecord(){
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+
+    $where = array();
+    if(!empty($_POST['username'])){
+      $mid = M('Member') -> getFieldByname($_POST['username'], 'id');
+      $where['mssr.mid'] = $mid;
+    }
+
+    $count = $MemberSendEmailRecord -> alias('mssr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberSendEmailRecord -> alias('mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendemail,mssr.statuscode') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delmemberemailsendrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    if($MemberSendEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function memberemailsearchrecord(){
+    $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
+    $where = array();
+    if(!empty($_POST['keyword'])){
+      $where['mssr.keyword'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['mssr.searchtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['mssr.searchtime'][] = array('lt', $endtime);
+    }
+
+    $count = $MemberSearchEmailRecord -> alias('mssr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberSearchEmailRecord -> alias('mssr') -> field('mssr.id,mssr.keyword,m.name as mname,tmp.count,mssr.checknum,mssr.ip,mssr.searchtime') -> join('yesow_member as m ON mssr.mid = m.id') -> join('LEFT JOIN (SELECT keyword,count(id) as count FROM yesow_member_search_email_record GROUP BY keyword) as tmp ON mssr.keyword = tmp.keyword') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('mssr.searchtime DESC') -> select();
+    $this -> assign('result', $result);
+
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function delmemberemailsearchrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
+    if($MemberSearchEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //
+
+  public function memberemailgroup(){
+    $MemberEmailGroup = M('MemberEmailGroup');
+    $where = array();
+    if(!empty($_POST['keyword'])){
+      $where['msg.name'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['msg.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['msg.addtime'][] = array('lt', $endtime);
+    }
+
+    $count = $MemberEmailGroup -> alias('msg') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberEmailGroup -> alias('msg') -> field('msg.id,msg.name,msg.addtime,tmp.count,m.name as mname') -> join('yesow_member as m ON msg.mid = m.id') -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_email_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('msg.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delmemberemailgroup(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberEmailGroup = M('MemberEmailGroup');
+    if($MemberEmailGroup -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editmemberemailgroup(){
+    $MemberEmailGroupList = M('MemberEmailGroupList');
+    $id = $this -> _request('id', 'intval');
+    $where = array();
+    $where['gid'] = $id;
+    if(!empty($_POST['name'])){
+      $where['realnumber'] = $this -> _post('name');
+    }
+
+    $count = $MemberEmailGroupList -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberEmailGroupList -> field('id,realnumber') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addeditmemberemailgroup(){
+    if(!empty($_POST['realnumber'])){
+      $MemberEmailGroupList = M('MemberEmailGroupList');
+      if(!$MemberEmailGroupList -> create()){
+	$this -> error($MemberEmailGroupList -> getError());
+      }
+      $MemberEmailGroupList -> hidenumber = substr($_POST['realnumber'], 0 ,3) . '****' . strstr($_POST['realnumber'], '@');
+      if($MemberEmailGroupList -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display(); 
+  }
+
+  public function editeditmemberemailgroup(){
+    $MemberEmailGroupList = M('MemberEmailGroupList');
+
+    if(!empty($_POST['realnumber'])){
+      if(!$MemberEmailGroupList -> create()){
+	$this -> error($MemberEmailGroupList -> getError());
+      }
+      $MemberEmailGroupList -> hidenumber = substr($_POST['realnumber'], 0 ,3) . '****' . strstr($_POST['realnumber'], '@');
+      if($MemberEmailGroupList -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $MemberEmailGroupList -> field('id,realnumber') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  
+  }
+
+  public function deleditmemberemailgroup(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberEmailGroupList = M('MemberEmailGroupList');
+    if($MemberEmailGroupList -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //
+
   public function apisendtype(){
     $sendtype = M('SmsSendType');
     $where = array();
