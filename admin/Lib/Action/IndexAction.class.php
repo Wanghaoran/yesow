@@ -35,6 +35,7 @@ class IndexAction extends CommonAction {
       $where_media['msc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
       $where_used['suc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
       $where_shop['sc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+      $where_jobs['rjc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
     }
     if(!empty($_POST['author'])){
       $member = M('Member');
@@ -46,6 +47,7 @@ class IndexAction extends CommonAction {
       $where_media['msc.mid'] = intval($authorid);
       $where_used['suc.mid'] = intval($authorid);
       $where_shop['sc.mid'] = intval($authorid);
+      $where_jobs['rjc.mid'] = intval($authorid);
     }
     if(!empty($_POST['starttime'])){
       $addtime = $this -> _post('starttime', 'strtotime');
@@ -56,6 +58,7 @@ class IndexAction extends CommonAction {
       $where_media['msc.addtime'] = array(array('gt', $addtime));
       $where_used['suc.addtime'] = array(array('gt', $addtime));
       $where_shop['sc.addtime'] = array(array('gt', $addtime));
+      $where_jobs['rjc.addtime'] = array(array('gt', $addtime));
     }
     if(!empty($_POST['endtime'])){
       $endtime = $this -> _post('endtime', 'strtotime');
@@ -66,6 +69,7 @@ class IndexAction extends CommonAction {
       $where_media['msc.addtime'][] = array('lt', $endtime);
       $where_used['suc.addtime'][] = array('lt', $endtime);
       $where_shop['sc.addtime'][] = array('lt', $endtime);
+      $where_jobs['rjc.addtime'][] = array('lt', $endtime);
     }
 
     //资讯评论  type = 1 代表资讯
@@ -96,9 +100,13 @@ class IndexAction extends CommonAction {
     $shop = M('ShopComment');
     $sql_shop = $shop -> table('yesow_shop_comment as sc') -> field('sc.id,s.title as title,sc.sid as fid,sc.floor,sc.content,m.name,sc.addtime,sc.status,4+3 as type') -> where($where_shop) -> order('status ASC,sc.addtime DESC') -> join('yesow_shop as s ON sc.sid = s.id') -> join('yesow_member as m ON sc.mid = m.id') -> buildSql();
 
+    //人才评论 type = 8 代表人才
+    $jobs = M('RecruitJobsComment');
+    $sql_jobs = $jobs -> table('yesow_recruit_jobs_comment as rjc') -> field('rjc.id,rj.name as title,rjc.rjid as fid,rjc.floor,rjc.content,m.name,rjc.addtime,rjc.status,4+4 as type') -> where($where_jobs) -> order('status ASC,sc.addtime DESC') -> join('yesow_recruit_jobs as rj ON rjc.rjid = rj.id') -> join('yesow_member as m ON rjc.mid = m.id') -> buildSql();
+
     //合并查询语句
     if(empty($_POST['type'])){
-      $sql = '(' . $sql_notice . ' UNION ALL ' . $sql_info . ' UNION ALL ' . $sql_company . ' UNION ALL ' . $sql_store . ' UNION ALL ' . $sql_media . ' UNION ALL ' . $sql_used . ' UNION ALL ' . $sql_shop . ')';
+      $sql = '(' . $sql_notice . ' UNION ALL ' . $sql_info . ' UNION ALL ' . $sql_company . ' UNION ALL ' . $sql_store . ' UNION ALL ' . $sql_media . ' UNION ALL ' . $sql_used . ' UNION ALL ' . $sql_shop . ' UNION ALL ' . $sql_jobs . ')';
     }else if($_POST['type'] == 'info'){
       $sql = '(' . $sql_info . ')';
     }else if($_POST['type'] == 'notice'){
@@ -113,6 +121,8 @@ class IndexAction extends CommonAction {
       $sql = '(' . $sql_used . ')';
     }else if($_POST['type'] == 'shop'){
       $sql = '(' . $sql_shop . ')';
+    }else if($_POST['type'] == 'jobs'){
+      $sql = '(' . $sql_jobs . ')';
     }
 
     //记录总数
@@ -158,6 +168,8 @@ class IndexAction extends CommonAction {
 	$model = D('index://SellUsedComment');
       }else if($type == 7){
 	$model = D('index://ShopComment');
+      }else if($type == 8){
+	$model = D('index://RecruitJobsComment');
       }
 
       $_POST['id'] = $id;
@@ -172,7 +184,7 @@ class IndexAction extends CommonAction {
     }
 
     list($id, $type) = explode('@@@', $_GET['id']);
-    //1代表资讯  2代表公告  3代表速查 4代表旺铺 5代表动感传媒 6代表二手滞销
+    //1代表资讯  2代表公告  3代表速查 4代表旺铺 5代表动感传媒 6代表二手滞销 7商品 8人才
     if($type == 1){
       $model = D('index://InfoArticle');
       $result = $model -> table('yesow_info_article_comment as iac') -> field('iac.id,ia.title,iac.floor,iac.content,m.name') -> join('yesow_info_article as ia ON iac.aid = ia.id') -> join('yesow_member as m ON iac.mid = m.id') -> where(array('iac.id' => $this -> _get('id', 'intval'))) -> find();
@@ -195,6 +207,9 @@ class IndexAction extends CommonAction {
     }else if($type == 7){
       $model = D('index://ShopComment');
       $result = $model -> table('yesow_shop_comment as sc') -> field('sc.id,s.title as title,sc.floor,sc.content,m.name') -> join('yesow_shop as s ON sc.sid = s.id') -> join('yesow_member as m ON sc.mid = m.id') -> where(array('sc.id' => $this -> _get('id', 'intval'))) -> find();
+    }else if($type == 8){
+      $model = D('index://RecruitJobsComment');
+      $result = $model -> table('yesow_recruit_jobs_comment as sc') -> field('sc.id,rj.name as title,sc.floor,sc.content,m.name') -> join('yesow_recruit_jobs as rj ON sc.rjid = rj.id') -> join('yesow_member as m ON sc.mid = m.id') -> where(array('sc.id' => $this -> _get('id', 'intval'))) -> find();
     }
 
     $this -> assign('result', $result);
@@ -221,6 +236,8 @@ class IndexAction extends CommonAction {
 	$used_del[] = $id;
       }else if($type == 7){
 	$shop_del[] = $id;
+      }else if($type == 8){
+	$jobs_del[] = $id;
       }
     }
     $num = 0;
@@ -232,6 +249,7 @@ class IndexAction extends CommonAction {
     $num += M('MediaShowComment') -> where(array('id' => array('in', $media_del))) -> delete();
     $num += M('SellUsedComment') -> where(array('id' => array('in', $used_del))) -> delete();
     $num += M('ShopComment') -> where(array('id' => array('in', $shop_del))) -> delete();
+    $num += M('RecruitJobsComment') -> where(array('id' => array('in', $jobs_del))) -> delete();
     if($num != 0){
       $this -> success(L('DATA_DELETE_SUCCESS'));
     }else{
@@ -259,6 +277,8 @@ class IndexAction extends CommonAction {
 	$used_pass[] = $id;
       }else if($type == 7){
 	$shop_pass[] = $id;
+      }else if($type == 8){
+	$jobs_pass[] = $id;
       }
     }
     $data = array('status' => 2);
@@ -271,6 +291,7 @@ class IndexAction extends CommonAction {
     $num += M('MediaShowComment') -> where(array('id' => array('in', $media_pass))) -> save($data);
     $num += M('SellUsedComment') -> where(array('id' => array('in', $used_pass))) -> save($data);
     $num += M('ShopComment') -> where(array('id' => array('in', $shop_pass))) -> save($data);
+    $num += M('RecruitJobsComment') -> where(array('id' => array('in', $jobs_pass))) -> save($data);
     if($num != 0){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
@@ -298,6 +319,8 @@ class IndexAction extends CommonAction {
 	$used_pass[] = $id;
       }else if($type == 7){
 	$shop_pass[] = $id;
+      }else if($type == 8){
+	$jobs_pass[] = $id;
       }
     }
     $data = array('status' => 1);
@@ -310,6 +333,7 @@ class IndexAction extends CommonAction {
     $num += M('MediaShowComment') -> where(array('id' => array('in', $media_pass))) -> save($data);
     $num += M('SellUsedComment') -> where(array('id' => array('in', $used_pass))) -> save($data);
     $num += M('ShopComment') -> where(array('id' => array('in', $shop_pass))) -> save($data);
+    $num += M('RecruitJobsComment') -> where(array('id' => array('in', $jobs_pass))) -> save($data);
     if($num != 0){
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{

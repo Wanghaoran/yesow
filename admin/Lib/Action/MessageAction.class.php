@@ -801,6 +801,16 @@ class MessageAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $sendtype -> field('id,name,apicode,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
+    $setting = M('SmsSetting');
+    $sms_username = $setting -> getFieldByname('sms_username', 'value');
+    $sms_password = $setting -> getFieldByname('sms_password', 'value');
+    $balance = file_get_contents('http://www.vip.86aaa.com/api.aspx?SendType=101&Code=utf-8&UserName=' . $sms_username . '&Pwd=' . $sms_password . '');
+    preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+    foreach($result as $key => $value){
+      $result[$key]['balance'] = $balance_arr[1][$value['apicode']];
+    }
+    $this -> assign('balance_arr', $balance_arr);
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

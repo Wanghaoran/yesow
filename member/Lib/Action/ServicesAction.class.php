@@ -1502,7 +1502,15 @@ class ServicesAction extends CommonAction {
   public function sendsms(){
     //发送通道
     $sendtype = M('SmsSendType');
-    $result_sendtype = $sendtype -> field('apicode,name') -> select();
+    $result_sendtype = $sendtype -> field('apicode,name,remark') -> select();
+    $setting = M('SmsSetting');
+    $sms_username = $setting -> getFieldByname('sms_username', 'value');
+    $sms_password = $setting -> getFieldByname('sms_password', 'value');
+    $balance = file_get_contents('http://www.vip.86aaa.com/api.aspx?SendType=101&Code=utf-8&UserName=' . $sms_username . '&Pwd=' . $sms_password . '');
+    preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+    foreach($result_sendtype as $key => $value){
+      $result_sendtype[$key]['balance'] = $balance_arr[1][$value['apicode']];
+    }
     $this -> assign('result_sendtype', $result_sendtype);
     //发送价格
     $setting = M('SmsSetting');
@@ -1816,7 +1824,7 @@ class ServicesAction extends CommonAction {
       $MemberSearchSmsRecord = M('MemberSearchSmsRecord');
       $data_rec = array();
       $data_rec['mid'] = session(C('USER_AUTH_KEY'));
-      $data_rec['keyword'] = $this -> _get('keyword');
+      $data_rec['keyword'] = safeEncoding($_GET['keyword']);
       $data_rec['checknum'] = count($_SESSION['member_search_send_list']);
       $data_rec['ip'] = get_client_ip();
       $data_rec['searchtime'] = time();
@@ -3771,7 +3779,7 @@ class ServicesAction extends CommonAction {
       $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
       $data_rec = array();
       $data_rec['mid'] = session(C('USER_AUTH_KEY'));
-      $data_rec['keyword'] = $this -> _get('keyword');
+      $data_rec['keyword'] = safeEncoding($_GET['keyword']);
       $data_rec['checknum'] = count($_SESSION['member_search_email_send_list']);
       $data_rec['ip'] = get_client_ip();
       $data_rec['searchtime'] = time();

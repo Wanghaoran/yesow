@@ -21,7 +21,7 @@ class InfoAction extends CommonAction {
     //查分类下文章
     foreach($result_one_column as $key => $value){
       //分类下6个文章标题列表
-      $result_one_column[$key]['articlelist'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,ita.name as tname') -> where(array('ia.classid' => $value['id'], 'ia.status' => 2)) -> order('addtime DESC') -> limit('1,6') -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> select();
+      $result_one_column[$key]['articlelist'] = $article -> table('yesow_info_article as ia') -> field('ia.id,ia.title,ita.name as tname') -> where(array('ia.classid' => $value['id'], 'ia.status' => 2)) -> order('addtime DESC') -> limit('1,15') -> join('yesow_info_title_attribute as ita ON ia.tid = ita.id') -> select();
       //分类下第一个文章标题+图片+内容
       $result_one_column[$key]['fristarticle'] = $article -> field('id,title,content') -> where(array('classid' => $value['id'], 'status' => 2)) -> order('addtime DESC') -> limit('1') -> select();
       $result_one_column[$key]['fristarticle'][0]['content'] = msubstr(strip_tags($result_one_column[$key]['fristarticle'][0]['content']), 0, 90);
@@ -90,6 +90,9 @@ class InfoAction extends CommonAction {
     $where = array();
     $where['ia.colid'] = $id;
     $where['ia.status'] = 2;
+    if(!empty($_POST['title'])){
+      $where['ia.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     import("ORG.Util.Page");// 导入分页类
     $count = $article -> table('yesow_info_article as ia') -> where($where) -> count('id');
     $page = new Page($count, $conf['pagernum']);
