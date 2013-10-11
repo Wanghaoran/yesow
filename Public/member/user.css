@@ -228,6 +228,7 @@ span.fontnormal{ font-weight:normal;}
 /* switchBox */
 .switchBox{width:750px; margin: 10px auto;}
 .switchBox dt{height:31px; border-bottom:#ff8b01 1px solid;}
+.switchBox .balances{float:right;}
 .switchBox dt a{ border:#e4e3e3 1px solid; border-bottom:none; text-decoration: none; background:#f3f3f3;color:#7c7c7c;cursor:pointer;float:left;font-size:14px;height:30px;line-height:30px;text-align:center;text-decoration:none;width:100px; font-weight:bold; margin-right:10px;}
 .switchBox dt a.on{ background:url(images/user/btn_regbg.gif) left bottom no-repeat; text-decoration: none; color:#fff;}
 .switchBox dd{clear:both;display:none;height:auto;line-height:20px;padding:10px;font-family:"宋体";}
@@ -493,6 +494,7 @@ ul.ul_price2 li.li_price2{ width:680px;}
 .ul_wddhhb li{ float:left; width:100px; height:25px; margin-right:5px; line-height:25px;}
 .ul_wddhhb2 li{ float:left; height:25px; margin-right:5px; line-height:25px;}
 h2.h2_yue{ float:right; background:url(images/user/icon_yue.gif) left center no-repeat; height:40px; line-height:40px; text-align:left; padding-left:30px; font-size:12px; font-weight:normal;}
+h2.h2_yue2{ float:right; background:url(images/user/icon_yue.gif) left center no-repeat; height:25px; text-align:left; padding-left:30px; font-size:12px; font-weight:normal;}
 table.table_wdfsjl{ float:left;width:740px; border:none; border-collapse:collapse; margin:10px auto;}
 table.table_wdfsjl th{border:none; font-size:12px; font-weight:bold; border:#a6a6a6 1px solid; border-collapse:collapse; height:30px; line-height:30px; text-align:left; padding-left:10px;}
 table.table_wdfsjl td{border:none; border:#a6a6a6 1px solid; border-collapse:collapse; height:25px; line-height:25px; text-align:left; padding-left:10px;}
@@ -632,6 +634,7 @@ input.input_sjdxfs2{ width:148px; height:20px; line-height:20px; border:#999 1px
 .div_gsmc{ width:100px; height:30px; display:inline-block; overflow:hidden;}
 .div_xdsj{ width:74px; height:30px; display:inline-block; overflow:hidden;}
 .div_beizhu{ width:50px; height:30px; display:inline-block; overflow:hidden;}
+.div_email{ width:320px; height:30px; display:inline-block; overflow:hidden;}
 
 .scpminfo{ width:380px; line-height:25px;}
 .scpminfo_l{ float:left; width:80px; text-align:right;}

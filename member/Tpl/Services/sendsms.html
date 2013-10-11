@@ -72,6 +72,14 @@
       $("#groupname").hide();
     }
   }
+
+var changesendtypestring = function(value){
+    var strings = [];
+  <volist name="result_sendtype" id="rs">
+    strings[<!--{$rs.apicode}--!>] = '<!--{$rs.remark}--!>(剩余<!--{$rs.balance}--!>条)';
+  </volist>
+  $('#sendtypestring').text(strings[value]);
+}
   
 </script>
 </head>
@@ -106,11 +114,12 @@
                                     <tr>
                                         <td class="tdleft">发送类型：</td>
 					<td class="tdright">
-					  <select name="sendtype">
+					  <select name="sendtype" onchange="changesendtypestring(this.value);">
 					    <volist name="result_sendtype" id="rs">
-					    <option value="<!--{$rs.apicode}--!>"><!--{$rs.name}--!>(<!--{$rs.remark}--!>)(剩余:<!--{$rs.balance}--!>条)</option>
+					    <option value="<!--{$rs.apicode}--!>"><!--{$rs.name}--!></option>
 					    </volist>
 					</select>
+					<span id="sendtypestring"></span>
 					</td>
                                     </tr>
                                     <tr>
@@ -186,5 +195,6 @@
   </body>
   <script>
     FormateNum($('textarea[name="sendnumber"]')[0]);
+    changesendtypestring(<!--{$result_sendtype.0.apicode}--!>);
   </script>
 </html>

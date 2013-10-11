@@ -22,11 +22,12 @@
                             <!--nav start-->
                             <dt>
                                 <a href="#" class="on">我的发送记录</a>
-                            </dt>
-                                                 
+				<h2 class="balances h2_yue2">余额: <!--{$Think.session.rmb_total}--!> 元</h2>
+                            </dt>          
                         </dl>
+			
                         <div class="main_sjdxfs">
-                            <h2 class="h2_yue">余额: <!--{$Think.session.rmb_total}--!> 元</h2>
+                            
                             <div style="min-height:250px;">
                                 <table class="table_wdfsjl">
                                     <tr>
@@ -38,7 +39,7 @@
 				      <volist name="result" id="r">
 				      <tr>
 					<td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
-					<td><a href="#" title="<!--{$r.content}--!>"><!--{$r.content}--!></a></td>
+					<td><a class="div_email" href="#" title="<!--{$r.content}--!>"><!--{$r.content}--!></a></td>
 					<td><!--{$r.sendemail}--!></td>
 					<switch name="r.statuscode">
 					<case value="1" break="1">

@@ -1107,7 +1107,7 @@ class PublicAction extends Action {
     $where_sort['rj.ischeck'] = 1;
     $where_sort['rjs.starttime'] = array('elt', time());
     $where_sort['rjs.endtime'] = array('egt', time());
-    $result_recruit_sort = $RecruitJobsSort -> alias('rjs') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,cs.name as csname') -> join('yesow_recruit_jobs as rj ON rjs.rjid = rj.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> group('rj.cid') -> where($where_sort) -> order('rjs.sort DESC') -> select();
+    $result_recruit_sort = $RecruitJobsSort -> alias('rjs') -> field('rj.id,rj.name,rc.id as rcid,rc.name as rcname,cs.name as csname,rj.addtime') -> join('yesow_recruit_jobs as rj ON rjs.rjid = rj.id') -> join('yesow_recruit_company as rc ON rj.cid = rc.id') -> join('yesow_child_site as cs ON rj.jobs_csid = cs.id') -> limit(7) -> group('rj.cid') -> where($where_sort) -> order('rjs.sort DESC') -> select();
     $r_num = count($result_recruit_sort) >= 7 ? 0 : 7 - count($result_recruit_sort);
     $where = array();
     $where['rj.ischeck'] = 1;

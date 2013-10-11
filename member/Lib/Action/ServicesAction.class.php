@@ -1800,6 +1800,35 @@ class ServicesAction extends CommonAction {
     echo count($_SESSION['member_search_phone_list']);
   }
 
+  //ajax全选
+  public function ajaxsmssearchresultallcheck(){
+    $keyword = safeEncoding($_GET['keyword']);
+    $company = M('Company');
+    $map['_string'] = "LENGTH(mobilephone) = 11";
+    $where = array();
+    $where['delaid']  = array('exp', 'is NULL');
+    $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+    if($_GET['searchscope'] == 'city'){
+      $where['csid'] = $this -> _get('csid', 'intval');
+      if(!empty($_GET['csaid'])){
+	$where['csaid'] = $this -> _get('csaid', 'intval');
+      }
+    }
+    $where['_complex'] = $map;
+    $result = $company -> field('id') -> where($where) -> order('id DESC') -> select();
+    if($_GET['type'] == 1){
+      foreach($result as $value){
+	$_SESSION['member_search_phone_list'][] = $value['id'];
+      }
+    }else{
+      foreach($result as $value){
+	if(in_array($value['id'], $_SESSION['member_search_phone_list'])){
+	  unset($_SESSION['member_search_phone_list'][array_search($value['id'], $_SESSION['member_search_phone_list'])]);
+	}
+      }
+    }
+  }
+
   //提取搜索结果并扣费
   public function searchresult(){
     //搜索价格
@@ -3752,6 +3781,36 @@ class ServicesAction extends CommonAction {
       $_SESSION['member_search_email_list'][] = $_GET['cid'];
     } 
     echo count($_SESSION['member_search_email_list']);
+  }
+
+  //ajax全选
+  public function ajaxemailsearchresultallcheck(){
+    $keyword = safeEncoding($_GET['keyword']);
+    $keyword = $this -> _get('keyword');
+    $company = M('Company');
+    $map['_string'] = "LENGTH(email) > 1";
+    $where = array();
+    $where['delaid']  = array('exp', 'is NULL');
+    $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+    if($_GET['searchscope'] == 'city'){
+      $where['csid'] = $this -> _get('csid', 'intval');
+      if(!empty($_GET['csaid'])){
+	$where['csaid'] = $this -> _get('csaid', 'intval');
+      }
+    }
+    $where['_complex'] = $map;
+    $result = $company -> field('id') -> where($where) -> order('id DESC') -> select();
+    if($_GET['type'] == 1){
+      foreach($result as $value){
+	$_SESSION['member_search_email_list'][] = $value['id'];
+      }
+    }else{
+      foreach($result as $value){
+	if(in_array($value['id'], $_SESSION['member_search_email_list'])){
+	  unset($_SESSION['member_search_email_list'][array_search($value['id'], $_SESSION['member_search_email_list'])]);
+	}
+      }
+    }
   }
 
 
