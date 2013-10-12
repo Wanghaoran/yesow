@@ -1678,6 +1678,8 @@ class ServicesAction extends CommonAction {
       }
     }
 
+    $to_send = array_unique($to_send);
+
     /*  ----  执行发送  ----- */
 
     //计算短信条数
@@ -1731,6 +1733,7 @@ class ServicesAction extends CommonAction {
 	}
 	$data_rec['statuscode'] = $ret;
 	$MemberSendSmsRecord -> add($data_rec);
+	usleep(100);
       }
       //重新缓存用户余额
       $MemberRmb -> rmbtotal();
@@ -1802,7 +1805,7 @@ class ServicesAction extends CommonAction {
 
   //ajax全选
   public function ajaxsmssearchresultallcheck(){
-    $keyword = safeEncoding($_GET['keyword']);
+    $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
     $company = M('Company');
     $map['_string'] = "LENGTH(mobilephone) = 11";
     $where = array();
@@ -1818,7 +1821,9 @@ class ServicesAction extends CommonAction {
     $result = $company -> field('id') -> where($where) -> order('id DESC') -> select();
     if($_GET['type'] == 1){
       foreach($result as $value){
-	$_SESSION['member_search_phone_list'][] = $value['id'];
+	if(!in_array($value['id'], $_SESSION['member_search_phone_list'])){
+	  $_SESSION['member_search_phone_list'][] = $value['id'];
+	}
       }
     }else{
       foreach($result as $value){
@@ -3692,6 +3697,8 @@ class ServicesAction extends CommonAction {
       }
     }
 
+    $to_send = array_unique($to_send);
+
     /*  ----  执行发送  ----- */
 
     //读取发送配置
@@ -3785,7 +3792,7 @@ class ServicesAction extends CommonAction {
 
   //ajax全选
   public function ajaxemailsearchresultallcheck(){
-    $keyword = safeEncoding($_GET['keyword']);
+    $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
     $keyword = $this -> _get('keyword');
     $company = M('Company');
     $map['_string'] = "LENGTH(email) > 1";
@@ -3802,7 +3809,9 @@ class ServicesAction extends CommonAction {
     $result = $company -> field('id') -> where($where) -> order('id DESC') -> select();
     if($_GET['type'] == 1){
       foreach($result as $value){
-	$_SESSION['member_search_email_list'][] = $value['id'];
+	if(!in_array($value['id'], $_SESSION['member_search_email_list'])){
+	  $_SESSION['member_search_email_list'][] = $value['id'];
+	}
       }
     }else{
       foreach($result as $value){

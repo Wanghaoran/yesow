@@ -65,14 +65,14 @@ function isSelectAlls(){
   var check = document.getElementById("selectAlls");
   if(check.checked){
     $.ajax({
-      url:'__URL__/ajaxemailsearchresultallcheck/type/1/keyword/<!--{$Think.get.keyword}--!>',
+      url:'__URL__/ajaxemailsearchresultallcheck/type/1/keyword/<!--{$Think.get.keyword}--!>/searchscope/<!--{$Think.get.searchscope}--!>/csid/<!--{$Think.get.csid}--!>/csaid/<!--{$Think.get.csaid}--!>',
       success: function(ress){
         location.reload();
       }
       });
   }else{
     $.ajax({
-      url:'__URL__/ajaxemailsearchresultallcheck/type/0/keyword/<!--{$Think.get.keyword}--!>',
+      url:'__URL__/ajaxemailsearchresultallcheck/type/0/keyword/<!--{$Think.get.keyword}--!>/searchscope/<!--{$Think.get.searchscope}--!>/csid/<!--{$Think.get.csid}--!>/csaid/<!--{$Think.get.csaid}--!>',
       success: function(ress){
         location.reload();
       }

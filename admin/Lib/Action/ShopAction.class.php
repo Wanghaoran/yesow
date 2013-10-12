@@ -519,12 +519,8 @@ class ShopAction extends CommonAction {
   }
 
 
-  /* --------------------- 动感传媒管理 --------------------- */
-
-  //动感传媒管理
   public function mediashow(){
     $mediashow = M('MediaShow');
-    //处理搜索
     $where = array();
     if(!empty($_POST['starttime'])){
       $addtime = $this -> _post('starttime', 'strtotime');
@@ -540,7 +536,6 @@ class ShopAction extends CommonAction {
     if(!empty($_POST['csid'])){
       $where['ms.csid'] = $this -> _post('csid', 'intval');
     }
-    //记录总数
     $count = $mediashow -> table('yesow_media_show as ms')  -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -549,25 +544,20 @@ class ShopAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $mediashow -> table('yesow_media_show as ms') -> field('ms.id,cs.name as csname,ms.name,ms.linkman,ms.companyphone,ms.starttime,ms.endtime,cc.name as ccname,ms.sort,ms.ischeck,m.name as mname,ms.type,ms.maketype,ms.image') -> join('yesow_member as m ON ms.mid = m.id') -> join('yesow_company_category as cc ON ms.ccid_one = cc.id') -> join('yesow_child_site as cs ON ms.csid = cs.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('ms.updatetime DESC') -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
 
-  //添加动感传媒
   public function addmediashow(){
     if(!empty($_POST['name'])){
       $mediashow = D('MediaShow');
@@ -588,17 +578,14 @@ class ShopAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    //查询主营类别 - 一级
     $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
     $this -> assign('result_company_category_one', $result_company_category_one);
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   }
 
-  //删除动感传媒
   public function delmediashow(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -610,7 +597,6 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //编辑动感传媒
   public function editmediashow(){
     $mediashow = D('MediaShow');
     if(!empty($_POST['name'])){
@@ -629,27 +615,22 @@ class ShopAction extends CommonAction {
     }
     $result = $mediashow -> field('csid,ccid_one,ccid_two,name,address,linkman,mobliephone,companyphone,qqcode,keyword,image,imagealt,remark,starttime,endtime,content,sort,maketype,image') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
-    //查询主营类别 - 一级
     $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
     $this -> assign('result_company_category_one', $result_company_category_one);
-    //查询所有分站
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
     $this -> assign('result_childsite', $result_childsite);
-    //查询当前一级类别的二级列表
     $result_company_category_two = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $result['ccid_one'])) -> order('sort ASC') -> select();
     $this -> assign('result_company_category_two', $result_company_category_two);
     $this -> display();
   }
 
-  //查看动感传媒图片
   public function editshowimage(){
     $image = M('MediaShow') -> getFieldByid($this -> _get('id', 'intval'), 'image');
     $this -> assign('image', $image);
     $this -> display();
   }
 
-  //通过审核动感传媒
   public function passauditmediashow(){
     $mediashow = M('MediaShow');
     $where_audit = array();
@@ -662,7 +643,6 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //不通过审核动感传媒
   public function nopassauditmediashow(){
     $mediashow = M('MediaShow');
     $where_audit = array();
@@ -675,11 +655,9 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //动感传媒评论管理
   public function mediashowcomment(){
     $mediashowcomment = M('MediaShowComment');
     $where = array();
-    //处理搜索
     if(!empty($_POST['content'])){
       $where['msc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
     }
@@ -697,7 +675,6 @@ class ShopAction extends CommonAction {
       $where['msc.addtime'][] = array('lt', $endtime);
     }
 
-    //记录总数
     $count = $mediashowcomment -> table('yesow_media_show_comment as msc') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -706,25 +683,19 @@ class ShopAction extends CommonAction {
       $listRows = 15;
     }
     $page = new Page($count, $listRows);
-    //当前页数
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    //结果
     $result = $mediashowcomment -> table('yesow_media_show_comment as msc') -> field('msc.id,msc.msid,ms.name as msname,msc.floor,msc.content,m.name as mname,msc.addtime,msc.status,msc.face') -> where($where) -> order('msc.status ASC,msc.addtime DESC') -> join('yesow_media_show as ms ON msc.msid = ms.id') -> join('yesow_member as m ON msc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
-    //每页条数
     $this -> assign('listRows', $listRows);
-    //当前页数
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
     $this -> display();
   }
 
-  //编辑动感传媒评论
   public function editmediashowcomment(){
     $comment = D('index://MediaShowComment');
-    //处理更新
     if(!empty($_POST['floor'])){
       if(!$comment -> create()){
 	$this -> error($comment -> getError());
@@ -740,7 +711,6 @@ class ShopAction extends CommonAction {
     $this -> display();
   }
 
-  //删除动感传媒评论
   public function delmediashowcomment(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);
@@ -752,7 +722,6 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //通过审核动感传媒评论
   public function passauditmediashowcomment(){
     $comment = M('MediaShowComment');
     $where_audit = array();
@@ -765,7 +734,6 @@ class ShopAction extends CommonAction {
     }
   }
 
-  //不通过审核动感传媒评论
   public function nopassauditmediashowcomment(){
     $comment = M('MediaShowComment');
     $where_audit = array();
@@ -777,5 +745,4 @@ class ShopAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
-  /* --------------------- 动感传媒管理 --------------------- */
 }
