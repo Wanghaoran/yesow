@@ -8,6 +8,21 @@
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
 <script>
+var setlimit = function(value){
+  $.ajax({
+    url: '__URL__/ajaxsetmemberemailgrouplimit/value/' + value,
+    success: function(ress){
+      if(ress){
+        alert('设置成功！');
+	location.reload();
+      }else{
+        alert('设置失败！');      
+      }
+    }
+    });
+}
+
+
 function Bind(thisObj, thisObjID) {
 var $td = $(thisObj).parents('tr').children('td');
 
@@ -97,7 +112,7 @@ $.ajax({
                                                  
                         </dl>
                         <div class="main_sjdxfs">
-                            <h2></h2>
+			  <span>通讯录最大存储: &nbsp;&nbsp;<input type="text" style="width:50px;" id="grouplimit" value="<!--{$limitnum}--!>" />&nbsp;&nbsp;<input type="button" onclick="setlimit($('#grouplimit').val());" value="修改"></span>
                             <div style="min-height:250px;">
                                 <table class="table_wdfsjl">
                                     <tr>
@@ -112,7 +127,7 @@ $.ajax({
 				      <td><input type="text" value="<!--{$r.email_address}--!>"></td>
 					  <td><input type="text" value="<!--{$r.email_SMTP}--!>"></td> 
 					  <td><input type="text" value="<!--{$r.email_account}--!>"></td>
-					  <td><input type="text" value="<!--{$r.email_pwd}--!>"></td>
+					  <td><input type="password" value="<!--{$r.email_pwd}--!>"></td>
 					  <td><a id="<!--{$r.id}--!>" href="javascript:;" onclick="Bind(this,this.id);">修改</a>|<a id="<!--{$r.id}--!>"  href="javascript:;" onclick="Delete(this.id,this);">删除</a></td>
                                      </tr>
 				     </volist>
@@ -120,7 +135,7 @@ $.ajax({
                                           <td><input type="text" value=""></td>
                                           <td><input type="text" value=""></td> 
                                           <td><input type="text" value=""></td>
-                                          <td><input type="text" value=""></td>
+                                          <td><input type="password" value=""></td>
                                           <td><a onclick="addemail(this)">添加</a></td>
                                       </tr>
                                 </table>

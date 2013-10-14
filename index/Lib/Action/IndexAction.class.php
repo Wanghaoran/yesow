@@ -316,7 +316,7 @@ class IndexAction extends CommonAction {
   }
 
   //动感传媒
-  public function companyshow(){
+  public function dgcm(){
     $where = array();
     //先获取分站id
     if($csid = D('admin://ChildSite') -> getid()){
@@ -357,7 +357,7 @@ class IndexAction extends CommonAction {
   }
 
   //动感传媒详细页
-  public function companyshowinfo(){
+  public function dgcminfo(){
     $id = $this -> _get('id', 'intval');
     $mediashow = M('MediaShow');
     //点击量加一

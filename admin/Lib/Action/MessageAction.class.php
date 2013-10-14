@@ -127,8 +127,9 @@ class MessageAction extends CommonAction {
 	}
 	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
 
-	$setting = M('BackgroundEmailSetting');
-	$group_limit = $setting -> getFieldByname('group_limit', 'value');
+	$group_limit = M('BackgroundEmailGroupLimit') -> getFieldByaid($_SESSION[C('USER_AUTH_KEY')], 'limit_num');
+
+	$group_limit = $group_limit ? $group_limit : 100;
 	$group_num = (int)ceil(count($result) / $group_limit);
 	$result_finish = array();
 	for($i = 0; $i < $group_num; $i++){
@@ -489,13 +490,11 @@ class MessageAction extends CommonAction {
     $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
     $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
     $mail_password = $setting -> getFieldByname('mail_password', 'value');
-    $group_limit = $setting -> getFieldByname('group_limit', 'value');
     $search_money = $setting -> getFieldByname('search_money', 'value');
     $this -> assign('mail_address', $mail_address);
     $this -> assign('mail_smtp', $mail_smtp);
     $this -> assign('mail_loginname', $mail_loginname);
     $this -> assign('mail_password', $mail_password);
-    $this -> assign('group_limit', $group_limit);
     $this -> assign('search_money', $search_money);
     $this -> display();
   }
@@ -780,6 +779,55 @@ class MessageAction extends CommonAction {
     }
   }
 
+  public function emailgrouplimit(){
+    $admin = M('Admin');
+    $where = array();
+    if(!empty($_POST['aname'])){
+      $where['a.name'] = $this -> _post('aname');
+    }
+    if($_SESSION[C('USER_AUTH_KEY')] != 1){
+      $where['a.id'] = session(C('USER_AUTH_KEY'));
+    }
+
+    $count = $admin -> alias('a') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $admin -> alias('a') -> field('a.id,a.name,l.limit_num') -> join('yesow_background_email_group_limit as l ON l.aid = a.id') -> order('a.id ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function editemailgrouplimit(){
+    if(!empty($_POST['limit_num'])){
+      $BackgroundEmailGroupLimit = M('BackgroundEmailGroupLimit');
+      $result = $BackgroundEmailGroupLimit -> getFieldByaid($_POST['aid'], 'limit_num');
+      if($result){
+	$num = $BackgroundEmailGroupLimit -> where(array('aid' => $_POST['aid'])) -> save(array('limit_num' => $_POST['limit_num']));    
+      }else{
+	$num = $BackgroundEmailGroupLimit -> add(array('aid' => $_POST['aid'], 'limit_num' => $_POST['limit_num']));
+      }
+      if($num){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $admin = M('Admin');
+    $result = $admin -> alias('a') -> field('a.id,a.name,l.limit_num') -> join('yesow_background_email_group_limit as l ON l.aid = a.id') -> where(array('a.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   //
 
   public function apisendtype(){
@@ -910,7 +958,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendphone,mssr.statuscode') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $result = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendphone,mssr.statuscode,sst.name as sendtype,mssr.price') -> join('yesow_sms_send_type as sst ON mssr.sendtype = sst.id') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

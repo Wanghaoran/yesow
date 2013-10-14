@@ -32,6 +32,7 @@
                                 <table class="table_wdfsjl" style="margin-top:0;">
                                     <tr>
                                         <th>时间</th>
+                                        <th>标题</th>
                                         <th>内容</th>
                                         <th>邮件</th>
                                         <th>状态</th>
@@ -39,6 +40,7 @@
 				      <volist name="result" id="r">
 				      <tr>
 					<td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+					<td><a class="div_email" href="#" title="<!--{$r.title}--!>"><!--{$r.title}--!></a></td>
 					<td><a class="div_email" href="#" title="<!--{$r.content}--!>"><!--{$r.content}--!></a></td>
 					<td><!--{$r.sendemail}--!></td>
 					<switch name="r.statuscode">

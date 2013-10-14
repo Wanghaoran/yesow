@@ -1518,7 +1518,7 @@ class ServicesAction extends CommonAction {
     $this -> assign('send_sms_price', $send_sms_price);
     //个人号码薄
     $MemberSmsGroup = M('MemberSmsGroup');
-    $sms_group = $MemberSmsGroup -> field('id,name') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> select();
+    $sms_group = $MemberSmsGroup -> field('id,name') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id DESC') -> select();
     $this -> assign('sms_group', $sms_group);
 
     //将要发送的号码
@@ -1527,9 +1527,9 @@ class ServicesAction extends CommonAction {
     if(!empty($_SESSION['member_search_send_list'])){
       foreach($_SESSION['member_search_send_list'] as $value){
 	if(empty($sendphone)){
-	  $sendphone .= substr_replace($value, '****', 3, 4);
+	  $sendphone .= substr_replace($value['tel'], '****', 3, 4);
 	}else{
-	  $sendphone .= ',' . substr_replace($value, '****', 3, 4);
+	  $sendphone .= ',' . substr_replace($value['tel'], '****', 3, 4);
 	}
       }
       $this -> assign('issearch', 'true');
@@ -1537,9 +1537,9 @@ class ServicesAction extends CommonAction {
     }else if(!empty($_SESSION['member_upload_send_list'])){
       foreach($_SESSION['member_upload_send_list'] as $value){
 	if(empty($sendphone)){
-	  $sendphone .= substr_replace($value, '****', 3, 4);
+	  $sendphone .= $value['tel'];
 	}else{
-	  $sendphone .= ',' . substr_replace($value, '****', 3, 4);
+	  $sendphone .= ',' . $value['tel'];
 	}
       }
       $this -> assign('isupload', 'true');   
@@ -1569,7 +1569,9 @@ class ServicesAction extends CommonAction {
 	//上传文档号码
 	$_SESSION['member_upload_send_list'] = array();
 	foreach($arr_upload as $value){
-	  $_SESSION['member_upload_send_list'][] = $value;
+	  if(!empty($value)){
+	    $_SESSION['member_upload_send_list'][]['tel'] = trim($value);
+	  }
 	}
 	R('Register/successjump',array('上传成功,现在跳转到发送页面'));
       }else{
@@ -1626,17 +1628,17 @@ class ServicesAction extends CommonAction {
 	    foreach($_SESSION['member_search_send_list'] as $value){
 	      $list_data = array();
 	      $list_data['gid'] = $gid;
-	      $list_data['realnumber'] = $value;
-	      $list_data['hidenumber'] = substr_replace($value, '****', 3, 4);
+	      $list_data['realnumber'] = $value['tel'];
+	      $list_data['cid'] = $value['id'];
+	      $list_data['hidenumber'] = substr_replace($value['tel'], '****', 3, 4);
 	      $MemberSmsGroupList -> add($list_data);
 	    }
 	  }else if(!empty($_POST['isupload'])){
-	    foreach($_SESSION['member_upload_send_list'] as $value){
+	    foreach($_SESSION['member_upload_send_list'] as $key => $value){
 	      $list_data = array();
 	      $list_data['gid'] = $gid;
-	      $list_data['realnumber'] = $value;
-	      $list_data['hidenumber'] = substr_replace($value, '****', 3, 4);
-	      $MemberSmsGroupList -> add($list_data);
+	      $list_data['realnumber'] = $value['tel'];
+	      $list_data['hidenumber'] = substr_replace($value['tel'], '****', 3, 4);
 	    }
 	  }
 	  //后添加的
@@ -1665,26 +1667,39 @@ class ServicesAction extends CommonAction {
       //后添加号码
       foreach($sendnumber_arr as $value){
 	if(!strpos($value, '*')){
-	  $to_send[] = $value;
+	  $to_send[]['tel'] = $value;
 	}
       }
 
     //号码薄发送
     }else if($_POST['phonetype'] == 'group'){
       $MemberSmsGroupList = M('MemberSmsGroupList');
-      $group_list = $MemberSmsGroupList -> field('realnumber') -> where(array('gid' => $_POST['phonegroup'])) -> select();
-      foreach($group_list as $value){
-	$to_send[] = $value['realnumber'];
+      $group_list = $MemberSmsGroupList -> field('cid,realnumber') -> where(array('gid' => $_POST['phonegroup'])) -> select();
+      foreach($group_list as $key => $value){
+	$to_send[$key]['tel'] = $value['realnumber'];
+	$to_send[$key]['id'] = $value['cid'];
       }
     }
 
-    $to_send = array_unique($to_send);
-
+    //去重
+    $temp_tel_list = array();
+    foreach($to_send as $key => $value){    
+      if(in_array($value['tel'], $temp_tel_list)){
+	unset($to_send[$key]);
+      }else{
+	$temp_tel_list[] = $value['tel'];     
+      }
+      if(empty($value['tel'])){
+	unset($to_send[$key]);
+      }
+    }
+      
     /*  ----  执行发送  ----- */
+
 
     //计算短信条数
     $content_length = mb_strlen($_POST['content'], 'UTF-8');
-    $sms_num = ceil($content_length / 64);
+    $sms_num = ceil($content_length / 63);
 
     //扣费
     //搜索价格
@@ -1692,6 +1707,7 @@ class ServicesAction extends CommonAction {
     $send_phone_price = $setting -> getFieldByname('send_sms_price', 'value');
     //消费金额
     $cost = count($to_send) * $send_phone_price * $sms_num;
+
     //扣费
     $MemberRmb = D('member://MemberRmb');
     if($MemberRmb -> autolessmoney($cost)){
@@ -1709,7 +1725,15 @@ class ServicesAction extends CommonAction {
 
       //执行发送
       foreach($to_send as $value){
-	$url = "http://www.vip.86aaa.com/api.aspx?SendType={$_POST['sendtype']}&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$value}&Content={$_POST['content']}【yesow】";
+	if($value['id']){
+	  $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.linkman') -> where(array('c.id' => $value['id'])) -> find();
+	  $search = array('{company_names}', '{l}');
+	  $content = str_replace($search, $company_info, $_POST['content']);
+	}else{
+	  $content = $_POST['content'];
+	}
+
+	$url = "http://www.vip.86aaa.com/api.aspx?SendType={$_POST['sendtype']}&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$value['tel']}&Content={$content}【易搜】";
 	$url = iconv('UTF-8', 'GB2312', $url);
 	$fp = fopen($url, 'rb');
 	$ret= fgetss($fp,255);
@@ -1718,18 +1742,19 @@ class ServicesAction extends CommonAction {
 	$data_rec = array();
 	$data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
 	$data_rec['sendtime'] = time();
-	$data_rec['content'] = $_POST['content'];
-	$data_rec['sendphone'] = $value;
+	$data_rec['content'] = $content;
+	$data_rec['sendphone'] = $value['tel'];
+	$data_rec['sendtype'] = $_POST['sendtype'];
+	$data_rec['price'] = $send_phone_price * $sms_num;
 	if($ret === false){
 	  $ret = 5;
 	}
 	//发送失败退费
 	if($ret != 0){
 	  //增加金额
-	  $MemberRmb -> addmoney('rmb_exchange', $send_phone_price);
+	  $MemberRmb -> addmoney('rmb_exchange', $send_phone_price * $sms_num);
 	  //写日志
-	  $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . $send_phone_price);
-
+	  $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($send_phone_price * $sms_num));
 	}
 	$data_rec['statuscode'] = $ret;
 	$MemberSendSmsRecord -> add($data_rec);
@@ -1740,8 +1765,7 @@ class ServicesAction extends CommonAction {
       //清空信息
       $_SESSION['member_search_send_list'] = array();
       $_SESSION['member_upload_send_list'] = array();
-      echo "<script>location.href='" . __URL__ ."/sendendjump';</script>";
-    
+      echo "<script>location.href='" . __URL__ ."/sendendjump';</script>";    
     }else{
       R('Register/errorjump', array('用户余额不足，请充值', U('Services/sendsms')));
     }
@@ -1850,8 +1874,9 @@ class ServicesAction extends CommonAction {
       //处理待发送数组
       $company = M('Company');
       $_SESSION['member_search_send_list'] = array();
-      foreach($_SESSION['member_search_phone_list'] as $value){
-	$_SESSION['member_search_send_list'][] = substr($company -> getFieldByid($value, 'mobilephone'), 0, 11);
+      foreach($_SESSION['member_search_phone_list'] as $key => $value){
+	$_SESSION['member_search_send_list'][$key]['tel'] = substr($company -> getFieldByid($value, 'mobilephone'), 0, 11);
+	$_SESSION['member_search_send_list'][$key]['id'] = $value;
       }
       $_SESSION['member_search_phone_list'] = array();
       //记录搜索日志
@@ -1877,12 +1902,12 @@ class ServicesAction extends CommonAction {
   public function smsendrecord(){
     $MemberSendSmsRecord = M('MemberSendSmsRecord');
     $where = array();
-    $where['mid'] = session(C('USER_AUTH_KEY'));
+    $where['a.mid'] = session(C('USER_AUTH_KEY'));
     import("ORG.Util.Page");// 导入分页类
-    $count = $MemberSendSmsRecord -> where($where) -> count();
+    $count = $MemberSendSmsRecord -> alias('a') -> where($where) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $MemberSendSmsRecord -> field('sendtime,content,sendphone,statuscode') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
+    $result = $MemberSendSmsRecord -> alias('a') -> field('a.sendtime,a.content,a.sendphone,a.statuscode,t.name as sendtype,a.price') -> join('yesow_sms_send_type as t ON a.sendtype = t.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('a.sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
@@ -3520,7 +3545,19 @@ class ServicesAction extends CommonAction {
     $MemberEmailSetting = M('MemberEmailSetting');
     $result = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
     $this -> assign('result', $result);
+    $this -> assign('limitnum', M('MemberEmailGroupLimit') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'limitnum'));
     $this -> display();
+  }
+
+  public function ajaxsetmemberemailgrouplimit(){
+    $MemberEmailGroupLimit = M('MemberEmailGroupLimit');
+    $result = $MemberEmailGroupLimit -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> find();
+    if($result){
+      $num = $MemberEmailGroupLimit -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> save(array('limitnum' => $this -> _get('value', 'intval')));
+    }else{
+      $num = $MemberEmailGroupLimit -> add(array('limitnum' => $this -> _get('value', 'intval'), 'mid' => session(C('USER_AUTH_KEY'))));
+    }
+    echo $num;
   }
 
   public function sendemail(){
@@ -3538,9 +3575,9 @@ class ServicesAction extends CommonAction {
     if(!empty($_SESSION['member_search_email_send_list'])){
       foreach($_SESSION['member_search_email_send_list'] as $value){
 	if(empty($sendemail)){
-	  $sendemail .= substr($value, 0 ,3) . '****' . strstr($value, '@');
+	  $sendemail .= substr($value['email'], 0 ,3) . '****' . strstr($value['email'], '@');
 	}else{
-	  $sendemail .= ',' . substr($value, 0 ,3) . '****' . strstr($value, '@');
+	  $sendemail .= ',' . substr($value['email'], 0 ,3) . '****' . strstr($value['email'], '@');
 	}
       }
       $this -> assign('issearch', 'true');
@@ -3548,9 +3585,9 @@ class ServicesAction extends CommonAction {
     }else if(!empty($_SESSION['member_upload_email_send_list'])){
       foreach($_SESSION['member_upload_email_send_list'] as $value){
 	if(empty($sendemail)){
-	  $sendemail .= substr($value, 0 ,3) . '****' . strstr($value, '@');
+	  $sendemail .= substr($value['email'], 0 ,3) . '****' . strstr($value['email'], '@');
 	}else{
-	  $sendemail .= ',' . substr($value, 0 ,3) . '****' . strstr($value, '@');
+	  $sendemail .= ',' . substr($value['email'], 0 ,3) . '****' . strstr($value['email'], '@');
 	}
       }
       $this -> assign('isupload', 'true');   
@@ -3585,8 +3622,8 @@ class ServicesAction extends CommonAction {
 	
 	//上传文档号码
 	$_SESSION['member_upload_email_send_list'] = array();
-	foreach($arr_upload as $value){
-	  $_SESSION['member_upload_email_send_list'][] = $value;
+	foreach($arr_upload as $key => $value){
+	  $_SESSION['member_upload_email_send_list'][$key]['email'] = $value;
 	}
 	R('Register/successjump',array('上传成功,现在跳转到发送页面'));
       }else{
@@ -3629,47 +3666,56 @@ class ServicesAction extends CommonAction {
 
       /* -- 保存通讯录 Start -- */
       if($_POST['savegroup'] == 'true'){
+
+	$temp_sendnumber_arr = array();
+	foreach($sendnumber_arr as $value){
+	  if(!strpos($value, '*')){
+	    $temp_sendnumber_arr[]['email'] = $value;
+	  }
+	}
+
+	$group_limit = M('MemberEmailGroupLimit') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'limitnum');
+
+	$save_group_list = array();
+	if(!empty($_POST['issearch'])){
+	  $save_group_list = array_merge($_SESSION['member_search_email_send_list'], $temp_sendnumber_arr);
+	}else if(!empty($_POST['isupload'])){
+	  $save_group_list = array_merge($_SESSION['member_upload_email_send_list'], $temp_sendnumber_arr);
+	}else{
+	  $save_group_list = $temp_sendnumber_arr;
+	}
+
+	$group_num = (int)ceil(count($save_group_list) / $group_limit);
+	$group_num = $group_num ? $group_num : 1000;
+	$result_finish = array();
+	for($i = 0; $i < $group_num; $i++){
+	  $result_finish[] = array_slice($save_group_list, $i*$group_limit, $group_limit);
+	}
 	$MemberEmailGroup = D('MemberEmailGroup');
 	$MemberEmailGroupList = M('MemberEmailGroupList');
+
 	$data = array();
 	$data['mid'] = session(C('USER_AUTH_KEY'));
-	$data['name'] = $this -> _post('savegroupname');
-	$data['addtime'] = time();
-	if(!$MemberEmailGroup -> create($data)){
-	  R('Register/errorjump', array('添加通讯录失败'));
-	}
-	//添加通讯录详情
-	if($gid = $MemberEmailGroup -> add()){
-	  //搜索得到的记录
-	  if(!empty($_POST['issearch'])){
-	    foreach($_SESSION['member_search_email_send_list'] as $value){
-	      $list_data = array();
-	      $list_data['gid'] = $gid;
-	      $list_data['realnumber'] = $value;
-	      $list_data['hidenumber'] = substr($value, 0 ,3) . '****' . strstr($value, '@');
-	      $MemberEmailGroupList -> add($list_data);
-	    }
-	  }else if(!empty($_POST['isupload'])){
-	    foreach($_SESSION['member_upload_email_send_list'] as $value){
-	      $list_data = array();
-	      $list_data['gid'] = $gid;
-	      $list_data['realnumber'] = $value;
-	      $list_data['hidenumber'] = substr($value, 0 ,3) . '****' . strstr($value, '@');
+	foreach($result_finish as $key => $value){
+	  if($key != 0){
+	    $data['name'] = $_POST['savegroupname'] . '(' . ($key+1) . ')';
+	  }else{
+	    $data['name'] = $_POST['savegroupname'];
+	  }  
+	  $data['addtime'] = time();
+	  if(!$MemberEmailGroup -> create($data)){
+	    R('Register/errorjump', array('添加通讯录失败'));
+	  }
+	  if($gid = $MemberEmailGroup -> add()){
+	    $list_data = array();
+	    $list_data['gid'] = $gid;
+	    foreach($result_finish[$key] as $valuetwo){
+	      $list_data['cid'] = $valuetwo['id'];
+	      $list_data['realnumber'] = $valuetwo['email'];
+	      $list_data['hidenumber'] = substr($valuetwo['email'], 0 ,3) . '****' . strstr($valuetwo['email'], '@');
 	      $MemberEmailGroupList -> add($list_data);
 	    }
 	  }
-	  //后添加的
-	  foreach($sendnumber_arr as $value){
-	    if(!strpos($value, '*')){
-	      $list_data = array();
-	      $list_data['gid'] = $gid;
-	      $list_data['realnumber'] = $value;
-	      $list_data['hidenumber'] = substr($value, 0 ,3) . '****' . strstr($value, '@');
-	      $MemberEmailGroupList -> add($list_data);
-	    }
-	  }
-	}else{
-	  R('Register/errorjump', array('添加通讯录失败'));
 	}
       }
       /* -- 保存通讯录 End -- */
@@ -3684,23 +3730,34 @@ class ServicesAction extends CommonAction {
       //后添加号码
       foreach($sendnumber_arr as $value){
 	if(!strpos($value, '*')){
-	  $to_send[] = $value;
+	  $to_send[]['email'] = $value;
 	}
       }
 
     //号码薄发送
     }else if($_POST['phonetype'] == 'group'){
       $MemberEmailGroupList = M('MemberEmailGroupList');
-      $group_list = $MemberEmailGroupList -> field('realnumber') -> where(array('gid' => $_POST['phonegroup'])) -> select();
-      foreach($group_list as $value){
-	$to_send[] = $value['realnumber'];
+      $group_list = $MemberEmailGroupList -> field('cid,realnumber') -> where(array('gid' => $_POST['phonegroup'])) -> select();
+      foreach($group_list as $key =>$value){
+	$to_send[$key]['email'] = $value['realnumber'];
+	$to_send[$key]['id'] = $value['cid'];
       }
     }
 
-    $to_send = array_unique($to_send);
+    //去重
+    $temp_tel_list = array();
+    foreach($to_send as $key => $value){    
+      if(in_array($value['email'], $temp_tel_list)){
+	unset($to_send[$key]);
+      }else{
+	$temp_tel_list[] = $value['email'];     
+      }
+      if(empty($value['email'])){
+	unset($to_send[$key]);
+      }
+    }
 
     /*  ----  执行发送  ----- */
-
     //读取发送配置
     $MemberEmailSetting = M('MemberEmailSetting');
     $send_setting = $MemberEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd') -> find($this -> _post('sendtype', 'intval'));
@@ -3713,12 +3770,22 @@ class ServicesAction extends CommonAction {
     $MemberSendEmailRecord = M('MemberSendEmailRecord');
     $re_data = array();
     $re_data['mid'] = session(C('USER_AUTH_KEY'));
-    $re_data['content'] = $this -> _post('content');
 
     foreach($to_send as $value){
+
+      if($value['id']){
+	  $company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $value['id'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	  $search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
+	  $re_data['content'] = str_replace($search, $company_info, $_POST['content']);
+	  $re_data['title'] = str_replace($search, $company_info, $_POST['title']);
+	}else{
+	  $re_data['content'] = $_POST['content'];
+	  $re_data['title'] = $_POST['title'];
+	}
+
       $re_data['sendtime'] = time();
-      $re_data['sendemail'] = $value;
-      if(@SendMail($value, '易搜会员中心邮件群发', $this -> _post('content'), 'yesow-易搜')){
+      $re_data['sendemail'] = $value['email'];
+      if(@SendMail($value['email'], $re_data['title'], $re_data['content'], 'yesow-易搜')){
         $re_data['statuscode'] = 1;
       }else{
 	$re_data['statuscode'] = 0;
@@ -3839,8 +3906,9 @@ class ServicesAction extends CommonAction {
       //处理待发送数组
       $company = M('Company');
       $_SESSION['member_search_email_send_list'] = array();
-      foreach($_SESSION['member_search_email_list'] as $value){
-	$_SESSION['member_search_email_send_list'][] = $company -> getFieldByid($value, 'email');
+      foreach($_SESSION['member_search_email_list'] as $key => $value){
+	$_SESSION['member_search_email_send_list'][$key]['email'] = $company -> getFieldByid($value, 'email');
+	$_SESSION['member_search_email_send_list'][$key]['id'] = $value;
       }
       $_SESSION['member_search_email_list'] = array();
       //记录搜索日志
@@ -3871,7 +3939,7 @@ class ServicesAction extends CommonAction {
     $count = $MemberSendEmailRecord -> where($where) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $MemberSendEmailRecord -> field('sendtime,content,sendemail,statuscode') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
+    $result = $MemberSendEmailRecord -> field('title,sendtime,content,sendemail,statuscode') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
     foreach($result as $key => $value){
       $result[$key]['sendemail'] = substr($value['sendemail'], 0 ,3) . '****' . strstr($value['sendemail'], '@');
     }

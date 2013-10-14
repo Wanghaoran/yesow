@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="clear"></div>
 				<table class="table_sjdxfs">
-				  <form action="__URL__/tosendemail" method="post" enctype="multipart/form-data">
+				  <form action="__URL__/tosendemail" id="tosendemail" method="post" enctype="multipart/form-data">
                                     <tr>
                                         <td class="tdleft">发送类型：</td>
 					<td class="tdright">
@@ -89,13 +89,21 @@
                                         <td class="tdleft">导入文本：</td>
                                         <td class="tdright">
                                         <div class="file-box"><input type='text' name='textfield' id='textfield' class='txtfile' /><input type='button' class='btnfile' value='浏览...' /><input type="file" name="fileField" class="fileinput" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" /></div>
-<div class="left"><input type="submit" value="导入" class="rmb_fanhui"/></div>
+<div class="left"><a onclick="$('#tosendemail').submit();" class="rmb_fanhui" style="display:block;"/>导入</a></div>
+                                        </td>
+                                    </tr>
+				    <tr id="inputtxt">
+                                        <td class="tdleft">邮件标题：</td>
+                                        <td class="tdright">
+					<input type="text" name="title" class="txtfile2" style="width:555px;" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tdleft">发送内容：</td>
 					<td class="tdright">
-					  <textarea id="txtContents" name="content"></textarea>
+					  <div style="float:left;">发送模板：</div>
+						<span style="line-height:25px;">公司名：{company_name} | 地址：{company_address} | 电话：{company_companyphone} | 联系人：{company_linkman} | 网址：{company_website} | 邮件：{company_email} | 主营：{company_manproducts} | QQ：{company_qqcode} | 手机：{company_mobilephone} | ID：{company_id} | 所属省份：{company_csid} | 所属地区：{company_csaid} | 分站域名：{company_domain}</span><div class="clear"></div> 
+					  <textarea id="txtContents" name="content" style="margin-top:-5px;"></textarea>
 					  <P class="p_bottom">注：请勿发送反动，暴力，色情等违反中国法律法规，国家政策和社会道德规范的内容，否则对您造成的一切后果，易搜将不承担任何责任</P>
                                         </td>
                                     </tr>

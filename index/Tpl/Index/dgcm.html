@@ -45,9 +45,9 @@
 				      <li>
 				      <div class="left_img">
 					<if condition="strrchr($r['image'], '.') == '.swf'">
-					<h2><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank"><embed src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" width="153" height="192"></embed></a></h2>
+					<h2><a href="__ROOT__/dgcm/<!--{$r.id}--!>" target="_blank"><embed src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" width="153" height="192"></embed></a></h2>
 					<else/>
-					<h2><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></h2>
+					<h2><a href="__ROOT__/dgcm/<!--{$r.id}--!>" target="_blank"><img src="<!--{$Think.config.MEDIA_PIC_PATH_SAVE}--!><!--{$r.image}--!>" /></a></h2>
 					</if>
 					<h3>
 					  <volist name="r.qqarr" id="rq" offset="0" length='2'>
@@ -59,7 +59,7 @@
 					</h3>
                       </div>
 				      <div class="right_div">
-                        <h4><a href="__ROOT__/companyshow/<!--{$r.id}--!>" target="_blank" style="color:#ff6000;"><!--{$r.name}--!></a></h4>
+                        <h4><a href="__ROOT__/dgcm/<!--{$r.id}--!>" target="_blank" style="color:#ff6000;"><!--{$r.name}--!></a></h4>
                         <p>
 			<!--{$r.remark}--!>
                         </p>
@@ -88,7 +88,7 @@
 				</div>
 				<ul class="bl_list">
 				  <volist name="result_hot" id="rh">
-				  <li><a href="__URL__/companyshowinfo/id/<!--{$rh.id}--!>" target="_blank"><span>[<b><!--{$rh.csname}--!></b>]</span><!--{$rh.name}--!></a><span class="time"><!--{$rh.updatetime|date="Y-m-d", ###}--!></span></li>
+				  <li><a href="__URL__/dgcminfo/id/<!--{$rh.id}--!>" target="_blank"><span>[<b><!--{$rh.csname}--!></b>]</span><!--{$rh.name}--!></a><span class="time"><!--{$rh.updatetime|date="Y-m-d", ###}--!></span></li>
 				  </volist>
 				</ul>
 				<div class="clear"></div>			
@@ -114,7 +114,7 @@
 				</div>
 				<ul class="bl_list">
 				  <volist name="result_comment" id="rc">
-				  <li><a href="__URL__/companyshowinfo/id/<!--{$rc.id}--!>" target="_blank"><span>[<b><!--{$rc.csname}--!></b>]</span><!--{$rc.content}--!></a><span class="time"><!--{$rc.addtime|date="Y-m-d", ###}--!></span></li>
+				  <li><a href="__URL__/dgcminfo/id/<!--{$rc.id}--!>" target="_blank"><span>[<b><!--{$rc.csname}--!></b>]</span><!--{$rc.content}--!></a><span class="time"><!--{$rc.addtime|date="Y-m-d", ###}--!></span></li>
 				  </volist>
 				</ul>
 				<div class="clear"></div>			

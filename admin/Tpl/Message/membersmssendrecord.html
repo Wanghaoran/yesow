@@ -43,7 +43,9 @@
 		    <th width="20">发送用户</th>
 			<th width="30">目标号码</th>
 			<th width="360">发送内容</th>
-			<th width="80">发送时间</th>
+			<th width="90">发送时间</th>
+			<th width="50">发送通道</th>
+			<th width="40">扣费</th>
 			<th width="60">发送状态</th>
 
 		</tr>
@@ -57,6 +59,8 @@
 			  <td><!--{$r.sendphone}--!></td>
 			  <td><!--{$r.content}--!></td>
 			  <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>			 
+			  <td><!--{$r.sendtype}--!></td>
+			  <td>-<!--{$r.price}--!></td>
 			  <switch name="r.statuscode">
 			  <case value="0" break="1">
 			  <td style="color:green;">发送成功</td>
