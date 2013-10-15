@@ -113,7 +113,7 @@ $.ajax({
                         </dl>
                         <div class="main_sjdxfs">
 			  <span>通讯录最大存储: &nbsp;&nbsp;<input type="text" style="width:50px;" id="grouplimit" value="<!--{$limitnum}--!>" />&nbsp;&nbsp;<input type="button" onclick="setlimit($('#grouplimit').val());" value="修改"></span>
-                            <div style="min-height:250px;">
+                            <div style="min-height:135px;">
                                 <table class="table_wdfsjl">
                                     <tr>
                                           <th>发送邮箱地址</th>
@@ -141,6 +141,12 @@ $.ajax({
                                 </table>
                             </div>
                             <div class="clear"></div>
+				<div style="height:130px;text-align:left;padding-left:20px;color:red;">注意：<br>
+				1、各大邮件运营商都有自己的发送邮件SMTP，请以邮件提供商为准；<br>
+				如：QQ邮箱：<span style="color:black;">smtp.qq.com</span>  163邮箱：<span style="color:black;">smtp.163.com</span> 126邮箱：<span style="color:black;">smtp.126.com</span> 等<br>
+				2、各大邮件运营商都有自己的每天发送邮件数量限制，请以提供商为准；
+				
+			      </div>
                             <div style="margin:10px auto; text-align:center"><input type="button" onclick="history.go(-1);" value="返回" /></div>
                             <div class="clear"></div>
                         </div>
@@ -149,9 +155,11 @@ $.ajax({
                     <div class="clear"></div>
                 </div>
                 <div class="clear"></div>
+
             </div>
         </div>
     </div>
+
     <include file="Index:footer" />
 </body>
 </html>

@@ -1145,4 +1145,28 @@ class MessageAction extends CommonAction {
     }
   }
 
+  public function membersendemail(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    $where = array();
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    $count = $MemberEmailSetting -> alias('e') -> join('yesow_member as m ON e.mid = m.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $MemberEmailSetting -> alias('e') -> field('e.id,e.email_address,e.email_SMTP,e.email_account,e.addtime,m.name as mname') -> join('yesow_member as m ON e.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('e.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
 }

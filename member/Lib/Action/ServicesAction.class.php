@@ -1726,12 +1726,13 @@ class ServicesAction extends CommonAction {
       //执行发送
       foreach($to_send as $value){
 	if($value['id']){
-	  $company_info = M('Company') -> table('yesow_company as c') -> field('c.name,c.linkman') -> where(array('c.id' => $value['id'])) -> find();
+	  $company_info = M('Company') -> table('yesow_company as c') -> field('LEFT(c.name,15) as name,LEFT(c.linkman,3) as linkman') -> where(array('c.id' => $value['id'])) -> find();
 	  $search = array('{company_names}', '{l}');
 	  $content = str_replace($search, $company_info, $_POST['content']);
 	}else{
 	  $content = $_POST['content'];
 	}
+	$content = str_replace(' ', ',', $content);
 
 	$url = "http://www.vip.86aaa.com/api.aspx?SendType={$_POST['sendtype']}&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$value['tel']}&Content={$content}【易搜】";
 	$url = iconv('UTF-8', 'GB2312', $url);
@@ -1779,9 +1780,9 @@ class ServicesAction extends CommonAction {
   //搜索号码
   public function searchcompanyphone(){
     if(!empty($_GET['keyword'])){
-      $keyword = $this -> _get('keyword');
+      $keyword = $_GET['keyword'];
       $company = M('Company');
-      $map['_string'] = "LENGTH(mobilephone) = 11";
+      $map['_string'] = "LENGTH(mobilephone) >= 11";
       $where = array();
       $where['delaid']  = array('exp', 'is NULL');
       $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
@@ -1799,7 +1800,7 @@ class ServicesAction extends CommonAction {
       $show = $page -> show();
       $this -> assign('show', $show);
 
-      $result = $company -> field('id,name,manproducts,mobilephone') -> where($where) -> order('id DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+      $result = $company -> field('id,name,manproducts,LEFT(mobilephone,11) as mobilephone') -> where($where) -> order('id DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
       $this -> assign('result', $result);
       $this -> assign('count', $count);
 
