@@ -23,6 +23,14 @@
       </p>
       <div class="divider"></div>
       <p style="width:95%;">
+      <label style="width:70px;">发送邮箱</label>
+      <select class="combox" name="send_email">
+	<volist name="result_email" id="re">
+	<option value="<!--{$re.id}--!>"><!--{$re.email_address}--!></option>
+	</volist>
+      </select>
+      </p>
+      <p style="width:95%;">
       <label style="width:70px;">收件人</label><input type="text" class="required" name="recipient" value="<!--{$recipientstring}--!>" size="112" />
       </p>
       <p style="width:95%;">

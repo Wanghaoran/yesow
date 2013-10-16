@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>人才登记表</title>
+<link rel="stylesheet" href="__PUBLIC__/resume/css/reset.css">
+<link rel="stylesheet" href="__PUBLIC__/resume/css/style.css">
+</head>
+<body>
+<!-- header -->
+<div class="header clearfix">
+	<div class="headerImg">
+    	<img src="__PUBLIC__/resume/images/header.gif" alt="易搜-中国IT服务中心">
+	</div>
+</div>
+
+<!-- content -->
+<form action="__ACTION__" method="post">
+<div class="content clearfix">
+	<div class="caption">
+    	<h1>人才登记表</h1>
+    </div>
+    
+    <div class="resume">
+        <table cellpadding="0" cellspacing="1">
+            <tr>
+                <td colspan="8" class="row-tit"><span class="fl">联系方式</span></td>
+          </tr>
+            <tr>
+                <td class="col-cap">联系地址</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="address"></td>
+                <td class="col-cap">邮政编码</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="zipcode"></td>
+                <td class="col-cap">联&nbsp;&nbsp;系&nbsp;人</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="linkman"></td>
+                <td class="col-cap">现居住地</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="address_now"></td>
+            </tr>
+            <tr>
+                <td class="col-cap">家庭电话</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="tel"></td>
+                <td class="col-cap">电子邮箱</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="email"></td>
+                <td class="col-cap">联系&nbsp;QQ</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="qqcode"></td>
+                <td class="col-cap">联系手机</td>
+                <td class="col-inp"><input type="text" class="txt4 ml5" name="mobilephone"></td>
+            </tr>
+      </table>
+        
+        <table cellpadding="0" cellspacing="1">
+            <tr>
+                <td colspan="5" class="row-tit"><span class="fl">个人简历</span></td>
+            </tr>
+            <tr>
+                <td class="column">何年何月至何年何月</td>
+                <td class="column">工作单位</td>
+                <td class="column">职位工种</td>
+                <td class="column">联系电话</td>
+                <td class="column column2">离职原因</td>
+            </tr>
+            <tr>
+                <td class="column"><input type="text" class="txt5" name="job_time1"></td>
+                <td class="column"><input type="text" class="txt5" name="job_company1"></td>
+                <td class="column"><input type="text" class="txt5" name="job_type1"></td>
+                <td class="column"><input type="text" class="txt5" name="job_tel1"></td>
+                <td class="column column2"><input type="text" class="txt7" name="job_leave1"></td>
+            </tr>
+            <tr>
+                <td class="column"><input type="text" class="txt5" name="job_time2"></td>
+                <td class="column"><input type="text" class="txt5" name="job_company2"></td>
+                <td class="column"><input type="text" class="txt5" name="job_type2"></td>
+                <td class="column"><input type="text" class="txt5" name="job_tel2"></td>
+                <td class="column column2"><input type="text" class="txt7" name="job_leave2"></td>
+            </tr>
+            <tr>
+                <td class="column"><input type="text" class="txt5" name="job_time3"></td>
+                <td class="column"><input type="text" class="txt5" name="job_company3"></td>
+                <td class="column"><input type="text" class="txt5" name="job_type3"></td>
+                <td class="column"><input type="text" class="txt5" name="job_tel3"></td>
+                <td class="column column2"><input type="text" class="txt7" name="job_leave3"></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="row-des">请谈谈你曾经做过的岗位感受及今后对该岗位的认识(必填)</td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <textarea class="description" name="content">请在此输入你的感受和认识...</textarea>
+                </td>
+            </tr>
+        </table>
+	<input type="hidden" name="id" value="<!--{$Think.get.id|intval}--!>" />
+        
+        <div class="formBtn clearfix">
+            <input type="submit" value="下一步" />
+        </div>
+	</form>
+    </div>
+</div>
+
+<!-- footer -->
+<div class="footer clearfix">
+	<!-- menu -->
+	<div class="menu clearfix">
+    	<a href="#">关于易搜</a><span>-</span><a href="#">易搜发展</a><span>-</span><a href="#">服务声明</a><span>-</span><a href="#">业务介绍</a><span>-</span><a href="#">优势介绍</a><span>-</span><a href="#">站点地图</a><span>-</span><a href="#">人才招聘</a><span>-</span> <a href="#">付款方式</a><span>-</span><a href="#">联系方式</a><span>-</span> <a href="#">广告服务</a>
+    </div>
+    
+    <!-- copy -->
+    <div class="copy clearfix">
+        <div class="fl">
+            <a href="index.html"><img src="__PUBLIC__/resume/images/logot.jpg" alt="易搜网"></a>
+        </div>
+        
+        <div class="copyDes fr">
+        	<p>服务热线：<strong>0571-88396114</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>88396195</strong>(浙江)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>025-85302700</strong>(江苏)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>0551-3665082</strong>(安徽)&nbsp;&nbsp;&nbsp;&nbsp;<strong>0791-85810730</strong>(江西)</p>
+            <div class="clearfix">
+            	<p class="fl">Copyright&copy;2005-2012 www.yesow.com Inc. All rights reserved. 杭州百联信息技术有限公司 版权所有</p>
+            </div>
+            <div class="ft-icons clearfix">
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c1.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c3.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c5.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c7.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c9.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c11.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gh.gif"></a></li>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

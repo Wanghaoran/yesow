@@ -26,7 +26,17 @@
 <div class="pageContent">
 	<div class="panelBar">
 	  <ul class="toolBar">
-
+		<if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li class=""><a class="delete" href="__URL__/delmembersendemail/navTabId/membersendemail" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editmembersendemail/id/{sid_role}" target="dialog" mask="true" warn="请选择记录"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['message']['delmembersendemail'])">
+	    <li class=""><a class="delete" href="__URL__/delmembersendemail/navTabId/membersendemail" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['message']['editmembersendemail'])">
+	    <li><a class="edit" href="__URL__/editmembersendemail/id/{sid_role}" target="dialog" mask="true" warn="请选择记录"><span>编辑</span></a></li>
+	    </if>
+	    </if>
 		</ul>
 	</div>
 
@@ -39,6 +49,7 @@
 			<th width="30">发送邮件地址</th>
 			<th width="30">发送邮件SMTP</th>
 			<th width="60">发送邮件帐号</th>
+			<th width="50">通讯录最大存储</th>
 			<th width="60">添加时间</th>
 
 		</tr>
@@ -52,6 +63,7 @@
 			  <td><!--{$r.email_address}--!></td>
 			  <td><!--{$r.email_SMTP}--!></td>
 			  <td><!--{$r.email_account}--!></td>
+			  <td><!--{$r.group_limit}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			</tr>
 		</volist>

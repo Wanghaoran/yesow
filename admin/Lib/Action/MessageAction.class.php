@@ -127,7 +127,7 @@ class MessageAction extends CommonAction {
 	}
 	$result = $company -> field('id,name,email') -> where($where) -> group('email') -> select();
 
-	$group_limit = M('BackgroundEmailGroupLimit') -> getFieldByaid($_SESSION[C('USER_AUTH_KEY')], 'limit_num');
+	$group_limit = M('BackgroundSendEmailSetting') -> getFieldByid($_POST['limit_id'], 'group_limit');
 
 	$group_limit = $group_limit ? $group_limit : 100;
 	$group_num = (int)ceil(count($result) / $group_limit);
@@ -165,6 +165,9 @@ class MessageAction extends CommonAction {
 	$this -> success(L('DATA_ADD_SUCCESS'));
     }
 
+    $BackgroundSendEmailSetting = M('BackgroundSendEmailSetting');
+    $limit = $BackgroundSendEmailSetting -> field('id,email_address,group_limit') -> where(array('aid' => $_SESSION[C('USER_AUTH_KEY')])) -> order('addtime DESC') -> select();
+    $this -> assign('limit', $limit);
     $this -> display();
   }
 
@@ -188,11 +191,11 @@ class MessageAction extends CommonAction {
 	unset($recipient_arr[count($recipient_arr) - 1]);
       }
 
-      $setting = M('BackgroundEmailSetting');
-      $mail_address = $setting -> getFieldByname('mail_address', 'value');
-      $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
-      $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
-      $mail_password = $setting -> getFieldByname('mail_password', 'value');
+      $BackgroundSendEmailSetting = M('BackgroundSendEmailSetting');
+      $mail_address = $BackgroundSendEmailSetting -> getFieldByid($_POST['send_email'], 'email_address');
+      $mail_smtp = $BackgroundSendEmailSetting -> getFieldByid($_POST['send_email'], 'email_SMTP');
+      $mail_loginname = $BackgroundSendEmailSetting -> getFieldByid($_POST['send_email'], 'email_account');
+      $mail_password = $BackgroundSendEmailSetting -> getFieldByid($_POST['send_email'], 'email_pwd');
       C('MAIL_ADDRESS', $mail_address);
       C('MAIL_SMTP', $mail_smtp);
       C('MAIL_LOGINNAME', $mail_loginname);
@@ -227,6 +230,8 @@ class MessageAction extends CommonAction {
     $this -> assign('recipientstring', $recipientstring);
     $send_template = M('BackgroundEmailTemplate') -> field('id,name') -> select();
     $this -> assign('send_template', $send_template);
+    $result_email = M('BackgroundSendEmailSetting') -> field('id,email_address') -> where(array('aid' => $_SESSION[C('USER_AUTH_KEY')])) -> order('addtime DESC') -> select();
+    $this -> assign('result_email', $result_email);
     $this -> display();
   }
 
@@ -471,7 +476,7 @@ class MessageAction extends CommonAction {
 
   public function sendemailsetting(){
     $setting = M('BackgroundEmailSetting');
-    if(!empty($_POST['mail_address'])){
+    if(!empty($_POST['search_money'])){
       $where = array();
       $data = array();
       $num = 0;
@@ -486,15 +491,7 @@ class MessageAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $mail_address = $setting -> getFieldByname('mail_address', 'value');
-    $mail_smtp = $setting -> getFieldByname('mail_smtp', 'value');
-    $mail_loginname = $setting -> getFieldByname('mail_loginname', 'value');
-    $mail_password = $setting -> getFieldByname('mail_password', 'value');
     $search_money = $setting -> getFieldByname('search_money', 'value');
-    $this -> assign('mail_address', $mail_address);
-    $this -> assign('mail_smtp', $mail_smtp);
-    $this -> assign('mail_loginname', $mail_loginname);
-    $this -> assign('mail_password', $mail_password);
     $this -> assign('search_money', $search_money);
     $this -> display();
   }
@@ -590,7 +587,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberSendEmailRecord -> alias('mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendemail,mssr.statuscode') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $result = $MemberSendEmailRecord -> alias('mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendemail,mssr.statuscode,mssr.title,mssr.tosendemail') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -777,55 +774,6 @@ class MessageAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
-  }
-
-  public function emailgrouplimit(){
-    $admin = M('Admin');
-    $where = array();
-    if(!empty($_POST['aname'])){
-      $where['a.name'] = $this -> _post('aname');
-    }
-    if($_SESSION[C('USER_AUTH_KEY')] != 1){
-      $where['a.id'] = session(C('USER_AUTH_KEY'));
-    }
-
-    $count = $admin -> alias('a') -> where($where) -> count('id');
-    import('ORG.Util.Page');
-    if(! empty ( $_REQUEST ['listRows'] )){
-      $listRows = $_REQUEST ['listRows'];
-    } else {
-      $listRows = 15;
-    }
-    $page = new Page($count, $listRows);
-    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
-    $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $admin -> alias('a') -> field('a.id,a.name,l.limit_num') -> join('yesow_background_email_group_limit as l ON l.aid = a.id') -> order('a.id ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
-    $this -> assign('result', $result);
-    $this -> assign('listRows', $listRows);
-    $this -> assign('currentPage', $pageNum);
-    $this -> assign('count', $count);
-    $this -> display();
-  }
-
-  public function editemailgrouplimit(){
-    if(!empty($_POST['limit_num'])){
-      $BackgroundEmailGroupLimit = M('BackgroundEmailGroupLimit');
-      $result = $BackgroundEmailGroupLimit -> getFieldByaid($_POST['aid'], 'limit_num');
-      if($result){
-	$num = $BackgroundEmailGroupLimit -> where(array('aid' => $_POST['aid'])) -> save(array('limit_num' => $_POST['limit_num']));    
-      }else{
-	$num = $BackgroundEmailGroupLimit -> add(array('aid' => $_POST['aid'], 'limit_num' => $_POST['limit_num']));
-      }
-      if($num){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
-      }
-    }
-    $admin = M('Admin');
-    $result = $admin -> alias('a') -> field('a.id,a.name,l.limit_num') -> join('yesow_background_email_group_limit as l ON l.aid = a.id') -> where(array('a.id' => $this -> _get('id', 'intval'))) -> find();
-    $this -> assign('result', $result);
-    $this -> display();
   }
 
   //
@@ -1161,7 +1109,7 @@ class MessageAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $MemberEmailSetting -> alias('e') -> field('e.id,e.email_address,e.email_SMTP,e.email_account,e.addtime,m.name as mname') -> join('yesow_member as m ON e.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('e.addtime DESC') -> select();
+    $result = $MemberEmailSetting -> alias('e') -> field('e.id,e.email_address,e.email_SMTP,e.email_account,e.addtime,m.name as mname,e.group_limit') -> join('yesow_member as m ON e.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('e.addtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1169,4 +1117,176 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  public function editmembersendemail(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+
+    if(!empty($_POST['email_address'])){
+      if(!$MemberEmailSetting -> create()){
+	$this -> error($MemberEmailSetting -> getError());
+      }
+      if($MemberEmailSetting -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $MemberEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd,group_limit') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function delmembersendemail(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberEmailSetting = M('MemberEmailSetting');
+    if($MemberEmailSetting -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function backgroundsendemailsetting(){
+    $BackgroundSendEmailSetting = M('BackgroundSendEmailSetting');
+    $where = array();
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    if($_SESSION[C('USER_AUTH_KEY')] != 1){
+      $where['s.aid'] = session(C('USER_AUTH_KEY'));
+    }
+    $count = $BackgroundSendEmailSetting -> alias('s') -> join('yesow_admin as m ON s.aid = m.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $BackgroundSendEmailSetting -> alias('s') -> field('s.id,s.email_address,s.email_SMTP,s.email_account,s.group_limit,m.name as mname,s.addtime') -> join('yesow_admin as m ON s.aid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('s.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addbackgroundsendemailsetting(){
+    if(!empty($_POST['email_address'])){
+      $BackgroundSendEmailSetting = M('BackgroundSendEmailSetting');
+      if(!$BackgroundSendEmailSetting -> create()){
+	$this -> error($BackgroundSendEmailSetting -> getError());
+      }
+      $BackgroundSendEmailSetting -> aid = session(C('USER_AUTH_KEY'));
+      $BackgroundSendEmailSetting -> addtime = time();
+      if($BackgroundSendEmailSetting -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delbackgroundsendemailsetting(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $BackgroundSendEmailSetting = M('BackgroundSendEmailSetting');
+    if($BackgroundSendEmailSetting -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editbackgroundsendemailsetting(){
+    $BackgroundSendEmailSetting = M('BackgroundSendEmailSetting');
+
+    if(!empty($_POST['email_address'])){
+      if(!$BackgroundSendEmailSetting -> create()){
+	$this -> error($BackgroundSendEmailSetting -> getError());
+      }
+      if($BackgroundSendEmailSetting -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $BackgroundSendEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd,group_limit') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function illegal(){
+    $SendSmsIllegalWord = M('SendSmsIllegalWord');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    $count = $SendSmsIllegalWord -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $SendSmsIllegalWord -> field('id,name,replace,addtime,remark') -> order('addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addillegal(){
+    if(!empty($_POST['name'])){
+      $SendSmsIllegalWord = D('SendSmsIllegalWord');
+      if(!$SendSmsIllegalWord -> create()){
+	$this -> error($SendSmsIllegalWord -> getError());
+      }
+      if($SendSmsIllegalWord -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delillegal(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SendSmsIllegalWord = M('SendSmsIllegalWord');
+    if($SendSmsIllegalWord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editillegal(){
+    $SendSmsIllegalWord = D('SendSmsIllegalWord');
+    if(!empty($_POST['name'])){
+      if(!$SendSmsIllegalWord -> create()){
+	$this -> error($SendSmsIllegalWord -> getError());
+      }
+      if($SendSmsIllegalWord -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SendSmsIllegalWord -> field('name,replace,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
 }

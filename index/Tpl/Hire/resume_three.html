@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>人才登记表</title>
+<link rel="stylesheet" href="__PUBLIC__/resume/css/reset.css">
+<link rel="stylesheet" href="__PUBLIC__/resume/css/style.css">
+</head>
+<body>
+<!-- header -->
+<div class="header clearfix">
+	<div class="headerImg">
+    	<img src="__PUBLIC__/resume/images/header.gif" alt="易搜-中国IT服务中心">
+	</div>
+</div>
+
+<!-- content -->
+<form action="__ACTION__" method="post">
+<div class="content clearfix">
+	<div class="caption">
+    	<h1>人才登记表</h1>
+    </div>
+    
+    <div class="resume">     
+        <table cellpadding="0" cellspacing="1">
+            <tr>
+                <td colspan="8" class="row-tit"><span class="fl">家庭成员</span></td>
+            </tr>
+            <tr>
+                <td class="clm">姓名</td>
+                <td class="clm">亲属关系</td>
+                <td class="clm">年龄</td>
+                <td class="clm clm2">现工作单位</td>
+                <td class="clm clm3">职务</td>
+                <td class="clm clm3">联系方式</td>
+            </tr>
+            <tr>
+                <td class="clm"><input type="text" class="txt8" name="family_name1"></td>
+                <td class="clm"><input type="text" class="txt8" name="family_pople1"></td>
+                <td class="clm"><input type="text" class="txt8" name="family_age1"></td>
+                <td class="clm clm2"><input type="text" class="txt9" name="family_companyaddress1"></td>
+                <td class="clm clm3"><input type="text" class="txt10" name="family_job1"></td>
+                <td class="clm clm3"><input type="text" class="txt10" name="family_link1"></td>
+            </tr>
+            <tr>
+                <td class="clm"><input type="text" class="txt8" name="family_name2"></td>
+                <td class="clm"><input type="text" class="txt8" name="family_pople2"></td>
+                <td class="clm"><input type="text" class="txt8" name="family_age2"></td>
+                <td class="clm clm2"><input type="text" class="txt9" name="family_companyaddress2"></td>
+                <td class="clm clm3"><input type="text" class="txt10" name="family_job2"></td>
+                <td class="clm clm3"><input type="text" class="txt10" name="family_link2"></td>
+            </tr>
+        </table>
+        
+        <table cellpadding="0" cellspacing="1">
+            <tr>
+                <td colspan="2" class="row-tit"><span class="fl">职位状态</span></td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">职位状态：</td>
+                <td>
+                    <select class="ml5" name="jobstatus">
+                        <option value="">请选择</option>
+                        <option value="在职">在职</option>
+                        <option value="一个月内合同到期，不准备续签">一个月内合同到期，不准备续签</option>
+                        <option value="三个月内合同到期，不准备续签">三个月内合同到期，不准备续签</option>
+                        <option value="半年内合同到期，不准备续签">半年内合同到期，不准备续签</option>
+                        <option value="脱产培训">脱产培训</option>
+                        <option value="在职培训">在职培训</option>
+                        <option value="在校学生">在校学生</option>
+                        <option value="应届毕业生">应届毕业生</option>
+                        <option value="待业">待业</option>
+                        <option value="其它">其它</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">求职方式：</td>
+                <td>
+                    <input type="radio" name="jbotype" value="全职" class="rdo" checked><span>全职</span>
+                    <input type="radio" name="jbotype" value="兼职" class="rdo ml5"><span>兼职</span>
+                    <span class="rsp ml5">求职地点：</span>
+		    <select id="site" class="inpt" name="jobaddress">
+                        <option value="上海">上海</option>
+                        <option value="山东">山东</option>
+                        <option value="福建">福建</option>
+                        <option value="江西">江西</option>
+                        <option value="安徽">安徽</option>
+                        <option value="江苏">江苏</option>
+                        <option value="华东">华东</option>
+                        <option value="浙江">浙江</option>
+                        <option value="广东">广东</option>
+                        <option value="湖南">湖南</option>
+                        <option value="湖北">湖北</option>
+                        <option value="河南">河南</option>
+                        <option value="北京">北京</option>
+                        <option value="河北">河北</option>
+                        <option value="海南">海南</option>
+                        <option value="天津">天津</option>
+                        <option value="广西">广西</option>
+                        <option value="云南">云南</option>
+                        <option value="贵州">贵州</option>
+                        <option value="四川">四川</option>
+                        <option value="重庆">重庆</option>
+                        <option value="陕西">陕西</option>
+                        <option value="甘肃">甘肃</option>
+                        <option value="青海">青海</option>
+                        <option value="宁夏">宁夏</option>
+                        <option value="辽宁">辽宁</option>
+                        <option value="吉林">吉林</option>
+                        <option value="黑龙江">黑龙江</option>
+                        <option value="新疆">新疆</option>
+                        <option value="西藏">西藏</option>
+                        <option value="内蒙古">内蒙古</option>
+                        <option value="山西">山西</option>
+                        <option value="香港">香港</option>
+                        <option value="澳门">澳门</option>
+                        <option value="台湾">台湾</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">月薪要求：</td>
+                <td>
+                    <select class="ml5" name="monthlysalary">
+                        <option value="999元以下">999元以下</option>
+                        <option value="1000-1499元">1000-1499元</option>
+                        <option value="1500-1999元">1500-1999元</option>
+                        <option value="2000-2999元">2000-2999元</option>
+                        <option value="3000-3999元">3000-3999元</option>
+                        <option value="4000-5999元">4000-5999元</option>
+                        <option value="6000-7999元">6000-7999元</option>
+                        <option value="8000-9999元">8000-9999元</option>
+                        <option value="10000-14999元">10000-14999元</option>
+                        <option value="15000-19999元">15000-19999元</option>
+                        <option value="20000-29999元">20000-29999元</option>
+                        <option value="30000-49999元">30000-49999元</option>
+                        <option value="50000元以上">50000元以上</option>
+                        <option value="面议">面议</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">职位要求一：</td>
+                <td>
+                    <select class="ml5" name="jobs_make1">
+                        <option value="">请选择...</option>
+                        <option value="不限">===不限===</option>
+                        <option value="计算机">计算机</option>
+                        <option value="电子、电信">电子、电信</option>
+                        <option value="电气、能源">电气、能源</option>
+                        <option value="商业零售、贸易、进出口">商业零售、贸易、进出口</option>
+                        <option value="广告、公关、咨询、信息">广告、公关、咨询、信息</option>
+                        <option value="冶金、矿产原料">冶金、矿产原料</option>
+                        <option value="银行、保险、证券、投资">银行、保险、证券、投资</option>
+                        <option value="建筑、房地产、商业中心">建筑、房地产、商业中心</option>
+                        <option value="娱乐、运动休闲">娱乐、运动休闲</option>
+                        <option value="食品、餐饮业 ">食品、餐饮业</option>
+                        <option value="旅游、酒店、交通运输">旅游、酒店、交通运输</option>
+                        <option value="空调、制冷">空调、制冷</option>
+                        <option value="办公设备、办公用品">办公设备、办公用品</option>
+                        <option value="服装、纺织">服装、纺织</option>
+                        <option value="轻工、家电">轻工、家电</option>
+                        <option value="机械、仪器、仪表">机械、仪器、仪表</option>
+                        <option value="医疗设备、仪器">医疗设备、仪器</option>
+                        <option value="家居、生活用品、装修">家居、生活用品、装修</option>
+                        <option value="汽车、配件用品">汽车、配件用品</option>
+                        <option value="石油、化工、原材料">石油、化工、原材料</option>
+                        <option value="化学、医药、生物制药">化学、医药、生物制药</option>
+                        <option value="环保、设备">环保、设备</option>
+                        <option value="种养业">种养业</option>
+                        <option value="社区服务">社区服务</option>
+                        <option value="新闻、出版、印刷">新闻、出版、印刷</option>
+                        <option value="教育、文化、科研、医疗卫生">教育、文化、科研、医疗卫生</option>
+                        <option value="政府、国家机关、公共事业">政府、国家机关、公共事业</option>
+                        <option value="协会、学会、社团">协会、学会、社团</option>
+                        <option value="造纸业">造纸业</option>
+                        <option value="其它制造业">其它制造业</option>
+                        <option value="其它">其它</option>
+                    </select>
+                    <input type="text" class="txt1 ml5" name="jobs_make_text1"><span class="rsp">职位</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">职位要求二：</td>
+                <td>
+                    <select class="ml5" name="jobs_make2">
+                        <option value="">请选择...</option>
+                        <option value="不限">===不限===</option>
+                        <option value="计算机">计算机</option>
+                        <option value="电子、电信">电子、电信</option>
+                        <option value="电气、能源">电气、能源</option>
+                        <option value="商业零售、贸易、进出口">商业零售、贸易、进出口</option>
+                        <option value="广告、公关、咨询、信息">广告、公关、咨询、信息</option>
+                        <option value="冶金、矿产原料">冶金、矿产原料</option>
+                        <option value="银行、保险、证券、投资">银行、保险、证券、投资</option>
+                        <option value="建筑、房地产、商业中心">建筑、房地产、商业中心</option>
+                        <option value="娱乐、运动休闲">娱乐、运动休闲</option>
+                        <option value="食品、餐饮业 ">食品、餐饮业</option>
+                        <option value="旅游、酒店、交通运输">旅游、酒店、交通运输</option>
+                        <option value="空调、制冷">空调、制冷</option>
+                        <option value="办公设备、办公用品">办公设备、办公用品</option>
+                        <option value="服装、纺织">服装、纺织</option>
+                        <option value="轻工、家电">轻工、家电</option>
+                        <option value="机械、仪器、仪表">机械、仪器、仪表</option>
+                        <option value="医疗设备、仪器">医疗设备、仪器</option>
+                        <option value="家居、生活用品、装修">家居、生活用品、装修</option>
+                        <option value="汽车、配件用品">汽车、配件用品</option>
+                        <option value="石油、化工、原材料">石油、化工、原材料</option>
+                        <option value="化学、医药、生物制药">化学、医药、生物制药</option>
+                        <option value="环保、设备">环保、设备</option>
+                        <option value="种养业">种养业</option>
+                        <option value="社区服务">社区服务</option>
+                        <option value="新闻、出版、印刷">新闻、出版、印刷</option>
+                        <option value="教育、文化、科研、医疗卫生">教育、文化、科研、医疗卫生</option>
+                        <option value="政府、国家机关、公共事业">政府、国家机关、公共事业</option>
+                        <option value="协会、学会、社团">协会、学会、社团</option>
+                        <option value="造纸业">造纸业</option>
+                        <option value="其它制造业">其它制造业</option>
+                        <option value="其它">其它</option>
+                    </select>
+                    <input type="text" class="txt1 ml5" name="jobs_make_text2"><span class="rsp">职位</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">现工作单位：</td>
+                <td><input type="text" class="txt11 ml5" name="company_now"></td>
+            </tr>
+            <tr>
+                <td class="col-cap col-cap2">现从事职业：</td>
+                <td>
+                    <input type="text" class="txt2 ml5" name="jobs_now">
+                    <span class="ml5">目前月收入：</span><input type="text" class="txt2" name="monthlymoney">
+                </td>
+            </tr>
+        </table>
+
+	<input type="hidden" name="id" value="<!--{$Think.get.id|intval}--!>" />
+        
+        <div class="formBtn clearfix">
+            <input type="submit" value="提交" />
+        </div>
+	</form>
+    </div>
+</div>
+
+<!-- footer -->
+<div class="footer clearfix">
+	<!-- menu -->
+	<div class="menu clearfix">
+    	<a href="#">关于易搜</a><span>-</span><a href="#">易搜发展</a><span>-</span><a href="#">服务声明</a><span>-</span><a href="#">业务介绍</a><span>-</span><a href="#">优势介绍</a><span>-</span><a href="#">站点地图</a><span>-</span><a href="#">人才招聘</a><span>-</span> <a href="#">付款方式</a><span>-</span><a href="#">联系方式</a><span>-</span> <a href="#">广告服务</a>
+    </div>
+    
+    <!-- copy -->
+    <div class="copy clearfix">
+        <div class="fl">
+            <a href="index.html"><img src="__PUBLIC__/resume/images/logot.jpg" alt="易搜网"></a>
+        </div>
+        
+        <div class="copyDes fr">
+        	<p>服务热线：<strong>0571-88396114</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>88396195</strong>(浙江)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>025-85302700</strong>(江苏)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>0551-3665082</strong>(安徽)&nbsp;&nbsp;&nbsp;&nbsp;<strong>0791-85810730</strong>(江西)</p>
+            <div class="clearfix">
+            	<p class="fl">Copyright&copy;2005-2012 www.yesow.com Inc. All rights reserved. 杭州百联信息技术有限公司 版权所有</p>
+            </div>
+            <div class="ft-icons clearfix">
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c1.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c3.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c5.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c7.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c9.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c11.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gh.gif"></a></li>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>人才登记表</title>
+<link rel="stylesheet" href="__PUBLIC__/resume/css/reset.css">
+<link rel="stylesheet" href="__PUBLIC__/resume/css/style.css">
+</head>
+<body>
+<!-- header -->
+<div class="header clearfix">
+	<div class="headerImg">
+    	<img src="__PUBLIC__/resume/images/header.gif" alt="易搜-中国IT服务中心">
+	</div>
+</div>
+
+<!-- content -->
+<form action="__ACTION__" method="post" enctype="multipart/form-data">
+<div class="content clearfix">
+	<div class="caption">
+    	<h1>人才登记表</h1>
+    </div>
+    
+    <div class="resume">
+        <table cellpadding="0" cellspacing="1" class="table1">
+            <tr>
+                <td colspan="6" class="row-tit"><span class="fl">基本信息</span></td>
+            </tr>
+            <tr>
+                <td class="col-cap">应聘职务</td>
+                <td class="col-des">
+                    <select class="slt1 ml5" name="pid">
+		      	<volist name="result_potion" id="rp">
+			<eq name="Think.get.pid" value="$rp.id">
+			<option value="<!--{$rp.id}--!>" selected="selected"><!--{$rp.title}--!></option>
+		 	<else/>
+			<option value="<!--{$rp.id}--!>"><!--{$rp.title}--!></option>
+			</eq>
+			</volist>
+                    </select>
+                </td>
+                <td class="col-cap">相关经验</td>
+                <td class="col-des">
+                    <select class="slt1 ml5" name="experience">
+                        <option value="有">有</option>
+                        <option value="无">无</option>
+                    </select>
+                </td>
+              <td class="col-cap">登记日期</td>
+		<td class="col-des2"><span class="rsp"><!--{:date('Y-m-d')}--!></span></td>
+            </tr>
+            <tr>
+                <td class="col-cap">真实姓名</td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="realname"></td>
+                <td class="col-cap">籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="native"></td>
+                <td colspan="2" rowspan="6">
+                    <div class="avatorBox clearfix">
+                        <p class="avatorDes fl">照片上传</p>
+                        <div class="avator fl">
+                            
+                        </div>
+                    </div>
+                    <div class="fileBox clearfix">
+                        <input type="file" class="file" name="pic">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap">身份证号</td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="number"></td>
+                <td class="col-cap">出生年月</td>
+                <td class="col-des">
+                    <input type="text" class="txt3 ml5" name="year"><span class="rsp">年</span>
+                    <input type="text" class="txt3" name="month"><span class="rsp">月</span>
+                    <input type="text" class="txt3" name="day"><span class="rsp">日</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</td>
+                <td class="col-des">
+                    <select class="slt2 ml5" name="sex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+                <td class="col-cap">民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 族</td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="nation"></td>
+            </tr>
+            <tr>
+                <td class="col-cap">政治面貌</td>
+                <td class="col-des">
+                    <select class="slt3 ml5" name="landscape">
+                        <option value="团员">团员</option>
+                        <option value="党员">党员</option>
+                        <option value="群众">群众</option>
+                        <option value="其他民主党派">其他民主党派</option>
+                    </select>
+                </td>
+                <td class="col-cap">户口属地</td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="househol"></td>
+            </tr>
+            <tr>
+                <td class="col-cap">身&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 高</td>
+                <td class="col-des">
+                    <input type="text" class="txt3 ml5" name="height"><span class="rsp">厘米</span>
+                    <span class="rsp">体重</span><input type="text" class="txt3" name="weight"><span class="rsp">公斤</span>
+                </td>
+                <td class="col-cap">裸&nbsp;&nbsp;视&nbsp;力</td>
+                <td class="col-des">                	
+                    <span class="rsp">左</span><input type="text" class="txt3" name="vision_left">
+                    <span class="rsp">右</span><input type="text" class="txt3" name="vision_right">
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap">婚姻状况</td>
+                <td class="col-des">
+                    <select class="slt2 ml5" name="marital">
+                        <option value="未婚">未婚</option>
+                        <option value="已婚">已婚</option>
+                        <option value="离异">离异</option>
+                        <option value="丧偶">丧偶</option>
+                    </select>                    
+                    <span class="rsp ml5">有无子女</span><select class="slt2" name="children">
+                        <option value="无">无</option>
+                        <option value="有">有</option>
+                    </select>
+                </td>
+                <td class="col-cap">文化程度</td>
+                <td class="col-des">
+                    <select class="slt4 ml5" name="education">
+                        <option>博士</option>
+                        <option>硕士</option>
+                        <option>大学本科</option>
+                        <option>大专</option>
+                        <option>中专</option>
+                        <option>职高/技校</option>
+                        <option>高中</option>
+                        <option>初中</option>
+                    </select>                    
+                    <span class="rsp ml5">有无证书</span><select class="slt2" name="certificate">
+                        <option value="无">无</option>
+                        <option value="有">有</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap">毕业时间</td>
+                <td class="col-des">
+                    <input type="text" class="txt3 ml5" name="graduation_year"><span class="rsp">年</span>
+                    <input type="text" class="txt3" name="graduation_month"><span class="rsp">月</span>
+                    <input type="text" class="txt3" name="graduation_day"><span class="rsp">日</span>
+                </td>
+                <td class="col-cap">毕业学校</td>
+                <td colspan="3" class="col-des"><input type="text" class="txt2 ml5" name="school"></td>
+            </tr>
+            <tr>
+                <td class="col-cap">所学专业</td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="major_one"></td>
+                <td class="col-cap">从事专业</td>
+                <td colspan="3" class="col-des"><input type="text" class="txt1 ml5" name="major_two"></td>
+            </tr>
+            <tr>
+                <td class="col-cap">技术职称</td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="professional"></td>
+                <td class="col-cap">从事年限</td>
+                <td colspan="3" class="col-des">
+                    <input type="text" class="txt3 ml5" name="work_year">
+                    <span class="rsp">年</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cap">职业特长</td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="work_strong"></td>
+                <td class="col-cap">其它特长</td>
+                <td colspan="3" class="col-des"><input type="text" class="txt2 ml5" name="other_strong"></td>
+            </tr>
+            <tr>
+                <td class="col-cap">待遇要求</td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="salary_ask"></td>
+                <td class="col-cap">其它要求</td>
+                <td colspan="3" class="col-des"><input type="text" class="txt2 ml5" name="other_ask"></td>
+            </tr>
+        </table>
+	<div class="formBtn clearfix">
+        	<input type="submit" value="下一步" />
+        </div>
+	</form>
+        
+        
+	</div>
+</div>
+
+<!-- footer -->
+<div class="footer clearfix">
+	<!-- menu -->
+	<div class="menu clearfix">
+    	<a href="#">关于易搜</a><span>-</span><a href="#">易搜发展</a><span>-</span><a href="#">服务声明</a><span>-</span><a href="#">业务介绍</a><span>-</span><a href="#">优势介绍</a><span>-</span><a href="#">站点地图</a><span>-</span><a href="#">人才招聘</a><span>-</span> <a href="#">付款方式</a><span>-</span><a href="#">联系方式</a><span>-</span> <a href="#">广告服务</a>
+    </div>
+    
+    <!-- copy -->
+    <div class="copy clearfix">
+        <div class="fl">
+            <a href="index.html"><img src="__PUBLIC__/resume/images/logot.jpg" alt="易搜网"></a>
+        </div>
+        
+        <div class="copyDes fr">
+        	<p>服务热线：<strong>0571-88396114</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>88396195</strong>(浙江)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>025-85302700</strong>(江苏)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>0551-3665082</strong>(安徽)&nbsp;&nbsp;&nbsp;&nbsp;<strong>0791-85810730</strong>(江西)</p>
+            <div class="clearfix">
+            	<p class="fl">Copyright&copy;2005-2012 www.yesow.com Inc. All rights reserved. 杭州百联信息技术有限公司 版权所有</p>
+            </div>
+            <div class="ft-icons clearfix">
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c1.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c3.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c5.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c7.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c9.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gs_r1_c11.gif"></a></li>
+            	<li><a href="#" class="vm"><img src="__PUBLIC__/resume/images/gh.gif"></a></li>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

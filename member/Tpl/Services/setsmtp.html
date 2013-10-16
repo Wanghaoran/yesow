@@ -8,20 +8,6 @@
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
 <script>
-var setlimit = function(value){
-  $.ajax({
-    url: '__URL__/ajaxsetmemberemailgrouplimit/value/' + value,
-    success: function(ress){
-      if(ress){
-        alert('设置成功！');
-	location.reload();
-      }else{
-        alert('设置失败！');      
-      }
-    }
-    });
-}
-
 
 function Bind(thisObj, thisObjID) {
 var $td = $(thisObj).parents('tr').children('td');
@@ -30,11 +16,12 @@ var text_add = $td.eq(0).find("input").val();//第二个Td的ID的值，attr("id
 var text_smtp = $td.eq(1).find("input").val();
 var text_email = $td.eq(2).find("input").val();
 var text_pwd = $td.eq(3).find("input").val();
+var group_limit = $td.eq(4).find("input").val();
 var text_id = thisObjID;
 $.ajax({
   url: '__ROOT__/member.php/public/ajaxchangeemailsetting',
   type: 'POST',
-  data: 'email_address=' + text_add + '&email_SMTP=' + text_smtp + '&email_account=' + text_email + '&email_pwd=' + text_pwd + '&id=' + text_id,
+  data: 'email_address=' + text_add + '&email_SMTP=' + text_smtp + '&email_account=' + text_email + '&email_pwd=' + text_pwd + '&group_limit=' + group_limit +'&id=' + text_id,
       success: function(ress){
         if(ress.status == 1){
 	  alert(ress.message);
@@ -72,14 +59,15 @@ var text_add = $td.eq(0).find("input").val();//第二个Td的ID的值，attr("id
 var text_smtp = $td.eq(1).find("input").val();
 var text_email = $td.eq(2).find("input").val();
 var text_pwd = $td.eq(3).find("input").val();
-if(!text_add || !text_smtp || !text_email || !text_pwd){
+var group_limit = $td.eq(4).find("input").val();
+if(!text_add || !text_smtp || !text_email || !text_pwd || !group_limit){
   alert('发送邮件设置内容填写不完整，请重新填写!');
   return;
 }
 $.ajax({
   url: '__ROOT__/member.php/public/ajaxaddemailsetting',
   type: 'POST',
-  data: 'email_address=' + text_add + '&email_SMTP=' + text_smtp + '&email_account=' + text_email + '&email_pwd=' + text_pwd,
+  data: 'email_address=' + text_add + '&email_SMTP=' + text_smtp + '&email_account=' + text_email + '&email_pwd=' + text_pwd + '&group_limit=' + group_limit,
       success: function(ress){
         if(ress.status == 1){
 	  alert(ress.message);
@@ -112,7 +100,6 @@ $.ajax({
                                                  
                         </dl>
                         <div class="main_sjdxfs">
-			  <span>通讯录最大存储: &nbsp;&nbsp;<input type="text" style="width:50px;" id="grouplimit" value="<!--{$limitnum}--!>" />&nbsp;&nbsp;<input type="button" onclick="setlimit($('#grouplimit').val());" value="修改"></span>
                             <div style="min-height:135px;">
                                 <table class="table_wdfsjl">
                                     <tr>
@@ -120,22 +107,25 @@ $.ajax({
                                           <th>发送邮箱SMTP</th>
                                           <th>发送邮箱帐号</th>
                                           <th>发送邮箱密码</th>
+                                          <th>通讯录最大存储</th>
                                           <th>操作</th>
                                     </tr>
 				    <volist name="result" id="r">
                                     <tr>
-				      <td><input type="text" value="<!--{$r.email_address}--!>"></td>
-					  <td><input type="text" value="<!--{$r.email_SMTP}--!>"></td> 
-					  <td><input type="text" value="<!--{$r.email_account}--!>"></td>
-					  <td><input type="password" value="<!--{$r.email_pwd}--!>"></td>
+				      <td><input type="text" value="<!--{$r.email_address}--!>" style="width:120px;"></td>
+					  <td><input type="text" value="<!--{$r.email_SMTP}--!>" style="width:100px;"></td> 
+					  <td><input type="text" value="<!--{$r.email_account}--!>" style="width:120px;"></td>
+					  <td><input type="password" value="<!--{$r.email_pwd}--!>" style="width:80px;"></td>
+					  <td><input type="text" value="<!--{$r.group_limit}--!>" style="width:80px;"></td>
 					  <td><a id="<!--{$r.id}--!>" href="javascript:;" onclick="Bind(this,this.id);">修改</a>|<a id="<!--{$r.id}--!>"  href="javascript:;" onclick="Delete(this.id,this);">删除</a></td>
                                      </tr>
 				     </volist>
                                      <tr>
-                                          <td><input type="text" value=""></td>
-                                          <td><input type="text" value=""></td> 
-                                          <td><input type="text" value=""></td>
-                                          <td><input type="password" value=""></td>
+                                          <td><input type="text" value="" style="width:120px;"></td>
+                                          <td><input type="text" value="" style="width:100px;"></td> 
+                                          <td><input type="text" value="" style="width:120px;"></td>
+                                          <td><input type="password" value="" style="width:80px;"></td>
+                                          <td><input type="text" value="" style="width:80px;"></td>
                                           <td><a onclick="addemail(this)">添加</a></td>
                                       </tr>
                                 </table>

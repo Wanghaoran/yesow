@@ -602,4 +602,107 @@ class MemberAction extends CommonAction {
     $this -> display();
   }
 
+  public function resumepotion(){
+    $ResumePotion = M('ResumePotion');
+    $where = array();
+    if(!empty($_POST['title'])){
+      $where['title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    $count = $ResumePotion -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $ResumePotion -> field('id,title,remark,addtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addresumepotion(){
+    if(!empty($_POST['title'])){
+      $ResumePotion = M('ResumePotion');
+      if(!$ResumePotion -> create()){
+	$this -> error($ResumePotion -> getError());
+      }
+      $ResumePotion -> addtime = time();
+      if($ResumePotion -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delresumepotion(){
+    $ResumePotion = M('ResumePotion');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($ResumePotion -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editresumepotion(){
+    $ResumePotion = M('ResumePotion');
+    if(!empty($_POST['id'])){
+      if(!$ResumePotion -> create()){
+	$this -> error($ResumePotion -> getError());
+      }
+      if($ResumePotion -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $ResumePotion -> field('title,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function resume(){
+    $Resume = M('Resume');
+    $where = array();
+    if(!empty($_POST['realname'])){
+      $where['r.realname'] = array('LIKE', '%' . $this -> _post('realname') . '%');
+    }
+    $count = $Resume -> alias('r') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $Resume -> alias('r') -> field('r.id,r.realname,r.addtime,p.title,r.sex,r.mobilephone,r.jobstatus,r.monthlysalary,r.jbotype') -> join('yesow_resume_potion as p ON r.pid = p.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delresume(){
+    $Resume = M('Resume');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($Resume -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
 }

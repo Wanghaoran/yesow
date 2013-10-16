@@ -7,6 +7,14 @@
 	<div class="unit">
 		<label>通讯录名称:</label>
 		<input type="text" class="required" name="name" /><label>(255个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>通讯录存储限制:</label>
+		<select class="combox" name="limit_id">
+		  <volist name="limit" id="l">
+		  <option value="<!--{$l.id}--!>"><!--{$l.email_address}--!>(<!--{$l.group_limit}--!>条)</option>
+		  </volist>
+		</select>
 	</div>	
 	<div class="unit">
 		<label>备注：</label>

@@ -3,9 +3,6 @@ class HireAction extends CommonAction {
 
   //首页
   public function index(){
-    //先取得分站id
-    //$csid = D('admin://ChildSite') -> getid();
-    //当前时间
     $time = time();
 
     /* ---------------- 人才招聘 ---------------- */
@@ -764,5 +761,79 @@ class HireAction extends CommonAction {
     }else{
       $this -> error(L('ARTICLE_COMMIT_ADD_ERROR'));
     }
+  }
+
+  public function resume(){
+    if(!empty($_POST['pid'])){
+      $Resume = M('Resume');
+      if(!$Resume -> create()){
+	R('Public/errorjump',array($Resume -> getError()));
+      }
+      if(!empty($_FILES['pic']['name'])){
+	$up_data = $this -> resume_pic_upload();
+	$Resume -> pic = $up_data[0]['savename'];
+      }
+      if($id = $Resume -> add()){
+	redirect(PHP_FILE . '/hire/resume_two/id/' . $id);
+      }else{
+	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    $ResumePotion = M('ResumePotion');
+    $result_potion = $ResumePotion -> field('id,title') -> select();
+    $this -> assign('result_potion', $result_potion);
+    $this -> display();
+  }
+
+  public function resume_pic_upload(){
+    import('ORG.Net.UploadFile');
+    $upload = new UpLoadFile();
+    $upload -> savePath = C('RESUME_PIC_PATH') ;
+    $upload -> autoSub = false;
+    $upload -> saveRule = 'uniqid';
+    if($upload -> upload()){
+      $info = $upload -> getUploadFileInfo();
+      return $info;
+    }else{
+      return $upload;
+    }
+  }
+
+  public function resume_two(){
+    if(!empty($_POST['id'])){
+      $Resume = M('Resume');
+      if(!$Resume -> create()){
+	R('Public/errorjump',array($Resume -> getError()));
+      }
+      if($Resume -> save()){
+	redirect(PHP_FILE . '/hire/resume_three/id/' . $_POST['id']);
+      }else{
+	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    $this -> display();
+  }
+
+  public function resume_three(){
+    if(!empty($_POST['id'])){
+      $Resume = M('Resume');
+      if(!$Resume -> create()){
+	R('Public/errorjump',array($Resume -> getError()));
+      }
+      $Resume -> addtime = time();
+      if($Resume -> save()){
+	echo '<script>alert("感谢提交招聘信息,我们会在3个工作日内和您联系!");location.href="' . __ROOT__ . '"</script>';
+      }else{
+	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
+      }
+    }
+    $this -> display();
+  }
+
+  public function resumeinfo(){
+    $Resume = M('Resume');
+    $result = $Resume -> alias('r') -> field('r.*,p.title') -> join('yesow_resume_potion as p ON r.pid = p.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
   }
 }

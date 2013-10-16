@@ -1723,6 +1723,25 @@ class ServicesAction extends CommonAction {
 
       $MemberSendSmsRecord = M('MemberSendSmsRecord');
 
+      //过滤敏感词
+      $SendSmsIllegalWord = M('SendSmsIllegalWord');
+      //需要过滤的词的数组
+      $illegal_word_temp = $SendSmsIllegalWord -> field('name') -> order('id') -> select();
+      //需要替换的词的数组
+      $replace_word_temp = $SendSmsIllegalWord -> field('replace') -> order('id') -> select();
+      //整理这两个数组
+      $illegal_word = array();
+      $replace_word = array();
+      foreach($illegal_word_temp as $key => $value){
+	$illegal_word[] = $value['name'];
+      }
+      foreach($replace_word_temp as $key => $value){
+	$replace_word[] = $value['replace'];
+      }
+
+      //退费总额
+      $total_back = 0;
+
       //执行发送
       foreach($to_send as $value){
 	if($value['id']){
@@ -1733,6 +1752,7 @@ class ServicesAction extends CommonAction {
 	  $content = $_POST['content'];
 	}
 	$content = str_replace(' ', ',', $content);
+	$content = str_replace($illegal_word, $replace_word, $content);
 
 	$url = "http://www.vip.86aaa.com/api.aspx?SendType={$_POST['sendtype']}&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$value['tel']}&Content={$content}【易搜】";
 	$url = iconv('UTF-8', 'GB2312', $url);
@@ -1752,15 +1772,16 @@ class ServicesAction extends CommonAction {
 	}
 	//发送失败退费
 	if($ret != 0){
-	  //增加金额
-	  $MemberRmb -> addmoney('rmb_exchange', $send_phone_price * $sms_num);
-	  //写日志
-	  $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($send_phone_price * $sms_num));
+	  $total_back += $send_phone_price * $sms_num;
 	}
 	$data_rec['statuscode'] = $ret;
 	$MemberSendSmsRecord -> add($data_rec);
 	usleep(100);
       }
+      //退费
+      $MemberRmb -> addmoney('rmb_exchange', $total_back);
+      //写日志
+      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
       //重新缓存用户余额
       $MemberRmb -> rmbtotal();
       //清空信息
@@ -3544,21 +3565,10 @@ class ServicesAction extends CommonAction {
 
   public function setsmtp(){
     $MemberEmailSetting = M('MemberEmailSetting');
-    $result = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
+    $result = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd,group_limit') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
     $this -> assign('result', $result);
     $this -> assign('limitnum', M('MemberEmailGroupLimit') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'limitnum'));
     $this -> display();
-  }
-
-  public function ajaxsetmemberemailgrouplimit(){
-    $MemberEmailGroupLimit = M('MemberEmailGroupLimit');
-    $result = $MemberEmailGroupLimit -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> find();
-    if($result){
-      $num = $MemberEmailGroupLimit -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> save(array('limitnum' => $this -> _get('value', 'intval')));
-    }else{
-      $num = $MemberEmailGroupLimit -> add(array('limitnum' => $this -> _get('value', 'intval'), 'mid' => session(C('USER_AUTH_KEY'))));
-    }
-    echo $num;
   }
 
   public function sendemail(){
@@ -3675,7 +3685,7 @@ class ServicesAction extends CommonAction {
 	  }
 	}
 
-	$group_limit = M('MemberEmailGroupLimit') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'limitnum');
+	$group_limit = M('MemberEmailSetting') -> getFieldByid($_POST['sendtype'], 'group_limit');
 
 	$save_group_list = array();
 	if(!empty($_POST['issearch'])){
@@ -3786,6 +3796,7 @@ class ServicesAction extends CommonAction {
 
       $re_data['sendtime'] = time();
       $re_data['sendemail'] = $value['email'];
+      $re_data['tosendemail'] = $send_setting['email_address'];
       if(@SendMail($value['email'], $re_data['title'], $re_data['content'], 'yesow-易搜')){
         $re_data['statuscode'] = 1;
       }else{
@@ -3802,7 +3813,7 @@ class ServicesAction extends CommonAction {
 
   //发送完毕跳转
   public function sendemailendjump(){
-    R('Register/successjump',array('发送完毕,现在跳转到发送记录', U('Services/emails')));
+    R('Register/successjump',array('发送完毕,现在跳转到发送记录', U('Services/emailsendrecord')));
   }
 
   public function searchemail(){
@@ -3940,7 +3951,7 @@ class ServicesAction extends CommonAction {
     $count = $MemberSendEmailRecord -> where($where) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $MemberSendEmailRecord -> field('title,sendtime,content,sendemail,statuscode') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
+    $result = $MemberSendEmailRecord -> field('title,sendtime,content,sendemail,statuscode,tosendemail') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
     foreach($result as $key => $value){
       $result[$key]['sendemail'] = substr($value['sendemail'], 0 ,3) . '****' . strstr($value['sendemail'], '@');
     }

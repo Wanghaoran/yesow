@@ -98,6 +98,11 @@ return array(
   //人才交流-公司图片显示
   'RECRUIT_PIC_PATH_SAVE' => __ROOT__ . '/Upload/recruit/',
 
+  //人员招聘图片保存路径
+  'RESUME_PIC_PATH' => './Upload/resume/',
+  //人员招聘图片显示
+  'RESUME_PIC_PATH_SAVE' => __ROOT__ . '/Upload/resume/',
+
   //网站临时上传目录
   'TEMP_UPLOAD_PATH' => './Upload/temp/',
 
