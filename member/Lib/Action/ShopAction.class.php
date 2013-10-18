@@ -76,6 +76,30 @@ class ShopAction extends CommonAction {
     $this -> display();
   }
 
+  //订单备注
+  public function shoporderremark(){
+    $order = M('ShopOrder');
+    if(!empty($_POST['remark'])){
+      if(!$order -> create()){
+	R('Register/errorjump',array($order -> getError(), U('Shop/shoporder')));
+      }
+      if($order -> save()){
+	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Shop/shoporder')));
+      }else{
+	R('Register/errorjump',array(L('DATA_UPDATE_ERROR'), U('Shop/shoporder')));
+      }
+    }
+    //根据id号查询单号
+    $ordernum = $order -> getFieldByid($this -> _get('id', 'intval'), 'ordernum');
+    $this -> assign('ordernum', $ordernum);
+    //订单状态
+    $order_status = $order -> field('ischeck,issend,paystatus') -> where(array('ordernum' => $ordernum)) -> find();
+    $this -> assign('order_status', $order_status);
+    $remark = $order -> getFieldByordernum($ordernum, 'remark');
+    $this -> assign('remark', $remark);
+    $this -> display();
+  }
+
   //网上购物 - 包月订购 - 我要包月订购
   public function buymonthly(){
     $member_monthly = M('MemberMonthly');

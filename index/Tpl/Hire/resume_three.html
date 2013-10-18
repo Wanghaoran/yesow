@@ -5,6 +5,32 @@
 <title>人才登记表</title>
 <link rel="stylesheet" href="__PUBLIC__/resume/css/reset.css">
 <link rel="stylesheet" href="__PUBLIC__/resume/css/style.css">
+<style type="text/css">
+.f00{ color:#F00; font-family:'Simsun';}
+</style>
+<script type="text/javascript">
+function chkfrm()
+{
+	if (frm.company_now.value == "") 
+	{
+		alert("请填写现从事职业");
+		document.frm.company_now.focus;
+		return false;
+	}
+	if (frm.jobs_now.value == "") 
+	{
+		alert("请填写现从事职业");
+		document.frm.jobs_now.focus;
+		return false;
+	}
+	if (frm.monthlymoney.value == "") 
+	{
+		alert("请填写现目前月收入");
+		document.frm.monthlymoney.focus;
+		return false;
+	}
+}
+</script>
 </head>
 <body>
 <!-- header -->
@@ -15,7 +41,7 @@
 </div>
 
 <!-- content -->
-<form action="__ACTION__" method="post">
+<form action="__ACTION__" method="post" name="frm" onsubmit="return chkfrm()">
 <div class="content clearfix">
 	<div class="caption">
     	<h1>人才登记表</h1>
@@ -224,13 +250,13 @@
             </tr>
             <tr>
                 <td class="col-cap col-cap2">现工作单位：</td>
-                <td><input type="text" class="txt11 ml5" name="company_now"></td>
+                <td><input type="text" class="txt11 ml5" name="company_now"><span class="f00">&nbsp;*</span></td>
             </tr>
             <tr>
                 <td class="col-cap col-cap2">现从事职业：</td>
                 <td>
-                    <input type="text" class="txt2 ml5" name="jobs_now">
-                    <span class="ml5">目前月收入：</span><input type="text" class="txt2" name="monthlymoney">
+                    <input type="text" class="txt2 ml5" name="jobs_now"><span class="f00">&nbsp;*</span>
+                    <span class="ml5">目前月收入：</span><input type="text" class="txt2" name="monthlymoney"><span class="f00">&nbsp;*</span>
                 </td>
             </tr>
         </table>

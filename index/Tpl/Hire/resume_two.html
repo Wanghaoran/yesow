@@ -5,6 +5,38 @@
 <title>人才登记表</title>
 <link rel="stylesheet" href="__PUBLIC__/resume/css/reset.css">
 <link rel="stylesheet" href="__PUBLIC__/resume/css/style.css">
+<style type="text/css">
+.f00{ color:#F00; font-family:'Simsun';}
+</style>
+<script type="text/javascript">
+function chkfrm()
+{
+	if (frm.househol.value == "") 
+	{
+		alert("请填写联系地址");
+		document.frm.househol.focus;
+		return false;
+	}
+	if (frm.linkman.value == "") 
+	{
+		alert("请填写联系人");
+		document.frm.linkman.focus;
+		return false;
+	}
+	if (frm.mobilephone.value == "") 
+	{
+		alert("请填写联系手机");
+		document.frm.mobilephone.focus;
+		return false;
+	}
+	if (frm.content.value == "") 
+	{
+		alert("请填写您对该岗位的认识");
+		document.frm.content.focus;
+		return false;
+	}
+}
+</script>
 </head>
 <body>
 <!-- header -->
@@ -15,7 +47,7 @@
 </div>
 
 <!-- content -->
-<form action="__ACTION__" method="post">
+<form action="__ACTION__" method="post" name="frm" onsubmit="return chkfrm()">
 <div class="content clearfix">
 	<div class="caption">
     	<h1>人才登记表</h1>
@@ -81,7 +113,7 @@
                 <td class="column column2"><input type="text" class="txt7" name="job_leave3"></td>
             </tr>
             <tr>
-                <td colspan="5" class="row-des">请谈谈你曾经做过的岗位感受及今后对该岗位的认识(必填)</td>
+                <td colspan="5" class="row-des">请谈谈你曾经做过的岗位感受及今后对该岗位的认识(必填)<span class="f00">&nbsp;*</span></td>
             </tr>
             <tr>
                 <td colspan="5">

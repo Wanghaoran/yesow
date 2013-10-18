@@ -763,7 +763,7 @@ class HireAction extends CommonAction {
     }
   }
 
-  public function resume(){
+  public function add(){
     if(!empty($_POST['pid'])){
       $Resume = M('Resume');
       if(!$Resume -> create()){

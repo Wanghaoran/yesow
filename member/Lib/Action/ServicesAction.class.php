@@ -1776,12 +1776,14 @@ class ServicesAction extends CommonAction {
 	}
 	$data_rec['statuscode'] = $ret;
 	$MemberSendSmsRecord -> add($data_rec);
-	usleep(100);
+	usleep(25000);
       }
-      //退费
-      $MemberRmb -> addmoney('rmb_exchange', $total_back);
-      //写日志
-      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
+      if($total_back != 0){
+	//退费
+	$MemberRmb -> addmoney('rmb_exchange', $total_back);
+	//写日志
+	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
+      }
       //重新缓存用户余额
       $MemberRmb -> rmbtotal();
       //清空信息
@@ -1853,7 +1855,7 @@ class ServicesAction extends CommonAction {
   public function ajaxsmssearchresultallcheck(){
     $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
     $company = M('Company');
-    $map['_string'] = "LENGTH(mobilephone) = 11";
+    $map['_string'] = "LENGTH(mobilephone) >= 11";
     $where = array();
     $where['delaid']  = array('exp', 'is NULL');
     $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
@@ -3803,6 +3805,7 @@ class ServicesAction extends CommonAction {
 	$re_data['statuscode'] = 0;
       }
       $MemberSendEmailRecord -> add($re_data);
+      usleep(30000);
     }
 
     //清空信息
@@ -3820,7 +3823,7 @@ class ServicesAction extends CommonAction {
     if(!empty($_GET['keyword'])){
       $keyword = $this -> _get('keyword');
       $company = M('Company');
-      $map['_string'] = "LENGTH(email) > 1";
+      $map['_string'] = "email is not NULL";
       $where = array();
       $where['delaid']  = array('exp', 'is NULL');
       $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
@@ -3872,9 +3875,8 @@ class ServicesAction extends CommonAction {
   //ajax全选
   public function ajaxemailsearchresultallcheck(){
     $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
-    $keyword = $this -> _get('keyword');
     $company = M('Company');
-    $map['_string'] = "LENGTH(email) > 1";
+    $map['_string'] = "email is not NULL";
     $where = array();
     $where['delaid']  = array('exp', 'is NULL');
     $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";

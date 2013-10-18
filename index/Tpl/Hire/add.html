@@ -5,6 +5,79 @@
 <title>人才登记表</title>
 <link rel="stylesheet" href="__PUBLIC__/resume/css/reset.css">
 <link rel="stylesheet" href="__PUBLIC__/resume/css/style.css">
+<style type="text/css">
+.f00{ color:#F00; font-family:'Simsun';}
+</style>
+<script type="text/javascript">
+function chkfrm()
+{
+	if (frm.pid.value == "0")
+	{
+		alert("请选择应聘职务");
+		return false;
+	}
+	if (frm.realname.value == "") 
+	{
+		alert("请填写姓名");
+		document.frm.realname.focus;
+		return false;
+	}
+	if (frm.native.value == "") 
+	{
+		alert("请填写籍贯");
+		document.frm.native.focus;
+		return false;
+	}
+	if (frm.number.value == "") 
+	{
+		alert("请填写身份证号");
+		document.frm.number.focus;
+		return false;
+	}
+	if (frm.year.value == "" || frm.month.value == "" || frm.day.value == "") 
+	{
+		alert("请填写出生年月");
+		document.frm.year.focus;
+		return false;
+	}
+	if (frm.graduation_year.value == "" || frm.graduation_month.value == "" || frm.graduation_day.value == "") 
+	{
+		alert("请填写毕业时间");
+		document.frm..graduation_yearfocus;
+		return false;
+	}
+	if (frm.nation.value == "") 
+	{
+		alert("请填写民族");
+		document.frm.nation.focus;
+		return false;
+	}
+	if (frm.househol.value == "") 
+	{
+		alert("请填写户口所在地");
+		document.frm.househol.focus;
+		return false;
+	}
+	if (frm.school.value == "") 
+	{
+		alert("请填写毕业院校");
+		document.frm.school.focus;
+		return false;
+	}
+	if (frm.major_one.value == "") 
+	{
+		alert("请填写所学专业");
+		document.frm.major_one.focus;
+		return false;
+	}
+	if (frm.salary_ask.value == "") 
+	{
+		alert("请填写待遇要求");
+		document.frm.salary_ask.focus;
+		return false;
+	}
+}
+</script>
 </head>
 <body>
 <!-- header -->
@@ -15,7 +88,7 @@
 </div>
 
 <!-- content -->
-<form action="__ACTION__" method="post" enctype="multipart/form-data">
+<form action="__ACTION__" method="post" enctype="multipart/form-data" name="frm" onsubmit="return chkfrm()">
 <div class="content clearfix">
 	<div class="caption">
     	<h1>人才登记表</h1>
@@ -37,12 +110,12 @@
 			<option value="<!--{$rp.id}--!>"><!--{$rp.title}--!></option>
 			</eq>
 			</volist>
-                    </select>
+                    </select><span class="f00">&nbsp;*</span>
                 </td>
                 <td class="col-cap">相关经验</td>
                 <td class="col-des">
                     <select class="slt1 ml5" name="experience">
-                        <option value="有">有</option>
+                        <option value="有" selected="selected">有</option>
                         <option value="无">无</option>
                     </select>
                 </td>
@@ -51,9 +124,9 @@
             </tr>
             <tr>
                 <td class="col-cap">真实姓名</td>
-                <td class="col-des"><input type="text" class="txt1 ml5" name="realname"></td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="realname"><span class="f00">&nbsp;*</span></td>
                 <td class="col-cap">籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</td>
-                <td class="col-des"><input type="text" class="txt1 ml5" name="native"></td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="native"><span class="f00">&nbsp;*</span></td>
                 <td colspan="2" rowspan="6">
                     <div class="avatorBox clearfix">
                         <p class="avatorDes fl">照片上传</p>
@@ -68,37 +141,37 @@
             </tr>
             <tr>
                 <td class="col-cap">身份证号</td>
-                <td class="col-des"><input type="text" class="txt2 ml5" name="number"></td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="number"><span class="f00">&nbsp;*</span></td>
                 <td class="col-cap">出生年月</td>
                 <td class="col-des">
                     <input type="text" class="txt3 ml5" name="year"><span class="rsp">年</span>
                     <input type="text" class="txt3" name="month"><span class="rsp">月</span>
-                    <input type="text" class="txt3" name="day"><span class="rsp">日</span>
+                    <input type="text" class="txt3" name="day"><span class="rsp">日</span><span class="f00">*</span>
                 </td>
             </tr>
             <tr>
                 <td class="col-cap">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</td>
                 <td class="col-des">
                     <select class="slt2 ml5" name="sex">
-                        <option value="男">男</option>
+                        <option value="男" selected="selected">男</option>
                         <option value="女">女</option>
-                    </select>
+                    </select><span class="f00">&nbsp;*</span>
                 </td>
                 <td class="col-cap">民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 族</td>
-                <td class="col-des"><input type="text" class="txt1 ml5" name="nation"></td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="nation"><span class="f00">&nbsp;*</span></td>
             </tr>
             <tr>
                 <td class="col-cap">政治面貌</td>
                 <td class="col-des">
                     <select class="slt3 ml5" name="landscape">
-                        <option value="团员">团员</option>
+                        <option value="团员" selected="selected">团员</option>
                         <option value="党员">党员</option>
                         <option value="群众">群众</option>
                         <option value="其他民主党派">其他民主党派</option>
-                    </select>
+                    </select><span class="f00">&nbsp;*</span>
                 </td>
                 <td class="col-cap">户口属地</td>
-                <td class="col-des"><input type="text" class="txt2 ml5" name="househol"></td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="househol"><span class="f00">&nbsp;*</span></td>
             </tr>
             <tr>
                 <td class="col-cap">身&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 高</td>
@@ -116,20 +189,20 @@
                 <td class="col-cap">婚姻状况</td>
                 <td class="col-des">
                     <select class="slt2 ml5" name="marital">
-                        <option value="未婚">未婚</option>
+                        <option value="未婚" selected="selected">未婚</option>
                         <option value="已婚">已婚</option>
                         <option value="离异">离异</option>
                         <option value="丧偶">丧偶</option>
-                    </select>                    
-                    <span class="rsp ml5">有无子女</span><select class="slt2" name="children">
-                        <option value="无">无</option>
-                        <option value="有">有</option>
                     </select>
+                    <span class="rsp ml5">有无子女</span><select class="slt2" name="children">
+                        <option value="无" selected="selected">无</option>
+                        <option value="有">有</option>
+                    </select><span class="f00">&nbsp;*</span>
                 </td>
                 <td class="col-cap">文化程度</td>
                 <td class="col-des">
                     <select class="slt4 ml5" name="education">
-                        <option>博士</option>
+                        <option selected="selected">博士</option>
                         <option>硕士</option>
                         <option>大学本科</option>
                         <option>大专</option>
@@ -139,9 +212,9 @@
                         <option>初中</option>
                     </select>                    
                     <span class="rsp ml5">有无证书</span><select class="slt2" name="certificate">
-                        <option value="无">无</option>
+                        <option value="无" selected="selected">无</option>
                         <option value="有">有</option>
-                    </select>
+                    </select><span class="f00">&nbsp;*</span>
                 </td>
             </tr>
             <tr>
@@ -149,14 +222,14 @@
                 <td class="col-des">
                     <input type="text" class="txt3 ml5" name="graduation_year"><span class="rsp">年</span>
                     <input type="text" class="txt3" name="graduation_month"><span class="rsp">月</span>
-                    <input type="text" class="txt3" name="graduation_day"><span class="rsp">日</span>
+                    <input type="text" class="txt3" name="graduation_day"><span class="rsp">日</span><span class="f00"*</span>
                 </td>
                 <td class="col-cap">毕业学校</td>
-                <td colspan="3" class="col-des"><input type="text" class="txt2 ml5" name="school"></td>
+                <td colspan="3" class="col-des"><input type="text" class="txt2 ml5" name="school"><span class="f00">&nbsp;*</span></td>
             </tr>
             <tr>
                 <td class="col-cap">所学专业</td>
-                <td class="col-des"><input type="text" class="txt1 ml5" name="major_one"></td>
+                <td class="col-des"><input type="text" class="txt1 ml5" name="major_one"><span class="f00">&nbsp;*</span></td>
                 <td class="col-cap">从事专业</td>
                 <td colspan="3" class="col-des"><input type="text" class="txt1 ml5" name="major_two"></td>
             </tr>
@@ -177,7 +250,7 @@
             </tr>
             <tr>
                 <td class="col-cap">待遇要求</td>
-                <td class="col-des"><input type="text" class="txt2 ml5" name="salary_ask"></td>
+                <td class="col-des"><input type="text" class="txt2 ml5" name="salary_ask"><span class="f00">&nbsp;*</span></td>
                 <td class="col-cap">其它要求</td>
                 <td colspan="3" class="col-des"><input type="text" class="txt2 ml5" name="other_ask"></td>
             </tr>

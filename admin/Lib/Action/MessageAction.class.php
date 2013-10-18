@@ -213,13 +213,14 @@ class MessageAction extends CommonAction {
 	$email_content = str_replace($search, $company_info, $_POST['content']);
 	$email_title = str_replace($search, $company_info, $_POST['title']);
 	
-	if(SendMail($send_email, $email_title, $email_content, 'yesow管理员')){
+	if(@SendMail($send_email, $email_title, $email_content, 'yesow管理员')){
 	  $email_list -> addinfo($send_email, $email_title, $email_content);
 	  $success_num++;
 	}else{
 	  $email_list -> addinfo($send_email, $email_title, $email_content, 0);
 	  $error_num++;
 	}
+	usleep(250000);
       }
       session('admin_send_email_list', null);
       $this -> success('邮件发送完毕！成功：' . $success_num . ' 条。失败：' . $error_num . ' 条。可到邮件发送列表查看相信信息');
