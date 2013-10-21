@@ -84,6 +84,11 @@ class ShopAction extends CommonAction {
 	R('Register/errorjump',array($order -> getError(), U('Shop/shoporder')));
       }
       if($order -> save()){
+	$data_r = array();
+	$data_r['oid'] = $_POST['id'];
+	$data_r['remark'] = $_POST['remark'];
+	$data_r['updatetime'] = time();
+	M('ShopOrderRemark') -> add($data_r);
 	R('Register/successjump',array(L('DATA_UPDATE_SUCCESS'), U('Shop/shoporder')));
       }else{
 	R('Register/errorjump',array(L('DATA_UPDATE_ERROR'), U('Shop/shoporder')));

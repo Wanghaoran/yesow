@@ -117,9 +117,9 @@ class MoneyAction extends CommonAction {
     //支付类型
     $payment_type = "1";
     //服务器异步通知页面路径,需http://格式的完整路径，不能加?id=123这类自定义参数
-    $notify_url = C('WEBSITE') . "member.php/pay/alipaynotify";
+    $notify_url = 'http://' . $_SERVER["SERVER_NAME"] . "/member.php/pay/alipaynotify";
     //页面跳转同步通知页面路径,需http://格式的完整路径，不能加?id=123这类自定义参
-    $return_url = C('WEBSITE') . "member.php/pay/alipayreturn";
+    $return_url = 'http://' . $_SERVER["SERVER_NAME"] . "/member.php/pay/alipayreturn";
     //卖家支付宝帐户
     $seller_email = $author['account'];
     //商户订单号
@@ -178,8 +178,8 @@ class MoneyAction extends CommonAction {
 
     $partner = $author['account'];  //财付通商户号
     $key = $author['key1'];  //财付通密钥
-    $return_url = C('WEBSITE') . "member.php/pay/tenpayreturn";	//同步返回地址
-    $notify_url = C('WEBSITE') . "member.php/pay/tenpaynotify";  //异步通知地址
+    $return_url = 'http://' . $_SERVER["SERVER_NAME"] . "/member.php/pay/tenpayreturn";	//同步返回地址
+    $notify_url = 'http://' . $_SERVER["SERVER_NAME"] . "/member.php/pay/tenpaynotify";  //异步通知地址
     $out_trade_no = $this -> _post('oid'); //订单号
     $desc = '易搜会员中心人民币充值';  //商品名称
     $order_price = $this -> _post('price');  //商品价格
@@ -275,7 +275,7 @@ class MoneyAction extends CommonAction {
     /////1代表UTF-8; 2代表GBK; 3代表gb2312
     $inputCharset = "1";
     //同步返回地址
-    $pageUrl = C('WEBSITE') . "member.php/pay/k99billreturn";
+    $pageUrl = 'http://' . $_SERVER["SERVER_NAME"] . "/member.php/pay/k99billreturn";
     //网关版本.固定值
     $version = "v2.0";
     //语言种类.固定选择值。

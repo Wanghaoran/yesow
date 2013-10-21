@@ -518,6 +518,57 @@ class ShopAction extends CommonAction {
     $this -> display();
   }
 
+  public function shoporderremark(){
+    $ShopOrderRemark = M('ShopOrderRemark');
+    $where = array();
+    if(!empty($_POST['ordernum'])){
+      $where['o.ordernum'] = $this -> _post('ordernum');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['sor.updatetime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['sor.updatetime'][] = array('lt', $endtime);
+    }
+    $count = $ShopOrderRemark -> alias('sor') -> join('yesow_shop_order as o ON sor.oid = o.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $ShopOrderRemark -> alias('sor') -> field('sor.id,o.ordernum,m.name as mname,sor.updatetime,sor.remark') -> join('yesow_shop_order as o ON sor.oid = o.id') -> join('yesow_member as m ON o.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sor.updatetime DESC') -> where($where) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delshoporderremark(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $ShopOrderRemark = M('ShopOrderRemark');
+    if($ShopOrderRemark -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editshoporderremark(){
+    $ShopOrderRemark = M('ShopOrderRemark');
+    $result = $ShopOrderRemark -> alias('sor') -> field('sor.remark,sor.updatetime,o.ordernum') -> join('yesow_shop_order as o ON sor.oid = o.id') -> where(array('sor.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
 
   public function mediashow(){
     $mediashow = M('MediaShow');
