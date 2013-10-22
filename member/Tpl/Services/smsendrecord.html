@@ -15,7 +15,7 @@
         	<div id="main">
 		  <include file="sidebar" />
                 <div id="main_rlong">
-                	<div class="main_rlong_tit">短信群发业务</div>
+                	<div class="main_rlong_tit"><input type="button" value="返回" onclick="history.go(-1);" style="float:right;margin-right:5px;font-size:12px;" />短信群发业务</div>
                    <div class="clear30"></div>
                     <div class="main">
                         <dl class="switchBox" id="switchBox2">
@@ -23,6 +23,7 @@
                             <dt>
 			    <h2 class="balances h2_yue2">余额: <!--{$Think.session.rmb_total}--!> 元</h2>
                                 <a href="#" class="on">我的发送记录</a>
+				<span style="line-height:31px;color:blue;" onclick="location.href='__APP__/services/sendsms'">&nbsp;&nbsp;&nbsp;短信群发管理</span><span style="line-height:31px;color:blue;" onclick="location.href='__APP__/services/sendsmsgroup'">&nbsp;&nbsp;&nbsp;我的群发薄</span>
 				<input type="button" onclick="location.href='__URL__/sendsms'" value="继续发送" />
 				
                             </dt>

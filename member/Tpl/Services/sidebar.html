@@ -1,46 +1,55 @@
 <div id="main_l">
   <div id="main_l_tit"><h3>业务服务</h3></div>
   <ul>
-    <if condition="(ACTION_NAME eq 'index') OR (ACTION_NAME eq 'addrecommendcompany') OR (ACTION_NAME eq 'recommendcompanyorder') OR (ACTION_NAME eq 'editrecommendcompany') OR (ACTION_NAME eq 'editeditrecommendcompany')">
-    <li class="hover"><a href="__URL__/index">推荐商家管理</a></li>
+    <if condition="(MODULE_NAME eq 'Shop') AND ((ACTION_NAME eq 'index') OR (ACTION_NAME eq 'buymonthly') OR (ACTION_NAME eq 'mymonthlyorder'))">
+    <li class="hover"><a href="__APP__/Shop">会员包月管理</a></li>
     <else/>
-    <li><a href="__URL__/index">推荐商家管理</a></li>
+    <li><a href="__APP__/Shop">会员包月管理</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'companyshow') OR (ACTION_NAME eq 'addcompanyshow') OR (ACTION_NAME eq 'companyshoworder') OR (ACTION_NAME eq 'companyshoworderlist') OR (ACTION_NAME eq 'editcompanyshow') OR (ACTION_NAME eq 'editeditcompanyshow')">
-    <li class="hover"><a href="__URL__/companyshow">动感传媒管理</a></li>
+    <if condition="(MODULE_NAME eq 'Shop') AND ((ACTION_NAME eq 'shop') OR (ACTION_NAME eq 'shoporder') OR (ACTION_NAME eq 'shoporderinfo') OR (ACTION_NAME eq 'shoporderremark'))">
+    <li class="hover"><a href="__APP__/Shop/shop">易搜商城购物</a></li>
     <else/>
-    <li><a href="__URL__/companyshow">动感传媒管理</a></li>
+    <li><a href="__APP__/Shop/shop">易搜商城购物</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'searchrank') OR (ACTION_NAME eq 'addsearchrank') OR (ACTION_NAME eq 'searchrankorder') OR (ACTION_NAME eq 'searchrankorderlist') OR (ACTION_NAME eq 'editsearchrank') OR (ACTION_NAME eq 'editeditsearchrank')">
-    <li class="hover"><a href="__URL__/searchrank">速查排名管理</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'index') OR (ACTION_NAME eq 'addrecommendcompany') OR (ACTION_NAME eq 'recommendcompanyorder') OR (ACTION_NAME eq 'editrecommendcompany') OR (ACTION_NAME eq 'editeditrecommendcompany'))">
+    <li class="hover"><a href="__APP__/Services/index">推荐商家管理</a></li>
     <else/>
-    <li><a href="__URL__/searchrank">速查排名管理</a></li>
+    <li><a href="__APP__/Services/index">推荐商家管理</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'qqonline') OR (ACTION_NAME eq 'addqqonline') OR (ACTION_NAME eq 'qqonlineorder') OR (ACTION_NAME eq 'qqonlineorderlist') OR (ACTION_NAME eq 'editqqonline') OR (ACTION_NAME eq 'editeditqqonline')">
-    <li class="hover"><a href="__URL__/qqonline">在线QQ管理</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'companyshow') OR (ACTION_NAME eq 'addcompanyshow') OR (ACTION_NAME eq 'companyshoworder') OR (ACTION_NAME eq 'companyshoworderlist') OR (ACTION_NAME eq 'editcompanyshow') OR (ACTION_NAME eq 'editeditcompanyshow'))">
+    <li class="hover"><a href="__APP__/Services/companyshow">动感传媒管理</a></li>
     <else/>
-    <li><a href="__URL__/qqonline">在线QQ管理</a></li>
+    <li><a href="__APP__/Services/companyshow">动感传媒管理</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'sms') OR (ACTION_NAME eq 'sendsms') OR (ACTION_NAME eq 'smsendrecord') OR (ACTION_NAME eq 'sendsmsgroup') OR (ACTION_NAME eq 'sendsmsgrouplist') OR (ACTION_NAME eq 'searchcompanyphone')">
-    <li class="hover"><a href="__URL__/sms">短信群发业务</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'searchrank') OR (ACTION_NAME eq 'addsearchrank') OR (ACTION_NAME eq 'searchrankorder') OR (ACTION_NAME eq 'searchrankorderlist') OR (ACTION_NAME eq 'editsearchrank') OR (ACTION_NAME eq 'editeditsearchrank'))">
+    <li class="hover"><a href="__APP__/Services/searchrank">速查排名管理</a></li>
     <else/>
-    <li><a href="__URL__/sms">短信群发业务</a></li>
+    <li><a href="__APP__/Services/searchrank">速查排名管理</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'emails') OR (ACTION_NAME eq 'setsmtp') OR (ACTION_NAME eq 'sendemail') OR (ACTION_NAME eq 'searchemail') OR (ACTION_NAME eq 'emailsendrecord') OR (ACTION_NAME eq 'sendemailgroup') OR (ACTION_NAME eq 'sendemailgrouplist')">
-    <li class="hover"><a href="__URL__/emails">邮件群发业务</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'qqonline') OR (ACTION_NAME eq 'addqqonline') OR (ACTION_NAME eq 'qqonlineorder') OR (ACTION_NAME eq 'qqonlineorderlist') OR (ACTION_NAME eq 'editqqonline') OR (ACTION_NAME eq 'editeditqqonline'))">
+    <li class="hover"><a href="__APP__/Services/qqonline">在线QQ管理</a></li>
     <else/>
-    <li><a href="__URL__/emails">邮件群发业务</a></li>
+    <li><a href="__APP__/Services/qqonline">在线QQ管理</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'companypic') OR (ACTION_NAME eq 'addcompanypic') OR (ACTION_NAME eq 'companypicorder') OR (ACTION_NAME eq 'companypicorderlist') OR (ACTION_NAME eq 'editcompanypic') OR (ACTION_NAME eq 'editeditcompanypic')">
-    <li class="hover"><a href="__URL__/companypic">企业形象管理</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'sms') OR (ACTION_NAME eq 'sendsms') OR (ACTION_NAME eq 'smsendrecord') OR (ACTION_NAME eq 'sendsmsgroup') OR (ACTION_NAME eq 'sendsmsgrouplist') OR (ACTION_NAME eq 'searchcompanyphone'))">
+    <li class="hover"><a href="__APP__/Services/sms">短信群发业务</a></li>
     <else/>
-    <li><a href="__URL__/companypic">企业形象管理</a></li>
+    <li><a href="__APP__/Services/sms">短信群发业务</a></li>
     </if>
-    <if condition="(ACTION_NAME eq 'advert') OR (ACTION_NAME eq 'addadvert') OR (ACTION_NAME eq 'advertorder') OR (ACTION_NAME eq 'advertorderlist') OR (ACTION_NAME eq 'editadvert') OR (ACTION_NAME eq 'editeditadvert')">
-    <li class="hover"><a href="__URL__/advert">页面广告管理</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'emails') OR (ACTION_NAME eq 'setsmtp') OR (ACTION_NAME eq 'sendemail') OR (ACTION_NAME eq 'searchemail') OR (ACTION_NAME eq 'emailsendrecord') OR (ACTION_NAME eq 'sendemailgroup') OR (ACTION_NAME eq 'sendemailgrouplist'))">
+    <li class="hover"><a href="__APP__/Services/emails">邮件群发业务</a></li>
     <else/>
-    <li><a href="__URL__/advert">页面广告管理</a></li>
+    <li><a href="__APP__/Services/emails">邮件群发业务</a></li>
     </if>
-    <li><a href="#">报错管理</a></li>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'companypic') OR (ACTION_NAME eq 'addcompanypic') OR (ACTION_NAME eq 'companypicorder') OR (ACTION_NAME eq 'companypicorderlist') OR (ACTION_NAME eq 'editcompanypic') OR (ACTION_NAME eq 'editeditcompanypic'))">
+    <li class="hover"><a href="__APP__/Services/companypic">企业形象管理</a></li>
+    <else/>
+    <li><a href="__APP__/Services/companypic">企业形象管理</a></li>
+    </if>
+    <if condition="(MODULE_NAME eq 'Services') AND ((ACTION_NAME eq 'advert') OR (ACTION_NAME eq 'addadvert') OR (ACTION_NAME eq 'advertorder') OR (ACTION_NAME eq 'advertorderlist') OR (ACTION_NAME eq 'editadvert') OR (ACTION_NAME eq 'editeditadvert'))">
+    <li class="hover"><a href="__APP__/Services/advert">页面广告管理</a></li>
+    <else/>
+    <li><a href="__APP__/Services/advert">页面广告管理</a></li>
+    </if>
   </ul>
 </div>

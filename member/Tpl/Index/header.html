@@ -19,31 +19,20 @@
             </div>
             <div id="nav">
 	      <ul>
-		<if condition="MODULE_NAME eq 'Index'">
+		<if condition="(MODULE_NAME eq 'Index') OR (MODULE_NAME eq 'Money')">
 		<li class="hover"><a href="__APP__">我的易搜</a></li>
 		<else/>
 		<li><a href="__APP__">我的易搜</a></li>
-		</if>
-		<if condition="MODULE_NAME eq 'Money'">
-		<li class="hover"><a href="__APP__/money">资金管理</a></li>
-		<else/>
-		<li><a href="__APP__/money">资金管理</a></li>
-		</if>
-		<if condition="MODULE_NAME eq 'Shop'">
-		<li class="hover"><a href="__APP__/shop">网上购物</a></li>
-		<else/>
-		<li><a href="__APP__/shop">网上购物</a></li>
 		</if>
 		<if condition="MODULE_NAME eq 'Business'">
 		<li class="hover"><a href="__APP__/business">商家服务</a></li>
 		<else/>
 		<li><a href="__APP__/business">商家服务</a></li>
 		</if>
-		<li><a href="#">个人服务</a></li>
-		<if condition="MODULE_NAME eq 'Services'">
-		<li class="hover"><a href="__APP__/Services">业务服务</a></li>
+		<if condition="(MODULE_NAME eq 'Services') OR (MODULE_NAME eq 'Shop')">
+		<li class="hover"><a href="__APP__/Services">网购服务</a></li>
 		<else/>
-		<li><a href="__APP__/Services">业务服务</a></li>
+		<li><a href="__APP__/Services">网购服务</a></li>
 		</if>
 		<li><a href="#">易搜联盟</a></li>
 		<if condition="MODULE_NAME eq 'Help'">

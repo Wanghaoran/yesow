@@ -157,9 +157,9 @@ function radioShow(lid){
 	<div id="user_m">
     	<div class="warp_900">
         	<div id="main">
-		  <include file="sidebar" />
+		  <include file="Services:sidebar" />
                 <div id="main_rlong">
-                	<div class="main_rlong_tit">易搜会员包月</div>
+                	<div class="main_rlong_tit"><input type="button" value="返回" onclick="history.go(-1);" style="float:right;margin-right:5px;font-size:12px;" />易搜会员包月</div>
                    <div class="clear30"></div>
                     <!--tab切換內容 開始-->
                     <div class="main">
@@ -167,6 +167,7 @@ function radioShow(lid){
                             <!--nav start-->
                             <dt>
                                 <a href="#">我要包月订购</a>
+				<span style="line-height:31px;color:blue;" onclick="location.href='__APP__/shop/mymonthlyorder'">&nbsp;&nbsp;&nbsp;我的包月订单</span>
                             </dt>
                             <!--nav end-->
                             <dd>

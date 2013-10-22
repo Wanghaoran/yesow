@@ -1,25 +1,31 @@
 <div id="main_l">
                 	<div id="main_l_tit"><h3>我的易搜</h3></div>
 			<ul>
-			  <if condition="(ACTION_NAME eq 'index') OR (ACTION_NAME eq 'edituserinfo') OR (ACTION_NAME eq 'userupdeta')">
-			  <li class="hover"><a href="__URL__/index">基本信息管理</a></li>
+			  <if condition="(MODULE_NAME eq 'Index') AND ((ACTION_NAME eq 'index') OR (ACTION_NAME eq 'edituserinfo') OR (ACTION_NAME eq 'userupdeta'))">
+			  <li class="hover"><a href="__APP__/Index/index">基本信息管理</a></li>
 			  <else/>
-			  <li><a href="__URL__/index">基本信息管理</a></li>
+			  <li><a href="__APP__/Index/index">基本信息管理</a></li>
 			  </if>
 			  <if condition="(ACTION_NAME eq 'safe') OR (ACTION_NAME eq 'setsafepwd') OR (ACTION_NAME eq 'setsafemonery')">
-			  <li class="hover"><a href="__URL__/safe">安全设置管理</a></li>
+			  <li class="hover"><a href="__APP__/Index/safe">安全设置管理</a></li>
 			  <else/>
-			  <li><a href="__URL__/safe">安全设置管理</a></li>
+			  <li><a href="__APP__/Index/safe">安全设置管理</a></li>
 			  </if>
+			  <if condition="(MODULE_NAME eq 'Money') AND ((ACTION_NAME eq 'index') OR (ACTION_NAME eq 'rmbrecharge') OR (ACTION_NAME eq 'alipayreturn') OR (ACTION_NAME eq 'payorder') OR (ACTION_NAME eq 'rmbdetail'))">
+    <li class="hover"><a href="__APP__/money/index">RMB管理</a></li>
+    <else/>
+    <li><a href="__APP__/money/index">RMB管理</a></li>
+    </if>
 			  <if condition="(ACTION_NAME eq 'privilege')">
-			  <li class="hover"><a href="__URL__/privilege">特权设置管理</a></li>
+			  <li class="hover"><a href="__APP__/Index/privilege">特权设置管理</a></li>
 			  <else/>
-			  <li><a href="__URL__/privilege">特权设置管理</a></li>
+			  <li><a href="__APP__/Index/privilege">特权设置管理</a></li>
 			  </if>
+			  <li><a href="#">提现申请管理</a></li>
 			  <if condition="(ACTION_NAME eq 'organization')">
-			  <li class="hover"><a href="__URL__/organization">寻找我的组织</a></li>
+			  <li class="hover"><a href="__APP__/Index/organization">寻找我的组织</a></li>
 			  <else/>
-			  <li><a href="__URL__/organization">寻找我的组织</a></li>
+			  <li><a href="__APP__/Index/organization">寻找我的组织</a></li>
 			  </if>
                     </ul>
                 </div>

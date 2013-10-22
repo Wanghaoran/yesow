@@ -267,9 +267,8 @@ class PayAction extends Action {
 	      //写RMB消费日志
 	      D('MemberRmbDetail') -> writelog($mid, "恭喜您,您已成功在线充值<span style='color:blue;'>{$total_pee}元</span>后易搜返还的RMB", '获取', $gaving_pee);
 	    }
-	    //重新缓存用户rmb余额
-	    $member_rmb -> rmbtotal($mid);
 	  }
+	  D('MemberRmb') -> rmbtotal();
 	  $this -> assign('pic_name', 'success_tishi.gif');
 	  break;
 	default:

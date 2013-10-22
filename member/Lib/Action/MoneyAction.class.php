@@ -18,16 +18,6 @@ class MoneyAction extends CommonAction {
     $this -> display();
   }
 
-  //e币管理前置方法
-  public function _before_eb(){
-    $this -> _before_index();
-  }
-
-  //e币管理
-  public function eb(){
-    $this -> display();
-  }
-
   //rmb充值
   public function rmbrecharge(){
     //RMB充值第二步
