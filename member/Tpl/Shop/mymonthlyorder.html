@@ -7,12 +7,6 @@
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/default/javascript/ks-switch.pack.js"></script>
-<script type="text/javascript">
-$(function($){
-	$("#switchBox2").switchTab({titCell: "dt a", trigger: "mouseover", delayTime: 0});
-});
-</script>
 
 </head>
 <body id="body_user">
@@ -26,11 +20,11 @@ $(function($){
                    <div class="clear30"></div>
                     <!--tab切換內容 開始-->
                     <div class="main">
-                        <dl class="switchBox" id="switchBox2">
+                        <dl class="singleBox">
                             <!--nav start-->
                             <dt>
-                                <a href="#">我的包月订单</a>
-				<span style="line-height:31px;color:blue;" onclick="location.href='__APP__/shop/buymonthly'">&nbsp;&nbsp;&nbsp;我要包月订购</span>
+                                <a href="#" class="on">我的包月订单</a>
+				<a class="textlink" href="__APP__/shop/buymonthly">我要包月订购</a>
                             </dt>
                             <!--nav end-->
                             <dd>

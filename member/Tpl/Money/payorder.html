@@ -7,12 +7,7 @@
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
-<script type="text/javascript" src="__PUBLIC__/index/default/javascript/ks-switch.pack.js"></script>
-<script type="text/javascript">
-$(function($){
-	$("#switchBox2").switchTab({titCell: "dt a", trigger: "mouseover", delayTime: 0});
-});
-</script>
+
 <script type="text/javascript">
 $(document).ready(function(){
    $("#switchBox2 .input_txt").each(function(){
@@ -63,10 +58,11 @@ function ChkAllClick2(){
                 	<div class="main_rlong_tit"><input type="button" value="返回" onclick="history.go(-1);" style="float:right;margin-right:5px;font-size:12px;" />RMB管理</div>
                    <div class="clear30"></div>
                     <div class="main">
-                        <dl class="switchBox" id="switchBox2">
+                        <dl class="singleBox">
                             <!--nav start-->
                             <dt>
                                 <a href="#" class="on">充值订单</a>
+				<a class="textlink" href="__APP__/money/rmbrecharge">RMB充值管理</a><a class="textlink" href="__APP__/money/rmbdetail">消费明细查询</a>
                             </dt>
                             <dd>
                                 <div class="main_con3">

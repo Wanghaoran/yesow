@@ -231,6 +231,10 @@ span.fontnormal{ font-weight:normal;}
 .switchBox .balances{float:right;}
 .switchBox dt a{ border:#e4e3e3 1px solid; border-bottom:none; text-decoration: none; background:#f3f3f3;color:#7c7c7c;cursor:pointer;float:left;font-size:14px;height:30px;line-height:30px;text-align:center;text-decoration:none;width:100px; font-weight:bold; margin-right:10px;}
 .switchBox dt a.on{ background:url(images/user/btn_regbg.gif) left bottom no-repeat; text-decoration: none; color:#fff;}
+.switchBox dt a.textlink{ border:none; background:#fff; color:#03C; font-size:12px; font-weight:normal;line-height:31px;width:90px;margin:0 5px;}
+.singleBox dt a.textlink{ border:none; background:#fff; color:#03C; font-size:12px; font-weight:normal;line-height:31px;width:90px;margin:0 5px;}
+.switchBox dt a:hover.textlink{ text-decoration:underline;}
+.singleBox dt a:hover.textlink{ text-decoration:underline;}
 .switchBox dd{clear:both;display:none;height:auto;line-height:20px;padding:10px;font-family:"宋体";}
 
 .main_con2{ width:700px;}
