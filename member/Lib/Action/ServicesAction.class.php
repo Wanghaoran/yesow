@@ -1907,7 +1907,7 @@ class ServicesAction extends CommonAction {
       $MemberSearchSmsRecord = M('MemberSearchSmsRecord');
       $data_rec = array();
       $data_rec['mid'] = session(C('USER_AUTH_KEY'));
-      $data_rec['keyword'] = safeEncoding($_GET['keyword']);
+      $data_rec['keyword'] = iconv('GBK', 'UTF-8',  $_GET['keyword']);
       $data_rec['checknum'] = count($_SESSION['member_search_send_list']);
       $data_rec['ip'] = get_client_ip();
       $data_rec['searchtime'] = time();
@@ -3929,7 +3929,7 @@ class ServicesAction extends CommonAction {
       $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
       $data_rec = array();
       $data_rec['mid'] = session(C('USER_AUTH_KEY'));
-      $data_rec['keyword'] = safeEncoding($_GET['keyword']);
+      $data_rec['keyword'] = iconv('GBK', 'UTF-8',  $_GET['keyword']);
       $data_rec['checknum'] = count($_SESSION['member_search_email_send_list']);
       $data_rec['ip'] = get_client_ip();
       $data_rec['searchtime'] = time();
