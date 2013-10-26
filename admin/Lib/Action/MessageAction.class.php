@@ -1290,4 +1290,154 @@ class MessageAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  public function messsendemailsetting(){
+    $MassEmailSetting = M('MassEmailSetting');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['type_zh'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    $count = $MassEmailSetting -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $MassEmailSetting -> field('id,type_en,type_zh,send_address,email_smtp,send_account,send_pwd,addtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addmesssendemailsetting(){
+    if(!empty($_POST['send_address'])){
+      $MassEmailSetting = M('MassEmailSetting');
+      if(!$MassEmailSetting -> create()){
+	$this -> error($MassEmailSetting -> getError());
+      }
+      $MassEmailSetting -> addtime = time();
+      if($MassEmailSetting -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delmesssendemailsetting(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MassEmailSetting = M('MassEmailSetting');
+    if($MassEmailSetting -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editmesssendemailsetting(){
+    $MassEmailSetting = M('MassEmailSetting');
+
+    if(!empty($_POST['send_address'])){
+      if(!$MassEmailSetting -> create()){
+	$this -> error($MassEmailSetting -> getError());
+      }
+      if($MassEmailSetting -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $MassEmailSetting -> field('type_en,type_zh,send_address,email_smtp,send_account,send_pwd') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function messemailtemplate(){
+    $MassEmailTemplate = M('MassEmailTemplate');
+    $where = array();
+    if(!empty($_POST['eid'])){
+      $where['t.eid'] = $this -> _post('eid', 'intval');
+    }
+    $count = $MassEmailTemplate -> alias('t') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $MassEmailTemplate -> alias('t') -> field('t.id,t.addtime,e.type_zh,e.send_address') -> join('yesow_mass_email_setting as e ON t.eid = e.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('t.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $MassEmailSetting = M('MassEmailSetting');
+    $result_email = $MassEmailSetting -> field('id,type_zh,send_address') -> select();
+    $this -> assign('result_email', $result_email);
+    $this -> display();
+  }
+
+  public function addmessemailtemplate(){
+    if(!empty($_POST['eid'])){
+      $MassEmailTemplate = D('MassEmailTemplate');
+      if(!$MassEmailTemplate -> create()){
+	$this -> error($MassEmailTemplate -> getError());
+      }
+      if($MassEmailTemplate -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $MassEmailSetting = M('MassEmailSetting');
+    $result_email = $MassEmailSetting -> field('id,type_zh,send_address') -> select();
+    $this -> assign('result_email', $result_email);
+    $this -> display();
+  }
+
+  public function delmessemailtemplate(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MassEmailTemplate = M('MassEmailTemplate');
+    if($MassEmailTemplate -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editmessemailtemplate(){
+    $MassEmailTemplate = M('MassEmailTemplate');
+
+    if(!empty($_POST['eid'])){
+      if(!$MassEmailTemplate -> create()){
+	$this -> error($MassEmailTemplate -> getError());
+      }
+      if($MassEmailTemplate -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $MassEmailTemplate -> field('eid,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+
+    $MassEmailSetting = M('MassEmailSetting');
+    $result_email = $MassEmailSetting -> field('id,type_zh,send_address') -> select();
+    $this -> assign('result_email', $result_email);
+    $this -> display();
+  }
 }

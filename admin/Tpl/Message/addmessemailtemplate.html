@@ -1,0 +1,46 @@
+
+<div class="panel">
+  <h1>添加发送邮件模板</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/messemailtemplate" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <div class="unit" style="height:100px;">
+		<label>填写规则(速查):</label>
+		<p style="line-height:20px;width:90%;">公司名：<b>{company_name}</b> | 地址：<b>{company_address}</b> | 电话：<b>{company_companyphone}</b> | 联系人：<b>{company_linkman}</b>
+		<br />
+		网址：<b>{company_website}</b> | 邮件：<b>{company_email}</b> | 主营：<b>{company_manproducts}</b> | QQ：<b>{company_qqcode}</b>
+		<br/>
+		手机：<b>{company_mobilephone}</b> | ID：<b>{company_id}</b> | 所属省份：<b>{company_csid}</b> | 所属地区：<b>{company_csaid}</b>
+		<br/>
+		分站域名：<b>{company_domain}</b>
+		</p>
+	      </div>
+	      <div class="divider"></div>
+	      <div class="unit" style="height:75px;">
+		<label>填写规则(商品):</label>
+	      </div>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label>模板所属邮箱:</label>
+      <select class="combox" name="eid">
+	<volist name="result_email" id="re">
+	<option value="<!--{$re.id}--!>"><!--{$re.type_zh}--!>(<!--{$re.send_address}--!>)</option>
+	</volist>
+      </select>
+      </p>
+      <p style="width:90%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"></textarea>
+
+	</p>
+
+      
+      
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>
