@@ -334,7 +334,7 @@ var checksubmit = function(){
                                         <div class="clear5"></div>
                                         <div class="scpminfo_l">关键词设置：</div>
                                         <div class="scpminfo_r" style="position:relative;">
-						<input type="text" class="txtfile" style="width:215px;" name="keyword" id="keyword" value="<!--{$Think.request.f_keyword|safeEncoding}--!>" onkeyup="lookup(this.value);" onblur="fill();" />
+						<input type="text" class="txtfile" style="width:215px;" name="keyword" id="keyword" value="<!--{$Think.request.f_keyword|iconv='GBK', 'UTF-8', ###}--!>" onkeyup="lookup(this.value);" onblur="fill();" />
 					<div id="result_id" class="suggestionsBox" style="display:none;"></div>
                                             <ul class="ul_gjc">
 					      <volist name="result_search_hot" id="rsh">

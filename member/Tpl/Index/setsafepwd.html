@@ -10,7 +10,12 @@
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/ks-switch.pack.js"></script>
 <script type="text/javascript">
 $(function($){
-	$("#switchBox").switchTab({titCell: "dt a", trigger: "click", delayTime: 0});
+    <eq name="Think.get.type" value="trading">
+    $("#switchBox").switchTab({defaultIndex:1, titCell: "dt a", trigger: "click", delayTime: 0});
+    <else/>
+    $("#switchBox").switchTab({titCell: "dt a", trigger: "click", delayTime: 0});
+    </eq>
+	
 });
 </script>
 <script type="text/javascript">

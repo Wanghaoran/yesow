@@ -22,6 +22,123 @@ class CompanyModel extends Model {
       $result['count'] = 20;
       return $result;
     }
+
+    //引入 API
+    Vendor('sphinxapi');
+    $cl = new SphinxClient();
+    $cl->SetServer('127.0.0.1', 9312);
+    $cl->SetConnectTimeout(1);//超时设置
+    $cl->SetArrayResult(true);//返回数组
+    //匹配模式
+    $cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+    //$cl->SetMatchMode(SPH_MATCH_ANY);
+
+    if(!empty($_GET['csid']) && $_GET['csid'] != 'null'){
+      $cl -> SetFilter('csid', array($_GET['csid']));
+    }
+    if(!empty($_GET['csaid']) && $_GET['csaid'] != 'null'){
+      $cl -> SetFilter('csaid', array($_GET['csaid']));
+    }
+    //判断是否为分站数据
+    if($csid = D('admin://ChildSite') -> getid()){
+      $cl -> SetFilter('csid', array($csid));
+    }
+
+    //Count
+    $result_sph_tmp_one = $cl->Query($keyword, "*" );    
+
+    //分页
+    $count = $result_sph_tmp_one['total_found'];
+    import("ORG.Util.Page");
+    $page = new Page($count, 20);
+    $page->setConfig('header','条数据');
+    $page -> setConfig('theme', '%totalRow% %header% %nowPage%/%totalPage% 页 %linkPage% &nbsp;&nbsp;&nbsp;跳转到 %inputpage% <br/><br/> %upPage% %downPage% %first%  %prePage%  %nextPage% %end%');
+    $show = $page -> show();
+    //分页信息
+    $result_sph['show'] = $show;
+    //总数
+    $result_sph['count'] = $count;
+    //当前页数
+    $result_sph['pagenow'] = $_GET['p'] ? $_GET['p'] : 1;
+
+    //评分模式
+    //$cl -> SetRankingMode(SPH_RANK_WORDCOUNT);
+    $cl -> SetRankingMode(SPH_RANK_PROXIMITY_BM25);
+    
+    //字段权重
+    $cl -> SetFieldWeights(array('name' => 50, 'csname' => 10));
+    //排序模式
+    //$cl -> SetSortMode(SPH_SORT_EXTENDED, '@weight desc');
+    //$cl -> SetSortMode(SPH_SORT_RELEVANCE);
+
+    //result
+
+    $cl -> SetLimits($page -> firstRow, $page -> listRows);
+    $result_sph_tmp = $cl -> Query($keyword, "*" );
+
+    //dump($result_sph_tmp);
+
+
+    $result_sph['result'] = array();
+    foreach($result_sph_tmp['matches'] as $key => $value){
+      $result_sph['result'][$key]['id'] = $value['id'];
+      $result_sph['result'][$key]['name'] = $value['attrs']['name'];
+      $result_sph['result'][$key]['csid'] = $value['attrs']['csid'];
+      $result_sph['result'][$key]['csaid'] = $value['attrs']['csaid'];
+      $result_sph['result'][$key]['manproducts'] = $value['attrs']['manproducts'];
+      $result_sph['result'][$key]['address'] = $value['attrs']['address'];
+      $result_sph['result'][$key]['companyphone'] = $value['attrs']['companyphone'];
+      $result_sph['result'][$key]['linkman'] = $value['attrs']['linkman'];
+      $result_sph['result'][$key]['mobilephone'] = $value['attrs']['mobilephone'];
+      $result_sph['result'][$key]['addtime'] = $value['attrs']['addtime'];
+      $result_sph['result'][$key]['updatetime'] = $value['attrs']['updatetime'];
+      $result_sph['result'][$key]['clickcount'] = $value['attrs']['clickcount'];
+    }
+
+    $result_sph['time'] = $result_sph_tmp['time'];
+
+    //非法词过滤，过滤的字段：公司名称、主营、企业介绍
+    $illegal = M('IllegalWord');
+    //需要过滤的词的数组
+    $illegal_word_temp = $illegal -> field('name') -> order('id') -> select();
+    //需要替换的词的数组
+    $replace_word_temp = $illegal -> field('replace') -> order('id') -> select();
+    //整理数组
+    $illegal_word = array();
+    $replace_word = array();
+    foreach($illegal_word_temp as $key => $value){
+      $illegal_word[] = $value['name'];
+    }
+    foreach($replace_word_temp as $key => $value){
+      $replace_word[] = $value['replace'];
+    }
+    //过滤
+    foreach($result_sph['result'] as $key => $value){
+      $result_sph['result'][$key]['name'] = str_replace($illegal_word, $replace_word, $result_sph['result'][$key]['name']);
+      $result_sph['result'][$key]['manproducts'] = str_replace($illegal_word, $replace_word, $result_sph['result'][$key]['manproducts']);
+      $result_sph['result'][$key]['content'] = str_replace($illegal_word, $replace_word, $result_sph['result'][$key]['content']);
+    }
+
+    //查询关键词
+    $keyword_arr = array();
+    foreach($result_sph_tmp['words'] as $key => $value){
+      $keyword_arr[] = $key;
+    }
+
+    //将主查询词，写入关键词数组头部
+    array_unshift($keyword_arr, $keyword);
+    //关键词数组
+    $result_sph['keyword_arr'] = $keyword_arr;
+    //查询主关键词
+    $result_sph['keyword'] = $keyword;
+
+
+    //自动切换
+    if(!$cl -> IsConnectError()){
+      return $result_sph;
+    }
+
+    
     //关键词切割
     $keyword_explode =  mbstringtoarray($keyword, 'UTF-8');
     //初始化未过滤关键词词组
