@@ -1432,12 +1432,56 @@ class MessageAction extends CommonAction {
       }
     }
 
-    $result = $MassEmailTemplate -> field('eid,content') -> find($this -> _get('id', 'intval'));
+    $result = $MassEmailTemplate -> field('eid,title,content') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
 
     $MassEmailSetting = M('MassEmailSetting');
     $result_email = $MassEmailSetting -> field('id,type_zh,send_address') -> select();
     $this -> assign('result_email', $result_email);
     $this -> display();
+  }
+
+  public function masssendrecord(){
+    $MassEmailRecord = M('MassEmailRecord');
+
+    $where = array();
+    if(!empty($_POST['accept_email'])){
+      $where['e.accept_email'] = $this -> _post('accept_email');
+    }
+
+    $count = $MassEmailRecord -> alias('r') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MassEmailRecord -> alias('r') -> field('r.id,r.send_email,r.accept_email,r.title,r.content,r.sendtime,r.status,e.type_zh') -> join('yesow_mass_email_setting as e ON r.eid = e.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function editmasssendrecord(){
+    $content = M('MassEmailRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
+    $this -> assign('content', $content);
+    $this -> display();
+  }
+
+  public function delmasssendrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MassEmailRecord = M('MassEmailRecord');
+    if($MassEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 }

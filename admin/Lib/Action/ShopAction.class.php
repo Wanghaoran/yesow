@@ -484,6 +484,11 @@ class ShopAction extends CommonAction {
 	$this -> error($order -> getError());
       }
       if($order -> save()){
+	//sendEmail
+	if($_POST['issend'] == 1){
+	  $send_email = $order -> alias('o') -> field('m.email') -> join('yesow_member as m ON o.mid = m.id') -> where(array('o.id' => $_POST['id'])) -> find();
+	  D('MassEmailSetting') -> sendEmail('shop_send', $send_email['email'], $_POST['id']);
+	}
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));

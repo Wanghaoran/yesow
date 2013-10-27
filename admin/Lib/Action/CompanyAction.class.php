@@ -222,6 +222,10 @@ class CompanyAction extends CommonAction {
 	  $mid = $companyaudit -> getFieldByid($data['id'], 'mid');
 	  D('member://MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $add_rmb);
 	  D('member://MemberRmbDetail') -> writelog($mid, "添加一条完整的企业信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
+	}
+	//sendEmail
+	if(!empty($_POST['email'])){
+	  D('MassEmailSetting') -> sendEmail('company_check', $_POST['email'], $cid);
 	}	
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
@@ -369,6 +373,11 @@ class CompanyAction extends CommonAction {
 	  D('member://MemberRmb') -> where(array('mid' => $mid)) -> setInc('rmb_exchange', $add_rmb);
 	  D('member://MemberRmbDetail') -> writelog($mid, "改错一条信息审核通过[<span style='color:blue;'>{$cname}</span>]", '获取', $add_rmb);
 	}
+	//sendEmail
+	if(!empty($_POST['email'])){
+	  D('MassEmailSetting') -> sendEmail('company_changeerror', $_POST['email'], $_POST['id']);
+	}
+
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
@@ -669,6 +678,10 @@ class CompanyAction extends CommonAction {
       $company -> updateaid = session('admin_name');
       $company -> updatetime = time();
       if($company -> save()){
+	//sendEmail
+	if(!empty($_POST['email'])){
+	  D('MassEmailSetting') -> sendEmail('company_change', $_POST['email'], $_POST['id']);
+	}	
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
@@ -719,6 +732,16 @@ class CompanyAction extends CommonAction {
       $data['delaid'] = session('admin_name');
       $company = D('Company');
       if($company -> where($where_update) -> save($data)){
+	//sendEmail
+	$id_arr = explode(',', $_POST['ids']);
+	foreach($id_arr as $value){
+	  $send_email = $company -> getFieldByid($value, 'email');
+	  if(!empty($send_email)){
+	    D('MassEmailSetting') -> sendEmail('company_del', $send_email, $value);
+	  }
+	  usleep(100000);
+	}
+	//sendEmail End
 	$this -> success(L('DATA_DELETE_SUCCESS'));
       }else{
 	$this -> error(L('DATA_DELETE_ERROR'));

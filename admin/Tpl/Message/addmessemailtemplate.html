@@ -17,6 +17,12 @@
 	      <div class="divider"></div>
 	      <div class="unit" style="height:75px;">
 		<label>填写规则(商品):</label>
+		<p style="line-height:20px;width:90%;">商品名称：<b>{shop_name}</b> | 订单号：<b>{shop_ordernum}</b> | 发货单字段：<b>{shop_result}</b> | 购买时间：<b>{shop_addtime}</b> 
+		<br />
+		收货地址：<b>{shop_address}</b> | 收货人：<b>{shop_linkman}</b> | 手机号码：<b>{shop_mobilephone}</b> | 用户名：<b>{shop_member_name}</b>
+		<br/>
+		用户昵称：<b>{shop_member_nickname}</b> | 发送时间：<b>{shop_send_time}</b> 
+		</p>
 	      </div>
       <div class="divider"></div>
       <p style="width:90%;">
@@ -27,13 +33,14 @@
 	</volist>
       </select>
       </p>
+	<p style="width:90%;">
+      <label>邮件标题:</label>
+      <input type="text" name="title" size="80" />
+      </p>
       <p style="width:90%;height:300px;">
       <textarea class="editor" name="content" style="width:96%;" rows="15"></textarea>
 
 	</p>
-
-      
-      
       <div class="formBar">
 	<ul>
 	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
