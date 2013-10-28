@@ -1,5 +1,5 @@
 <div class="page unitBox" style="display: block;">
-  <div style="float:left; display:block; overflow:auto; width:290px;" class="unitBox" id="jbsxBox4">
+  <div style="float:left; display:block; overflow:auto; width:290px;" class="unitBox" id="jbsxBox14">
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
   <input type="hidden" name="search_name" value="<!--{$Think.request.search_name}--!>" />
@@ -81,11 +81,11 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li class=""><a class="delete" href="__URL__/delcheckcompany/navTabId/checkcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delremovecompany/navTabId/removecompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
 	    <else/>
 	    
-	    <if condition="isset($_SESSION['acc_arr']['company']['delcheckcompany'])">
-	    <li class=""><a class="delete" href="__URL__/delcheckcompany/navTabId/checkcompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['company']['delremovecompany'])">
+	    <li class=""><a class="delete" href="__URL__/delremovecompany/navTabId/removecompany" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
 	    </if>
 	    </if>
 		</ul>
@@ -103,16 +103,14 @@
 		<volist name="result" id="r">
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
-		  <td><a rel="jbsxBox5" target="ajax" href="__URL__/editcheckcompany/id/<!--{$r.id}--!>" style="color:blue;"><!--{$r.name}--!></a></td>
+		  <td><a rel="jbsxBox15" target="ajax" href="__URL__/editremovecompany/id/<!--{$r.id}--!>" style="color:green;"><!--{$r.name}--!></a></td>
 		</tr>
 		</volist>
 		</tbody>
 	</table>
 	<div class="panelBar" style="height:50px;">
-	  
-	  
 		<div class="pages" style="width:260px;">
-		  <span>共<!--{$count}--!>条,其中<!--{$count_del}--!>条已删除&nbsp;&nbsp;共 <b><!--{$countNum}--!></b> 页</span>
+		  <span>共 <!--{$count}--!> 条</span>
 		</div>
 		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="1" currentPage="<!--{$currentPage}--!>"></div>
 		
@@ -126,8 +124,8 @@
 
 	</div>
 	
-	<div style="margin-left:290px;" class="unitBox" id="jbsxBox5">
-	  <include file="Company:editcheckcompany" />
+	<div style="margin-left:290px;" class="unitBox" id="jbsxBox15">
+	  <include file="Company:editremovecompany" />
 </div>
 </div>
 

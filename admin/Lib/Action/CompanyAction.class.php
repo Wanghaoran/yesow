@@ -592,8 +592,8 @@ class CompanyAction extends CommonAction {
   public function checkcompany(){
     $company = M('Company');
     $where = array();
+    $where['delaid'] = array('exp', 'IS NULL');
     if($_SESSION[C('USER_AUTH_KEY')] != 1){
-      $where['delaid'] = array('exp', 'IS NULL');
       $domain = M('ChildSite') -> getFieldByid($_SESSION['csid'], 'domain');
       $this -> assign('domain', $domain);
       if($domain != 'yesow.com'){
@@ -651,7 +651,7 @@ class CompanyAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $company -> field('id,delaid,name') -> where($where) -> order('delaid DESC,updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $company -> field('id,delaid,name') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -706,16 +706,6 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
-  public function restorecompany(){
-    $company = D('Company');
-    $data['delaid'] = NULL;
-    if($company -> where(array('id' => $this -> _get('cid', 'intval'))) -> save($data)){
-      $this -> success(L('DATA_UPDATE_SUCCESS'));
-    }else{
-      $this -> error(L('DATA_UPDATE_ERROR'));
-    }
-  }
-
   public function delcheckcompany(){
     if($_SESSION[C('USER_AUTH_KEY')] == 1){
       $where_del = array();
@@ -747,6 +737,133 @@ class CompanyAction extends CommonAction {
 	$this -> error(L('DATA_DELETE_ERROR'));
       }
     }
+  }
+
+  public function removecompany(){
+    $company = M('Company');
+    $where = array();
+    
+    $where['delaid'] = array('exp', 'IS NOT NULL');
+
+    if(!empty($_POST['search_name'])){
+      if($_POST['search_key'] == 'name'){
+	$where['name'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'address'){
+	$where['address'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'companyphone'){
+	$where['companyphone'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'website'){
+	$where['website'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'category'){
+	$where['manproducts'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'auditname'){
+	$where['auditaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'updatename'){
+	$where['updateaid'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'email'){
+	$where['email'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }
+    }
+    if(!empty($_POST['search_starttime'])){
+      $addtime = $this -> _post('search_starttime', 'strtotime');
+      $where['updatetime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['search_endtime'])){
+      $endtime = $this -> _post('search_endtime', 'strtotime');
+      $where['updatetime'][] = array('lt', $endtime);
+    }
+    if(!empty($_POST['search_csid'])){
+      $where['csid'] = $this -> _post('search_csid', 'intval');
+    }
+    if(!empty($_POST['search_csaid'])){
+      $where['csaid'] = $this -> _post('search_csaid', 'intval');
+    }
+
+    $count = $company -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $company -> field('id,name') -> where($where) -> order('updatetime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    R('Company/editremovecompany', array($result[0]['id']));
+  
+  }
+
+  public function editremovecompany($id = ''){
+    $company = D('Company');
+    if(!empty($_POST['name'])){
+      if(!$company -> create()){
+	$this -> error($company -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	if($pics = $this -> upload()){
+	  $company -> pic = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      $company -> updateaid = session('admin_name');
+      $company -> updatetime = time();
+      if($company -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $id = !empty($id) ? $id : $this -> _get('id', 'intval');
+    $this -> assign('id', $id);
+    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.pic,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname') -> where(array('c.id' => $id)) -> find();
+    $this -> assign('result_edit', $result_edit);
+    $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();
+    $this -> assign('result_childsite_area', $result_childsite_area);
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $result_company_type = M('CompanyType') -> field('id,name') -> select();
+    $this -> assign('result_company_type', $result_company_type);
+    $result_ccid_one = M('CompanyCategory') -> getFieldByid($result_edit['ccid'], 'pid');
+    $this -> assign('result_ccid_one', $result_ccid_one);
+    $result_company_category_two = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $result_ccid_one)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_two', $result_company_category_two);
+    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_one', $result_company_category_one);
+    $this -> display();
+  }
+
+  public function delremovecompany(){
+    $where_del = array();
+      $where_del['id'] = array('in', $_POST['ids']);
+      $company = M('Company');
+      if($company -> where($where_del) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+  }
+
+  public function editrestoreremovecompany(){
+    $company = D('Company');
+    $id = $this -> _get('cid', 'intval');
+    $data['delaid'] = NULL;
+    if($company -> where(array('id' => $id)) -> save($data)){
+      //sendEmail
+      $send_email = $company -> getFieldByid($id, 'email');
+      if(!$send_email){
+	D('MassEmailSetting') -> sendEmail('company_restore', $send_email, $id);
+      }
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  
   }
 
   public function companycomment(){

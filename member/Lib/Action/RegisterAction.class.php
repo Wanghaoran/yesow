@@ -38,6 +38,11 @@ class RegisterAction extends Action {
 	$this -> errorjump($member -> getError());
       }
       if($mid = $member -> add()){
+	//sendEmail
+	$send_email = $member -> getFieldByid($mid, 'email');
+	if($send_email){
+	  D('admin://MassEmailSetting') -> sendEmail('member_register', $send_email, $mid);
+	}
 	//向会员reb表插入此会员信息
 	$member_rmb = M('MemberRmb');
 	$member_rmb -> add(array('mid' => $mid));
