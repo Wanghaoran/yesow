@@ -529,6 +529,7 @@ $content_xml .= '
   }
 
   public function sendbusinessremind(){
+    set_time_limit(0);
 
     $time_line = M('EndtimeAlertTime') -> field('time') -> order('time ASC') -> select();
     $EndtimeAlertEmail = M('EndtimeAlertEmail');
