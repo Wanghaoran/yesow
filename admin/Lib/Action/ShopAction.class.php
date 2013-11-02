@@ -801,4 +801,76 @@ class ShopAction extends CommonAction {
       $this -> error(L('DATA_UPDATE_ERROR'));
     }
   }
+
+  public function questioncategory(){
+    $QuestionCategory = M('QuestionCategory');
+    $where['pid'] = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    $count = $QuestionCategory -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $QuestionCategory -> field('id,name,sort,remark') -> where($where) -> order('sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function addquestioncategory(){
+    $QuestionCategory = M('QuestionCategory');
+    if(!empty($_POST['name'])){
+      if(!$QuestionCategory -> create()){
+	$this -> error($QuestionCategory -> getError());
+      }
+      if($QuestionCategory -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $pname = $QuestionCategory -> getFieldByid($this -> _get('id', 'intval'), 'name');
+    $this -> assign('pname', $pname);
+    $this -> display();
+  }
+
+  public function delquestioncategory(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $QuestionCategory = M('QuestionCategory');
+    if($QuestionCategory -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editquestioncategory(){
+    $type = M('QuestionCategory');
+    if(!empty($_POST['name'])){
+      if(!$type -> create()){
+	$this -> error($type -> getError());
+      }
+      if($type -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $type -> field('name,pid,sort,remark') -> find($this -> _get('id', 'intval'));
+    $pname = $type -> getFieldByid($result['pid'], 'name');
+    $this -> assign('pname', $pname);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
 }

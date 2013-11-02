@@ -1,4 +1,4 @@
-﻿@charset "utf-8";
+@charset "utf-8";
 /* CSS Document */
 body{ background:#F2F2F2;}
 a{ cursor:pointer;}
@@ -1247,7 +1247,6 @@ ul.ul_sjfc3 div.page{ height:40px; background:#fff;}
 
 
 #main18{padding-top:5px;}
-
 #main18_l{ float:left; width:240px;}
 #main18_r{width:705px; padding-left:5px; float:left;}
 #main18_l .cat_header{ width:238px; position:relative;}
@@ -1345,103 +1344,3 @@ table.zp_list td a.tuijian{background: url("images/icon_tuijian.gif") no-repeat 
 .qun SPAN {
 	COLOR: #ff6600; FONT-SIZE: 12px; FONT-WEIGHT: bold
 }
-/* base */
-.clearfix:after{ clear:both; display:block; height:0; visibility:hidden; line-height:0; content:'\20';}
-.clearfix{  *display:table;
- *zoom:1;}
-.cb{ clear:both; height:0; overflow:hidden; font:0/0 'Arial';}
-.fl{ display:inline; float:left;}
-.fr{ display:inline; float:right;}
-.tc{ text-align:center;}
-.tl{ text-align:left;}
-.none{ display:none;}
-.hidden{ overflow:hidden;}
-.block{ display:block;}
-.vm{ display:table-cell;  *display:block;
-overflow:hidden; font:0px/0px 'Arial'; text-align:center; vertical-align:middle;}
-.vm img{ vertical-align:middle;}
-.ml5{ margin-left:5px;}
-/* ys_content */
-.ys_content{ padding-bottom:5px;}
-.ys_location{ padding:4px 15px 0; height:22px; line-height:22px; color:#535353;}
-.ys_location{ padding:0 15px; height:28px; background:#EEEDEE; line-height:28px;}
-.ys_location b{ font-size:12px;}
-.ys_location a{ margin-top:5px; width:74px; height:18px; overflow:hidden; background:url(images/btn_putout.gif) no-repeat; font:0/0 'Arial';}
-.question_service{ margin-top:10px; padding:0 14px; height:24px; background:#F6F5F3; border:1px solid #DDDCD9; line-height:24px;}
-.question_service a{ padding-right:18px; background:url(images/letter.gif) right 3px no-repeat;}
-.question_list{ margin-top:10px; border-top:2px solid #8C8C8C;}
-.question_list li{ height:30px; border-bottom:1px solid #CECECE; line-height:30px;}
-.question_list a{ color:#000;}
-.question_list a:hover{ color:#FF5500;}
-.question_tit{ background:#F3F3F3; text-align:center;}
-.field, .field2, .field3{ height:30px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
-.field2, .field3{ padding:0 15px;}
-.field{ width:60px;}
-.field2{ width:350px;}
-.field3{ width:140px;}
-.icon_top{ display:block; margin:5px auto; width:15px; height:20px; background:url(images/icon_top.gif) no-repeat;}
-.page{ padding:15px 0; text-align:center; color:#535353; font-weight:700; line-height:22px;}
-.page a, .page span{ display:inline-block; margin:0 4px; vertical-align:top;}
-.page a, .page .cur{ padding:0 7px; height:20px; border:1px solid #DDD; line-height:20px; color:#000;}
-.page a:hover{ color:#FF5500;}
-.page span strong{ color:#F00;}
-.pageInput{ padding:3px 5px; width:20px; height:14px; border:1px solid #DDD; line-height:14px; text-align:center;}
-.question_show_bar{ border:1px solid #DDDCD9;}
-.question_show_bar .ys_location{ border-bottom:1px solid #DDDCD9;}
-.ys_location_tit{ padding:7px 15px; line-height:24px; background:#FFF;}
-.ys_location_tit h2{ padding-left:20px; background:url(images/firstnew.gif) 0 4px no-repeat; font-size:12px; color:#535353;}
-.ys_question_sec li{ padding:10px 0;}
-.ys_question_sec li table{ background:#DBDBD9;}
-.ys_question_sec li tr{ background:#F6F5F3;}
-.ys_avator_des{ background:#FFF;}
-.ys_avator_img{ margin:14px auto 0; width:120px; height:120px; border:1px solid #B8B7B5;}
-.ys_avator_name{ margin:10px auto 0; width:120px; text-align:center; color:#000;}
-.ys_avator_time{ padding:0 5px;}
-.ys_avator_icon{ display:block; margin-left:5px; padding-left:32px; background:url(images/bokefav.gif) 0 center no-repeat;}
-.ys_avator_article{ padding:5px; color:#777; line-height:20px;}
-.ys_avator_article h1{ padding-bottom:5px; font:700 16px/30px 'Simsun'; color:#F00;}
-.ys_reply{ border:1px solid #FFA8B0; line-height:22px;}
-.ys_reply_tit{ padding:0 15px; height:26px; background:#FFF3F5; border-bottom:1px solid #FFA8B0; line-height:26px; font-size:12px;}
-.ys_reply_text{ padding:15px;}
-.ys_reply_p{ width:65px;}
-.ys_reply_text textarea{ padding:5px; width:840px; height:110px; overflow:hidden; line-height:20px; color:#333;}
-.ys_reply_box{ margin-left:65px; padding:10px 0;}
-.ys_reply_btn{ padding:0; width:80px; height:24px; background:#FFF3F5; border:1px solid #FFA8B0; cursor:pointer;}
-.ys_reply_btn:hover{ background:#FFA8B0;}
-.ys_code{ padding:0 15px; line-height:26px; color:#222;}
-.ys_code input{ margin-right:10px; padding:4px; width:60px; height:14px; border:1px solid #ABADB3;}
-.ys_code_img{ margin:1px 5px 0 0;}
-.ys_message, 
-.ys_message .ys_reply_tit{ border-color:#DDDCD9;}
-.ys_message .ys_reply_tit{ background:#F6F5F3;}
-.ys_message .ys_reply_btn{ background:#F6F5F3; border-color:#ABADB3;}
-.ys_message .ys_reply_btn:hover{ border-color:#DDDCD9;}
-.ys_msg_input_tit{ padding-bottom:10px;}
-.ys_msg_tit{ padding:3px 5px; width:220px; height:14px;}
-.ys_left{ width:250px;}
-.ys_left_top{ margin:5px 0; border:1px solid #ECECEC;}
-.ys_left_tit{ padding:0 20px; height:30px; background:#FFF3DF; border-bottom:2px solid #FFAF2F; line-height:30px;}
-.ys_left_tit h2{ font-size:12px; font-weight:500;}
-.ys_left_tit p{ padding:4px 0 0 15px;}
-.ys_left_top_list{ color:#535353; *margin:4px 0 3px;}
-.ys_left_top_list li{ width:100%; height:24px; overflow:hidden; line-height:24px; vertical-align:top;}
-.ys_left_list_tit{ color:#9B9893;}
-.ys_left_top_list p{ padding:0 6px 0 10px; width:108px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
-.ys_icon{ padding:6px 5px; width:12px; height:11px; overflow:hidden;}
-.ys_icon img{ vertical-align:top;}
-.ys_right{ margin-right:3px; width:690px;}
-.ys_right_img{ margin-top:5px; text-align:center;}
-.ys_right_img img{ vertical-align:top;}
-.ys_right_box{ margin-top:5px; background:#FFFBF4; border:1px solid #FFE7B9;}
-.ys_right_tit{ padding:0 12px; height:25px; background:#FFF; line-height:25px;}
-.ys_right_tit h2{ font-weight:500; font-size:12px;}
-.ys_right_sec{ padding:5px 12px; font-family:'Simsun';}
-.ys_right_sec dl{ padding:2px 0; line-height:22px;}
-.ys_right_sec dt{ font-weight:700;}
-.last_dl dt, .last_dl dd{ display:inline; margin-right:10px; float:left; width:320px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
-.ys_right_box2{ width:340px;}
-.ys_right_box2 li{ height:22px; overflow:hidden; vertical-align:top; line-height:22px;}
-.ys_right_box2 li a{ color:#111;}
-.ys_right_box2 li a:hover{ color:#FF5500;}
-.ys_right_box2 li .fl{ width:230px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
-.ys_question_type{ margin-left:5px; height:20px;}

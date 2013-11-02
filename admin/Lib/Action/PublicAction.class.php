@@ -339,6 +339,16 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  public function ajaxgetquestioncategorytwoid(){
+    $result_temp = M('QuestionCategory') -> field('id,name') -> where(array('pid' => $this -> _get('id', 'intval'))) -> select();
+    $result = array();
+    $result[] = array('', '请选择');
+    foreach($result_temp as $key => $value){
+      $result[] = array($value['id'], $value['name']);
+    }
+    echo json_encode($result);
+  }
+
   public function sellused_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();

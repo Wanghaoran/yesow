@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>提问中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script>
+function check()
+{
+	if($('.ys_msg_tit').val()=='')
+	{
+		alert('请填写主题！');
+		return false;
+	}
+	else if($('.ys_msg_tit').val().length>50)
+	{
+		alert('主题不能超过50个字！');
+		return false;
+	}
+	if($('.ys_reply_ys_content').val()=='')
+	{
+		alert('请填写帖子内容！');
+		return false;
+	}
+	if($('.ys_code_input').val()=='')
+	{
+		alert('请填写验证码！');
+		return false;
+	}
+	if($('#tid_one').val() == ''){
+	  alert('请选择类别');
+	  return false;
+	}
+	if($('#tid_two').val() == ''){
+	  alert('请选择类别');
+	  return false;
+	}
+}
+</script>
+<script>
+var gettwoid = function(val){
+  $.ajax({
+    url:'__ROOT__/admin.php/public/ajaxgetquestioncategorytwoid/id/' + val,
+      success: function(ress){
+	 var _nstr = '';
+	if(ress != null){
+	  
+	  $.each(ress, function(i, res){
+	    _nstr += '<option value="'+res[0]+'">'+res[1]+'</option>';
+	  });
+	  $('#tid_two').html(_nstr).show();
+	  }else{
+	  $('#tid_two').html(_nstr).hide();
+	}	
+      },
+      dataType:'json'
+    });
+}
+</script>
+</head>
+<body>
+<div id="warp_body">
+<include file="Index:header"/>
+    
+    <!-- 内容区 -->
+    <div class="ys_content clearfix">
+        <div class="ys_location clearfix">
+            <p>您现在的位置是：<a href="__ROOT__/question">易搜帮助提问中心</a>&nbsp;&gt;&gt;&nbsp;发表新贴</p>
+        </div>
+        
+        <div class="ys_reply ys_message clearfix">
+            <h4 class="ys_reply_tit">发表新贴</h4>
+            
+            <div class="ys_reply_text clearfix">
+            <form action="__ACTION__" method="post" name="myform" onsubmit="return check()">
+                <div class="ys_msg_input_tit clearfix">
+                    <p class="ys_reply_p fl">主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题：</p>
+                    <input type="text" name="title" class="ys_msg_tit fl">
+                    <span class="fl">（*不要超过50字）</span>
+                    <select name="tid_one" id="tid_one" class="ys_question_type fl" onchange="gettwoid($(this).val());">
+                    	<option value="">请选择</option>
+			<volist name="result_category" id="rc">
+			<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+			</volist>
+                    </select>
+                    <select name="tid_two" id="tid_two" class="ys_question_type fl">
+                    	<option value="">请选择</option>
+                    </select>
+                </div>
+                
+                <div class="clearfix">
+                    <p class="ys_reply_p fl">帖子内容：</p>
+                    <textarea class="ys_reply_ys_content fl" name="content"></textarea>
+                </div>
+                           
+                <div class="ys_reply_box clearfix">
+                    <input type="submit" value="发表帖子" class="ys_reply_btn fl"> 
+                                   
+                    <div class="ys_code fl">
+                        <span class="fl">验证码：</span>
+                        <input type="text" class="ys_code_input fl" name="verify">
+                        <a href="#" class="ys_code_img fl"><img id="verify" src="__ROOT__/admin.php/public/verify"></a>
+                        <a onclick="$('#verify').attr('src','__ROOT__/admin.php/public/verify/temp='+new Date().getTime());" class="ys_code_img fl">看不清，换一张</a>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!-- 内容结束 -->
+    
+    <include file="Index:footer" />
+</div>
+</body>
+</html>
