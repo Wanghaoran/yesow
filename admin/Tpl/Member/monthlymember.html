@@ -4,6 +4,10 @@
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 	<div class="searchBar">
 		<ul class="searchContent">
+		  <li>
+				<label>用户名：</label>
+				<input type="text" name="name" />
+			</li>
 		</ul>
 		<div class="subBar">
 			<ul>
@@ -52,7 +56,7 @@
 			  <td><!--{$r.tname}--!></td>
 			  <td><!--{$r.mjoin_time|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.mltime|date="Y-m-d H:i:s", ###}--!></td>
-			  <if condition="$r['enditme'] ELT time()">
+			  <if condition="$r['endtime'] gt time()">
 			  <td style="color:green;">包月中</td>
 			  <else/>
 			  <td style="color:red;">已过期</td>

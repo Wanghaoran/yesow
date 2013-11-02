@@ -1,0 +1,52 @@
+
+<div class="panel">
+  <h1>添加发送邮件模板</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/endtimealertemail" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <div class="unit" style="height:70px;">
+		<label>填写规则:</label>
+		<p style="line-height:20px;width:90%;">用户名：<b>{member_name}</b> | 用户昵称：<b>{member_nickname}</b> | 产品生效时间：<b>{product_starttime}</b> | 产品ID：<b>{product_id}</b> | 产品名称：<b>{product_name}</b> | 产品到期时间：<b>{product_endtime}</b> | 产品剩余时间(天)：<b>{product_remainingtime}</b> | 发送时间：<b>{send_time}</b>
+		</p>
+	      </div>
+      <div class="divider"></div>
+      <p>
+      <label>识别码:</label>
+      <input type="text" class="required" name="model_name" />
+      </p>
+      <p>
+      <label>产品名称:</label>
+      <input type="text" class="required" name="name" />
+      </p>
+      <p>
+      <label>发送邮箱地址:</label>
+      <input type="text" class="required" name="send_address" size="30" />
+      </p>
+      <p>
+      <label>发送邮箱SMTP:</label>
+      <input type="text" class="required" name="send_smtp" size="30" />
+      </p>
+	<p>
+      <label>发送邮箱帐号:</label>
+      <input type="text" class="required" name="send_email" size="30" />
+      </p>
+      <p>
+      <label>发送邮箱密码:</label>
+      <input type="password" class="required" name="email_pwd" size="30" />
+      </p>      <p style="width:90%;">
+      <label>邮件标题:</label>
+      <input type="text" class="required" name="title" size="80" />
+      </p>
+      <p style="width:90%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"></textarea>
+
+	</p>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

@@ -219,6 +219,10 @@ class ShopAction extends CommonAction {
     if(!$shop_order -> where(array('ordernum' => $this -> _get('orderid'))) -> save(array('paystatus' => 3, 'paytype' => 'RMB余额'))){
       R('Register/errorjump',array(L('ORDER_UPDATE_ERROR')));
     }
+
+    //sendEmail
+    D('admin://OrderAcceptEmail') -> sendOrderEmail('ShopOrder', $_GET['orderid']);
+
     //写RMB消费记录
     $log_content = "您已成功在易搜商城购买相关产品,订单号{$_GET['orderid']}";
     if(!D('member://MemberRmbDetail') -> writelog($_SESSION[C('USER_AUTH_KEY')], $log_content, '消费', '-' . $const)){

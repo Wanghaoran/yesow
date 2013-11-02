@@ -1484,4 +1484,264 @@ class MessageAction extends CommonAction {
       $this -> error(L('DATA_DELETE_ERROR'));
     }
   }
+
+  public function orderacceptemail(){
+    $OrderAcceptEmail = M('OrderAcceptEmail');
+    $where = array();
+    if(!empty($_POST['email_address'])){
+      $where['email_address'] = array('like', '%' . $this -> _post('email_address') . '%');
+    }
+
+    $count = $OrderAcceptEmail -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $OrderAcceptEmail -> field('id,email_address,addtime,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function addorderacceptemail(){
+    if(!empty($_POST['email_address'])){
+      $OrderAcceptEmail = M('OrderAcceptEmail');
+      if(!$OrderAcceptEmail -> create()){
+	$this -> error($OrderAcceptEmail -> getError());
+      }
+      $OrderAcceptEmail -> addtime = time();
+      if($OrderAcceptEmail -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delorderacceptemail(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $OrderAcceptEmail = M('OrderAcceptEmail');
+    if($OrderAcceptEmail -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editorderacceptemail(){
+    $OrderAcceptEmail = M('OrderAcceptEmail');
+    if(!empty($_POST['email_address'])){
+      if(!$OrderAcceptEmail -> create()){
+	$this -> error($OrderAcceptEmail -> getError());
+      }
+      if($OrderAcceptEmail -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $OrderAcceptEmail -> field('email_address,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function orderacceptemailrecord(){
+    $OrderAcceptRecord = M('OrderAcceptRecord');
+
+    $where = array();
+    if(!empty($_POST['accept_email'])){
+      $where['accept_email'] = $this -> _post('accept_email');
+    }
+
+    $count = $OrderAcceptRecord -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $OrderAcceptRecord -> field('id,send_type,accept_email,title,content,send_time,status') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('send_time DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delorderacceptemailrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $OrderAcceptRecord = M('OrderAcceptRecord');
+    if($OrderAcceptRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editorderacceptemailrecord(){
+    $content = M('OrderAcceptRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
+    $this -> assign('content', $content);
+    $this -> display();
+  }
+
+  public function endtimealerttime(){
+    $EndtimeAlertTime = M('EndtimeAlertTime');
+
+    $where = array();
+    if(!empty($_POST['time'])){
+      $where['time'] = $this -> _post('time');
+    }
+
+    $count = $EndtimeAlertTime -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $EndtimeAlertTime -> field('id,time,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('time ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addendtimealerttime(){
+    if(!empty($_POST['time']) || $_POST['time'] == '0'){
+      $EndtimeAlertTime = M('EndtimeAlertTime');
+      if(!$EndtimeAlertTime -> create()){
+	$this -> error($EndtimeAlertTime -> getError());
+      }
+      if($EndtimeAlertTime -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delendtimealerttime(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $EndtimeAlertTime = M('EndtimeAlertTime');
+    if($EndtimeAlertTime -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editendtimealerttime(){
+    $EndtimeAlertTime = M('EndtimeAlertTime');
+    if(!empty($_POST['time']) || $_POST['time'] == '0'){
+      if(!$EndtimeAlertTime -> create()){
+	$this -> error($EndtimeAlertTime -> getError());
+      }
+      if($EndtimeAlertTime -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $EndtimeAlertTime -> field('time,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function endtimealertemail(){
+    $EndtimeAlertEmail = M('EndtimeAlertEmail');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = $_POST['name'];
+    }
+    $count = $EndtimeAlertEmail -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $EndtimeAlertEmail -> field('id,model_name,name,send_address,send_smtp,send_email,addtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function addendtimealertemail(){
+    if(!empty($_POST['name'])){
+      $EndtimeAlertEmail = M('EndtimeAlertEmail');
+      if(!$EndtimeAlertEmail -> create()){
+	$this -> error($EndtimeAlertEmail -> getError());
+      }
+      $EndtimeAlertEmail -> addtime = time();
+      if($EndtimeAlertEmail -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delendtimealertemail(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $EndtimeAlertEmail = M('EndtimeAlertEmail');
+    if($EndtimeAlertEmail -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editendtimealertemail(){
+    $EndtimeAlertEmail = M('EndtimeAlertEmail');
+
+    if(!empty($_POST['name'])){
+      if(!$EndtimeAlertEmail -> create()){
+	$this -> error($EndtimeAlertEmail -> getError());
+      }
+      if($EndtimeAlertEmail -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $EndtimeAlertEmail -> field('model_name,name,send_address,send_smtp,send_email,email_pwd,title,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+
+    $this -> display();
+  }
+
+  
 }

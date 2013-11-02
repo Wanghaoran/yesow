@@ -52,6 +52,8 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功
 	if($shop_order -> where($where) -> save($data)){
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('ShopOrder', $out_trade_no);
 	  ob_end_clean();
 	  echo "success";
 	}
@@ -182,6 +184,7 @@ class PayAction extends Action {
 	    $data['paystatus'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($shop_order -> where($where) -> save($data)){
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('ShopOrder', $out_trade_no);
 	      echo "success";
 	    }else{
 	      echo "fail";
@@ -333,6 +336,7 @@ class PayAction extends Action {
 	  $data['paytype'] = '快钱';
 	  //如果更新成功
 	  if($shop_order -> where($where) -> save($data)){
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('ShopOrder', $orderId);
 	    $this -> assign('img_info', 'gwc_success');
 	  }else{
 	    $this -> assign('img_info', 'gwc_fail');

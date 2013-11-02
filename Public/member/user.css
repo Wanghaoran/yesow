@@ -66,7 +66,7 @@ ul.user_set li.btn_img9 a img{ margin:0;}
 .main_rr_tit{ width:375px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
 .main_rr_con{ width:365px; padding:10px; height:300px;}
 ul.user_list li{ float:left; width:355px; padding-left:10px; background:url(images/user/mian.gif) no-repeat 0 -97px; height:25px; line-height:25px;}
-ul.user_list li h2{ float:left; font-weight:normal; width:200px;/*宽度，超过即会溢出*/text-overflow:ellipsis;/*当文本溢出时显示…此时还必须定义：强制文本在一行内显示（white-space:nowrap）及溢出内容为隐藏（overflow:hidden）*/white-space:nowrap;/*表示文本不会换行*/overflow:hidden;/*表示溢出的内容会被隐藏*/}
+ul.user_list li h2{ float:left; font-weight:normal; width:259px;/*宽度，超过即会溢出*/text-overflow:ellipsis;/*当文本溢出时显示…此时还必须定义：强制文本在一行内显示（white-space:nowrap）及溢出内容为隐藏（overflow:hidden）*/white-space:nowrap;/*表示文本不会换行*/overflow:hidden;/*表示溢出的内容会被隐藏*/}
 ul.user_list li h2 a{ color:#646464;  font-size:12px;}
 ul.user_list li h2 a:hover{ color:#ff9900;}
 ul.user_list li span{ float:right; color:#fc7c04;  font-size:12px;}

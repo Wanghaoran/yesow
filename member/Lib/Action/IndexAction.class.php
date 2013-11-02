@@ -7,7 +7,7 @@ class IndexAction extends CommonAction {
     if(S('index_yesow_notice')){
       $this -> assign('index_yesow_notice', S('index_yesow_notice'));
     }else{
-      $result = M('Notice') -> field('id,title,titleattribute,addtime') -> order('addtime DESC') -> limit(10) -> select();
+      $result = M('Notice') -> field('id,title,titleattribute,addtime') -> order('addtime DESC') -> limit(11) -> select();
       S('index_yesow_notice', $result);
       $this -> assign('index_yesow_notice', $result);
     }
@@ -50,6 +50,13 @@ class IndexAction extends CommonAction {
 	$cachedata = $member -> field('nickname,headico') -> find($_POST['id']);
 	session('username', $cachedata['nickname']);
 	session('headico', $cachedata['headico']);
+
+	//sendEmail
+	$send_email = $member -> getFieldByid($_POST['id'], 'email');
+	if($send_email){
+	  D('admin://MassEmailSetting') -> sendEmail('member_change', $send_email, $_POST['id']);
+	}
+
 	if(isset($_POST['ischeck'])){
 	  R('Register/successjump',array(L('UPDETA_USER_DATA_CHENGE_EMAIL'), U('Register/three')));
 	}else{

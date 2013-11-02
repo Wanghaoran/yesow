@@ -54,6 +54,8 @@ class PayAction extends Action {
 	  if($member_rmb -> addmoney('rmb_pay', $total_pee, $mid)){
 	    //标记为已充值
 	    $rmb_order -> where($where) -> save(array('ispay' => 1));
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('RmbOrder', $out_trade_no);
 	    //写RMB消费日志
 	    $detail = D('MemberRmbDetail');
 	    $detail -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">支付宝</span>成功在线充值RMB', '充值', $total_pee);
@@ -254,6 +256,8 @@ class PayAction extends Action {
 	    $member_rmb = D('MemberRmb');
 	    //更新用户RMB余额
 	    $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('RmbOrder', $orderId);
 	    //写RMB消费日志
 	    D('MemberRmbDetail') -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">快钱</span>成功在线充值RMB', '充值', $total_pee);
 	    //计算返送金额
@@ -354,6 +358,8 @@ class PayAction extends Action {
 	      //更新用户RMB余额
 	      $member_rmb = M('MemberRmb');
 	      $member_rmb -> where(array('mid' => $mid)) -> setInc('rmb_pay', $total_pee);
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('RmbOrder', $out_trade_no);
 	      //写RMB消费日志
 	      D('MemberRmbDetail') -> writelog($mid, '恭喜您,您已通过<span style="color:blue;">财付通</span>成功在线充值RMB', '充值', $total_pee);
 	      //计算返送金额
@@ -498,6 +504,8 @@ class PayAction extends Action {
 	  $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	  //写用户主表
 	  M('Monthly') -> add($data);
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('MonthlyOrder', $out_trade_no);
 	}
 	ob_end_clean();
 	echo "success";
@@ -643,6 +651,8 @@ class PayAction extends Action {
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
 	      M('Monthly') -> add($data);
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('MonthlyOrder', $out_trade_no);
 	      ob_end_clean();
 	      echo "success";
 	    }else{
@@ -810,6 +820,8 @@ class PayAction extends Action {
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
 	      M('Monthly') -> add($data);
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('MonthlyOrder', $orderId);
 	      //重新缓存用户rmb及等级
 	      D('MemberRmb')-> rmbtotal($data['mid']);	   
 	  }
@@ -931,6 +943,8 @@ class PayAction extends Action {
 	    $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months,qo.mid') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $orderId)) -> find();
 	    //订单所属QQ信息
 	    $order_qq_info = M('QqonlineOrderList') -> field('qqcode,qqname') -> where(array('oid' => $qqonline_info['id'])) -> select();
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('QqonlineOrder', $orderId);
 	    //写主表
 	    $CompanyQqonline = M('CompanyQqonline');
 	    $qq_data = array();
@@ -1021,6 +1035,10 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($qqonline_order -> where($where) -> save($data) && $now_status == 0){
+
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('QqonlineOrder', $out_trade_no);
+
 	  //写在线QQ主表
 	  //////订单相关信息
 	  $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months,qo.mid') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $out_trade_no)) -> find();
@@ -1167,6 +1185,10 @@ class PayAction extends Action {
 	    $data['status'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($qqonline_order -> where($where) -> save($data)){
+
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('QqonlineOrder', $out_trade_no);
+
 	      //写在线QQ主表
 	      ////////订单相关信息
 	      $qqonline_info = $qqonline_order -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.cid,qm.months,qo.mid') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> where(array('qo.ordernum' => $out_trade_no)) -> find();
@@ -1749,6 +1771,9 @@ class PayAction extends Action {
 	  $data['paytype'] = '快钱';
 	  //如果更新成功，则写主表
 	  if($companypic_order -> where($where) -> save($data)){
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('CompanypicOrder', $orderId);
+
 	    //写主表
 	    //订单相关信息
 	    $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.mid,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $orderId)) -> find();
@@ -1835,6 +1860,10 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($companypic_order -> where($where) -> save($data) && $now_status == 0){
+
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('CompanypicOrder', $out_trade_no);
+
 	  //订单相关信息
 	  $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.mid,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
 	  //写主表
@@ -2037,6 +2066,10 @@ class PayAction extends Action {
 	    $data['status'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($companypic_order -> where($where) -> save($data)){
+
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('CompanypicOrder', $out_trade_no);
+
 	      //订单相关信息
 	      $companypic_info = $companypic_order -> table('yesow_companypic_order as co') -> field('co.id,co.mid,co.filename,co.cid,cm.months,co.website') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> where(array('co.ordernum' => $out_trade_no)) -> find();
 	      //写主表
@@ -2565,6 +2598,10 @@ class PayAction extends Action {
 	  $data['paytype'] = '快钱';
 	  //如果更新成功，则写主表
 	  if($advert_order -> where($where) -> save($data)){
+
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('AdvertOrder', $orderId);
+
 	    //订单相关信息
 	    $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $orderId)) -> find();
 
@@ -2651,6 +2688,10 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($advert_order -> where($where) -> save($data) && $now_status == 0){
+
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('AdvertOrder', $out_trade_no);
+
 	  //订单相关信息
 	  $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.mid,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
 	  //写主表
@@ -2852,6 +2893,9 @@ class PayAction extends Action {
 	    $data['status'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($advert_order -> where($where) -> save($data)){
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('AdvertOrder', $out_trade_no);
+
 	      //订单相关信息
 	      $advert_info = $advert_order -> table('yesow_advert_order as ao') -> field('ao.id,ao.mid,ao.filename,ao.website,ao.adid,am.months') -> join('yesow_advert_money as am ON ao.amid = am.id') -> where(array('ao.ordernum' => $out_trade_no)) -> find();
 	      //写主表
@@ -3403,6 +3447,10 @@ class PayAction extends Action {
 	  $data['paytype'] = '快钱';
 	  //如果更新成功，则写主表
 	  if($searchrank_order -> where($where) -> save($data)){
+
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('SearchRankOrder', $orderId);
+
 	    //订单相关信息
 	    $searchrank_info = $searchrank_order -> table('yesow_search_rank_order as sro') -> field('sro.cid,sro.fid,sro.mid,sro.keyword,sro.rank,srm.months') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $orderId)) -> find();
 
@@ -3496,6 +3544,9 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($searchrank_order -> where($where) -> save($data) && $now_status == 0){
+
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('SearchRankOrder', $out_trade_no);
 
 	  //订单相关信息
 	  $searchrank_info = $searchrank_order -> table('yesow_search_rank_order as sro') -> field('sro.cid,sro.fid,sro.mid,sro.keyword,sro.rank,srm.months') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $out_trade_no)) -> find();
@@ -3690,6 +3741,10 @@ class PayAction extends Action {
 	    $data['status'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($searchrank_order -> where($where) -> save($data)){
+
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('SearchRankOrder', $out_trade_no);
+
 	      //订单相关信息
 	      $searchrank_info = $searchrank_order -> table('yesow_search_rank_order as sro') -> field('sro.cid,sro.fid,sro.mid,sro.keyword,sro.rank,srm.months') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $out_trade_no)) -> find();
 	      //开始时间
@@ -3829,6 +3884,10 @@ class PayAction extends Action {
 	  $data['paytype'] = '快钱';
 	  //如果更新成功，则写主表
 	  if($RecommendCompanyOrder -> where($where) -> save($data)){
+
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('RecommendCompanyOrder', $orderId);
+
 	    //订单相关信息
 	    $searchrank_info = $RecommendCompanyOrder -> alias('sro') -> field('sro.cid,sro.fid,sro.mid,sro.rank,srm.months') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $orderId)) -> find();
 
@@ -3920,6 +3979,9 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($RecommendCompanyOrder -> where($where) -> save($data) && $now_status == 0){
+
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('RecommendCompanyOrder', $out_trade_no);
 
 	  //订单相关信息
 	  $searchrank_info = $RecommendCompanyOrder -> alias('sro') -> field('sro.cid,sro.fid,sro.mid,sro.rank,srm.months') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $out_trade_no)) -> find();
@@ -4112,6 +4174,10 @@ class PayAction extends Action {
 	    $data['status'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($RecommendCompanyOrder -> where($where) -> save($data)){
+
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('RecommendCompanyOrder', $out_trade_no);
+
 	      //订单相关信息
 	      $searchrank_info = $RecommendCompanyOrder -> alias('sro') -> field('sro.cid,sro.fid,sro.mid,sro.rank,srm.months') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where(array('sro.ordernum' => $out_trade_no)) -> find();
 	      //开始时间
@@ -4247,6 +4313,10 @@ class PayAction extends Action {
 	  $data['paytype'] = '快钱';
 	  //如果更新成功，则写主表
 	  if($MediaShowOrder -> where($where) -> save($data)){
+
+	    //sendEmail
+	    D('admin://OrderAcceptEmail') -> sendOrderEmail('MediaShowOrder', $orderId);
+
 	    //订单相关信息
 	    $companyshow_info = $MediaShowOrder -> alias('mso') -> field('mso.csid,mso.ccid_one,mso.ccid_two,mso.mid,mso.name,mso.address,mso.linkman,mso.mobliephone,mso.companyphone,mso.qqcode,mso.keyword,mso.smallpic,mso.bigpic,mso.filename,mso.maketype,mso.remark,msm.months,mso.website') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('ordernum' => $orderId)) -> find();
 
@@ -4351,6 +4421,9 @@ class PayAction extends Action {
 	$data['paytype'] = '支付宝';
 	//如果更新成功，并且订单状态是从未付款到已付款，则写主表
 	if($MediaShowOrder -> where($where) -> save($data) && $now_status == 0){
+
+	  //sendEmail
+	  D('admin://OrderAcceptEmail') -> sendOrderEmail('MediaShowOrder', $out_trade_no);
 
 	  //订单相关信息
 	    $companyshow_info = $MediaShowOrder -> alias('mso') -> field('mso.csid,mso.ccid_one,mso.ccid_two,mso.mid,mso.name,mso.address,mso.linkman,mso.mobliephone,mso.companyphone,mso.qqcode,mso.keyword,mso.smallpic,mso.bigpic,mso.filename,mso.maketype,mso.remark,msm.months,mso.website') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('ordernum' => $out_trade_no)) -> find();
@@ -4557,6 +4630,9 @@ class PayAction extends Action {
 	    $data['status'] = 3;
 	    $data['paytype'] = '财付通';
 	    if($MediaShowOrder -> where($where) -> save($data)){
+
+	      //sendEmail
+	      D('admin://OrderAcceptEmail') -> sendOrderEmail('MediaShowOrder', $out_trade_no);
 
 	      //订单相关信息
 	      $companyshow_info = $MediaShowOrder -> alias('mso') -> field('mso.csid,mso.ccid_one,mso.ccid_two,mso.mid,mso.name,mso.address,mso.linkman,mso.mobliephone,mso.companyphone,mso.qqcode,mso.keyword,mso.smallpic,mso.bigpic,mso.filename,mso.maketype,mso.remark,msm.months,mso.website') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('ordernum' => $out_trade_no)) -> find();

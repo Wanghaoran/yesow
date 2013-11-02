@@ -96,10 +96,53 @@ class MemberAction extends CommonAction {
   }
 
   public function monthlymember(){
-    $monthlydetail = M('MemberMonthlyDetail');
-    $result = $monthlydetail -> table('yesow_member_monthly_detail as mmd') -> field('tmp.id as mid,tmp.name as mname,tmp.csname,tmp.csaname,ttt.name as tname,tmp.join_time as mjoin_time,tmp.last_login_time as mltime,m.endtime') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON m.csaid = csa.id) as tmp ON mmd.mid = tmp.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON mmd.mid = ttt.mid') -> join('LEFT JOIN (SELECT * FROM (SELECT * FROM yesow_monthly ORDER BY starttime DESC) as ttt GROUP BY mid) as m ON mmd.mid = m.mid') -> group('mmd.mid') -> select();
+    $monthly = M('Monthly');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['tmpt.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    $count = $monthly -> table('(SELECT mid FROM yesow_monthly GROUP BY mid) as m') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,m.nickname FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id) as tmpt ON m.mid = tmpt.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $monthly -> table('(SELECT * FROM `yesow_monthly` ORDER BY mid ASC, starttime DESC) as m') -> field('m.mid,tmp.name as tname,tmpt.name as mname,tmpt.csname as csname,tmpt.csaname as csaname,tmpt.mjoin_time,tmpt.mltime,m.starttime,m.endtime,tmpt.nickname,m.ischeck') -> join('LEFT JOIN (SELECT ml.name,mm.id FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,csa.name as csaname,m.nickname,m.join_time as mjoin_time,m.last_login_time as mltime FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON m.csaid = csa.id) as tmpt ON m.mid = tmpt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.endtime DESC,m.starttime DESC') -> select();
     $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
+
+    /*
+    $Monthly = M('Monthly');
+
+    $count = $Monthly -> table('(SELECT mid FROM yesow_monthly GROUP BY mid) as m') -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $Monthly -> table('(SELECT * FROM `yesow_monthly` ORDER BY mid ASC, starttime DESC) as my') -> field('my.mid,m.name as mname,cs.name as csname,csa.name as csaname,ttt.name as tname,m.join_time as mjoin_time,m.last_login_time as mltime,my.endtime') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON my.mid = ttt.mid') -> join('yesow_member as m ON my.mid = m.id') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> group('my.mid') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+     */
+    //$monthlydetail = M('MemberMonthlyDetail');
+    //$result = $monthlydetail -> table('yesow_member_monthly_detail as mmd') -> field('tmp.id as mid,tmp.name as mname,tmp.csname,tmp.csaname,ttt.name as tname,tmp.join_time as mjoin_time,tmp.last_login_time as mltime,m.endtime') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id LEFT JOIN yesow_child_site_area as csa ON m.csaid = csa.id) as tmp ON mmd.mid = tmp.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON mmd.mid = ttt.mid') -> join('LEFT JOIN (SELECT * FROM (SELECT * FROM yesow_monthly ORDER BY starttime DESC) as ttt GROUP BY mid) as m ON mmd.mid = m.mid') -> group('mmd.mid') -> select();
+    
   }
 
   public function auditmembermonthly(){
