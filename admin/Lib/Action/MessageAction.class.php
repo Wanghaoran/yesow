@@ -1743,5 +1743,49 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  public function endtimeemailrecord(){
+    $EndtimeAlertEmailRecord = M('EndtimeAlertEmailRecord');
+
+    $where = array();
+    if(!empty($_POST['accept_email'])){
+      $where['accept_email'] = $this -> _post('accept_email');
+    }
+
+    $count = $EndtimeAlertEmailRecord -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $EndtimeAlertEmailRecord -> field('id,mname,send_email,send_type,accept_email,title,content,send_time,status') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('send_time DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delendtimeemailrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $EndtimeAlertEmailRecord = M('EndtimeAlertEmailRecord');
+    if($EndtimeAlertEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editendtimeemailrecord(){
+    $content = M('EndtimeAlertEmailRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
+    $this -> assign('content', $content);
+    $this -> display();
+  }
+
   
 }

@@ -527,4 +527,70 @@ $content_xml .= '
     $this -> success('网站地图更新成功', __ROOT__);
     return;
   }
+
+  public function sendbusinessremind(){
+
+    $time_line = M('EndtimeAlertTime') -> field('time') -> order('time ASC') -> select();
+    $EndtimeAlertEmail = M('EndtimeAlertEmail');
+    $business = $EndtimeAlertEmail -> field('model_name,name,send_address,send_smtp,send_email,email_pwd,title,content') -> select();
+
+    $success_num = 0;
+    $error_num = 0;
+
+    foreach($time_line as $value){
+      $start_time = mktime(0, 0, 0, date('m'), date('d') - $value['time'], date('Y'));
+      $end_time = mktime(23, 59, 59, date('m'), date('d') - $value['time'], date('Y'));
+      foreach($business as $value2){
+	$info = M($value2['model_name']) -> alias('a') -> field('a.id,a.starttime,a.endtime,m.name as mname,m.email as email,m.nickname') -> where(array('endtime' => array('between',array($start_time, $end_time)))) -> join('yesow_member as m ON a.mid = m.id') -> select();
+
+	foreach($info as $value3){
+
+	  if (!$value3['email']) continue;
+
+	  $search = array('{member_name}', '{member_nickname}', '{product_starttime}', '{product_id}', '{product_name}', '{product_endtime}', '{product_remainingtime}', '{send_time}');
+	  $replace = array($value3['mname'], $value3['nickname'], date('Y-m-d H:i:s', $value3['starttime']), $value3['id'], $value2['name'], date('Y-m-d H:i:s', $value3['endtime']), floor(abs($value3['endtime'] - time()) / (60 * 60 * 24)), date('Y-m-d H:i:s'));
+	  $email_title = str_replace($search, $replace, $value2['title']);
+	  $email_content = str_replace($search, $replace, $value2['content']);
+
+	  //sendEmail
+	  C('MAIL_ADDRESS', $value2['send_address']);
+	  C('MAIL_SMTP', $value2['send_smtp']);
+	  C('MAIL_LOGINNAME', $value2['send_email']);
+	  C('MAIL_PASSWORD', $value2['email_pwd']);
+	  import('ORG.Util.Mail');
+
+	  if(@SendMail($value3['email'], $email_title, $email_content, 'yesow管理员')){
+	    $record_data = array();
+	    $record_data['mname'] = $value3['mname'];
+	    $record_data['send_email'] = $value2['send_address'];
+	    $record_data['send_type'] = $value2['name'];
+	    $record_data['accept_email'] = $value3['email'];
+	    $record_data['title'] = $email_title;
+	    $record_data['content'] = $email_content;
+	    $record_data['send_time'] = time();
+	    $record_data['status'] = 1;
+	    M('EndtimeAlertEmailRecord') -> add($record_data);
+	    $success_num++;
+	  }else{
+	    $record_data = array();
+	    $record_data['mname'] = $value3['mname'];
+	    $record_data['send_email'] = $value2['send_address'];
+	    $record_data['send_type'] = $value2['name'];
+	    $record_data['accept_email'] = $value3['email'];
+	    $record_data['title'] = $email_title;
+	    $record_data['content'] = $email_content;
+	    $record_data['send_time'] = time();
+	    $record_data['status'] = 0;
+	    M('EndtimeAlertEmailRecord') -> add($record_data);
+	    $error_num++;
+	  }
+	  
+	  usleep(100000);
+	}	
+      }
+    }
+
+    $this -> success('发送完毕,成功' . $success_num . '条，失败' . $error_num . '条！', __ROOT__);
+    return;
+  }
 }
