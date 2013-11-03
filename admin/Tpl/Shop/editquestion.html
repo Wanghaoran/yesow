@@ -1,0 +1,49 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/question" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>标题：</label>
+		<input type="text" class="required" name="title" value="<!--{$result.title}--!>" style="width:365px;" />
+	</div>
+	<div class="unit">
+		<label>所属类别：</label>
+		<select class="combox" name="tid_one" ref="sellused_tid_two" refUrl="__APP__/public/ajaxgetquestioncategorytwoid/id/{value}">
+	      <volist name="category_one" id="rto">
+	      <eq name="result.tid_one" value="$rto.id">
+	      <option value="<!--{$rto.id}--!>" selected="selected"><!--{$rto.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rto.id}--!>"><!--{$rto.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	    <select class="combox" name="tid_two" id="sellused_tid_two">
+	      <volist name="category_two" id="rtt">
+	      <eq name="result.tid_two" value="$rtt.id">
+	      <option value="<!--{$rtt.id}--!>" selected="selected"><!--{$rtt.name}--!></option>
+	      <else/>
+	      <option value="<!--{$rtt.id}--!>"><!--{$rtt.name}--!></option>
+	      </eq>
+	      </volist>
+	    </select>
+	</div>
+	
+	<div class="unit">
+		<label>内容：</label>
+		<textarea name="content"  rows="5" cols="57" ><!--{$result.content}--!></textarea><label>(255个字符以内)</label>
+	</div>
+
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>">
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

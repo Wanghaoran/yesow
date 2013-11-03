@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>问题讨论区</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+<script>
+function check()
+{
+	if($('.ys_reply_ys_content').val()=='')
+	{
+		alert('请填写帖子内容！');
+		return false;
+	}
+	if($('.ys_code_input').val()=='')
+	{
+		alert('请填写验证码！');
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<div id="warp_body">
+  <include file="Index:header"/>
+    
+    <!-- 内容区 -->
+    <div class="ys_content clearfix">
+        <div class="ys_location clearfix">
+            <p>您现在的位置是：<a href="__ROOT__/question">易搜帮助提问中心</a>&nbsp;&gt;&gt;&nbsp;问题讨论区</p>
+        </div>
+        
+        <div class="question_show_bar">
+            <div class="ys_location">
+                <a href="__ROOT__/question/add" class="fl">发表新帖</a>
+            </div>
+            
+            <div class="ys_location_tit clearfix">
+	      <h2>主题:<!--{$result.title}--!></h2>
+            </div>
+        </div>
+        
+        <div class="ys_question_sec">
+            <ul>
+                <li class="clearfix">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td width="150" rowspan="2" valign="top">
+                                <div class="ys_avator_img">
+                                    <img src="__PUBLIC__/member/images/user/<!--{$result.headico}--!>" width="120" height="120px">
+                                </div>
+                                <div class="ys_avator_name">
+				    <!--{$result.mname}--!>
+                                </div>
+                            </td>
+			    <td width="680" height="26"><span class="ys_avator_time">发表于<!--{$result.addtime|date="Y-m-d H:i:s", ###}--!></span></td>
+                            <td height="26"><span class="ys_avator_icon">楼主</span></td>
+                      </tr>
+                        <tr>
+                            <td height="150" colspan="2" class="ys_avator_des" valign="top">
+                                <div class="ys_avator_article">
+				    <h1>主题:<!--{$result.title}--!></h1>
+				    <p><!--{$result.content|nl2br}--!></p>
+                                </div>
+                            </td>
+                      </tr>
+                    </table>
+                </li>
+		<volist name="result_comments" id="rc">
+                <li class="clearfix">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td width="150" rowspan="2" valign="top">
+                                <div class="ys_avator_img">
+                                    <img src="__PUBLIC__/member/images/user/<!--{$rc.headico}--!>" width="120" height="120px">
+                                </div>
+                                <div class="ys_avator_name">
+                                    <!--{$rc.mname}--!>
+                                </div>
+                            </td>
+                            <td width="680" height="26"><span class="ys_avator_time">发表于<!--{$rc.addtime|date="Y-m-d H:i:s", ###}--!></span></td>
+			    <td height="26"><span class="ys_avator_icon"><!--{$rc.floor}--!>楼</span></td>
+                      </tr>
+                        <tr>
+                            <td height="150" colspan="2" class="ys_avator_des" valign="top">
+                                <div class="ys_avator_article">
+                                    <p><!--{$rc.content|nl2br}--!></p>
+                                </div>
+                            </td>
+                      </tr>
+                    </table>
+                </li>
+                </volist>
+            </ul>
+        </div>
+
+	
+        
+        <div class="ys_reply clearfix">
+            <h4 class="ys_reply_tit">快速回复：[讨论]<!--{$result.title}--!></h4>
+            
+            <div class="ys_reply_text clearfix">
+		<if condition="isset($_SESSION[C('USER_AUTH_KEY')])">
+            <form action="__ACTION__" method="post" name="myform" onsubmit="return check()">
+                <div class="clearfix">
+                    <p class="ys_reply_p fl">回复内容：</p>
+                    <textarea class="ys_reply_ys_content fl" name="content"></textarea>
+                </div>
+                <div class="ys_reply_box clearfix">
+					<div class="ys_code fl" style="padding-left:0">
+                        <span class="fl">验证码：</span>
+                        <input type="text" name="verify" class="ys_code_input fl">
+                        <a href="#" class="ys_code_img fl"><img id="verify" src="__ROOT__/admin.php/public/verify"></a>
+                        <a onclick="$('#verify').attr('src','__ROOT__/admin.php/public/verify/temp='+new Date().getTime());" class="ys_code_img fl">看不清，换一张</a>
+                    </div>
+		  <input type="hidden" name="qid" value="<!--{$Think.get.id|intval}--!>" />
+					
+                    <input type="submit" value="发表回复" class="ys_reply_btn fl">
+                </div>
+            </form>
+		<else/>
+		<h2 style="color:red">您还未登陆,不能进行回复,请 <a href="__ROOT__/member.php/public/login?jump_url=__SELF__" style="color:blue;">点此登陆</a></h2>
+		</if>
+            </div>
+        </div>		
+        
+        <div class="page clearfix">
+		<!--{$show}--!>
+        </div>
+    </div>
+    <!-- 内容结束 -->    
+
+    <include file="Index:footer" />
+</div>
+</body>
+</html>

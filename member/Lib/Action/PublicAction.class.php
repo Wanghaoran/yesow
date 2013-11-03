@@ -178,7 +178,11 @@ class PublicAction extends Action {
       if($_POST['type'] == 'notmember'){
 	R('Register/successjump',array(L('LOGIN_SUCCESS')));
       }
-      R('Register/successjump',array(L('LOGIN_SUCCESS'), U('Index/index')));
+      if(!empty($_POST['jump_url'])){
+	R('Register/successjump',array(L('LOGIN_SUCCESS'), $_POST['jump_url']));
+      }else{
+	R('Register/successjump',array(L('LOGIN_SUCCESS'), U('Index/index')));
+      }
     }else{
       R('Register/errorjump',array(L('NAME_ERROR')));
     }

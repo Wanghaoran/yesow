@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>问题讨论列表</title>
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/<!--{$templatename}--!>/javascript/yesow.js"></script>
+</head>
+<body>
+<div id="warp_body">
+<include file="Index:header"/>
+
+    <!-- 内容区 -->
+    <div class="ys_content clearfix">
+        <div class="ys_location clearfix">
+            <p>您现在的位置是：<a href="__ROOT__/question">易搜帮助提问中心</a>&nbsp;&gt;&gt;&nbsp;问题讨论列表</p>
+        </div>
+        
+        <div class="ys_location">
+            <b class="fl">问题讨论区</b>
+	    <a href="__ROOT__/question/add/tid/<!--{$Think.get.id|intval}--!>" class="fr">发表新帖</a>
+        </div>
+        
+        <div class="question_service">
+            <p><b>客服：</b><a href="#">易搜客服</a></p>
+        </div>
+        
+        <div class="question_list">
+            <ul>
+                <li class="question_tit">
+                    <strong class="field fl">状态</strong>
+                    <strong class="field2 fl">主题</strong>
+                    <strong class="field3 fl">发布人</strong>
+                    <strong class="field3 fl">人气/回复</strong>
+                    <strong class="field3 fl">发布时间</strong>
+                </li>
+		<volist name="result" id="r">
+                <li>
+                    <p class="field fl tc"><span class="icon_top">&nbsp;</span></p>
+		    <p class="field2 fl"><a href="__ROOT__/question/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></p>
+		    <p class="field3 fl tc"><!--{$r.mname}--!></p>
+		    <p class="field3 fl tc"><!--{$r.click_count}--!> / <!--{$r.count|default=0}--!></p>
+		    <p class="field3 fl tc"><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></p>
+                </li>
+		</volist>
+            </ul>
+        </div>
+        
+        <div class="page clearfix">
+	    <!--{$show}--!>
+        </div>
+    </div>
+    <!-- 内容结束 -->
+    
+    <include file="Index:footer" />
+</div>
+</body>
+</html>

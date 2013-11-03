@@ -1439,9 +1439,11 @@ overflow:hidden; font:0px/0px 'Arial'; text-align:center; vertical-align:middle;
 .ys_right_sec dl{ padding:2px 0; line-height:22px;}
 .ys_right_sec dt{ font-weight:700;}
 .last_dl dt, .last_dl dd{ display:inline; margin-right:10px; float:left; width:320px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
-.ys_right_box2{ width:340px;}
+.ys_right_box2{ margin-left:6px; width:340px;}
 .ys_right_box2 li{ height:22px; overflow:hidden; vertical-align:top; line-height:22px;}
 .ys_right_box2 li a{ color:#111;}
 .ys_right_box2 li a:hover{ color:#FF5500;}
 .ys_right_box2 li .fl{ width:230px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
 .ys_question_type{ margin-left:5px; height:20px;}
+.ys_foreach{ overflow:hidden;}
+.ys_foreach_list{ margin-left:-6px; width:696px;}

@@ -83,7 +83,11 @@ var gettwoid = function(val){
                     <select name="tid_one" id="tid_one" class="ys_question_type fl" onchange="gettwoid($(this).val());">
                     	<option value="">请选择</option>
 			<volist name="result_category" id="rc">
+			<eq name="Think.get.tid" value="$rc.id">
+			<option value="<!--{$rc.id}--!>" selected="selected"><!--{$rc.name}--!></option>
+			<else/>
 			<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+			</eq>
 			</volist>
                     </select>
                     <select name="tid_two" id="tid_two" class="ys_question_type fl">
@@ -97,7 +101,7 @@ var gettwoid = function(val){
                 </div>
                            
                 <div class="ys_reply_box clearfix">
-                    <input type="submit" value="发表帖子" class="ys_reply_btn fl"> 
+                     
                                    
                     <div class="ys_code fl">
                         <span class="fl">验证码：</span>
@@ -105,13 +109,16 @@ var gettwoid = function(val){
                         <a href="#" class="ys_code_img fl"><img id="verify" src="__ROOT__/admin.php/public/verify"></a>
                         <a onclick="$('#verify').attr('src','__ROOT__/admin.php/public/verify/temp='+new Date().getTime());" class="ys_code_img fl">看不清，换一张</a>
                     </div>
+<input type="submit" value="发表帖子" class="ys_reply_btn fl">
                 </div>
             </form>
             </div>
         </div>
     </div>
     <!-- 内容结束 -->
-    
+    <script>
+	gettwoid($('#tid_one').val());
+    </script>
     <include file="Index:footer" />
 </div>
 </body>

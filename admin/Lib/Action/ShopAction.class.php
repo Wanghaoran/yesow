@@ -873,4 +873,186 @@ class ShopAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  public function question(){
+    $Question = M('Question');
+    if(!empty($_POST['title'])){
+      $where['q.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['q.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['q.addtime'][] = array('lt', $endtime);
+    }
+    $count = $Question -> alias('q') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $Question -> alias('q') -> field('q.id,q.title,c.name as one_name,c2.name as two_name,m.name as mname,q.addtime,q.ischeck') -> where($where) -> join('yesow_question_category as c ON q.tid_one = c.id') -> join('yesow_question_category as c2 ON q.tid_two = c2.id') -> join('yesow_member as m ON q.mid = m.id') -> order('q.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delquestion(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $Question = M('Question');
+    if($Question -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editquestion(){
+    $Question = M('Question');
+    $QuestionCategory = M('QuestionCategory');
+    if(!empty($_POST['title'])){
+      if(!$Question -> create()){
+	$this -> error($Question -> getError());
+      }
+      if($Question -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $Question -> field('id,title,tid_one,tid_two,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+
+    $category_one = $QuestionCategory -> field('id,name') -> where('pid=0') -> order('sort ASC') -> select();
+    $this -> assign('category_one', $category_one);
+    $category_two = $QuestionCategory -> field('id,name') -> where(array('pid' => $result['tid_one'])) -> order('sort ASC') -> select();
+    $this -> assign('category_two', $category_two);
+
+
+    $this -> display();
+  }
+
+  public function passauditquestion(){
+    $Question = M('Question');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($Question -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  public function nopassauditquestion(){
+    $Question = M('Question');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 0);
+    if($Question -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  public function questioncomments(){
+    $QuestionComments = M('QuestionComments');
+    $where = array();
+    if(!empty($_POST['content'])){
+      $where['nc.content'] = array('LIKE', '%' . $this -> _post('content') . '%');
+    }
+    if(!empty($_POST['author'])){
+      $where['m.name'] = $this -> _post('author');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['nc.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['nc.addtime'][] = array('lt', $endtime);
+    }
+
+    $count = $QuestionComments -> alias('nc') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $QuestionComments -> alias('nc') -> field('nc.id,q.id as qid,m.name,nc.floor,nc.content,q.title,nc.addtime,nc.ischeck') -> where($where) -> order('nc.ischeck ASC,nc.addtime DESC') -> join('yesow_question as q ON nc.qid = q.id') -> join('yesow_member as m ON nc.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delquestioncomments(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $QuestionComments = M('QuestionComments');
+    if($QuestionComments -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editquestioncomments(){
+    $comment = D('index://QuestionComments');
+    if(!empty($_POST['floor'])){
+      if(!$comment -> create()){
+	$this -> error($comment -> getError());
+      }
+      if($comment -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $comment -> alias('cc') -> field('q.title as cname,m.name as mname,cc.floor,cc.content') -> join('yesow_question as q ON cc.qid = q.id') -> join('yesow_member as m ON cc.mid = m.id') -> where(array('cc.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function passauditquestioncomments(){
+    $comment = M('QuestionComments');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 2);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+  public function nopassauditquestioncomments(){
+    $comment = M('QuestionComments');
+    $where_audit = array();
+    $where_audit['id'] = array('IN', $this -> _post('ids'));  
+    $data_audit = array('ischeck' => 1);
+    if($comment -> where($where_audit) -> save($data_audit)){
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_UPDATE_ERROR'));
+    }
+  }
+
+
 }

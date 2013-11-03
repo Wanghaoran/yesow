@@ -33,6 +33,7 @@ $app_config = array(
     'recruit/:id\d' => 'hire/recruitinfo',//人才招聘详情页
     'recruit' => 'hire/recruitlist',//人才招聘列表页
     'applylink' => 'index/applylink',//申请友链
+    'question/:id\d' => 'question/info',//问题详情页
   ),
 );
 
