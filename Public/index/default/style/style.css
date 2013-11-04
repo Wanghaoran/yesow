@@ -1394,7 +1394,7 @@ overflow:hidden; font:0px/0px 'Arial'; text-align:center; vertical-align:middle;
 .ys_question_sec li table{ background:#DBDBD9;}
 .ys_question_sec li tr{ background:#F6F5F3;}
 .ys_avator_des{ background:#FFF;}
-.ys_avator_img{ margin:14px auto 0; width:120px; height:120px; border:1px solid #B8B7B5;}
+.ys_avator_img{ margin:14px auto 0; width:90px; height:90px; border:1px solid #B8B7B5;}
 .ys_avator_name{ margin:10px auto 0; width:120px; text-align:center; color:#000;}
 .ys_avator_time{ padding:0 5px;}
 .ys_avator_icon{ display:block; margin-left:5px; padding-left:32px; background:url(images/bokefav.gif) 0 center no-repeat;}
