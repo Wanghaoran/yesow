@@ -132,7 +132,7 @@ var changesendtypestring = function(value){
                                         <td class="tdleft">发送号码：</td>
                                         <td class="tdright">
 					  <textarea name="sendnumber" id="sendnumber" onkeyup="FormateNum(this)" onblur="FormateNum(this)"><!--{$sendphone}--!></textarea>
-                                        <p>如果您是在此输入手机号码，输入多个号码时每行一个或以英文逗号分隔。</p>
+                                        <p>如果您是在此输入手机号码，输入多个号码时每行一个或以英文逗号分隔。每次最多发1000个号码。</p>
                                         <P>如果您是在易搜上找的手机号码，在上列框中显示为：136****3696是正常的，请放心发送！</P>
 					<p class="p_text">当前共<span id="totalNums"></span>号码,每个号码<span><!--{$send_sms_price}--!></span>元，本次发送共计短信费用<span id="totalprice"></span>元，您的余额<span><!--{$Think.session.rmb_total}--!></span>元，<a href="__APP__/money/rmbrecharge" target="_blank" class="a_wycz">我要充值</a></p>
                                         </td>
@@ -154,15 +154,15 @@ var changesendtypestring = function(value){
                                         <td class="tdleft">发送内容：</td>
 					<td class="tdright">
 						<div style="float:left;">发送模板：</div>
-						<span>公司名称:&nbsp;&nbsp;&nbsp;{company_names} | 公司联系人:&nbsp;&nbsp;&nbsp;{l}</span><div class="clear"></div> 
+						<span>公司名称:&nbsp;&nbsp;&nbsp;{company_names} | 公司联系人:&nbsp;&nbsp;&nbsp;{l}</span><a href="__APP__/help/8#info93" target="_blank" style="color:blue;margin-left:20px;">(如何使用模板)</a><div class="clear"></div> 
 					  <textarea onkeyup="StatContents(this)" onblur="StatContents(this)" id="txtContents" name="content" style="margin-top:-5px;"></textarea>
-					  <P class="p_bottom">内容限<span style="color:black;"> 186 </span>个字，超过<span id="SmsOneCount" style="color:black;"> 63 </span>字符按多条计费。已输入<span id="totalLetter" style="color:black;"> 0 </span>字，将做<span id="totalSms" style="color:black;"> 0 </span>条短信计费。</P>
+					  <P class="p_bottom">内容最长<span style="color:black;"> 186 </span>个字，每超过<span id="SmsOneCount" style="color:black;"> 63 </span>个字符则按多条计费。已输入<span id="totalLetter" style="color:black;"> 0 </span>字，将做<span id="totalSms" style="color:black;"> 0 </span>条短信计费。</P>
                                         </td>
                                     </tr>
                                     <tr id="groupname">
                                         <td class="tdleft">号码簿名：</td>
                                         <td class="tdright">
-                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="<!--{:date('Ymd')}--!>群发号码" />
+                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="<!--{:date('Ymd')}--!>群发号簿" />
                                         </td>
 				      </tr>
 				      <tr style="display:none;" id="phonegroup">
@@ -170,7 +170,7 @@ var changesendtypestring = function(value){
 					<td class="tdright">
 					  <select name="phonegroup">
 					    <volist name="sms_group" id="sg">
-					    <option value="<!--{$sg.id}--!>"><!--{$sg.name}--!></option>
+					    <option value="<!--{$sg.id}--!>"><!--{$sg.name}--!>(共<!--{$sg.count|default=0}--!>条)</option>
 					    </volist>
 					  </select>
 					</td>

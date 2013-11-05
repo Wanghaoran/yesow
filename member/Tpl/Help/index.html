@@ -32,7 +32,7 @@
                 	<div id="main_l_tit"><h3>帮助中心</h3></div>
                     <ul class="help_left">
 		      <volist name="result_title" id="ra">
-		      <li><a href="__ROOT__/member.php/help/<!--{$cid}--!>/<!--{$ra.id}--!>"><!--{$ra.title}--!></a></li>
+		      <li><a href="__ROOT__/member.php/help/<!--{$cid}--!>#info<!--{$ra.id}--!>"><!--{$ra.title}--!></a></li>
 		      </volist>
 
                     </ul>
@@ -42,6 +42,7 @@
                     <div class="clear"></div>
 		    <div class="main_rhelp_con">
 		      <volist name="result_article" id="ra">
+		      <a name="info<!--{$ra.id}--!>"> </a>
 		      <p><b><!--{$ra.title}--!></b></p>
 		      <!--{$ra.content}--!>
 		      </volist>

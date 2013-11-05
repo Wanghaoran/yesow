@@ -1518,7 +1518,7 @@ class ServicesAction extends CommonAction {
     $this -> assign('send_sms_price', $send_sms_price);
     //个人号码薄
     $MemberSmsGroup = M('MemberSmsGroup');
-    $sms_group = $MemberSmsGroup -> field('id,name') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id DESC') -> select();
+    $sms_group = $MemberSmsGroup -> alias('msg') -> field('msg.id,msg.name,tmp.count') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_sms_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> order('id DESC') -> select();
     $this -> assign('sms_group', $sms_group);
 
     //将要发送的号码
@@ -1849,6 +1849,10 @@ class ServicesAction extends CommonAction {
       $_SESSION['member_search_phone_list'][] = $_GET['cid'];
     } 
     echo count($_SESSION['member_search_phone_list']);
+  }
+
+  public function clearsearchsendlist(){
+    $_SESSION['member_search_phone_list'] = array();
   }
 
   //ajax全选
