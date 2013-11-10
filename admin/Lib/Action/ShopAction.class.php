@@ -434,7 +434,7 @@ class ShopAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,so.paytotal,m.name as mname,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus,so.paytype') -> join('yesow_send_type as st ON so.sendid = st.id') -> join('yesow_member as m ON so.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> where($where) -> select();
+    $result = $order -> table('yesow_shop_order as so') -> field('so.id,so.ordernum,so.paytotal,m.name as mname,st.name as stname,so.isbull,so.addtime,so.ischeck,so.issend,so.paystatus,so.paytype,so.mid') -> join('yesow_send_type as st ON so.sendid = st.id') -> join('yesow_member as m ON so.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('so.addtime DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -520,6 +520,12 @@ class ShopAction extends CommonAction {
     $this -> assign('invoice_price', $invoice_price);
     $goods_info = $order -> field('username,address,zipcode,tel,email,remark') -> where(array('ordernum' => $ordernum)) -> find();
     $this -> assign('goods_info', $goods_info);
+    $this -> display();
+  }
+
+  
+  public function editshopordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 

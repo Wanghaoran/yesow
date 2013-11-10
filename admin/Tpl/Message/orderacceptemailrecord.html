@@ -40,6 +40,7 @@
 		  <tr>
 		    <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 		    <th width="20">编号</th>
+			<th width="50">用户名</th>
 			<th width="50">发送类型</th>
 			<th width="50">接收邮箱</th>
 			<th width="150">邮件标题</th>
@@ -54,6 +55,7 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.mname}--!></td>
 			  <td><!--{$r.send_type}--!></td>
 			  <td><!--{$r.accept_email}--!></td>
 			  <td><!--{$r.title}--!></td>

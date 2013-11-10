@@ -1576,7 +1576,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $OrderAcceptRecord -> field('id,send_type,accept_email,title,content,send_time,status') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('send_time DESC') -> select();
+    $result = $OrderAcceptRecord -> field('id,send_type,accept_email,title,content,send_time,status,mname') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('send_time DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

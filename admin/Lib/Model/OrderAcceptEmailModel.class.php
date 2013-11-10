@@ -82,6 +82,7 @@ class OrderAcceptEmailModel extends Model {
       if(@SendMail($value['email_address'], $email_title, $email_content, 'yesow管理员')){
 	if($key == 0){
 	  $add_data = array();
+	  $add_data['mname'] = $info['name'];
 	  $add_data['accept_email'] = $value['email_address'];
 	  $add_data['send_type'] = $oper_arr[$model]['name'];
 	  $add_data['title'] = $email_title;
@@ -93,6 +94,7 @@ class OrderAcceptEmailModel extends Model {
       }else{
 	if($key == 0){
 	  $add_data = array();
+	  $add_data['mname'] = $info['name'];
 	  $add_data['accept_email'] = $value['email_address'];
 	  $add_data['send_type'] = $oper_arr[$model]['name'];
 	  $add_data['title'] = $email_title;
