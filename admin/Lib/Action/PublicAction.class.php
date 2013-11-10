@@ -257,6 +257,25 @@ class PublicAction extends Action {
     echo json_encode($result[0]);
   }
 
+  public function ajaxgetreviewcompanyinfo(){
+    $companyname = $this -> _post('inputValue');
+    $company = M('Company');
+    $where = array();
+    $where['c.name'] = array('like', '%' . $companyname . '%');
+    $result = $company -> alias('c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.website,cs.name as csname,csa.name as csaname,cc1.name as cc1name,cc2.name as cc2name,c.linkman as new_linkman,c.companyphone as new_companyphone,c.mobilephone as new_mobilephone,c.qqcode as new_qqocde,c.email as new_email') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc1 ON c.ccid = cc1.id') -> join('yesow_company_category as cc2 ON cc1.pid = cc2.id') -> where($where) -> limit(10) -> select();
+    echo json_encode($result);
+  }
+
+  
+  public function ajaxgetadmininfo(){
+    $adminname = $this -> _post('inputValue');
+    $admin = M('Admin');
+    $where = array();
+    $where['name'] = array('like', '%' . $adminname . '%');
+    $result = $admin -> field('id,name') -> where($where) -> limit(10) -> select();
+    echo json_encode($result);
+  }
+
   public function shop_pic_upload(){
     import('ORG.Net.UploadFile');
     $upload = new UpLoadFile();

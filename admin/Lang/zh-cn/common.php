@@ -15,6 +15,7 @@ $app_lang = array(
   'COMPANY_EMPTY' => '消费单位不能为空',
   'AUDITKEYWORD_UNIQUE' => '关键词已存在，请勿重复添加',
   'SEARCH_WHERE_EMPTY' => '请至少选择一项搜索条件',
+  'ADD_REVIEW_COMPANY_UNIQUE' => '此公司已被其它管理员添加，请勿重复添加',
 );
 
 return array_merge($common_lang, $app_lang);

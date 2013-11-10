@@ -1,0 +1,136 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberreview" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		  <h2>速查数据信息</h2>
+		  <div class="divider"></div>
+		  <div class="unit">
+		<label>所属管理员：</label>
+		<eq name="Think.session.yesow_uid" value="1">
+		<input name="org7.id" value="<!--{$result.aid}--!>" type="hidden">
+		<input class="required" name="org7.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetadmininfo" lookupGroup="org7" value="<!--{$result.aname}--!>"/>
+		<else/>
+		<input type="text" class="required"  readonly="readonly" value="<!--{$result.aname}--!>" />
+		</eq>
+	      </div>
+	<div class="unit">
+		<label>公司名称：</label>
+		<input class="required" name="org5.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetreviewcompanyinfo" lookupGroup="org5" size="70" value="<!--{$result.name}--!>"/>
+	      </div>
+	<div class="unit">
+		<label>公司地址：</label>
+		<input type="text" class="required" name="org5.address" size="70" value="<!--{$result.address}--!>" />
+	      </div>
+	<div class="unit">
+		<label>主营业务</label>
+		<textarea name="org5.manproducts" cols="67"><!--{$result.manproducts}--!></textarea>
+	</div>
+	
+	<div class="unit">
+		<label>公司电话:</label>
+		<input type="text" class="required" name="org5.companyphone"  value="<!--{$result.companyphone}--!>" />
+		<label style="margin-left:85px;width:70px;">移动电话:</label>
+		<input type="text" class="required" name="org5.mobilephone" value="<!--{$result.mobilephone}--!>" />
+	</div>
+	<div class="unit">
+		<label>联系人:</label>
+		<input type="text" class="required" name="org5.linkman" value="<!--{$result.linkman}--!>" />
+		<label style="margin-left:85px;width:70px;">电子邮件:</label>
+		<input type="text" name="org5.email" value="<!--{$result.email}--!>" />
+	</div>
+	<div class="unit">
+		<label>联系QQ:</label>
+		<input type="text" name="org5.qqcode" value="<!--{$result.qqcode}--!>" />
+		<label style="margin-left:85px;width:70px;">所在地:</label>
+		<input type="text" name="org5.csname" size="7" readonly="readonly" value="<!--{$result.csname}--!>" /><span style="float:left;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span><input type="text" name="org5.csaname" size="7" readonly="readonly" value="<!--{$result.csaname}--!>" />
+		
+	</div>
+	<div class="unit">
+		<label>公司网址:</label>
+		<input type="text" name="org5.website" value="<!--{$result.website}--!>" />
+		<label style="margin-left:85px;width:70px;">主营类别:</label>
+		<input type="text" name="org5.cc2name" size="7" readonly="readonly" value="<!--{$result.ccname_one}--!>" /><span style="float:left;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span><input type="text" name="org5.cc1name" size="7" readonly="readonly" value="<!--{$result.ccname_two}--!>" />
+		
+	</div>
+	
+	<h2 style="clear:both;margin-top:25px;">最新联系人信息</h2>
+	<div class="divider"></div>
+	<div class="unit">
+		<label>联系人:</label>
+		<input type="text" class="required" name="org5.new_linkman" value="<!--{$result.new_linkman}--!>"/>
+		<label style="margin-left:85px;width:70px;">公司电话:</label>
+		<input type="text" class="required" name="org5.new_companyphone" value="<!--{$result.new_companyphone}--!>" />	
+	</div>
+	<div class="unit">
+		<label>移动电话:</label>
+		<input type="text" class="required" name="org5.new_mobilephone" value="<!--{$result.new_mobilephone}--!>" />
+		<label style="margin-left:85px;width:70px;">联系QQ:</label>
+		<input type="text" class="required" name="org5.new_qqocde" value="<!--{$result.new_qqonline}--!>" />	
+	</div>
+	<div class="unit">
+		<label>电子邮件:</label>
+		<input type="text" name="org5.new_email" value="<!--{$result.new_email}--!>" />
+	</div>
+
+	<h2 style="clear:both;margin-top:25px;">客户信息</h2>
+	<div class="divider"></div>
+	<div class="unit">
+		<label>大致印象:</label>
+		<volist name="effect_arr" id="ea">
+		<if condition="in_array($key, explode(',', $result['effect']))">
+		<input type="checkbox" name="effect[]" value="<!--{$key}--!>" checked="checked"><!--{$ea}--!>&nbsp;&nbsp;&nbsp;
+		<else/>
+		<input type="checkbox" name="effect[]" value="<!--{$key}--!>"><!--{$ea}--!>&nbsp;&nbsp;&nbsp;
+		</if>
+		</volist>
+	</div>
+	<div class="unit">
+		<label>购买意向：</label>
+		<textarea name="wanttobuy" cols="67"><!--{$result.wanttobuy}--!></textarea>
+	</div>
+	<div class="unit">
+		<label>客户反馈：</label>
+		<textarea name="feedback" cols="67"><!--{$result.feedback}--!></textarea>
+	</div>
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark" cols="67"><!--{$result.remark}--!></textarea>
+	</div>
+	<div class="unit">
+		<label>下次回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
+		<label style="margin-left:85px;width:70px;">状态:</label>
+		<eq name="result.status" value="1">
+		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<else/>
+		<input type="radio" name="status" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" name="status" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		</eq>
+	</div>
+	<eq name="result.status" value="1">
+	<div class="unit" id="nodeal">
+	<else/>
+	<div class="unit" id="nodeal" style="display:none;">
+	</eq>
+		<label>未成交原因：</label>
+		<textarea name="nodeal" cols="67"><!--{$result.nodeal}--!></textarea>
+	</div>
+	<br/>
+	<div class="divider"></div>
+	<br/>
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+	
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div> 
