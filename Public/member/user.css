@@ -5,6 +5,7 @@ a:visited{color:#333; text-decoration:none;}
 a:active{color:#333; text-decoration:none;}
 a:hover{color:#ff9900; text-decoration:underline;}
 .warp_850{width:850px; margin:0 auto; height:100%;}
+.warp_980{width:980px; margin:0 auto; height:100%;}
 .warp_900{width:950px; margin:0 auto; height:100%;}
 a:focus{outline:none;}
 
@@ -30,6 +31,15 @@ a:focus{outline:none;}
 #main_l ul li{height:30px; width:85px; border-bottom:1px dashed #696969; padding-left:20px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
 #main_l ul li a{display:block; widows:90px; text-align:left; height:30px; line-height:30px;}
 #main_l ul li a:hover, #main_l ul li.hover a{ font-weight:bold; text-decoration:none;}
+
+#main_l2{width:200px; padding-right:5px; float:left;}
+#main_l2_tit{width:204px; height:30px; background:url(images/user/mian2.gif) no-repeat 0 -40px;}
+#main_l2_tit h3{ font-size:14px; font-weight:bold; width:203px; text-align:center; line-height:30px;}
+#main_l2 ul{width:238px; padding:10px 24px; border:1px solid #BDBDBD; border-top:0;}
+#main_l2 ul li{height:30px; width:218px; border-bottom:1px dashed #696969; padding-left:20px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
+#main_l2 ul li a{display:block; widows:90px; text-align:left; height:30px; line-height:30px;}
+#main_l2 ul li a:hover, #main_l2 ul li.hover a{ font-weight:bold; text-decoration:none;}
+
 #main_r{width:690px; float:left;}
 #main_rm{ float:left; width:298px; padding-right:5px;}
 .main_rm_tit{ width:267px; height:27px; line-height:27px;  background:#EFEFEF url(images/user/mian.gif) no-repeat; background-position: 0 -130px; padding-left:30px; border-top:#BDBDBD 1px solid; border-right:#BDBDBD 1px solid; color:#fc7404; font-size:14px; font-weight:bold; text-align:left;}
@@ -371,18 +381,22 @@ table.table_mingxi td.tdleft{ text-align:left;}
 
 /*帮助中心*/
 .user_help{}
-.user_help_tip{ width:848px; height:28px; line-height:28px; border:#c8c8c8 1px solid; background:#fffaf7; color:#000; text-indent:1em; margin-top:5px;}
-.user_help_tab{ width:848px; height:48px; border:#c8c8c8 1px solid; background:#fbfbfb; margin-top:5px;}
+.user_help_tip{ width:978px; height:28px; line-height:28px; border:#c8c8c8 1px solid; background:#fffaf7; color:#000; text-indent:1em; margin-top:5px;}
+.user_help_tab{ width:978px; height:48px; border:#c8c8c8 1px solid; background:#fbfbfb; margin-top:5px;}
 .user_help_tab ul li{ float:left; width:100px; height:28px; line-height:28px; border:#c8c8c8 1px solid; background:#e9e9e9; margin:10px 8px; text-align:center;}
 .user_help_tab ul li.li_choose a{ color:#0100fe}
 #main_l ul.help_left{width:133px; padding:10px; border:1px solid #BDBDBD; border-top:0; }
 #main_l ul.help_left li{height:30px; width:115px; border-bottom:1px dashed #696969; padding-left:18px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
 #main_l ul.help_left li a{display: block; width:115px;overflow: hidden;/*注意不要写在最后了*/white-space:nowrap;-o-text-overflow: ellipsis;text-overflow: ellipsis;}
 #main_l ul.help_left li a:hover, #main_l ul li.hover a{ font-weight:bold; text-decoration:none;}
+#main_l2 ul.help_left{width:182px; padding:10px; border:1px solid #BDBDBD; border-top:0; }
+#main_l2 ul.help_left li{height:30px; width:155px; border-bottom:1px dashed #696969; padding-left:18px; background:url(images/user/mian.gif) no-repeat 0 -70px;}
+#main_l2 ul.help_left li a{display: block; width:154px;overflow: hidden;/*注意不要写在最后了*/white-space:nowrap;-o-text-overflow: ellipsis;text-overflow: ellipsis;}
+#main_l2 ul.help_left li a:hover, #main_l ul li.hover a{ font-weight:bold; text-decoration:none;}
 
-#main_rhelp{float:left; width:688px; border:#BDBDBD 1px solid;}
-.main_rhelp_tit{ width:678px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left; letter-spacing:5px;}
-.main_rhelp_con{ width:668px; padding:10px;}
+#main_rhelp{float:left; width:772px; border:#BDBDBD 1px solid;}
+.main_rhelp_tit{ width:762px; height:27px; line-height:27px; background:#ececec; padding-left:10px; color:#fc7404; font-size:14px; font-weight:bold; text-align:left; letter-spacing:5px;}
+.main_rhelp_con{ width:752px; padding:10px;}
 .main_rhelp_con p{padding:10px; line-height:150%; text-indent:2em; font-size:14px;}
 ul.help_list li{ height:30px; line-height:30px; padding-left:15px; text-align:left; background:url(images/user/icon_help.jpg) left center no-repeat; float:left; width:630px; margin-left:23px;}
 .h2_clss2{ font-size:14px; font-weight:normal; color:#00F; height:30px; line-height:30px; padding-left:5px;}
@@ -677,3 +691,12 @@ table.table_fabu td.fabulong{ width:620px; text-align:left;}
 .liulan{ width:60px; height:24px; line-height:24px; padding:0px 10px; background:#ff8b01; color:#fff; border:none; text-align:center; cursor:pointer}
 .btnmr10{ margin-right:10px;}
 .main_sjdxfs .btn_common{ height:24px; line-height:24px; padding:0px 10px; background:#ff8b01; color:#fff; border:none; text-align:center; cursor:pointer}
+
+/* 帮助中心 */
+.helpCenter{ position:absolute; right:-123px; top:150px;}
+.helpCustomer{ padding-top:29px; width:123px; background:url(images/user/2013110402.png) top no-repeat;}
+.helpButton{ position:absolute; left:-29px; top:50%; margin-top:-63px; width:32px; height:127px; background:url(images/user/2013110401.png) no-repeat; cursor:pointer;}
+.helpBottom{ padding-bottom:5px; background:url(images/user/2013110403.png) left bottom no-repeat;}
+.helpContainer{ padding:2px 15px; overflow:hidden; background:url(images/user/2013110404.png) repeat-y; text-align:center;}
+.helpContainer p{ margin:10px 0; height:23px; background:url(images/user/2013110405.jpg) repeat-x; border:1px solid #c6c5c5; line-height:23px;}
+.helpContainer a{ color: #ff6a07;}
