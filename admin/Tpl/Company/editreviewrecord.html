@@ -1,0 +1,163 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberreview" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		  <h2>速查数据信息</h2>
+		  <div class="divider"></div>
+		  <div class="unit">
+		<label>所属管理员：</label>
+		<eq name="Think.session.yesow_uid" value="1" readonly="readonly" >
+		<input value="<!--{$result.aid}--!>" type="hidden">
+		<input class="required" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetadmininfo" lookupGroup="org7" value="<!--{$result.aname}--!>" readonly="readonly"/>
+		<else/>
+		<input type="text" class="required" readonly="readonly" value="<!--{$result.aname}--!>" />
+		</eq>
+	      </div>
+	<div class="unit">
+		<label>公司名称：</label>
+		<input class="required" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetreviewcompanyinfo" lookupGroup="org5" size="70" value="<!--{$result.name}--!>" readonly="readonly"/>
+	      </div>
+	<div class="unit">
+		<label>公司地址：</label>
+		<input type="text" class="required" size="70" value="<!--{$result.address}--!>" readonly="readonly" />
+	      </div>
+	<div class="unit">
+		<label>主营业务</label>
+		<textarea cols="67" readonly="readonly"><!--{$result.manproducts}--!></textarea>
+	</div>
+	
+	<div class="unit">
+		<label>公司电话:</label>
+		<input type="text" class="required" value="<!--{$result.companyphone}--!>" readonly="readonly" />
+		<label style="margin-left:85px;width:70px;">移动电话:</label>
+		<input type="text" class="required" value="<!--{$result.mobilephone}--!>" readonly="readonly" />
+	</div>
+	<div class="unit">
+		<label>联系人:</label>
+		<input type="text" class="required" value="<!--{$result.linkman}--!>" readonly="readonly" />
+		<label style="margin-left:85px;width:70px;">电子邮件:</label>
+		<input type="text" value="<!--{$result.email}--!>" readonly="readonly" />
+	</div>
+	<div class="unit">
+		<label>联系QQ:</label>
+		<input type="text" value="<!--{$result.qqcode}--!>" readonly="readonly" />
+		<label style="margin-left:85px;width:70px;">所在地:</label>
+		<input type="text" size="7" readonly="readonly" value="<!--{$result.csname}--!>" /><span style="float:left;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span><input type="text" size="7" readonly="readonly" value="<!--{$result.csaname}--!>" />
+		
+	</div>
+	<div class="unit">
+		<label>公司网址:</label>
+		<input type="text" value="<!--{$result.website}--!>" readonly="readonly" />
+		<label style="margin-left:85px;width:70px;">主营类别:</label>
+		<input type="text" size="7" readonly="readonly" value="<!--{$result.ccname_one}--!>" /><span style="float:left;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span><input type="text" size="7" readonly="readonly" value="<!--{$result.ccname_two}--!>" />
+		
+	</div>
+	
+	<h2 style="clear:both;margin-top:25px;">最新联系人信息</h2>
+	<div class="divider"></div>
+	<div class="unit">
+		<label>联系人:</label>
+		<input type="text" class="required" value="<!--{$result.new_linkman}--!>" readonly="readonly"/>
+		<label style="margin-left:85px;width:70px;">公司电话:</label>
+		<input type="text" class="required" value="<!--{$result.new_companyphone}--!>" readonly="readonly" />	
+	</div>
+	<div class="unit">
+		<label>移动电话:</label>
+		<input type="text" class="required" value="<!--{$result.new_mobilephone}--!>" readonly="readonly" />
+		<label style="margin-left:85px;width:70px;">联系QQ:</label>
+		<input type="text" class="required" value="<!--{$result.new_qqonline}--!>" readonly="readonly" />	
+	</div>
+	<div class="unit">
+		<label>电子邮件:</label>
+		<input type="text" value="<!--{$result.new_email}--!>" readonly="readonly" />
+	</div>
+
+	<h2 style="clear:both;margin-top:25px;">客户信息</h2>
+	<div class="divider"></div>
+	<div class="unit">
+		<label>大致印象:</label>
+		<volist name="effect_arr" id="ea">
+		<if condition="in_array($key, explode(',', $result['effect']))">
+		<input type="checkbox" value="<!--{$key}--!>" checked="checked" disabled="true"><!--{$ea}--!>&nbsp;&nbsp;&nbsp;
+		<else/>
+		<input type="checkbox" value="<!--{$key}--!>" disabled="true"><!--{$ea}--!>&nbsp;&nbsp;&nbsp;
+		</if>
+		</volist>
+	</div>
+	<div class="unit">
+		<label>购买意向：</label>
+		<textarea cols="67" readonly="readonly"><!--{$result.wanttobuy}--!></textarea>
+	</div>
+	<div class="unit">
+		<label>客户反馈：</label>
+		<textarea cols="67" readonly="readonly"><!--{$result.feedback}--!></textarea>
+	</div>
+	<div class="unit">
+		<label>备注：</label>
+		<textarea cols="67" readonly="readonly"><!--{$result.remark}--!></textarea>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<label>下次回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
+		<label style="margin-left:85px;width:70px;">状态:</label>
+		<eq name="result.status" value="1">
+		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<else/>
+		<input type="radio" name="status" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" name="status" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		</eq>
+	</div>
+	<eq name="result.status" value="1">
+	<div class="unit" id="nodeal">
+	<else/>
+	<div class="unit" id="nodeal" style="display:none;">
+	</eq>
+		<label>未成交原因：</label>
+		<textarea name="nodeal" cols="67"><!--{$result.nodeal}--!></textarea>
+	</div>
+
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+	
+	<h2 style="clear:both;margin-top:25px;">回访记录</h2>
+	<div class="divider"></div>
+	<table class="table" width="100%">
+		<thead>
+			<tr>
+				<th width="30">编号</th>
+				<th width="320">说明</th>
+				<th width="50">回访时间</th>
+				<th width="100">状态</th>
+			</tr>
+		</thead>
+		<tbody>
+		  <volist name="result_record" id="r">
+		  <tr>
+		    <td><!--{$r.id}--!></td>
+		    <td><!--{$r.nodeal}--!></td>
+		    <td><!--{$r.nexttime|date="Y-m-d", ###}--!></td>
+		    <eq name="r.status" value="1">
+		    <td style="color:red;">未成交</td>
+		    <else/>
+		    <td style="color:blue;">已成交</td>
+		    </eq>
+		  </tr>
+		  </volist>	  
+		</tbody>
+	      </table>
+	<br/>
+	
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div> 

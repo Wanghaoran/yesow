@@ -262,7 +262,7 @@ class PublicAction extends Action {
     $company = M('Company');
     $where = array();
     $where['c.name'] = array('like', '%' . $companyname . '%');
-    $result = $company -> alias('c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.website,cs.name as csname,csa.name as csaname,cc1.name as cc1name,cc2.name as cc2name,c.linkman as new_linkman,c.companyphone as new_companyphone,c.mobilephone as new_mobilephone,c.qqcode as new_qqocde,c.email as new_email') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc1 ON c.ccid = cc1.id') -> join('yesow_company_category as cc2 ON cc1.pid = cc2.id') -> where($where) -> limit(10) -> select();
+    $result = $company -> alias('c') -> field('c.id,c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.website,cs.name as csname,csa.name as csaname,cc1.name as cc1name,cc2.name as cc2name,c.linkman as new_linkman,c.companyphone as new_companyphone,c.mobilephone as new_mobilephone,c.qqcode as new_qqocde,c.email as new_email') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc1 ON c.ccid = cc1.id') -> join('yesow_company_category as cc2 ON cc1.pid = cc2.id') -> where($where) -> limit(20) -> select();
     echo json_encode($result);
   }
 

@@ -52,19 +52,15 @@
 	<div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li><a class="add" href="__URL__/addmemberreview" target="dialog" mask="true" width="680" height="450"><span>新增</span></a></li>
-	    <li class=""><a class="delete" href="__URL__/delmemberreview/navTabId/memberreview" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
-	    <li><a class="edit" href="__URL__/editmemberreview/id/{sid_role}" target="dialog" mask="true" warn="请选择公司信息" width="680" height="450"><span>编辑</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/deldealmemberreview/navTabId/dealmemberreview" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editdealmemberreview/id/{sid_role}" target="dialog" mask="true" warn="请选择公司信息" width="680" height="450"><span>编辑</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['company']['addmemberreview'])">
-	    <li><a class="add" href="__URL__/addmemberreview" target="dialog" mask="true" width="680" height="450"><span>新增</span></a></li>
+	    <if condition="isset($_SESSION['acc_arr']['company']['deldealmemberreview'])">	    
+	    <li class=""><a class="delete" href="__URL__/deldealmemberreview/navTabId/dealmemberreview" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
 	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['delmemberreview'])">	    
-	    <li class=""><a class="delete" href="__URL__/delmemberreview/navTabId/memberreview" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公司信息"><span>删除</span></a></li>
-	    </if>
-	    <if condition="isset($_SESSION['acc_arr']['company']['editmemberreview'])">
+	    <if condition="isset($_SESSION['acc_arr']['company']['editdealmemberreview'])">
 	    <if condition="time() lt mktime(19, 0, 0, date('m'), date('d'), date('Y'))">
-	    <li><a class="edit" href="__URL__/editmemberreview/id/{sid_role}" target="dialog" mask="true" warn="请选择公司信息" width="680" height="450"><span>编辑</span></a></li>
+	    <li><a class="edit" href="__URL__/editdealmemberreview/id/{sid_role}" target="dialog" mask="true" warn="请选择公司信息" width="680" height="450"><span>编辑</span></a></li>
 	    </if>
 	    </if>
 	    </if>
@@ -96,7 +92,7 @@
 			  <td><!--{$r.nexttime|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.aname}--!></td>
-			  <td><a href="__URL__/editreviewrecord/id/<!--{$r.id}--!>" target="dialog" mask="true" width="680" height="450" style="color:blue;">回访</a></td>
+			  <td><a href="__URL__/editdealmemberreviewrecord/id/<!--{$r.id}--!>" target="dialog" mask="true" width="680" height="450" style="color:blue;">回访</a></td>
 			</tr>
 		</volist>
 		</tbody>

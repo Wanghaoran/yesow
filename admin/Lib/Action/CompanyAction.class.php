@@ -3722,6 +3722,7 @@ class CompanyAction extends CommonAction {
   public function memberreview(){
     $MemberReview = M('MemberReview');
     $where = array();
+    $where['r.status'] = 1;
     if($_SESSION[C('USER_AUTH_KEY')] != 1){
       $where['r.aid'] = $_SESSION[C('USER_AUTH_KEY')];
     }
@@ -3838,5 +3839,174 @@ class CompanyAction extends CommonAction {
     $this -> assign('effect_arr', $effect_arr);
     $this -> display();
   }
+
+  public function editreviewrecord(){
+    $MemberReview = D('MemberReview');
+    $MemberReviewRecord = M('MemberReviewRecord');
+    if(!empty($_POST['nexttime'])){
+      $data_old = $MemberReview -> field('id as rid,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
+      $MemberReviewRecord -> add($data_old);
+      if(!$MemberReview -> create()){
+	$this -> error($MemberReview -> getError());
+      }
+      if($MemberReview -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $effect_arr = array(
+      1 => '和气',
+      2 => '望了解',
+      3 => '抗拒',
+      4 => '抗拒到理解',
+      5 => '考虑下',
+      6 => '需要商量',
+    );
+    $this -> assign('effect_arr', $effect_arr);
+    $result_record = $MemberReviewRecord -> field('id,nexttime,nodeal,status') -> where(array('rid' => $this -> _get('id', 'intval'))) -> order('nexttime ASC') -> select();
+    $this -> assign('result_record', $result_record);
+    $this -> display();
+  }
+
+
+  public function dealmemberreview(){
+    $MemberReview = M('MemberReview');
+    $where = array();
+    $where['r.status'] = 2;
+    if($_SESSION[C('USER_AUTH_KEY')] != 1){
+      $where['r.aid'] = $_SESSION[C('USER_AUTH_KEY')];
+    }
+    if(!empty($_POST['search_name'])){
+      if($_POST['search_key'] == 'name'){
+	$where['r.name'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'new_companyphone'){
+	$where['r.new_companyphone'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'new_linkman'){
+	$where['r.new_linkman'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'new_mobilephone'){
+	$where['r.new_mobilephone'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }else if($_POST['search_key'] == 'new_qqonline'){
+	$where['r.new_qqonline'] = array('LIKE', '%' . $this -> _post('search_name') . '%');
+      }
+    }
+    if(!empty($_POST['nexttime_starttime'])){
+      $addtime = $this -> _post('nexttime_starttime', 'strtotime');
+      $where['r.nexttime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['nexttime_endtime'])){
+      $endtime = $this -> _post('nexttime_endtime', 'strtotime');
+      $where['r.nexttime'][] = array('lt', $endtime);
+    }
+    if(!empty($_POST['addtime_starttime'])){
+      $addtime = $this -> _post('addtime_starttime', 'strtotime');
+      $where['r.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['addtime_endtime'])){
+      $endtime = $this -> _post('addtime_endtime', 'strtotime');
+      $where['r.addtime'][] = array('lt', $endtime);
+    }
+
+    $count = $MemberReview -> alias('r') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.nexttime,r.addtime') -> join('yesow_admin as a ON r.aid = a.id') -> order('r.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function deldealmemberreview(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberReview = M('MemberReview');
+    if($MemberReview -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editdealmemberreview(){
+    $MemberReview = D('MemberReview');
+    if(!empty($_POST['org5_name'])){
+      if(!$MemberReview -> create()){
+	$this -> error($MemberReview -> getError());
+      }
+      $MemberReview -> aid = $_POST['org7_id'];
+      if($MemberReview -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $effect_arr = array(
+      1 => '和气',
+      2 => '望了解',
+      3 => '抗拒',
+      4 => '抗拒到理解',
+      5 => '考虑下',
+      6 => '需要商量',
+    );
+    $this -> assign('effect_arr', $effect_arr);
+    $this -> display();
+  }
+
+  public function editdealmemberreviewrecord(){
+    $MemberReview = D('MemberReview');
+    $MemberReviewRecord = M('MemberReviewRecord');
+    if(!empty($_POST['nexttime'])){
+      $data_old = $MemberReview -> field('id as rid,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
+      $MemberReviewRecord -> add($data_old);
+      if(!$MemberReview -> create()){
+	$this -> error($MemberReview -> getError());
+      }
+      if($MemberReview -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $effect_arr = array(
+      1 => '和气',
+      2 => '望了解',
+      3 => '抗拒',
+      4 => '抗拒到理解',
+      5 => '考虑下',
+      6 => '需要商量',
+    );
+    $this -> assign('effect_arr', $effect_arr);
+    $result_record = $MemberReviewRecord -> field('id,nexttime,nodeal,status') -> where(array('rid' => $this -> _get('id', 'intval'))) -> order('nexttime ASC') -> select();
+    $this -> assign('result_record', $result_record);
+    $this -> display();
+  }
+
+  /*
+   *
+  
+
+  public function editreviewrecord(){
+    
+  }
+
+  */
 
 }
