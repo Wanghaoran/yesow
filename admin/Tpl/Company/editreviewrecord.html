@@ -122,32 +122,31 @@
 	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
 	
 	<h2 style="clear:both;margin-top:25px;">回访记录</h2>
-	<div class="divider"></div>
-	<table class="table" width="100%">
-		<thead>
-			<tr>
-				<th width="30">编号</th>
-				<th width="320">说明</th>
-				<th width="50">回访时间</th>
-				<th width="100">状态</th>
-			</tr>
-		</thead>
-		<tbody>
 		  <volist name="result_record" id="r">
-		  <tr>
-		    <td><!--{$r.id}--!></td>
-		    <td><!--{$r.nodeal}--!></td>
-		    <td><!--{$r.nexttime|date="Y-m-d", ###}--!></td>
-		    <eq name="r.status" value="1">
-		    <td style="color:red;">未成交</td>
-		    <else/>
-		    <td style="color:blue;">已成交</td>
-		    </eq>
-		  </tr>
+
+
+		<div class="divider"></div>
+	<div class="unit">
+		<label>回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" value="<!--{$r.nexttime|date='Y-m-d', ###}--!>" />
+		<label style="margin-left:85px;width:70px;">状态:</label>
+		<eq name="r.status" value="1">
+		<input type="radio" disabled="true" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" disabled="true" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<else/>
+		<input type="radio" disabled="true" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" disabled="true" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		</eq>
+	</div>
+	<eq name="r.status" value="1">
+	<div class="unit" id="nodeal">
+	<else/>
+	<div class="unit" id="nodeal" style="display:none;">
+	</eq>
+		<label>未成交原因：</label>
+		<textarea cols="67"><!--{$r.nodeal}--!></textarea>
+	</div>
 		  </volist>	  
-		</tbody>
-	      </table>
-	<br/>
 	
 
 </div>
