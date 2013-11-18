@@ -976,6 +976,12 @@ class PublicAction extends Action {
     return $articleonecolumn -> field('id,name') -> where(array('isnav' => 1)) -> order('sort ASC') -> select();
   }
 
+  //获得招商引资一级分类
+  public function getinvestment(){
+    $AttractinvestmentCategory = M('AttractinvestmentCategory');
+    return $AttractinvestmentCategory -> field('id,name') -> where('fid=0') -> order('sort ASC') -> select();
+  }
+
   //获取热搜关键词
   public function getsearchhot(){
     $searchhot = M('SearchHot');

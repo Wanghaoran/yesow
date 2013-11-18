@@ -10,6 +10,14 @@ class CommonAction extends Action {
       $this -> assign('index_article_nav', $index_article_nav);
       S('index_article_nav', $index_article_nav);   
     }
+    //招商引资导航
+    if(S('index_investment_nav')){
+      $this -> assign('index_investment_nav', S('index_investment_nav'));
+    }else{
+      $index_investment_nav = R('Public/getinvestment');
+      $this -> assign('index_investment_nav', $index_investment_nav);
+      S('index_investment_nav', $index_investment_nav);   
+    }
     //热搜关键词
     if(S('index_search_hot')){
       $this -> assign('index_search_hot', S('index_search_hot'));

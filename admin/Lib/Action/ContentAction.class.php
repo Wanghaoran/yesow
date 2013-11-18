@@ -2708,4 +2708,193 @@ class ContentAction extends CommonAction {
     }
   }
 
+  public function attractinvestmentcategory(){
+    $AttractinvestmentCategory = M('AttractinvestmentCategory');
+    $where = array();
+    if(!empty($_REQUEST['fid'])){
+      $where['fid'] = $this -> _request('fid', 'intval');
+    }else{
+      $where['fid'] = 0;
+    }
+
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    $count = $AttractinvestmentCategory -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $AttractinvestmentCategory -> field('id,name,sort,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addattractinvestmentcategory(){
+    $AttractinvestmentCategory = M('AttractinvestmentCategory');
+    if(!empty($_POST['name'])){     
+      if(!$AttractinvestmentCategory -> create()){
+	$this -> error($AttractinvestmentCategory -> getError());
+      }
+      if($AttractinvestmentCategory -> add()){
+	S('index_investment_nav', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> assign('fname', $AttractinvestmentCategory -> getFieldByid($this -> _get('fid', 'intval'), 'name'));
+    $this -> display();
+  }
+
+  public function delattractinvestmentcategory(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $AttractinvestmentCategory = M('AttractinvestmentCategory');
+    if($AttractinvestmentCategory -> where($where_del) -> delete()){
+	S('index_investment_nav', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editattractinvestmentcategory(){
+    $AttractinvestmentCategory = M('AttractinvestmentCategory');
+    if(!empty($_POST['name'])){
+      if(!$AttractinvestmentCategory -> create()){
+	$this -> error($AttractinvestmentCategory -> getError());
+      }
+      if($AttractinvestmentCategory -> save()){
+	S('index_investment_nav', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $AttractinvestmentCategory -> field('name,fid,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> assign('fname', $AttractinvestmentCategory -> getFieldByid($result['fid'], 'name'));
+    $this -> display();
+  }
+  
+  public function attractinvestment(){
+    $Attractinvestment = M('Attractinvestment');
+    $where = array();
+    if(!empty($_POST['title'])){
+      $where['a.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['a.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['a.addtime'][] = array('lt', $endtime);
+    }
+
+    $count = $Attractinvestment -> alias('a') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $Attractinvestment -> alias('a') -> field('a.id,a.title,a.source,a.clickcount,a.addtime,c1.name as c1name,c2.name as c2name') -> limit($page -> firstRow . ',' . $page -> listRows) -> join('yesow_attractinvestment_category as c1 ON a.cid_one = c1.id') -> join('yesow_attractinvestment_category as c2 ON a.cid_two = c2.id') -> where($where) -> order('a.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addattractinvestment(){
+    if(!empty($_POST['title'])){
+      $Attractinvestment = M('Attractinvestment');
+      if(!$Attractinvestment -> create()){
+	$this -> error($Attractinvestment -> getError());
+      }
+      $Attractinvestment -> addtime = time();
+      if($id = $Attractinvestment -> add()){
+	if(!empty($_POST['childsite'])){
+	  foreach($_POST['childsite'] as $value){
+	    $data = array();
+	    $data['aid'] = $id;
+	    $data['csid'] = $value;
+	    M('AttractinvestmentChildsite') -> add($data);
+	  }
+	}
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $result_category = M('AttractinvestmentCategory') -> field('id,name') -> where('fid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_category', $result_category);
+    $this -> display();
+  }
+
+  public function delattractinvestment(){
+    $Attractinvestment = M('Attractinvestment');
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    if($Attractinvestment -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editattractinvestment(){
+    $Attractinvestment = D('Attractinvestment');
+    $AttractinvestmentChildsite = M('AttractinvestmentChildsite');
+    if(!empty($_POST['title'])){
+      $id = $this -> _post('id', 'intval');
+      $AttractinvestmentChildsite -> where(array('aid' => $id)) -> delete();
+      if(!empty($_POST['childsite'])){
+	foreach($_POST['childsite'] as $value){
+	  $data = array();
+	  $data['aid'] = $id;
+	  $data['csid'] = $value;
+	  $AttractinvestmentChildsite -> add($data);
+	}
+      }
+      if(!$Attractinvestment -> create()){
+	$this -> error($Attractinvestment -> getError());
+      }
+      $Attractinvestment -> save();
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
+    }
+    $result = $Attractinvestment -> field('cid_one,cid_two,title,keywords,content,source') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('id DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $result_category = M('AttractinvestmentCategory') -> field('id,name') -> where('fid=0') -> order('sort ASC') -> select();
+    $this -> assign('result_category', $result_category);
+    $result_category_two = M('AttractinvestmentCategory') -> field('id,name') -> where(array('fid' => $result['cid_one'])) -> order('sort ASC') -> select();
+    $this -> assign('result_category_two', $result_category_two);
+    $temp_notice_childsite = $AttractinvestmentChildsite -> field('csid') -> where(array('aid' => $this -> _get('id', 'intval'))) -> select();
+    $result_notice_childsite = array();
+    foreach($temp_notice_childsite as $value){
+      $result_notice_childsite[] = $value['csid'];
+    }
+    $this -> assign('result_notice_childsite', $result_notice_childsite);
+    $this -> display();
+  }
 }

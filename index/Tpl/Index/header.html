@@ -196,7 +196,8 @@ var opensearch = function(key_word){
 				<else/>
 				<li class="none li_weizhi5"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
 				</if>
-				<li class="none li_weizhi6"><a href="" >第六个01</a><a href="" >第六个02</a><a href="" >第六个03</a><a href="" >第六个04</a></li>
+				
+				<li class="none li_weizhi6"><volist name="index_investment_nav" id="iin"><a href="" ><!--{$iin.name}--!></a></volist></li>
 				<if condition="MODULE_NAME eq 'Agent'">
 				<li class="li_weizhi7"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist><a href="__ROOT__/agent/add">加盟申请</a></li>
 				<else/>

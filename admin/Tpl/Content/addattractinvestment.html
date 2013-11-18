@@ -1,0 +1,49 @@
+
+<div class="panel">
+  <h1>新增招商引资</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/attractinvestment" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+
+      <p style="width:800px;"><label>文章标题：</label>
+      <select class="combox" name="cid_one" ref="attractinvestment_cid_two" refUrl="__APP__/public/ajaxgetattractinvestmentid/id/{value}">
+	<option value="">请选择</option>
+	<volist name="result_category" id="rc">
+	<option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+	</volist>
+      </select>
+	<select class="combox" name="cid_two" id="attractinvestment_cid_two">
+	      <option value="">请选择</option>
+	    </select>
+      <input style="margin-left:10px;" type="text" class="textInput required" name="title" size="50">
+      </p>
+
+      <p style="width:890px;">
+      <label>关键词：</label>
+      <input type="text" class="textInput required" name="keywords" size="60" />
+
+	<label style="margin-left:20px;width:80px;">文章来源：</label>
+      <input type="text" class="textInput required" name="source">
+      </p>
+      
+      
+      <div class="divider"></div>
+      <p style="width:100%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"></textarea>
+
+	</p>
+	<div class="divider"></div>
+	<p style="width:100%;">所属分站：</p>
+	<volist name="result_childsite" id="rc">
+	<label style="width:58px;"><input type="checkbox" value="<!--{$rc.id}--!>" name="childsite[]"><!--{$rc.name}--!></label>
+	</volist>
+	<div class="divider"></div>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<form id="pagerForm" action="__ACTION__" method="post">
+  <input type="hidden" name="title" value="<!--{$Think.request.title}--!>" />
+  <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
+  <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
+  <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>标题名称：</label>
+				<input type="text" name="title" />
+			</li>
+				<li style="width:370px;">
+		  <label>添加时间：</label>
+		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		    -  
+		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  </li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	  <ul class="toolBar">
+	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
+	    <li><a class="add" href="__URL__/addattractinvestment" target="navTab" mask="true"><span>新增</span></a></li>
+	    <li class=""><a class="delete" href="__URL__/delattractinvestment/navTabId/attractinvestment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公告"><span>删除</span></a></li>
+	    <li><a class="edit" href="__URL__/editattractinvestment/id/{sid_role}" target="navTab" mask="true" warn="请选择公告"><span>编辑</span></a></li>
+	    <else/>
+	    <if condition="isset($_SESSION['acc_arr']['content']['addattractinvestment'])">
+	    <li><a class="add" href="__URL__/addattractinvestment" target="navTab" mask="true"><span>新增</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['delattractinvestment'])">
+	    <li class=""><a class="delete" href="__URL__/delattractinvestment/navTabId/attractinvestment" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择公告"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['content']['editattractinvestment'])">
+	    <li><a class="edit" href="__URL__/editattractinvestment/id/{sid_role}" target="navTab" mask="true" warn="请选择公告"><span>编辑</span></a></li>
+	    </if>
+	    </if>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		  <tr>
+		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
+			<th width="20">编号</th>
+			<th width="45">所属一级分类</th>
+			<th width="45">所属二级分类</th>
+			<th width="160">标题</th>
+			<th width="40">文章来源</th>
+			<th width="40">点击量</th>
+			<th width="80">添加时间</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="result" id="r">
+		<tr target="sid_role" rel="<!--{$r.id}--!>">
+		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
+			  <td><!--{$r.id}--!></td>
+			  <td><!--{$r.c1name}--!></td>
+			  <td><!--{$r.c2name}--!></td>
+			  <td><a href="__ROOT__/notice/<!--{$r.id}--!>" target="_blank"><!--{$r.title}--!></a></td>
+			  <td><!--{$r.source}--!></td>
+			  <td><!--{$r.clickcount}--!></td>
+			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>			 
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar">
+	  
+	  
+		<div class="pages">
+		  <span>共<!--{$count}--!>条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
+	</div>
+
+</div>
+
+
