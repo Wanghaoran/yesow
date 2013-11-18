@@ -12,6 +12,9 @@ class HireAction extends CommonAction {
     //if($csid){
       //$where_sort['sr.csid'] = $csid;
     //}
+    if(!empty($_POST['title'])){
+      $where_sort['rj.name'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     $where_sort['rj.ischeck'] = 1;
     $where_sort['rjs.starttime'] = array('elt', $time);
     $where_sort['rjs.endtime'] = array('egt', $time);
@@ -41,6 +44,9 @@ class HireAction extends CommonAction {
     $where = array();
     $where['rj.ischeck'] = 1;
     $where['rj.endtime'] = array('egt', $time);
+    if(!empty($_POST['title'])){
+      $where['rj.name'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     if(!empty($del_id_arr)){
       $where['rj.id'] = array('not in', $del_id_arr);
     }
@@ -55,6 +61,9 @@ class HireAction extends CommonAction {
     $where_sort = array();
     if($csid){
       $where_sort['sr.csid'] = $csid;
+    }
+    if(!empty($_POST['title'])){
+      $where_sort['sr.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
     }
     $where_sort['sr.ischeck'] = 1;
     $where_sort['srs.starttime'] = array('elt', $time);
@@ -85,6 +94,9 @@ class HireAction extends CommonAction {
     $where = array();
     $where['sr.ischeck'] = 1;
     $where['sr.endtime'] = array('egt', $time);
+    if(!empty($_POST['title'])){
+      $where['sr.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     if(!empty($del_id_arr)){
       $where['sr.id'] = array('not in', $del_id_arr);
     }
@@ -98,6 +110,9 @@ class HireAction extends CommonAction {
     $where_sort = array();
     if($csid){
       $where_sort['su.csid'] = $csid;
+    }
+    if(!empty($_POST['title'])){
+      $where_sort['su.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
     }
     $where_sort['su.ischeck'] = 1;
     $where_sort['sus.starttime'] = array('elt', $time);
@@ -130,6 +145,9 @@ class HireAction extends CommonAction {
     $where['su.ischeck'] = 1;
     $where['su.endtime'] = array('egt', $time);
     $where['su.tid_one'] = 1;
+    if(!empty($_POST['title'])){
+      $where['su.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     if(!empty($del_id_arr)){
       $where['su.id'] = array('not in', $del_id_arr);
     }
@@ -148,6 +166,9 @@ class HireAction extends CommonAction {
     $where_sort['sus.starttime'] = array('elt', $time);
     $where_sort['sus.endtime'] = array('egt', $time);
     $where_sort['su.tid_one'] = 2;
+    if(!empty($_POST['title'])){
+      $where_sort['su.title'] = array('LIKE', '%' . $this -> _post('title') . '%');
+    }
     $result_old_sort = $sell_used_sort -> table('yesow_sell_used_sort as sus') -> field('su.id,su.title,sut.name,cs.name as csname') -> join('yesow_sell_used as su ON sus.suid = su.id') -> join('yesow_sell_used_type as sut ON su.tid_two = sut.id') -> join('yesow_child_site as cs ON su.csid = cs.id') -> limit(16) -> where($where_sort) -> order('sus.sort DESC') -> select();
     $this -> assign('result_old_sort', $result_old_sort);
     //推荐的数量

@@ -1,0 +1,29 @@
+
+<div class="panel">
+  <h1>发送短信模板</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/navTabId/sendsmstemplate" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <div class="unit" style="height:88px;">
+		<label>填写规则:</label>
+		<p style="line-height:20px;width:90%;">公司名：<b>{company_name}</b> | 最新联系人：<b>{company_new_linkman}</b> | 公司电话：<b>{company_companyphone}</b>
+		<br />
+		QQ：<b>{company_qqcode}</b> | 邮件：<b>{company_email}</b> | 下次回访日期：<b>{time_nexttime}</b> | 发送时间：<b>{time_sendtime}</b>
+		<br />
+		所属管理员：<b>{company_admin}</b> | 速查联系人：<b>{company_linkman}</b> | 手机：<b>{company_mobilephone}</b>
+		</p>
+	      </div>
+      <div class="divider"></div>
+      <p style="width:90%;height:260px;">
+      <textarea name="content" style="width:96%;" rows="10"><!--{$content}--!></textarea>
+
+	</p>
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

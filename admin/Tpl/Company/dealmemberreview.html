@@ -92,7 +92,11 @@
 			  <td><!--{$r.nexttime|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.aname}--!></td>
+			  <if condition="$r['nexttime'] elt mktime(0, 0, 0, date('m'), date('d'), date('Y'))">
 			  <td><a href="__URL__/editdealmemberreviewrecord/id/<!--{$r.id}--!>" target="dialog" mask="true" width="680" height="450" style="color:blue;">回访</a></td>
+			  <else/>
+			  <td></td>
+			  </if>
 			</tr>
 		</volist>
 		</tbody>

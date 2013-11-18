@@ -1377,7 +1377,7 @@ class MessageAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $MassEmailTemplate -> alias('t') -> field('t.id,t.addtime,e.type_zh,e.send_address') -> join('yesow_mass_email_setting as e ON t.eid = e.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('t.addtime DESC') -> select();
+    $result = $MassEmailTemplate -> alias('t') -> field('t.id,t.addtime,e.type_zh,e.send_address,t.title') -> join('yesow_mass_email_setting as e ON t.eid = e.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('t.addtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

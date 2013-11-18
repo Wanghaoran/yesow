@@ -3767,7 +3767,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.nexttime,r.addtime') -> join('yesow_admin as a ON r.aid = a.id') -> order('r.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.nexttime,r.addtime,r.new_mobilephone,tmp.count') -> join('yesow_admin as a ON r.aid = a.id') -> join('LEFT JOIN (SELECT rid,COUNT(rid) as count FROM yesow_member_review_record GROUP BY rid) as tmp ON r.id = tmp.rid') -> order('r.nexttime ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
 
     $this -> assign('listRows', $listRows);
@@ -3783,18 +3783,27 @@ class CompanyAction extends CommonAction {
 	$this -> error($MemberReview -> getError());
       }
       $MemberReview -> aid = session(C('USER_AUTH_KEY'));
-      if($MemberReview -> add()){
+      if($rid = $MemberReview -> add()){
+	if(!empty($_POST['sendsms'])){
+	  D('MemberReviewSendSmsRecord') -> sendsms($rid);
+	  $to_email = $MemberReview -> getFieldByid($rid, 'new_email');
+	  D('MassEmailSetting') -> sendEmail('review_phone', $to_email, $rid);
+	}
+	if(!empty($_POST['sendemail'])){
+	  $to_email = $MemberReview -> getFieldByid($rid, 'new_email');
+	  D('MassEmailSetting') -> sendEmail('review_phone', $to_email, $rid);
+	}
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
     $effect_arr = array(
-      1 => '和气',
-      2 => '望了解',
-      3 => '抗拒',
+      1 => '比较敷衍',
+      2 => '希望了解',
+      3 => '比较抗拒 ',
       4 => '抗拒到理解',
-      5 => '考虑下',
+      5 => '需要考虑',
       6 => '需要商量',
     );
     $this -> assign('effect_arr', $effect_arr);
@@ -3826,14 +3835,14 @@ class CompanyAction extends CommonAction {
       }
     }
     
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid,r.addtime') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $effect_arr = array(
-      1 => '和气',
-      2 => '望了解',
-      3 => '抗拒',
+      1 => '比较敷衍',
+      2 => '希望了解',
+      3 => '比较抗拒 ',
       4 => '抗拒到理解',
-      5 => '考虑下',
+      5 => '需要考虑',
       6 => '需要商量',
     );
     $this -> assign('effect_arr', $effect_arr);
@@ -3844,29 +3853,36 @@ class CompanyAction extends CommonAction {
     $MemberReview = D('MemberReview');
     $MemberReviewRecord = M('MemberReviewRecord');
     if(!empty($_POST['nexttime'])){
-      $data_old = $MemberReview -> field('id as rid,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
+      $data_old = $MemberReview -> field('id as rid,addtime,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
       $MemberReviewRecord -> add($data_old);
       if(!$MemberReview -> create()){
 	$this -> error($MemberReview -> getError());
       }
       if($MemberReview -> save()){
+	if(!empty($_POST['sendsms'])){
+	  D('MemberReviewSendSmsRecord') -> sendsms($this -> _post('id', 'intval'));
+	}
+	if(!empty($_POST['sendemail'])){
+	  $to_email = $MemberReview -> getFieldByid($this -> _post('id', 'intval'), 'new_email');
+	  D('MassEmailSetting') -> sendEmail('review_phone', $to_email, $this -> _post('id', 'intval'));
+	}
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.addtime as nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $effect_arr = array(
-      1 => '和气',
-      2 => '望了解',
-      3 => '抗拒',
+      1 => '比较敷衍',
+      2 => '希望了解',
+      3 => '比较抗拒 ',
       4 => '抗拒到理解',
-      5 => '考虑下',
+      5 => '需要考虑',
       6 => '需要商量',
     );
     $this -> assign('effect_arr', $effect_arr);
-    $result_record = $MemberReviewRecord -> field('id,nexttime,nodeal,status') -> where(array('rid' => $this -> _get('id', 'intval'))) -> order('nexttime ASC') -> select();
+    $result_record = $MemberReviewRecord -> field('id,addtime as nexttime,nodeal,status') -> where(array('rid' => $this -> _get('id', 'intval'))) -> order('nexttime ASC') -> select();
     $this -> assign('result_record', $result_record);
     $this -> display();
   }
@@ -3920,7 +3936,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.nexttime,r.addtime') -> join('yesow_admin as a ON r.aid = a.id') -> order('r.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.nexttime,r.addtime') -> join('yesow_admin as a ON r.aid = a.id') -> order('r.nexttime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
 
     $this -> assign('listRows', $listRows);
@@ -3957,11 +3973,11 @@ class CompanyAction extends CommonAction {
     $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $effect_arr = array(
-      1 => '和气',
-      2 => '望了解',
-      3 => '抗拒',
+      1 => '比较敷衍',
+      2 => '希望了解',
+      3 => '比较抗拒 ',
       4 => '抗拒到理解',
-      5 => '考虑下',
+      5 => '需要考虑',
       6 => '需要商量',
     );
     $this -> assign('effect_arr', $effect_arr);
@@ -3972,7 +3988,7 @@ class CompanyAction extends CommonAction {
     $MemberReview = D('MemberReview');
     $MemberReviewRecord = M('MemberReviewRecord');
     if(!empty($_POST['nexttime'])){
-      $data_old = $MemberReview -> field('id as rid,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
+      $data_old = $MemberReview -> field('id as rid,addtime,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
       $MemberReviewRecord -> add($data_old);
       if(!$MemberReview -> create()){
 	$this -> error($MemberReview -> getError());
@@ -3986,27 +4002,68 @@ class CompanyAction extends CommonAction {
     $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $effect_arr = array(
-      1 => '和气',
-      2 => '望了解',
-      3 => '抗拒',
+      1 => '比较敷衍',
+      2 => '希望了解',
+      3 => '比较抗拒 ',
       4 => '抗拒到理解',
-      5 => '考虑下',
+      5 => '需要考虑',
       6 => '需要商量',
     );
     $this -> assign('effect_arr', $effect_arr);
-    $result_record = $MemberReviewRecord -> field('id,nexttime,nodeal,status') -> where(array('rid' => $this -> _get('id', 'intval'))) -> order('nexttime ASC') -> select();
+    $result_record = $MemberReviewRecord -> field('id,addtime as nexttime,nodeal,status') -> where(array('rid' => $this -> _get('id', 'intval'))) -> order('nexttime ASC') -> select();
     $this -> assign('result_record', $result_record);
     $this -> display();
   }
 
-  /*
-   *
-  
-
-  public function editreviewrecord(){
-    
+  public function sendsmstemplate(){
+    $MemberReviewSetting = M('MemberReviewSetting');
+    if(!empty($_POST['content'])){
+      if($MemberReviewSetting -> where(array('name' => 'sendsmstemplate')) -> save(array('value' => $this -> _post('content')))){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $content = $MemberReviewSetting -> getFieldByname('sendsmstemplate', 'value');
+    $this -> assign('content', $content);
+    $this -> display();
   }
 
-  */
+  public function sendsmsrecord(){
+    $MemberReviewSendSmsRecord = M('MemberReviewSendSmsRecord');
 
+    $where = array();
+    if(!empty($_POST['tel'])){
+      $where['accepttel'] = $this -> _post('tel');
+    }
+
+    $count = $MemberReviewSendSmsRecord -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberReviewSendSmsRecord -> field('id,accepttel,content,sendtime,status') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delsendsmsrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberReviewSendSmsRecord = M('MemberReviewSendSmsRecord');
+    if($MemberReviewSendSmsRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
 }

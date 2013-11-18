@@ -5,15 +5,6 @@
 		<div class="pageFormContent" layoutH="58">
 		  <h2>速查数据信息</h2>
 		  <div class="divider"></div>
-		  <div class="unit">
-		<label>所属管理员：</label>
-		<eq name="Think.session.yesow_uid" value="1" readonly="readonly" >
-		<input value="<!--{$result.aid}--!>" type="hidden">
-		<input class="required" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetadmininfo" lookupGroup="org7" value="<!--{$result.aname}--!>" readonly="readonly"/>
-		<else/>
-		<input type="text" class="required" readonly="readonly" value="<!--{$result.aname}--!>" />
-		</eq>
-	      </div>
 	<div class="unit">
 		<label>公司名称：</label>
 		<input class="required" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetreviewcompanyinfo" lookupGroup="org5" size="70" value="<!--{$result.name}--!>" readonly="readonly"/>
@@ -71,6 +62,13 @@
 	<div class="unit">
 		<label>电子邮件:</label>
 		<input type="text" value="<!--{$result.new_email}--!>" readonly="readonly" />
+		<label style="margin-left:79px;width:76px;">所属管理员：</label>
+		<eq name="Think.session.yesow_uid" value="1" readonly="readonly" >
+		<input value="<!--{$result.aid}--!>" type="hidden">
+		<input class="required" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetadmininfo" lookupGroup="org7" value="<!--{$result.aname}--!>" readonly="readonly"/>
+		<else/>
+		<input type="text" class="required" readonly="readonly" value="<!--{$result.aname}--!>" />
+		</eq>
 	</div>
 
 	<h2 style="clear:both;margin-top:25px;">客户信息</h2>
@@ -97,17 +95,23 @@
 		<label>备注：</label>
 		<textarea cols="67" readonly="readonly"><!--{$result.remark}--!></textarea>
 	</div>
-	<div class="divider"></div>
+	
+
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+	
+	<h2 style="clear:both;margin-top:25px;">回访记录</h2>
+
+<div class="divider"></div>
 	<div class="unit">
-		<label>下次回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
+		<label>回访日期：</label>
+		<input type="text" readonly="true" disabled="true" class="date textInput readonly" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
 		<label style="margin-left:85px;width:70px;">状态:</label>
 		<eq name="result.status" value="1">
-		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<input type="radio" value="1" disabled="true" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" value="2" disabled="true" onclick="$('#nodeal').css('display', 'none');" /> 成交
 		<else/>
-		<input type="radio" name="status" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" name="status" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<input type="radio" value="1" disabled="true" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" value="2" disabled="true" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
 		</eq>
 	</div>
 	<eq name="result.status" value="1">
@@ -116,26 +120,25 @@
 	<div class="unit" id="nodeal" style="display:none;">
 	</eq>
 		<label>未成交原因：</label>
-		<textarea name="nodeal" cols="67"><!--{$result.nodeal}--!></textarea>
+		<textarea cols="67" disabled="true"><!--{$result.nodeal}--!></textarea>
 	</div>
 
-	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
-	
-	<h2 style="clear:both;margin-top:25px;">回访记录</h2>
-	<volist name="result_record" id="r">
+
+
+		  <volist name="result_record" id="r">
 
 
 		<div class="divider"></div>
 	<div class="unit">
 		<label>回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" value="<!--{$r.nexttime|date='Y-m-d', ###}--!>" />
+		<input type="text" readonly="true" disabled="true" class="date textInput readonly" value="<!--{$r.nexttime|date='Y-m-d', ###}--!>" />
 		<label style="margin-left:85px;width:70px;">状态:</label>
 		<eq name="r.status" value="1">
-		<input type="radio" disabled="true" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" disabled="true" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<input type="radio" disabled="true" disabled="true" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" disabled="true" disabled="true" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
 		<else/>
-		<input type="radio" disabled="true" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" disabled="true" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
+		<input type="radio" disabled="true" disabled="true" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" disabled="true" disabled="true" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
 		</eq>
 	</div>
 	<eq name="r.status" value="1">
@@ -144,10 +147,23 @@
 	<div class="unit" id="nodeal" style="display:none;">
 	</eq>
 		<label>未成交原因：</label>
-		<textarea cols="67"><!--{$r.nodeal}--!></textarea>
+		<textarea cols="67" disabled="true"><!--{$r.nodeal}--!></textarea>
 	</div>
 		  </volist>
-	
+	<div class="divider"></div>
+	<div class="unit">
+		<label>下次回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" />
+		<label style="margin-left:85px;width:70px;">状态:</label>
+		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
+		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
+
+	</div>
+	<div class="unit" id="nodeal">
+
+		<label>未成交原因：</label>
+		<textarea name="nodeal" cols="67"></textarea>
+	</div>
 
 </div>
 		<div class="formBar">

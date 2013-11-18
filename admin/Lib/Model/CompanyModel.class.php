@@ -30,8 +30,9 @@ class CompanyModel extends Model {
     $cl->SetConnectTimeout(1);//超时设置
     $cl->SetArrayResult(true);//返回数组
     //匹配模式
-    $cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+    //$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
     //$cl->SetMatchMode(SPH_MATCH_ANY);
+    $cl->SetMatchMode(SPH_MATCH_ALL);//匹配所有查询词
 
     if(!empty($_GET['csid']) && $_GET['csid'] != 'null'){
       $cl -> SetFilter('csid', array($_GET['csid']));
@@ -63,21 +64,22 @@ class CompanyModel extends Model {
 
     //评分模式
     //$cl -> SetRankingMode(SPH_RANK_WORDCOUNT);
-    $cl -> SetRankingMode(SPH_RANK_PROXIMITY_BM25);
+    //$cl -> SetRankingMode(SPH_RANK_PROXIMITY_BM25);
+    //$cl -> SetRankingMode(SPH_RANK_PROXIMITY);
+    //$cl -> SetRankingMode(SPH_RANK_NONE);//禁用评分模式
     
     //字段权重
-    $cl -> SetFieldWeights(array('name' => 50, 'csname' => 10));
+    //$cl -> SetFieldWeights(array('csaname' => 500, 'name' => 1, 'manproducts' => 2));
     //排序模式
-    //$cl -> SetSortMode(SPH_SORT_EXTENDED, '@weight desc');
+    //$cl -> SetSortMode(SPH_SORT_EXTENDED, 'csaname DESC');
     //$cl -> SetSortMode(SPH_SORT_RELEVANCE);
+    //$cl -> SetSortMode ( SPH_SORT_EXPR, "@weight" );
+    //s$cl -> SetSortMode(SPH_SORT_ATTR_DESC);
 
     //result
 
     $cl -> SetLimits($page -> firstRow, $page -> listRows);
     $result_sph_tmp = $cl -> Query($keyword, "*" );
-
-    //dump($result_sph_tmp);
-
 
     $result_sph['result'] = array();
     foreach($result_sph_tmp['matches'] as $key => $value){

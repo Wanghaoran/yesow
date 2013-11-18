@@ -54,7 +54,8 @@
 		  <tr>
 		     <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
-			<th width="160">所属邮箱类别</th>
+			<th width="120">所属邮箱类别</th>
+			<th width="160">标题</th>
 			<th width="60">添加时间</th>
 
 		</tr>
@@ -65,6 +66,7 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.type_zh}--!>(<!--{$r.send_address}--!>)</td>
+			  <td><!--{$r.title}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>		  
 			  
 			</tr>

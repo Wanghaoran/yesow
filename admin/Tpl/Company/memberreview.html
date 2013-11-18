@@ -79,6 +79,8 @@
 			<th width="20">编号</th>
 			<th width="150">公司名称</th>
 			<th width="40">联系人</th>
+			<th width="50">联系电话</th>
+			<th width="30">回访次数</th>
 			<th width="40">下次回访日期</th>
 			<th width="60">添加日期</th>
 			<th width="30">所属管理员</th>
@@ -93,10 +95,16 @@
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
 			  <td><!--{$r.new_linkman}--!></td>
+			  <td><!--{$r.new_mobilephone}--!></td>
+			  <td><!--{:$r['count']+1}--!></td>
 			  <td><!--{$r.nexttime|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.aname}--!></td>
+			  <if condition="$r['nexttime'] elt mktime(0, 0, 0, date('m'), date('d'), date('Y'))">
 			  <td><a href="__URL__/editreviewrecord/id/<!--{$r.id}--!>" target="dialog" mask="true" width="680" height="450" style="color:blue;">回访</a></td>
+			  <else/>
+			  <td></td>
+			  </if>
 			</tr>
 		</volist>
 		</tbody>

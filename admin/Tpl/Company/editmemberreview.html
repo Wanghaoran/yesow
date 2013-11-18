@@ -5,15 +5,6 @@
 		<div class="pageFormContent" layoutH="58">
 		  <h2>速查数据信息</h2>
 		  <div class="divider"></div>
-		  <div class="unit">
-		<label>所属管理员：</label>
-		<eq name="Think.session.yesow_uid" value="1">
-		<input name="org7.id" value="<!--{$result.aid}--!>" type="hidden">
-		<input class="required" name="org7.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetadmininfo" lookupGroup="org7" value="<!--{$result.aname}--!>"/>
-		<else/>
-		<input type="text" class="required"  readonly="readonly" value="<!--{$result.aname}--!>" />
-		</eq>
-	      </div>
 	<div class="unit">
 		<label>公司名称：</label>
 		<input class="required" name="org5.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetreviewcompanyinfo" lookupGroup="org5" size="70" value="<!--{$result.name}--!>"/>
@@ -71,6 +62,13 @@
 	<div class="unit">
 		<label>电子邮件:</label>
 		<input type="text" name="org5.new_email" value="<!--{$result.new_email}--!>" />
+		<label style="margin-left:79px;width:76px;">所属管理员：</label>
+		<eq name="Think.session.yesow_uid" value="1">
+		<input name="org7.id" value="<!--{$result.aid}--!>" type="hidden">
+		<input class="required" name="org7.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetadmininfo" lookupGroup="org7" value="<!--{$result.aname}--!>"/>
+		<else/>
+		<input type="text" class="required"  readonly="readonly" value="<!--{$result.aname}--!>" />
+		</eq>
 	</div>
 
 	<h2 style="clear:both;margin-top:25px;">客户信息</h2>
@@ -98,8 +96,8 @@
 		<textarea name="remark" cols="67"><!--{$result.remark}--!></textarea>
 	</div>
 	<div class="unit">
-		<label>下次回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
+		<label>本次回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.addtime|date='Y-m-d', ###}--!>" />
 		<label style="margin-left:85px;width:70px;">状态:</label>
 		<eq name="result.status" value="1">
 		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
@@ -116,6 +114,10 @@
 	</eq>
 		<label>未成交原因：</label>
 		<textarea name="nodeal" cols="67"><!--{$result.nodeal}--!></textarea>
+	</div>
+	<div class="unit">
+		<label>下次回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
 	</div>
 	<br/>
 	<div class="divider"></div>
