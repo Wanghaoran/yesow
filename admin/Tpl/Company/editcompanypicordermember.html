@@ -1,0 +1,60 @@
+<br/>
+  
+<table class="table" width="100%">
+		<thead>
+			<tr>
+				<th> </th>
+				<th> </th>
+			</tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td><b>用户名</b></td>
+		    <td><!--{$result.name}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>昵称</b></td>
+		    <td><!--{$result.nickname}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>所在地区</b></td>
+		    <td><!--{$result.csname}--!> - <!--{$result.csaname}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>职业</b></td>
+		    <td><!--{$result.careername}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>学历</b></td>
+		    <td><!--{$result.eduname}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>性别</b></td>
+		    <eq name="result.sex" value="1">
+		    <td>男</td>
+		    <else/>
+		    <td>女</td>
+		    </eq>
+		  </tr>
+		  <tr>
+		    <td><b>联系电话</b></td>
+		    <td><!--{$result.tel}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>邮箱</b></td>
+		    <td><!--{$result.email}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>所在单位</b></td>
+		    <td><!--{$result.unit}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>个人主页</b></td>
+		    <td><!--{$result.homepage}--!></td>
+		  </tr>
+		  <tr>
+		    <td><b>联系地址</b></td>
+		    <td><!--{$result.address}--!></td>
+		  </tr>
+		</tbody>
+	      </table>

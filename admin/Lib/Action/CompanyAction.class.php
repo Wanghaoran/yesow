@@ -1599,7 +1599,7 @@ class CompanyAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $monthlyorder -> table('yesow_monthly_order as mo') -> field('mo.id,mo.ordernum,m.name as mname,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime') -> join('yesow_member as m ON mo.mid = m.id') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
+    $result = $monthlyorder -> table('yesow_monthly_order as mo') -> field('mo.id,mo.ordernum,m.name as mname,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime,mo.mid') -> join('yesow_member as m ON mo.mid = m.id') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1642,6 +1642,11 @@ class CompanyAction extends CommonAction {
     }
   }
 
+  public function editmonthlyordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
   public function qqonlineorder(){
     $QqonlineOrder = M('QqonlineOrder');
     $where = array();
@@ -1664,7 +1669,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.ordernum,m.name as mname,c.name as cname,qo.cid,tmp.count,qm.months,qo.price,qo.status,qo.ischeck,qo.paytype,qo.addtime,qo.isrenew') -> join('yesow_member as m ON qo.mid = m.id') -> join('yesow_company as c ON qo.cid = c.id') -> join('LEFT JOIN (SELECT oid,COUNT(id) as count FROM yesow_qqonline_order_list GROUP BY oid) as tmp ON tmp.oid = qo.id') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> order('qo.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> field('qo.id,qo.ordernum,m.name as mname,c.name as cname,qo.cid,tmp.count,qm.months,qo.price,qo.status,qo.ischeck,qo.paytype,qo.addtime,qo.isrenew,qo.mid') -> join('yesow_member as m ON qo.mid = m.id') -> join('yesow_company as c ON qo.cid = c.id') -> join('LEFT JOIN (SELECT oid,COUNT(id) as count FROM yesow_qqonline_order_list GROUP BY oid) as tmp ON tmp.oid = qo.id') -> join('yesow_qqonline_money as qm ON qo.qid = qm.id') -> order('qo.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1717,6 +1722,11 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  public function editqqonlineordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
   public function companypicorder(){
     $CompanypicOrder = M('CompanypicOrder');
     $where = array();
@@ -1739,7 +1749,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.ordernum,m.name as mname,c.name as cname,co.cid,cm.months,co.price,co.status,co.ischeck,co.paytype,co.addtime,co.isrenew,co.maketype,co.filename') -> join('yesow_member as m ON co.mid = m.id') -> join('yesow_company as c ON co.cid = c.id') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> order('co.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $CompanypicOrder -> table('yesow_companypic_order as co') -> field('co.id,co.ordernum,m.name as mname,c.name as cname,co.cid,cm.months,co.price,co.status,co.ischeck,co.paytype,co.addtime,co.isrenew,co.maketype,co.filename,co.mid') -> join('yesow_member as m ON co.mid = m.id') -> join('yesow_company as c ON co.cid = c.id') -> join('yesow_companypic_money as cm ON co.cmid = cm.id') -> order('co.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1789,6 +1799,11 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  public function editcompanypicordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
   public function advertorder(){
     $AdvertOrder = M('AdvertOrder');
     $where = array();
@@ -1811,7 +1826,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.ordernum,m.name as mname,am.months,ao.price,ao.status,ao.ischeck,ao.paytype,ao.addtime,ao.isrenew,ao.maketype,ao.filename,ao.website,ad.name as adname,adp.remark as adpremark,cs.name as csname') -> join('yesow_member as m ON ao.mid = m.id') -> join('yesow_advert_money as am ON ao.amid = am.id') -> join('yesow_advertise as ad ON ao.adid = ad.id') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> order('ao.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $AdvertOrder -> table('yesow_advert_order as ao') -> field('ao.id,ao.ordernum,m.name as mname,am.months,ao.price,ao.status,ao.ischeck,ao.paytype,ao.addtime,ao.isrenew,ao.maketype,ao.filename,ao.website,ad.name as adname,adp.remark as adpremark,cs.name as csname,ao.mid') -> join('yesow_member as m ON ao.mid = m.id') -> join('yesow_advert_money as am ON ao.amid = am.id') -> join('yesow_advertise as ad ON ao.adid = ad.id') -> join('yesow_advertise_page as adp ON ad.pid = adp.id') -> join('yesow_child_site as cs ON adp.csid = cs.id') -> order('ao.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1861,6 +1876,11 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  public function editadvertordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
   public function searchrankorder(){
     $SearchRankOrder = M('SearchRankOrder');
     $where = array();
@@ -1883,7 +1903,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.id,sro.cid,sro.ordernum,m.name as mname,c.name as cname,rwt.name as fname,srm.months as months,sro.rank,sro.keyword,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where($where) -> order('sro.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> field('sro.id,sro.cid,sro.ordernum,m.name as mname,c.name as cname,rwt.name as fname,srm.months as months,sro.rank,sro.keyword,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime,sro.mid') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_search_rank_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_search_rank_months_money as srm ON sro.srmid = srm.id') -> where($where) -> order('sro.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1934,6 +1954,11 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  public function editsearchrankordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
   public function recommendcompanyorder(){
     $RecommendCompanyOrder = M('RecommendCompanyOrder');
     $where = array();
@@ -1956,7 +1981,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $RecommendCompanyOrder -> alias('sro') -> field('sro.id,sro.cid,sro.ordernum,m.name as mname,c.name as cname,rwt.name as fname,srm.months as months,sro.rank,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where($where) -> order('sro.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $RecommendCompanyOrder -> alias('sro') -> field('sro.id,sro.cid,sro.ordernum,m.name as mname,c.name as cname,rwt.name as fname,srm.months as months,sro.rank,sro.price,sro.status,sro.ischeck,sro.paytype,sro.addtime,sro.mid') -> join('yesow_member as m ON sro.mid = m.id') -> join('yesow_company as c ON sro.cid = c.id') -> join('yesow_recommend_company_website_type as rwt ON sro.fid = rwt.id') -> join('yesow_recommend_company_months_money as srm ON sro.srmid = srm.id') -> where($where) -> order('sro.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -2007,6 +2032,11 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  public function editrecommendcompanyordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
 
   public function companyshoworder(){
     $MediaShowOrder = M('MediaShowOrder');
@@ -2030,7 +2060,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MediaShowOrder -> alias('mso') -> field('mso.id,mso.ordernum,m.name as mname,mso.name as cname,msm.months,mso.price,mso.status,mso.ischeck,mso.paytype,mso.addtime,mso.isrenew,mso.maketype') -> join('yesow_member as m ON mso.mid = m.id') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> order('mso.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $MediaShowOrder -> alias('mso') -> field('mso.id,mso.ordernum,m.name as mname,mso.name as cname,msm.months,mso.price,mso.status,mso.ischeck,mso.paytype,mso.addtime,mso.isrenew,mso.maketype,mso.mid') -> join('yesow_member as m ON mso.mid = m.id') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> order('mso.addtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -2077,6 +2107,11 @@ class CompanyAction extends CommonAction {
     $MediaShowOrder = M('MediaShowOrder');
     $result_o = $MediaShowOrder -> alias('mso') -> field('mso.id,mso.ordernum,m.name as mname,m.tel as mtel,m.fullname as mfullname,mso.name as cname,msm.months,mso.price,mso.status,mso.ischeck,mso.paytype,mso.addtime,mso.isrenew,mso.maketype,mso.smallpic,mso.bigpic,mso.filename') -> join('yesow_member as m ON mso.mid = m.id') -> join('yesow_media_show_money as msm ON mso.smid = msm.id') -> where(array('mso.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result_o', $result_o);
+    $this -> display();
+  }
+
+  public function editcompanyshowordermember(){
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
