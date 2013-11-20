@@ -1518,8 +1518,11 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['ro.addtime'][] = array('lt', $endtime);
     }
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
 
-    $count = $rmb_order -> table('yesow_rmb_order as ro') -> where($where) -> count('id');
+    $count = $rmb_order -> table('yesow_rmb_order as ro') -> join('yesow_member as m ON ro.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1589,7 +1592,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['mo.addtime'][] = array('lt', $endtime);
     }
-    $count = $monthlyorder -> table('yesow_monthly_order as mo') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $monthlyorder -> table('yesow_monthly_order as mo') -> join('yesow_member as m ON mo.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1658,7 +1664,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['qo.addtime'][] = array('lt', $endtime);
     }
-    $count = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $QqonlineOrder -> table('yesow_qqonline_order as qo') -> join('yesow_member as m ON qo.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1738,7 +1747,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['co.addtime'][] = array('lt', $endtime);
     }
-    $count = $CompanypicOrder -> table('yesow_companypic_order as co') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $CompanypicOrder -> table('yesow_companypic_order as co') -> join('yesow_member as m ON co.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1815,7 +1827,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['ao.addtime'][] = array('lt', $endtime);
     }
-    $count = $AdvertOrder -> table('yesow_advert_order as ao') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $AdvertOrder -> table('yesow_advert_order as ao') -> join('yesow_member as m ON ao.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1892,7 +1907,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['sro.addtime'][] = array('lt', $endtime);
     }
-    $count = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $SearchRankOrder -> table('yesow_search_rank_order as sro') -> join('yesow_member as m ON sro.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -1970,7 +1988,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['sro.addtime'][] = array('lt', $endtime);
     }
-    $count = $RecommendCompanyOrder -> alias('sro') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $RecommendCompanyOrder -> alias('sro') -> join('yesow_member as m ON sro.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -2049,7 +2070,10 @@ class CompanyAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['mso.addtime'][] = array('lt', $endtime);
     }
-    $count = $MediaShowOrder -> alias('mso') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $MediaShowOrder -> alias('mso') -> join('yesow_member as m ON mso.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];

@@ -369,7 +369,7 @@ class CompanyAction extends CommonAction {
 	}
       }
       if($companyaudit -> add()){
-	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");history.go(-1);</script>';
+	echo '<script>alert("感谢您对易搜的支持！您所提交的数据我们将在36小时内给予审核后通过！多谢您的合作！");location.href="' . __ROOT__ . '/company/' . $_POST['cid'] . '";</script>';
 	exit();
       }else{
 	R('Public/errorjump',array(L('DATA_ADD_ERROR')));
