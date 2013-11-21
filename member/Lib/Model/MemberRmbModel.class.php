@@ -97,4 +97,12 @@ class MemberRmbModel extends Model {
       return $this -> save($data_rmb);
     }
   }
+
+  //只从充值金额中减去金额,可以为负
+  public function lessonlypay($money, $mid){
+    $data_rmb = array();
+    $data_rmb['mid'] = $mid;
+    $data_rmb['rmb_pay'] = $price['rmb_pay'] + $money;
+    return $this -> save($data_rmb);
+  }
 }

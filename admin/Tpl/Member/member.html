@@ -15,9 +15,11 @@
 			  <input type="text" name="name" style="float:left;" />
 				<select class="combox" name="key">
 				  <option value="name">会员名称</option>
-				  <option value="nickname">昵称</option>
+				  <option value="nickname">用户昵称</option>
 				  <option value="email">电子邮件</option>
 				  <option value="fullname">真实姓名</option>
+				  <option value="unit">所在单位</option>
+				  <option value="tel">电话号码</option>
 				</select>
 				</li>
 			<li>
@@ -96,7 +98,7 @@
 			  <td><!--{$r.csname}--!></td>			  			  
 			  <td><!--{$r.csaname}--!></td>			  			  
 			  <td><!--{$r.tname}--!></td>			  			  
-			  <td><!--{$r.tcount}--!></td>			  			  
+			  <td><a href="__URL__/editmemberrmb/mid/<!--{$r.id}--!>" target="dialog" rel="editmemberrmb" title="出现在会员RMB管理"><!--{$r.tcount}--!></a></td>			  			  
 			  <td><!--{$r.join_time|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.last_login_time|date="Y-m-d H:i:s", ###}--!></td>
 			  <eq name="r.status" value="1">

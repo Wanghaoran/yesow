@@ -1577,7 +1577,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editrmbordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -1649,7 +1649,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editmonthlyordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -1732,7 +1732,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editqqonlineordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -1812,7 +1812,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editcompanypicordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -1892,7 +1892,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editadvertordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -1973,7 +1973,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editsearchrankordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -2054,7 +2054,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editrecommendcompanyordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
@@ -2135,7 +2135,7 @@ class CompanyAction extends CommonAction {
   }
 
   public function editcompanyshowordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 

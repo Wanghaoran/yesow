@@ -78,6 +78,38 @@ class MemberAction extends CommonAction {
     }
   }
 
+  public function editmemberrmb(){
+    if(!empty($_POST['mid'])){
+      $member_rmb_detail = D('MemberRmbDetail');
+      if(!$member_rmb_detail -> create()){
+	$this -> error($member_rmb_detail -> getError());
+      }
+      if($member_rmb_detail -> add()){
+	$mid = $this -> _post('mid');
+	$money = $this -> _post('money');
+	$member_rmb = D('member://MemberRmb');
+	if($money > 0){
+	  if($member_rmb -> addmoney('rmb_exchange', $money, $mid)){
+	    $this -> success(L('DATA_UPDATE_SUCCESS'));
+	  }else{
+	    $this -> error(L('DATA_UPDATE_ERROR'));
+	  }
+	}else if($money < 0){
+	  if($member_rmb -> lessonlypay($money, $mid)){
+	    $this -> success(L('DATA_UPDATE_SUCCESS'));
+	  }else{
+	    $this -> error(L('DATA_UPDATE_ERROR'));
+	  }
+	}else{
+	  $this -> error(L('DATA_UPDATE_ERROR'));
+	}
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
   public function editmemberservice(){
     $member = M('Member');
     if(!empty($_POST['id'])){

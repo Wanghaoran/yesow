@@ -1,0 +1,34 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/member" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>事件：</label>
+		<input type="text" class="required" readonly="readonly" name="content" size="40" value="免费试用添加的记录产生的手续费用" /><label>(255个字符以内)</label>
+	</div>
+	<div class="unit">
+		<label>类型：</label>
+		<select class="combox" name="type" readonly="readonly">
+		  <option value="扣除">扣除</option>
+		</select>
+	</div>
+	
+	<div class="unit">
+		<label>金额：</label>
+		<input type="text" id="money" class="required" readonly="readonly" name="money" value="-0.3" />
+	      </div>
+	      <input type="hidden" name="mid" value="<!--{$Think.get.mid}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

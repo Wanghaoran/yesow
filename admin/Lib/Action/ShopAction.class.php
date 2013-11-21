@@ -423,7 +423,10 @@ class ShopAction extends CommonAction {
       $endtime = $this -> _post('endtime', 'strtotime');
       $where['so.addtime'][] = array('lt', $endtime);
     }
-    $count = $order -> table('yesow_shop_order as so') -> where($where) -> count('id');
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    $count = $order -> table('yesow_shop_order as so') -> join('yesow_member as m ON so.mid = m.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -525,7 +528,7 @@ class ShopAction extends CommonAction {
 
   
   public function editshopordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
     $this -> display();
   }
 
