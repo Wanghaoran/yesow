@@ -1,3 +1,8 @@
+<style>
+#suggest ul {
+  width:400px;
+}
+</style>
 <div class="page">
 	<div class="pageContent">
 	
@@ -11,35 +16,35 @@
 	      </div>
 	<div class="unit">
 		<label>公司地址：</label>
-		<input type="text" class="required" name="org5.address" size="70" value="<!--{$result.address}--!>" />
+		<input type="text" readonly="readonly" name="org5.address" size="70" value="<!--{$result.address}--!>" />
 	      </div>
 	<div class="unit">
 		<label>主营业务</label>
-		<textarea name="org5.manproducts" cols="67"><!--{$result.manproducts}--!></textarea>
+		<textarea name="org5.manproducts" readonly="readonly" cols="67"><!--{$result.manproducts}--!></textarea>
 	</div>
 	
 	<div class="unit">
 		<label>公司电话:</label>
-		<input type="text" class="required" name="org5.companyphone"  value="<!--{$result.companyphone}--!>" />
+		<input type="text" readonly="readonly" name="org5.companyphone"  value="<!--{$result.companyphone}--!>" />
 		<label style="margin-left:85px;width:70px;">移动电话:</label>
-		<input type="text" class="required" name="org5.mobilephone" value="<!--{$result.mobilephone}--!>" />
+		<input type="text" readonly="readonly" name="org5.mobilephone" value="<!--{$result.mobilephone}--!>" />
 	</div>
 	<div class="unit">
 		<label>联系人:</label>
-		<input type="text" class="required" name="org5.linkman" value="<!--{$result.linkman}--!>" />
+		<input type="text" readonly="readonly" name="org5.linkman" value="<!--{$result.linkman}--!>" />
 		<label style="margin-left:85px;width:70px;">电子邮件:</label>
-		<input type="text" name="org5.email" value="<!--{$result.email}--!>" />
+		<input type="text" name="org5.email" readonly="readonly" value="<!--{$result.email}--!>" />
 	</div>
 	<div class="unit">
 		<label>联系QQ:</label>
-		<input type="text" name="org5.qqcode" value="<!--{$result.qqcode}--!>" />
+		<input type="text" name="org5.qqcode" readonly="readonly" value="<!--{$result.qqcode}--!>" />
 		<label style="margin-left:85px;width:70px;">所在地:</label>
 		<input type="text" name="org5.csname" size="7" readonly="readonly" value="<!--{$result.csname}--!>" /><span style="float:left;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span><input type="text" name="org5.csaname" size="7" readonly="readonly" value="<!--{$result.csaname}--!>" />
 		
 	</div>
 	<div class="unit">
 		<label>公司网址:</label>
-		<input type="text" name="org5.website" value="<!--{$result.website}--!>" />
+		<input type="text" name="org5.website" readonly="readonly" value="<!--{$result.website}--!>" />
 		<label style="margin-left:85px;width:70px;">主营类别:</label>
 		<input type="text" name="org5.cc2name" size="7" readonly="readonly" value="<!--{$result.ccname_one}--!>" /><span style="float:left;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span><input type="text" name="org5.cc1name" size="7" readonly="readonly" value="<!--{$result.ccname_two}--!>" />
 		
@@ -48,16 +53,23 @@
 	<h2 style="clear:both;margin-top:25px;">最新联系人信息</h2>
 	<div class="divider"></div>
 	<div class="unit">
+		<label>易搜帐号:</label>
+		<input name="org98.id" value="<!--{$result.mid}--!>" type="hidden">
+		<input class="required" name="org98.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org98" value="<!--{$result.mname}--!>"/>
+		<label style="margin-left:85px;width:70px;">所在单位:</label>
+		<input type="text" name="org5.unit" value="<!--{$result.unit}--!>"/>
+	</div>	
+	<div class="unit">
 		<label>联系人:</label>
 		<input type="text" class="required" name="org5.new_linkman" value="<!--{$result.new_linkman}--!>"/>
 		<label style="margin-left:85px;width:70px;">公司电话:</label>
-		<input type="text" class="required" name="org5.new_companyphone" value="<!--{$result.new_companyphone}--!>" />	
+		<input type="text" name="org5.new_companyphone" value="<!--{$result.new_companyphone}--!>" />	
 	</div>
 	<div class="unit">
 		<label>移动电话:</label>
 		<input type="text" class="required" name="org5.new_mobilephone" value="<!--{$result.new_mobilephone}--!>" />
 		<label style="margin-left:85px;width:70px;">联系QQ:</label>
-		<input type="text" class="required" name="org5.new_qqocde" value="<!--{$result.new_qqonline}--!>" />	
+		<input type="text" name="org5.new_qqocde" value="<!--{$result.new_qqonline}--!>" />	
 	</div>
 	<div class="unit">
 		<label>电子邮件:</label>
@@ -70,6 +82,7 @@
 		<input type="text" class="required"  readonly="readonly" value="<!--{$result.aname}--!>" />
 		</eq>
 	</div>
+	
 
 	<h2 style="clear:both;margin-top:25px;">客户信息</h2>
 	<div class="divider"></div>
@@ -92,33 +105,14 @@
 		<textarea name="feedback" cols="67"><!--{$result.feedback}--!></textarea>
 	</div>
 	<div class="unit">
-		<label>备注：</label>
+		<label>来源备注：</label>
 		<textarea name="remark" cols="67"><!--{$result.remark}--!></textarea>
 	</div>
 	<div class="unit">
-		<label>本次回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.addtime|date='Y-m-d', ###}--!>" />
-		<label style="margin-left:85px;width:70px;">状态:</label>
-		<eq name="result.status" value="1">
-		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
-		<else/>
-		<input type="radio" name="status" value="1" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" name="status" value="2" checked="checked" onclick="$('#nodeal').css('display', 'none');" /> 成交
-		</eq>
+		<label style="margin-left:120px;"><input type="checkbox" name="sendsms" /> 发送提醒短信</label>
+		<label style="margin-left:5px;"><input type="checkbox" name="sendemail" /> 发送提醒邮件</label>
 	</div>
-	<eq name="result.status" value="1">
-	<div class="unit" id="nodeal">
-	<else/>
-	<div class="unit" id="nodeal" style="display:none;">
-	</eq>
-		<label>未成交原因：</label>
-		<textarea name="nodeal" cols="67"><!--{$result.nodeal}--!></textarea>
-	</div>
-	<div class="unit">
-		<label>下次回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" value="<!--{$result.nexttime|date='Y-m-d', ###}--!>" />
-	</div>
+
 	<br/>
 	<div class="divider"></div>
 	<br/>

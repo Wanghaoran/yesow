@@ -22,7 +22,7 @@ class MassEmailSettingModel extends Model {
       $info['sex'] = $info['sex'] == 1 ? '男' : '女';
       $search = array('{member_id}', '{member_csid}', '{member_csaid}', '{member_name}', '{member_nickname}', '{member_fullname}', '{member_idnumber}', '{member_sex}', '{member_tel}', '{member_qqcode}', '{member_msn}', '{member_email}', '{member_address}', '{member_zipcode}', '{member_unit}', '{member_homepage}');
     }else if(strstr($type, 'review')){
-      $info = M('MemberReview') -> alias('r') -> field('r.name,r.new_linkman,r.new_companyphone,r.new_qqonline,r.new_email,r.nexttime,a.remark,r.linkman,r.new_mobilephone') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $id)) -> find();
+      $info = M('MemberReview') -> alias('r') -> field('r.name,r.new_linkman,r.new_companyphone,r.new_qqonline,r.new_email,tmc2.nexttime as nexttime,a.remark,r.linkman,r.new_mobilephone') -> join('yesow_admin as a ON r.aid = a.id') -> join('LEFT JOIN (SELECT rid,nexttime,status FROM (SELECT * FROM yesow_member_review_record ORDER BY rid ASC, nexttime DESC) as tmc GROUP BY rid) as tmc2 ON r.id = tmc2.rid') -> where(array('r.id' => $id)) -> find();
       $info['nexttime'] = date('Y年m月d日', $info['nexttime']);
       $search = array('{review_name}', '{review_new_linkman}', 'review_companyphone}', '{review_qqcode}', '{review_email}', '{review_nexttime}', '{review_aid}', '{review_linkman}', '{review_mobilephone}');
     }

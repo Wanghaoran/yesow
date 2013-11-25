@@ -528,7 +528,89 @@ class ShopAction extends CommonAction {
 
   
   public function editshopordermember(){
-    $this -> assign('result', M('Member') -> alias('m') -> field('m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> assign('result', M('Member') -> alias('m') -> field('m.id,m.name,m.nickname,m.tel,cs.name as csname,csa.name as csaname,edu.name as eduname,career.name as careername,m.email,m.sex,m.address,m.unit,m.homepage,m.fullname') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('yesow_member_edu as edu ON m.eduid = edu.id') -> join('yesow_member_career as career ON m.careerid = career.id') -> where(array('m.id' => $this -> _get('mid', 'intval'))) -> find());
+    $this -> display();
+  }
+
+  public function addreviewformshop(){
+
+    if(!empty($_POST['org5_name'])){
+      $MemberReview = M('MemberReview');
+      $data_add = array();
+      $data_add['aid'] = session(C('USER_AUTH_KEY'));
+      $data_add['mid'] = $this -> _post('mid', 'intval');
+      $data_add['name'] = $this -> _post('org5_name');
+      $data_add['address'] = $this -> _post('org5_address');
+      $data_add['manproducts'] = $this -> _post('org5_manproducts');
+      $data_add['companyphone'] = $this -> _post('org5_companyphone');
+      $data_add['mobilephone'] = $this -> _post('org5_mobilephone');
+      $data_add['linkman'] = $this -> _post('org5_linkman');
+      $data_add['email'] = $this -> _post('org5_email');
+      $data_add['qqcode'] = $this -> _post('org5_qqcode');
+      $data_add['csname'] = $this -> _post('org5_csname');
+      $data_add['csaname'] = $this -> _post('org5_csaname');
+      $data_add['ccname_one'] = $this -> _post('org5_cc1name');
+      $data_add['ccname_two'] = $this -> _post('org5_cc2name');
+      $data_add['website'] = $this -> _post('org5_website');
+      $data_add['new_linkman'] = $this -> _post('new_linkman');
+      $data_add['new_companyphone'] = $this -> _post('org5_new_companyphone');
+      $data_add['new_mobilephone'] = $this -> _post('new_mobilephone');
+      $data_add['new_qqonline'] = $this -> _post('new_qqocde');
+      $data_add['new_email'] = $this -> _post('new_email');
+      $data_add['unit'] = $this -> _post('unit');
+      $effect = '';
+      foreach($_POST['effect'] as $value){
+	if(!$effect){
+	  $effect .= $value;
+	}else{
+	  $effect .= ',' . $value;
+	}
+      }
+      $data_add['effect'] = $effect;
+      $data_add['wanttobuy'] = $this -> _post('wanttobuy');
+      $data_add['feedback'] = $this -> _post('feedback');
+      $data_add['remark'] = $this -> _post('remark');
+      $data_add['addtime'] = time();
+
+      if(!$MemberReview -> create($data_add)){
+	$this -> error($MemberReview -> getError());
+      }
+      if($rid = $MemberReview -> add()){
+	if(!empty($_POST['sendsms'])){
+	  D('MemberReviewSendSmsRecord') -> sendsms($rid);
+	}
+	if(!empty($_POST['sendemail'])){
+	  $to_email = $MemberReview -> getFieldByid($rid, 'new_email');
+	  D('MassEmailSetting') -> sendEmail('review_phone', $to_email, $rid);
+	}
+	//add record
+	$MemberReviewRecord = M('MemberReviewRecord');
+	$record_data = array();
+	$record_data['rid'] = $rid;
+	$record_data['nexttime'] = $this -> _post('nexttime', 'strtotime');
+	$record_data['addtime'] = time();
+	$record_data['nodeal'] = $this -> _post('nodeal');
+	$record_data['status'] = $this -> _post('status');
+	$MemberReviewRecord -> add($record_data);
+
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+
+    $member = M('Member');
+    $result = $member -> field('id,name,unit,fullname,tel,qqcode,email') -> find($this -> _get('mid', 'intval'));
+    $this -> assign('result', $result);
+    $effect_arr = array(
+      1 => '比较敷衍',
+      2 => '希望了解',
+      3 => '比较抗拒 ',
+      4 => '抗拒到理解',
+      5 => '需要考虑',
+      6 => '需要商量',
+    );
+    $this -> assign('effect_arr', $effect_arr);
     $this -> display();
   }
 

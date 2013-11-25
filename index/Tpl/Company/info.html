@@ -91,6 +91,9 @@ var clicknoview = function(){
 	  }else if(ress == 4){
 	  alert('您的账户余额已低于0元,无权进行任何操作！');
 	  window.open('__ROOT__/index.php/public/authorprompt/mod/nomoney');
+	  }else if(ress == 5){
+	  alert('您所在的包月会员当天免费条数已用完,且您的帐户余额低于0元,请充值！');
+	  window.open('__ROOT__/index.php/public/authorprompt/mod/nomoney');
 	  }else{
 	  alert('扣款失败！账户余额不足！');
 	  }

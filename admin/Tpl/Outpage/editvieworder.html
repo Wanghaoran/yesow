@@ -1,0 +1,132 @@
+<html>
+<head>
+  <title>用户 <!--{$mname}--!> 订单记录</title>
+</head>
+<body>
+<h1>用户 <!--{$mname}--!> 订单记录</h1>
+<hr/>
+<h3>人民币充值</h3>
+<table border="1" style="width:80%;">
+  <tr>
+    <th>订单号</th>
+    <th>订单金额</th>
+    <th>订单状态</th>
+    <th>支付方式</th>
+    <th>下单时间</th>
+    <th>是否审核</th>
+  </tr>
+  <volist name="rmb_order" id="ro">
+  <tr>
+    <td><!--{$ro.ordernum}--!></td>
+    <td><!--{$ro.price}--!></td>
+    <switch name="ro.status">
+      <case value="0"><td style="color:red;">未付款</td></case>
+      <case value="1"><td style="color:blue;">已付款 <span style="color:red">未发货</span></td></case>
+      <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
+      <case value="3"><td style="color:green;">交易完成</td></case>
+    </switch>
+    <td><!--{$ro.pname|default="&nbsp;"}--!></td>
+    <td><!--{$ro.addtime|date="Y-m-d H:i:s", ###}--!></td>
+    <eq name="ro.ischeck" value="1">
+      <td style="color:blue">已确认</td>
+    <else/>
+      <td style="color:red">未确认</td>
+    </eq>
+  </tr>
+  </volist>
+</table>
+<hr/>
+<h3>商城购物</h3>
+<table border="1" style="width:80%;">
+  <tr>
+    <th>订单号</th>
+    <th>订单金额</th>
+    <th>订单状态</th>
+    <th>支付方式</th>
+    <th>下单时间</th>
+    <th>是否审核</th>
+  </tr>
+  <volist name="shop_order" id="so">
+  <tr>
+    <td><!--{$so.ordernum}--!></td>
+    <td><!--{$so.paytotal}--!></td>
+    <switch name="so.paystatus">
+      <case value="0"><td style="color:red;">未付款</td></case>
+      <case value="1"><td style="color:blue;">已付款 <span style="color:red">未发货</span></td></case>
+      <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
+      <case value="3"><td style="color:green;">交易完成</td></case>
+    </switch>
+    <td><!--{$so.paytype|default="&nbsp;"}--!></td>
+    <td><!--{$so.addtime|date="Y-m-d H:i:s", ###}--!></td>
+    <eq name="so.ischeck" value="1">
+      <td style="color:blue">已确认</td>
+    <else/>
+      <td style="color:red">未确认</td>
+    </eq>
+  </tr>
+  </volist>
+</table>
+<hr/>
+<h3>会员包月</h3>
+<table border="1" style="width:80%;">
+  <tr>
+    <th>订单号</th>
+    <th>订单金额</th>
+    <th>订单状态</th>
+    <th>支付方式</th>
+    <th>下单时间</th>
+    <th>是否审核</th>
+  </tr>
+  <volist name="monthly_order" id="mo">
+  <tr>
+    <td><!--{$mo.ordernum}--!></td>
+    <td><!--{$mo.price}--!></td>
+    <switch name="mo.status">
+      <case value="0"><td style="color:red;">未付款</td></case>
+      <case value="1"><td style="color:blue;">已付款 <span style="color:red">未发货</span></td></case>
+      <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
+      <case value="3"><td style="color:green;">交易完成</td></case>
+    </switch>
+    <td><!--{$mo.paytype|default="&nbsp;"}--!></td>
+    <td><!--{$mo.addtime|date="Y-m-d H:i:s", ###}--!></td>
+    <eq name="mo.ischeck" value="1">
+      <td style="color:blue">已确认</td>
+    <else/>
+      <td style="color:red">未确认</td>
+    </eq>
+  </tr>
+  </volist>
+</table>
+<hr/>
+<h3>在线QQ</h3>
+<table border="1" style="width:80%;">
+  <tr>
+    <th>订单号</th>
+    <th>订单金额</th>
+    <th>订单状态</th>
+    <th>支付方式</th>
+    <th>下单时间</th>
+    <th>是否审核</th>
+  </tr>
+  <volist name="qqonline_order" id="qo">
+  <tr>
+    <td><!--{$qo.ordernum}--!></td>
+    <td><!--{$qo.price}--!></td>
+    <switch name="qo.status">
+      <case value="0"><td style="color:red;">未付款</td></case>
+      <case value="1"><td style="color:blue;">已付款 <span style="color:red">未发货</span></td></case>
+      <case value="2"><td style="color:blue;">已发货 <span style="color:red">未收货</span></td></case>
+      <case value="3"><td style="color:green;">交易完成</td></case>
+    </switch>
+    <td><!--{$qo.paytype|default="&nbsp;"}--!></td>
+    <td><!--{$qo.addtime|date="Y-m-d H:i:s", ###}--!></td>
+    <eq name="qo.ischeck" value="1">
+      <td style="color:blue">已确认</td>
+    <else/>
+      <td style="color:red">未确认</td>
+    </eq>
+  </tr>
+  </volist>
+</table>
+</body>
+</html>

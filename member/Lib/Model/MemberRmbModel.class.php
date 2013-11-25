@@ -105,4 +105,15 @@ class MemberRmbModel extends Model {
     $data_rmb['rmb_pay'] = $price['rmb_pay'] + $money;
     return $this -> save($data_rmb);
   }
+
+  //只从充值金额中减去金额，不可为负
+  public function lessonlypayno($money, $mid=''){
+    $mid = !empty($mid) ? $mid : $_SESSION[C('USER_AUTH_KEY')];
+    $pay = $this -> getFieldBymid($mid, 'rmb_pay');
+    if($pay < $money){
+      return false;
+    }else{
+      return $this -> where(array('mid' => $mid)) -> setDec('rmb_pay', $money);
+    }
+  }
 }

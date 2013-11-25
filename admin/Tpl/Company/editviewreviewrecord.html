@@ -1,37 +1,3 @@
-<script>
-var wwwww = function(){
-  $.pdialog.reload('__URL__/editreviewrecord/id/<!--{$Think.get.id}--!>', '', 'editreviewrecord');
-}
-
-var editrecord = function(id){
-  var text = $('#text' + id);
-  var time = $('#time' + id);
-  text.attr("disabled",false);
-  time.attr("disabled",false);
-  text.removeClass('disabled');
-  text.addClass('textArea');
-  text.after('<input type="button" value="提交" onclick="submitedit(' + id + ')"><input type="button" value="取消" onclick="wwwww();" />');
-}
-
-var submitedit = function(id){
-  $.ajax({
-      url:'__URL__/editeditreviewrecord',
-      type:'POST',
-      data:'id=' + id + '&nodeal=' + $('#text' + id).val() + '&addtime=' + $('#time' + id).val(),
-      success: function(ress){
-      console.log(ress.statusCode);
-        if(ress.statusCode == 1){
-	  alert('数据更新成功!');
-	  wwwww();
-	}else{
-	  alert('数据更新失败!');
-	}
-      },
-      dataType:'json'
-    })
-}
-</script>
-
 <div class="page">
 	<div class="pageContent">
 	
@@ -81,12 +47,6 @@ var submitedit = function(id){
 	
 	<h2 style="clear:both;margin-top:25px;">最新联系人信息</h2>
 	<div class="divider"></div>
-	<div class="unit">
-		<label>易搜帐号:</label>
-		<input  type="text" readonly="readonly" value="<!--{$result.mname}--!>"/>
-		<label style="margin-left:85px;width:70px;">所在单位:</label>
-		<input type="text" readonly="readonly" value="<!--{$result.unit}--!>"/>
-	</div>
 	<div class="unit">
 		<label>联系人:</label>
 		<input type="text" class="required" value="<!--{$result.new_linkman}--!>" readonly="readonly"/>
@@ -139,17 +99,14 @@ var submitedit = function(id){
 
 	<input type="hidden" name="rid" value="<!--{$Think.get.id}--!>" />
 	
+	<h2 style="clear:both;margin-top:25px;">回访记录</h2>
 
 		  <volist name="result_record" id="r">
 
 
 		<div class="divider"></div>
 	<div class="unit">
-		<eq name="i" value="1">
-		<label>添加日期：</label>
-		<else/>
 		<label>回访日期：</label>
-		</eq>
 		<input type="text" readonly="true" id="time<!--{$r.id}--!>" disabled="true" class="date textInput" value="<!--{$r.nexttime|date='Y-m-d', ###}--!>" />
 		<label style="margin-left:85px;width:70px;">状态:</label>
 		<eq name="r.status" value="1">
@@ -185,47 +142,10 @@ var submitedit = function(id){
 		<textarea cols="67" id="text<!--{$r.id}--!>" disabled="true"><!--{$r.nodeal}--!></textarea>
 	</div>
 		  </volist>	  
-	
-
-
-<h2 style="clear:both;margin-top:25px;">提交本次回访记录</h2>
-<div class="divider"></div>
-	<div class="unit">
-		<label>本次回访日期：</label>
-		<input type="text" readonly="true" disabled="true" class="textInput" value="<!--{:date('Y-m-d')}--!>" />
-		<label style="margin-left:85px;width:70px;">状态:</label>
-		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
-		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交
-
-	</div>
-	<div class="unit" id="nodeal">
-
-		<label>未成交原因：</label>
-		<textarea name="nodeal" cols="67"></textarea>
-	</div>
-	<div class="unit">
-		<label>下次回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" />
-		<label style="margin-left:90px;"><input type="checkbox" name="sendsms" /> 发送提醒短信</label>
-		<label style="margin-left:-25px;"><input type="checkbox" name="sendemail" /> 发送提醒邮件</label>
-	</div>
-
 
 <br/>
-
+<br/>
 </div>
-
-
-
-
-
-
-		<div class="formBar">
-		  <ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
 	</form>
 	
 	</div>

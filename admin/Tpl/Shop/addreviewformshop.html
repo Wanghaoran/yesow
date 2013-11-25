@@ -5,14 +5,13 @@
 </style>
 <script>
 var checkorder = function(){
-  var mid = $('#review_mname').val();
-  window.open('__APP__/Outpage/editvieworder/mid/' + mid);
+  window.open('__APP__/Outpage/editvieworder/mid/<!--{$result.id}--!>');
 }
 </script>
 <div class="page">
 	<div class="pageContent">
 	
-	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberreview" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/addreviewformshop" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
 		<div class="pageFormContent" layoutH="58">
 		  <h2>速查数据信息</h2>
 		  <div class="divider"></div>
@@ -60,26 +59,26 @@ var checkorder = function(){
 	<div class="divider"></div>
 	<div class="unit">
 		<label>易搜帐号:</label>
-		<input name="org5.mid" value="" type="hidden" id="review_mname">
-		<input name="org5.mname" type="text" suggestFields="mname" suggestUrl="__APP__/public/ajaxgetmemberinfomore" lookupGroup="org5"/>
+		<input type="text" readonly="readonly" value="<!--{$result.name}--!>" />
+		<input type="hidden" name="mid" value="<!--{$result.id}--!>" />
 		<label style="margin-left:85px;width:70px;">所在单位:</label>
-		<input type="text" name="org5.unit" />	
+		<input type="text" name="unit" value="<!--{$result.unit}--!>" />	
 	</div>
 	<div class="unit">
 		<label>联系人:</label>
-		<input type="text" class="required" name="org5.new_linkman" />
+		<input type="text" class="required" name="new_linkman" value="<!--{$result.fullname}--!>" />
 		<label style="margin-left:85px;width:70px;">公司电话:</label>
 		<input type="text" name="org5.new_companyphone" />	
 	</div>
 	<div class="unit">
 		<label>移动电话:</label>
-		<input type="text" class="required" name="org5.new_mobilephone" />
+		<input type="text" class="required" name="new_mobilephone" value="<!--{$result.tel}--!>" />
 		<label style="margin-left:85px;width:70px;">联系QQ:</label>
-		<input type="text" name="org5.new_qqocde" />	
+		<input type="text" name="new_qqocde" value="<!--{$result.qqcode}--!>" />	
 	</div>
 	<div class="unit">
 		<label>电子邮件:</label>
-		<input type="text" name="org5.new_email" />
+		<input type="text" name="new_email"  value="<!--{$result.email}--!>" />
 		<label style="margin-left:85px;width:70px;">查看订单:</label>
 		<input type="button" value="订单" onclick="checkorder();">
 	</div>
@@ -101,7 +100,7 @@ var checkorder = function(){
 		<textarea name="feedback" cols="67"></textarea>
 	</div>
 	<div class="unit">
-		<label>来源备注：</label>
+		<label>备注：</label>
 		<textarea name="remark" cols="67"></textarea>
 	</div>
 	<h2 style="clear:both;margin-top:25px;">本次回访记录</h2>

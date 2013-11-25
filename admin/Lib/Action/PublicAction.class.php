@@ -196,6 +196,15 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  public function ajaxgetmemberinfomore(){
+    $username = $this -> _post('inputValue');
+    $member = M('Member');
+    $where = array();
+    $where['name'] = array('like', '%' . $username . '%');
+    $result = $member -> field('id as mid,name as mname,unit,fullname as new_linkman,tel as new_mobilephone,qqcode as new_qqocde,email as new_email') -> where($where) -> limit(10) -> select();
+    echo json_encode($result);
+  }
+
   public function ajaxgetcompanyinfo(){
     $companyname = $this -> _post('inputValue');
     $company = M('Company');

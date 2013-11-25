@@ -152,6 +152,11 @@ class PublicAction extends Action {
       echo 4;
       return ;
     }
+    //如果已经没有免费查看条数,并且帐户余额小于0,也直接退出
+    if(!D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num') && $_SESSION['rmb_total'] < 0){
+      echo 5;
+      return ;
+    }
     //判断是否需要隐藏提示信息
     if($_GET['noshow'] == 'true'){
       session('company_noshow', 'true');

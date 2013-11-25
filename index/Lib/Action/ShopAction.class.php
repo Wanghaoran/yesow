@@ -188,6 +188,9 @@ class ShopAction extends CommonAction {
     $payport = M('Payport');
     $result_pay = $payport -> field('name,enname') -> where(array('status' => 1)) -> select();
     $this -> assign('result_pay', $result_pay);
+    //用户充值余额
+    $member_pay_balance = M('MemberRmb') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'rmb_pay');
+    $this -> assign('member_pay_balance', $member_pay_balance);
     //清空购物车
     D('ShopCart') -> delshop('all');
     $this -> display();
@@ -211,7 +214,7 @@ class ShopAction extends CommonAction {
     $const = M('ShopOrder') -> getFieldbyordernum($_GET['orderid'], 'paytotal');
     //扣费
     $rmb = D('member://MemberRmb');
-    if(!$rmb -> lessrmb($const)){
+    if(!$rmb -> lessonlypayno($const)){
       R('Register/errorjump',array(L('RMB_ERROR')));
     }
     $shop_order = M('ShopOrder');

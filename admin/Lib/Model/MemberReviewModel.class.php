@@ -19,11 +19,12 @@ class MemberReviewModel extends Model {
     'org5_new_mobilephone' => 'new_mobilephone',
     'org5_new_qqocde' => 'new_qqonline',
     'org5_new_email' => 'new_email',
+    'org5_mid' => 'mid',
+    'org5_unit' => 'unit',
   );
 
   protected $_auto = array(
     array('effect', 'checkeffect', 3, 'callback'),
-    array('nexttime', 'strtotime', 3, 'function'),
     array('addtime', 'time', 1, 'function'),
   );
 

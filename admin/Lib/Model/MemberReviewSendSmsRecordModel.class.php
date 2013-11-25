@@ -7,7 +7,7 @@ class MemberReviewSendSmsRecordModel extends Model {
 
     $result_content = $MemberReviewSetting -> getFieldByname('sendsmstemplate', 'value');
 
-    $company_info = $MemberReview -> alias('r') -> field('r.name,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.nexttime,r.linkman,a.remark') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $rid)) -> find();
+    $company_info = $MemberReview -> alias('r') -> field('r.name,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,tmc2.nexttime as nexttime,r.linkman,a.remark') -> join('yesow_admin as a ON r.aid = a.id') -> join('LEFT JOIN (SELECT rid,nexttime,status FROM (SELECT * FROM yesow_member_review_record ORDER BY rid ASC, nexttime DESC) as tmc GROUP BY rid) as tmc2 ON r.id = tmc2.rid') -> where(array('r.id' => $rid)) -> find();
     $company_info['sendtime'] = date('Y-m-d H:i:s');
     $company_info['nexttime'] = date('Y-m-d', $company_info['nexttime']);
 
