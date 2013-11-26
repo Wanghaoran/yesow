@@ -106,7 +106,11 @@
 
 		<div class="divider"></div>
 	<div class="unit">
+		<eq name="i" value="1">
+		<label>添加日期：</label>
+		<else/>
 		<label>回访日期：</label>
+		</eq>
 		<input type="text" readonly="true" id="time<!--{$r.id}--!>" disabled="true" class="date textInput" value="<!--{$r.nexttime|date='Y-m-d', ###}--!>" />
 		<label style="margin-left:85px;width:70px;">状态:</label>
 		<eq name="r.status" value="1">

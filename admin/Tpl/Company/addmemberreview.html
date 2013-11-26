@@ -107,8 +107,9 @@ var checkorder = function(){
 	<h2 style="clear:both;margin-top:25px;">本次回访记录</h2>
 	<div class="divider"></div>
 	<div class="unit">
-		<label>下次回访日期：</label>
-		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" />
+		<label>本次回访日期：</label>
+		<input type="text" readonly="true" disabled="true" class="textInput" value="<!--{:date('Y-m-d')}--!>" />
+		
 		<label style="margin-left:85px;width:70px;">状态:</label>
 		<input type="radio" name="status" value="1" checked="checked" onclick="$('#nodeal').css('display', 'block');" /> 未成交 
 		<input type="radio" name="status" value="2" onclick="$('#nodeal').css('display', 'none');" /> 成交 
@@ -118,8 +119,10 @@ var checkorder = function(){
 		<textarea name="nodeal" cols="67"></textarea>
 	</div>
 	<div class="unit">
-		<label style="margin-left:120px;"><input type="checkbox" name="sendsms" /> 发送提醒短信</label>
-		<label style="margin-left:5px;"><input type="checkbox" name="sendemail" /> 发送提醒邮件</label>
+		<label>下次回访日期：</label>
+		<input type="text" readonly="true" class="date textInput readonly" name="nexttime" />
+		<label style="margin-left:90px;"><input type="checkbox" name="sendsms" /> 发送提醒短信</label>
+		<label style="margin-left:-25px;"><input type="checkbox" name="sendemail" /> 发送提醒邮件</label>
 	</div>
 	<br/>
 	<div class="divider"></div>
