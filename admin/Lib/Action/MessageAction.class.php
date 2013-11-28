@@ -1787,5 +1787,9 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  public function smsgateway(){
+  
+  }
+
   
 }

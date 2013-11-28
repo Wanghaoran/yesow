@@ -131,7 +131,7 @@ class IndexAction extends CommonAction {
       $where['csid'] = $csid;
     }
     $where['delaid'] = array('exp', 'is NULL');
-    $new_company = $company -> field('id,name,updatetime') -> order('id DESC') -> where($where) -> limit(20) -> select();
+    $new_company = $company -> field('id,name,updatetime') -> order('updatetime DESC') -> where($where) -> limit(20) -> select();
     $this -> assign('new_company', $new_company);
   }
 
