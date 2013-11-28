@@ -1788,8 +1788,156 @@ class MessageAction extends CommonAction {
   }
 
   public function smsgateway(){
-  
+    $SmsApi = M('SmsApi');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['name'] = array('like', '%' . $this -> _post('name') . '%');
+    }
+
+    $count = $SmsApi -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $SmsApi -> field('id,name,enable,addtime,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
   }
 
+  public function addsmsgateway(){
+    if(!empty($_POST['name'])){
+      $SmsApi = D('SmsApi');
+      if(!$SmsApi -> create()){
+	$this -> error($SmsApi -> getError());
+      }
+      if($SmsApi -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delsmsgateway(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SmsApi = M('SmsApi');
+    if($SmsApi -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editsmsgateway(){
+    $SmsApi = M('SmsApi');
+    if(!empty($_POST['name'])){
+      if(!$SmsApi -> create()){
+	$this -> error($SmsApi -> getError());
+      }
+      if($SmsApi -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SmsApi -> field('name,url,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function editsmsgatewayenable(){
+    $SmsApi = M('SmsApi');
+    $SmsApi -> execute("update yesow_sms_api set enable=0");
+    if($SmsApi -> where(array('id' => $this -> _get('id', 'intval'))) -> setField('enable', 1)){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editsmsgatewayparameters(){
+    $SmsApiParameters = M('SmsApiParameters');
+    $where = array();
+    $where['aid'] = $this -> _request('aid', 'intval');
+    if(!empty($_POST['name'])){
+      $where['key'] = array('like', '%' . $this -> _post('name') . '%');
+    }
+
+    $count = $SmsApiParameters -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $SmsApiParameters -> field('id,key,value,remark,callback') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function addeditsmsgatewayparameters(){
+    if(!empty($_POST['key'])){
+      $SmsApiParameters = D('SmsApiParameters');
+      if(!$SmsApiParameters -> create()){
+	$this -> error($SmsApiParameters -> getError());
+      }
+      if($SmsApiParameters -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function deleditsmsgatewayparameters(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SmsApiParameters = M('SmsApiParameters');
+    if($SmsApiParameters -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editeditsmsgatewayparameters(){
+    $SmsApiParameters = M('SmsApiParameters');
+    if(!empty($_POST['key'])){
+      if(!$SmsApiParameters -> create()){
+	$this -> error($SmsApiParameters -> getError());
+      }
+      if($SmsApiParameters -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SmsApiParameters -> field('key,value,remark,callback') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
   
 }
