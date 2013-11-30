@@ -12,6 +12,18 @@
 		<label>返回参数描述：</label>
 		<input type="text" name="value" size="40" value="<!--{$result.value}--!>" />
 	</div>
+	<div class="unit">
+		<label>状态：</label>
+		<select name="status" class="combox">
+		  <eq name="result.status" value="1">
+		  <option value="0">失败</option>
+		  <option value="1" selected="selected">成功</option>
+		  <else/>
+		  <option value="0" selected="selected">失败</option>
+		  <option value="1">成功</option>
+		  </eq>
+		  </select>
+	</div>
 	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
 </div>
 		<div class="formBar">

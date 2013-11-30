@@ -1959,7 +1959,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $SmsApiCallback -> field('id,key,value') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $SmsApiCallback -> field('id,key,value,status') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
@@ -1996,7 +1996,7 @@ class MessageAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $SmsApiCallback -> field('key,value') -> find($this -> _get('id', 'intval'));
+    $result = $SmsApiCallback -> field('key,value,status') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
