@@ -1939,5 +1939,77 @@ class MessageAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  public function editsmsgatewaycallback(){
+    $SmsApiCallback = M('SmsApiCallback');
+    $where = array();
+    $where['aid'] = $this -> _request('aid', 'intval');
+    if(!empty($_POST['name'])){
+      $where['key'] = array('like', '%' . $this -> _post('name') . '%');
+    }
+
+    $count = $SmsApiCallback -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $SmsApiCallback -> field('id,key,value') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function addeditsmsgatewaycallback(){
+    if(!empty($_POST['key'])){
+      $SmsApiCallback = D('SmsApiCallback');
+      if(!$SmsApiCallback -> create()){
+	$this -> error($SmsApiCallback -> getError());
+      }
+      if($SmsApiCallback -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function editeditsmsgatewaycallback(){
+    $SmsApiCallback = M('SmsApiCallback');
+    if(!empty($_POST['key'])){
+      if(!$SmsApiCallback -> create()){
+	$this -> error($SmsApiCallback -> getError());
+      }
+      if($SmsApiCallback -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $SmsApiCallback -> field('key,value') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function deleditsmsgatewaycallback(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $SmsApiCallback = M('SmsApiCallback');
+    if($SmsApiCallback -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
   
 }
