@@ -48,26 +48,8 @@
 					<td><!--{$r.sendphone|substr_replace="****",3,4}--!></td>
 					<td><!--{$r.sendtype}--!></td>
 					<td>-<!--{$r.price}--!></td>
-					<switch name="r.statuscode">
-					<case value="0" break="1">
-					<td style="color:green;">发送成功</td>
-					</case>
-					<case value="1" break="1">
-					<td style="color:red;">用户名或密码错误</td>
-					</case>
-					<case value="2" break="1">
-					<td style="color:red;">余额不足</td>
-					</case>
-					<case value="3" break="1">
-					<td style="color:red;">手机号或内容为空或错误</td>
-					</case>
-					<case value="4" break="1">
-					<td style="color:red;">其他参数错误</td>
-					</case>
-					<case value="5" break="1">
-					<td style="color:red;">发送失败</td>
-					</case>
-					</switch>
+					<td><!--{$r.statuscode}--!></td>
+
 					
 				      </tr>
 				      </volist>

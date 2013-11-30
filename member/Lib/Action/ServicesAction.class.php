@@ -1714,8 +1714,99 @@ class ServicesAction extends CommonAction {
       //写消费日志
       $MemberRmbDetail = D('member://MemberRmbDetail');
       $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信', '消费', '-' . $cost);
-      
 
+      $MemberSendSmsRecord = M('MemberSendSmsRecord');
+      //过滤敏感词
+      $SendSmsIllegalWord = M('SendSmsIllegalWord');
+      //需要过滤的词的数组
+      $illegal_word_temp = $SendSmsIllegalWord -> field('name') -> order('id') -> select();
+      //需要替换的词的数组
+      $replace_word_temp = $SendSmsIllegalWord -> field('replace') -> order('id') -> select();
+      //整理这两个数组
+      $illegal_word = array();
+      $replace_word = array();
+      foreach($illegal_word_temp as $key => $value){
+	$illegal_word[] = $value['name'];
+      }
+      foreach($replace_word_temp as $key => $value){
+	$replace_word[] = $value['replace'];
+      }
+
+      //退费总额
+      $total_back = 0;
+
+
+      //读取目前启用的端口
+      $SmsApi = M('SmsApi');
+      $sms_url = $SmsApi -> field('id,url') -> where('enable=1') -> find();
+      //读取端口参数
+      $SmsApiParameters = M('SmsApiParameters');
+      $sms_parameter = $SmsApiParameters -> field('key,value,callback') -> where(array('aid' => $sms_url['id'])) -> select();
+
+
+      //执行发送
+      foreach($to_send as $value){
+	if($value['id']){
+	  $company_info = M('Company') -> table('yesow_company as c') -> field('LEFT(c.name,15) as name,LEFT(c.linkman,3) as linkman') -> where(array('c.id' => $value['id'])) -> find();
+	  $search = array('{company_names}', '{l}');
+	  $content = str_replace($search, $company_info, $_POST['content']);
+	}else{
+	  $content = $_POST['content'];
+	}
+	$content = str_replace(' ', ',', $content);
+	$content = str_replace($illegal_word, $replace_word, $content);
+
+	//制作参数替换数组
+	$parament_key_arr = array();
+	$parament_value_arr = array();
+	foreach($sms_parameter as $value33){
+	  $parament_key_arr[$value33['key']] = '{' . $value33['key'] . '}';
+	  $parament_value_arr[$value33['key']] = $value33['value'];
+	}
+
+	$parament_value_arr['MOBILE'] = $value['tel'];
+	$parament_value_arr['CONTENT'] = $content;
+
+	//生成请求URL
+	$sms_send_url = str_replace($parament_key_arr, $parament_value_arr, $sms_url['url']);
+
+
+	$fp = fopen($sms_send_url, 'rb');
+	$ret= fgetss($fp,255);
+	fclose($fp);
+
+	//读取返回参数
+	$SmsApiCallback = M('SmsApiCallback');
+	$call_back = $SmsApiCallback -> field('value,status') -> where(array('key' => $ret, 'aid' => $sms_url['id'])) -> find();
+
+	//记录发送信息
+	$data_rec = array();
+	$data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
+	$data_rec['sendtime'] = time();
+	$data_rec['content'] = $content;
+	$data_rec['sendphone'] = $value['tel'];
+	$data_rec['sendtype'] = $_POST['sendtype'];
+	$data_rec['price'] = $send_phone_price * $sms_num;
+
+	//发送失败退费
+	if($call_back['status'] == 0){
+	  $total_back += $send_phone_price * $sms_num;
+	}
+	$data_rec['statuscode'] = $call_back['value'];
+	$MemberSendSmsRecord -> add($data_rec);
+	usleep(25000);
+      }
+      if($total_back != 0){
+	//退费
+	$MemberRmb -> addmoney('rmb_exchange', $total_back);
+	//写日志
+	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
+      }
+
+
+
+
+      /*
       //读取发送配置
       $setting = M('SmsSetting');
       $sms_username = $setting -> getFieldByname('sms_username', 'value');
@@ -1784,6 +1875,7 @@ class ServicesAction extends CommonAction {
 	//写日志
 	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
       }
+       */
       //重新缓存用户余额
       $MemberRmb -> rmbtotal();
       //清空信息
