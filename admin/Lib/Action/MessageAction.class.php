@@ -1805,7 +1805,28 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $SmsApi -> field('id,name,enable,addtime,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $SmsApi -> field('id,name,enable,addtime,remark,account') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+
+    foreach($result as $key => $value){
+      if($value['id'] != 5){
+	$result[$key]['accounts'] = file_get_contents($value['account']);
+      }else{
+	$balance = file_get_contents($value['account']);
+	preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+	foreach($balance_arr[1] as $key2 => $value2){
+	  if($key2 != 0){
+	    if(empty($result[$key]['accounts'])){
+	      $result[$key]['accounts'] .= $value2;
+	    }else{
+	      $result[$key]['accounts'] .= ' / ' . $value2;
+	    }
+	    
+	  }
+	  
+	}
+      }
+      
+    }
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
@@ -1853,7 +1874,7 @@ class MessageAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $SmsApi -> field('name,url,remark') -> find($this -> _get('id', 'intval'));
+    $result = $SmsApi -> field('name,url,remark,account') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }

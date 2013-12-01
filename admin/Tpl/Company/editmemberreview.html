@@ -54,8 +54,9 @@
 	<div class="divider"></div>
 	<div class="unit">
 		<label>易搜帐号:</label>
-		<input name="org98.id" value="<!--{$result.mid}--!>" type="hidden">
-		<input class="required" name="org98.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org98" value="<!--{$result.mname}--!>"/>
+		<input name="org5.mid" value="<!--{$result.mid}--!>" type="hidden">
+		<input class="required" name="org5.mname" type="text" suggestFields="mname" suggestUrl="__APP__/public/ajaxgetmemberinfomore" lookupGroup="org5" value="<!--{$result.mname}--!>"/>
+
 		<label style="margin-left:85px;width:70px;">所在单位:</label>
 		<input type="text" name="org5.unit" value="<!--{$result.unit}--!>"/>
 	</div>	
