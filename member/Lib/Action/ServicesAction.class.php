@@ -1764,8 +1764,10 @@ class ServicesAction extends CommonAction {
 	  $parament_value_arr[$value33['key']] = $value33['value'];
 	}
 
-	$parament_value_arr['MOBILE'] = $value['tel'];
-	$parament_value_arr['CONTENT'] = $content;
+	if($sms_url['id'] == 3 || $sms_url['id'] == 4){
+	  $parament_value_arr['MOBILE'] = $value['tel'];
+	  $parament_value_arr['CONTENT'] = $content;
+	}	
 
 	//生成请求URL
 	$sms_send_url = str_replace($parament_key_arr, $parament_value_arr, $sms_url['url']);
