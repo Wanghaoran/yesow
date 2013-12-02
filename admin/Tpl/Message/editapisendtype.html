@@ -12,6 +12,18 @@
 		<label>API状态码：</label>
 		<input type="text" class="required" name="apicode" value="<!--{$result.apicode}--!>" />
 	</div>
+	<div class="unit">
+		<label>所属短信网关:</label>
+		<select class="combox" name="aid">
+		  <volist name="result_api" id="ra">
+		  <eq name="result.aid" value="$ra.id">
+		  <option value="<!--{$ra.id}--!>" selected="selected"><!--{$ra.name}--!></option>
+		  <else/>
+		  <option value="<!--{$ra.id}--!>"><!--{$ra.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	</div>
 	
 	<div class="unit">
 		<label>备注：</label>

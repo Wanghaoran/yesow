@@ -783,10 +783,10 @@ class MessageAction extends CommonAction {
     $sendtype = M('SmsSendType');
     $where = array();
     if(!empty($_POST['name'])){
-      $where['name'] = array('like', '%' . $this -> _post('name') . '%');
+      $where['t.name'] = array('like', '%' . $this -> _post('name') . '%');
     }
 
-    $count = $sendtype -> where($where) -> count('id');
+    $count = $sendtype -> alias('t') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -797,8 +797,25 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $sendtype -> field('id,name,apicode,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $sendtype -> alias('t') -> field('t.id,t.name,t.apicode,t.remark,a.name as aname,a.account,t.aid') -> join('yesow_sms_api as a ON t.aid = a.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
 
+    $check = false;
+    foreach($result as $key => $value){
+      if($value['aid'] == 5 && !$check){
+	$balance = file_get_contents($value['account']);
+	preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+	$check = true;
+	$result[0]['balance'] = $balance_arr[1][1];
+	$result[1]['balance'] = $balance_arr[1][2];
+	$result[2]['balance'] = $balance_arr[1][3];
+      }
+      if($value['aid'] != 5){
+	$result[$key]['balance'] = file_get_contents($value['account']);
+      }
+    
+    }
+
+    /*
     $setting = M('SmsSetting');
     $sms_username = $setting -> getFieldByname('sms_username', 'value');
     $sms_password = $setting -> getFieldByname('sms_password', 'value');
@@ -808,6 +825,7 @@ class MessageAction extends CommonAction {
       $result[$key]['balance'] = $balance_arr[1][$value['apicode']];
     }
     $this -> assign('balance_arr', $balance_arr);
+     */
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -828,6 +846,9 @@ class MessageAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
+    $SmsApi = M('SmsApi');
+    $result_api = $SmsApi -> field('id,name') -> select();
+    $this -> assign('result_api', $result_api);
     $this -> display();
   }
 
@@ -854,8 +875,11 @@ class MessageAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $sendtype -> field('name,apicode,remark') -> find($this -> _get('id', 'intval'));
+    $result = $sendtype -> field('name,apicode,remark,aid') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
+    $SmsApi = M('SmsApi');
+    $result_api = $SmsApi -> field('id,name') -> select();
+    $this -> assign('result_api', $result_api);
     $this -> display();
   }
 
