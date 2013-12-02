@@ -15,24 +15,45 @@ class MemberReviewSendSmsRecordModel extends Model {
 
     $content = str_replace($search, $company_info, $result_content);
 
-    $setting = M('SmsSetting');
-    $sms_username = $setting -> getFieldByname('sms_username', 'value');
-    $sms_password = $setting -> getFieldByname('sms_password', 'value');
+    //读取目前启用的端口
+    $SmsApi = M('SmsApi');
+    $sms_url = $SmsApi -> field('id,name,url') -> where('enable=1') -> find();
+    //读取端口参数
+    $SmsApiParameters = M('SmsApiParameters');
+    $sms_parameter = $SmsApiParameters -> field('key,value,callback') -> where(array('aid' => $sms_url['id'])) -> select();
 
-    $url = "http://www.vip.86aaa.com/api.aspx?SendType=1&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$company_info['new_mobilephone']}&Content={$content}【易搜】";
-    $url = iconv('UTF-8', 'GB2312', $url);
-    $fp = fopen($url, 'rb');
-    $ret= fgetss($fp,255);
-    fclose($fp);
-    if($ret === false){
-      $ret = 5;
+    //制作参数替换数组
+    $parament_key_arr = array();
+    $parament_value_arr = array();
+    foreach($sms_parameter as $value33){
+      $parament_key_arr[$value33['key']] = '{' . $value33['key'] . '}';
+      $parament_value_arr[$value33['key']] = $value33['value'];
     }
+    if($sms_url['id'] == 3 || $sms_url['id'] == 4){
+      $parament_value_arr['MOBILE'] = $company_info['new_mobilephone'];
+      $parament_value_arr['CONTENT'] = urlencode($content);
+    }else if($sms_url['id'] == 5){
+      $parament_value_arr['Mobi'] = $company_info['new_mobilephone'];
+      $parament_value_arr['Content'] = urlencode($content .'【易搜】');
+      //$parament_value_arr['SendType'] = $_POST['sendtype'];
+    }
+
+    $sms_send_url = str_replace($parament_key_arr, $parament_value_arr, $sms_url['url']);
+
+    $fp = fopen($sms_send_url, 'rb');
+    $ret= fgetss($fp,255);
+    $ret = intval($ret);
+    fclose($fp);
+
+    //读取返回参数
+    $SmsApiCallback = M('SmsApiCallback');
+    $call_back = $SmsApiCallback -> field('value,status') -> where(array('key' => $ret, 'aid' => $sms_url['id'])) -> find();
 
     $data = array();
     $data['accepttel'] = $company_info['new_mobilephone'];
     $data['content'] = $content;
     $data['sendtime'] = time();
-    $data['status'] = $ret;
+    $data['status'] = $call_back['value'];
     $this -> add($data);
   }
 }
