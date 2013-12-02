@@ -931,7 +931,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendphone,mssr.statuscode,sst.name as sendtype,mssr.price') -> join('yesow_sms_send_type as sst ON mssr.sendtype = sst.id') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $result = $MemberSendSmsRecord -> table('yesow_member_send_sms_record as mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendphone,mssr.statuscode,mssr.sendtype,mssr.price') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

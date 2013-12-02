@@ -1502,15 +1502,18 @@ class ServicesAction extends CommonAction {
   public function sendsms(){
     //发送通道
     $sendtype = M('SmsSendType');
-    $result_sendtype = $sendtype -> field('apicode,name,remark') -> select();
-    $setting = M('SmsSetting');
-    $sms_username = $setting -> getFieldByname('sms_username', 'value');
-    $sms_password = $setting -> getFieldByname('sms_password', 'value');
-    $balance = file_get_contents('http://www.vip.86aaa.com/api.aspx?SendType=101&Code=utf-8&UserName=' . $sms_username . '&Pwd=' . $sms_password . '');
-    preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
-    foreach($result_sendtype as $key => $value){
-      $result_sendtype[$key]['balance'] = $balance_arr[1][$value['apicode']];
+    $result_sendtype = $sendtype -> alias('t') -> field('t.apicode,t.name,t.remark,t.aid,a.account') -> join('yesow_sms_api as a ON t.aid = a.id') -> where('a.enable=1') -> select();
+
+    if($result_sendtype[0]['aid'] == 5){
+      $balance = file_get_contents($result_sendtype[0]['account']);
+      preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+      foreach($result_sendtype as $key => $value){
+	 $result_sendtype[$key]['balance'] = $balance_arr[1][$value['apicode']];
+      }
+    }else{
+      $result_sendtype[0]['balance'] = file_get_contents($result_sendtype[0]['account']);
     }
+    
     $this -> assign('result_sendtype', $result_sendtype);
     //发送价格
     $setting = M('SmsSetting');
@@ -1738,7 +1741,7 @@ class ServicesAction extends CommonAction {
 
       //读取目前启用的端口
       $SmsApi = M('SmsApi');
-      $sms_url = $SmsApi -> field('id,url') -> where('enable=1') -> find();
+      $sms_url = $SmsApi -> field('id,name,url') -> where('enable=1') -> find();
       //读取端口参数
       $SmsApiParameters = M('SmsApiParameters');
       $sms_parameter = $SmsApiParameters -> field('key,value,callback') -> where(array('aid' => $sms_url['id'])) -> select();
@@ -1766,15 +1769,20 @@ class ServicesAction extends CommonAction {
 
 	if($sms_url['id'] == 3 || $sms_url['id'] == 4){
 	  $parament_value_arr['MOBILE'] = $value['tel'];
-	  $parament_value_arr['CONTENT'] = $content;
-	}	
+	  $parament_value_arr['CONTENT'] = urlencode($content);
+	}else if($sms_url['id'] == 5){
+	  $parament_value_arr['Mobi'] = $value['tel'];
+	  $parament_value_arr['Content'] = urlencode($content .'【易搜】');
+	  $parament_value_arr['SendType'] = $_POST['sendtype'];
+	}
+
 
 	//生成请求URL
 	$sms_send_url = str_replace($parament_key_arr, $parament_value_arr, $sms_url['url']);
 
-
 	$fp = fopen($sms_send_url, 'rb');
 	$ret= fgetss($fp,255);
+	$ret = intval($ret);
 	fclose($fp);
 
 	//读取返回参数
@@ -1787,7 +1795,7 @@ class ServicesAction extends CommonAction {
 	$data_rec['sendtime'] = time();
 	$data_rec['content'] = $content;
 	$data_rec['sendphone'] = $value['tel'];
-	$data_rec['sendtype'] = $_POST['sendtype'];
+	$data_rec['sendtype'] = $sms_url['name'];
 	$data_rec['price'] = $send_phone_price * $sms_num;
 
 	//发送失败退费
@@ -2029,7 +2037,7 @@ class ServicesAction extends CommonAction {
     $count = $MemberSendSmsRecord -> alias('a') -> where($where) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
-    $result = $MemberSendSmsRecord -> alias('a') -> field('a.sendtime,a.content,a.sendphone,a.statuscode,t.name as sendtype,a.price') -> join('yesow_sms_send_type as t ON a.sendtype = t.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('a.sendtime DESC') -> select();
+    $result = $MemberSendSmsRecord -> alias('a') -> field('a.sendtime,a.content,a.sendphone,a.statuscode,a.sendtype,a.price') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('a.sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
