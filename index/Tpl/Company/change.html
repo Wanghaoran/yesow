@@ -49,6 +49,7 @@
     var qqcode = /[1-9][0-9]{4,}/;
     var website = /[a-zA-z]+:\/\/[^\s]*/;
     var addtel = /^[0-9]\d*$/;
+    var addnumber = /^\d{17}(\d|x|X)$/;
     if($('#companyname')[0].value == ''){
       $('#companyname').focus();
       alert('公司名称不能为空');
@@ -99,7 +100,7 @@
       alert('改错人身份证号不能为空');
       return false;
     }
-    if(!addtel.exec($('#addnumberid')[0].value)){
+    if(!addnumber.exec($('#addnumberid')[0].value)){
       $('#addnumberid').focus();
       alert('改错人身份证号格式不对');
       return false;

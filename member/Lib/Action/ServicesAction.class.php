@@ -1711,12 +1711,15 @@ class ServicesAction extends CommonAction {
     //消费金额
     $cost = count($to_send) * $send_phone_price * $sms_num;
 
+    //发送总条数
+    $send_count = count($to_send) * $sms_num;
+
     //扣费
     $MemberRmb = D('member://MemberRmb');
     if($MemberRmb -> autolessmoney($cost)){
       //写消费日志
       $MemberRmbDetail = D('member://MemberRmbDetail');
-      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信', '消费', '-' . $cost);
+      $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信(共 ' . $send_count . ' 条)', '消费', '-' . $cost);
 
       $MemberSendSmsRecord = M('MemberSendSmsRecord');
       //过滤敏感词
@@ -1809,8 +1812,10 @@ class ServicesAction extends CommonAction {
       if($total_back != 0){
 	//退费
 	$MemberRmb -> addmoney('rmb_exchange', $total_back);
+	//退费数量
+	$back_num = $total_back / $send_phone_price;
 	//写日志
-	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
+	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费(共 ' . back_num . ' )', '退费', '+' . ($total_back));
       }
 
 

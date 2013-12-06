@@ -44,7 +44,7 @@
 		  <tr>
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="10">编号</th>
-			<th width="120">接入商名称：</th>
+			<th width="120">接口名称</th>
 			<th width="90">参数管理</th>
 			<th width="60">短信余额</th>
 			<th width="160">备注</th>
@@ -59,7 +59,7 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
-			  <td><a href="__URL__/editsmsgatewayparameters/aid/<!--{$r.id}--!>" target="navTab" rel="editsmsgatewayparameters" title="<!--{$r.name}--!>" style="color:blue;">参数管理</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a href="__URL__/editsmsgatewaycallback/aid/<!--{$r.id}--!>" target="navTab" rel="editsmsgatewaycallback" title="<!--{$r.name}--!>" style="color:blue;">返回参数</a></td>
+			  <td><a href="__URL__/editsmsgatewayparameters/aid/<!--{$r.id}--!>" target="navTab" rel="editsmsgatewayparameters" title="<!--{$r.name}--!>" style="color:blue;">参数管理</a>/<a href="__URL__/editsmsgatewaycallback/aid/<!--{$r.id}--!>" target="navTab" rel="editsmsgatewaycallback" title="<!--{$r.name}--!>" style="color:blue;">返回参数</a></td>
 			  <td><!--{$r.accounts}--!></td>
 			  <td><!--{$r.remark}--!></td>
 			  <eq name="r.enable" value="1">	  

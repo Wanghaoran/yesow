@@ -885,7 +885,7 @@ class MessageAction extends CommonAction {
 
   public function sendsmssetting(){
     $setting = M('SmsSetting');
-    if(!empty($_POST['sms_username'])){
+    if(!empty($_POST['search_phone_price'])){
       $where = array();
       $data = array();
       $num = 0;
@@ -1907,9 +1907,9 @@ class MessageAction extends CommonAction {
     $SmsApi = M('SmsApi');
     $SmsApi -> execute("update yesow_sms_api set enable=0");
     if($SmsApi -> where(array('id' => $this -> _get('id', 'intval'))) -> setField('enable', 1)){
-      $this -> success(L('DATA_DELETE_SUCCESS'));
+      $this -> success(L('接口启用成功'));
     }else{
-      $this -> error(L('DATA_DELETE_ERROR'));
+      $this -> error(L('接口启用失败'));
     }
   }
 
