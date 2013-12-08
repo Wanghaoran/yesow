@@ -9,7 +9,8 @@ class MemberLevelModel extends Model {
     //如果存在包月会员，则使用包月会员的等级
     if($level_monthly = D('index://Monthly') -> monthlylevel()){
       session('member_level_id', $level_monthly['mid']);
-      session('member_level_name', '包月' . $level_monthly['name']);
+      $prefix_name = $level_monthly['type'] == 1 ? '全国' : '省级';
+      session('member_level_name', $prefix_name . '包月' . $level_monthly['name']);
     }
   }
 

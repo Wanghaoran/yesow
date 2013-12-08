@@ -2296,7 +2296,17 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,tmp.name as tname,tmpt.name as tmpname,tmpt.csname as csname,m.starttime,m.endtime,tmpt.nickname,m.ischeck') -> join('LEFT JOIN (SELECT ml.name,mm.id FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,m.nickname FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id) as tmpt ON m.mid = tmpt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.starttime DESC') -> select();
+    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,tmp.name as tname,tmpt.name as tmpname,tmpt.csname as csname,m.starttime,m.endtime,tmpt.nickname,m.ischeck,m.type') -> join('LEFT JOIN (SELECT ml.name,mm.id FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,m.nickname FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id) as tmpt ON m.mid = tmpt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.starttime DESC') -> select();
+
+    $MonthlyChildsite = M('MonthlyChildsite');
+    foreach($result as $key => $value){
+      if($value['type'] == 2){
+	$child_site_arr = $MonthlyChildsite -> alias('mc') -> field('cs.name') -> where(array('mc.monthlyid' => $value['id'])) -> join('yesow_child_site as cs ON mc.csid = cs.id') -> select();
+	foreach($child_site_arr as $value2){
+	  $result[$key]['monthlu_childsite'] .= $value2['name'] . ',';
+	}	
+      }
+    }
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -2311,7 +2321,13 @@ class CompanyAction extends CommonAction {
       if(!$monthly -> create()){
 	$this -> error($monthly -> getError());
       }
-      if($monthly -> add()){
+      if($mid = $monthly -> add()){
+	if($_POST['type'] == 2){
+	  $MonthlyChildsite = M('MonthlyChildsite');
+	  foreach($_POST['childsite'] as $value){
+	    $MonthlyChildsite -> add(array('monthlyid' => $mid, 'csid' => $value));
+	  }
+	}
 	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
 	$this -> error(L('DATA_ADD_ERROR'));
@@ -2320,6 +2336,8 @@ class CompanyAction extends CommonAction {
     $member_monthly = M('MemberMonthly');
     $result_level = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();
     $this -> assign('result_level', $result_level);
+    $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   
   }
@@ -2341,13 +2359,19 @@ class CompanyAction extends CommonAction {
       if(!$monthly -> create()){
 	$this -> error($monthly -> getError());
       }
-      if($monthly -> save()){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
-      }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
+      $monthly -> save();
+      //Delete monthly_childsite
+      $MonthlyChildsite = M('MonthlyChildsite');
+      $MonthlyChildsite -> where(array('monthlyid' => $_POST['id'])) -> delete();
+      //Add monthly_childsite
+      if($_POST['type'] == 2){
+	foreach($_POST['childsite'] as $value){
+	  $MonthlyChildsite -> add(array('monthlyid' => $_POST['id'], 'csid' => $value));
+	}	
       }
+      $this -> success(L('DATA_UPDATE_SUCCESS'));
     }
-    $result = $monthly -> table('yesow_monthly as m') -> field('m.monid,m.starttime,m.endtime,mr.name as mname') -> join('yesow_member as mr ON m.mid = mr.id') -> where(array('m.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,m.monid,m.starttime,m.endtime,mr.name as mname,m.type') -> join('yesow_member as mr ON m.mid = mr.id') -> where(array('m.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $member_monthly = M('MemberMonthly');
     $result_level = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();
@@ -2356,6 +2380,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_monthly', $result_monthly);
     $result_monthlu_month = $member_monthly -> field('id,months') -> where(array('lid' => $result_monthly['lid'])) -> order('months ASC') -> select();
     $this -> assign('result_monthlu_month', $result_monthlu_month);
+    $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $monthly_childsite_temp = M('MonthlyChildsite') -> field('csid') -> where(array('monthlyid' => $result['id'])) -> select();
+    $monthly_childsite = array();
+    foreach($monthly_childsite_temp as $value){
+      $monthly_childsite[] = $value['csid'];
+    }
+    $this -> assign('monthly_childsite', $monthly_childsite);
     $this -> display();
   }
 

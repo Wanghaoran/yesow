@@ -58,6 +58,7 @@
 			<th width="60">用户名</th>
 			<th width="60">昵称</th>
 			<th width="60">用户等级</th>
+			<th width="40">包月类型</th>
 			<th width="60">所属站点</th>
 			<th width="120">开始时间</th>
 			<th width="120">结束时间</th>
@@ -74,6 +75,11 @@
 		  <td><!--{$r.tmpname}--!></td>
 			  <td><!--{$r.nickname}--!></td>
 			  <td><!--{$r.tname}--!></td>
+			  <eq name="r.type" value="1">
+			  <td style="color:blue">全国包月</td>
+			  <else/>
+			  <td style="color:green" title="<!--{$r.monthlu_childsite}--!>">省级包月</td>
+			  </eq>
 			  <td><!--{$r.csname}--!></td>
 			  <td><!--{$r.starttime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><!--{$r.endtime|date="Y-m-d H:i:s", ###}--!></td>

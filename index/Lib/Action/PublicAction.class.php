@@ -112,9 +112,15 @@ class PublicAction extends Action {
     //查询设置的有效时间
     $viewtime = M('CompanySetup') -> getFieldByname('viewtime', 'value');
     //如果存在会员包月，且没超过相应条数，则查询相关信息
-    if($less_num = D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num')){
+    if($less_num = D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num', $_GET['csid'])){
+
       //查询每天查看的数量
-      $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_one_num');
+      if(D('Monthly') -> isallmonthly()){
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_one_num');
+      }else{
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_one_num_area');
+      }
+      
       echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
       return;
     }
@@ -284,9 +290,13 @@ class PublicAction extends Action {
     $member_level = M('MemberLevel');
     $result = $member_level -> field('rmb_three,author_seven') -> find(session('member_level_id'));
     //如果是包月会员，且还有条数
-    if($less_num = D('Monthly') -> ismonthlylimit('下载', 'monthly_three_num')){
+    if($less_num = D('Monthly') -> ismonthlylimit('下载', 'monthly_three_num', $_GET['csid'])){
       //查询每天查看的数量
-      $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_three_num');
+      if(D('Monthly') -> isallmonthly()){
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_three_num');
+      }else{
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_three_num_area');
+      }
       //type =1 代表是包月会员
       $result['type'] = 1;
       $result['see_num'] = $see_num;
@@ -670,9 +680,15 @@ class PublicAction extends Action {
   public function ajaxonecopy(){
     $member_level = M('MemberLevel');
     $result = $member_level -> field('rmb_two,author_six') -> find(session('member_level_id'));
-    if($less_num = D('Monthly') -> ismonthlylimit('复制', 'monthly_two_num')){
-      //查询每天查看的数量
-      $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_two_num');
+    if($less_num = D('Monthly') -> ismonthlylimit('复制', 'monthly_two_num', $_GET['csid'])){
+
+      //查询每天复制的数量
+      if(D('Monthly') -> isallmonthly()){
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_two_num');
+      }else{
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_two_num_area');
+      }
+      
       //type =1 代表是包月会员
       $result['type'] = 1;
       $result['see_num'] = $see_num;

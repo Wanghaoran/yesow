@@ -30,7 +30,7 @@ body {
   //单个复制
   var onecopy = function(res){
     $.ajax({
-      url: "__APP__/public/ajaxonecopy",
+url: "__APP__/public/ajaxonecopy/csid/<!--{$result.csid}--!>",
       dataType: "json",
       success: function(msg){
 	if(msg.author_six == 0){
@@ -70,7 +70,7 @@ body {
 <script type="text/javascript">
   var clickview = function(){
     $.ajax({
-      url:'__APP__/public/ajaxmembercompany',
+      url:'__APP__/public/ajaxmembercompany/csid/<!--{$result.csid}--!>',
       success: function(ress){
         $('#isblock2').html(ress);
         $("#isblock2").css("display","block");
@@ -181,7 +181,7 @@ function submitcommit(){
 var onedownload = function(){
   $.ajax({
 	type: "POST",
-	url: "__APP__/public/ajaxonedownload",
+	url: "__APP__/public/ajaxonedownload/csid/<!--{$result.csid}--!>",
 	dataType: "json",
 	success: function(msg){
 	  if(msg.author_seven == 0){

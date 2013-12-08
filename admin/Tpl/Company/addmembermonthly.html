@@ -10,7 +10,7 @@
 				<input class="required" name="org2.name" type="text required" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org2"/>
 	</div>
 	<div class="unit">
-		<label>包月类型</label>
+		<label>包月等级</label>
 		<select class="combox" ref="monid" refUrl="__APP__/public/ajaxgetmonthlytype/id/{value}">
 		    <option value="">请选择</option>
 		    <volist name="result_level" id="rl">
@@ -20,6 +20,18 @@
 		  <select class="combox" name="monid" id="monid">
 		    <option value="">请选择</option>
 		  </select>
+	</div>
+	<div class="unit">
+		<label>包月类型：</label>
+		<input type="radio" name="type" value="1" checked="checked" onclick="$('#area').hide();" />全国包月
+		<input type="radio" name="type" value="2" onclick="$('#area').show();" />省级包月
+	      </div>
+	<div class="unit" id="area" style="display:none;">
+	<div style="margin-left:120px;margin-right:30px;">
+	<volist name="result_childsite" id="rc">
+	<input type="checkbox" name="childsite[]" value="<!--{$rc.id}--!>" /> <!--{$rc.name}--!>
+	</volist>
+	</div>
 	</div>
 	
 	<div class="unit">
