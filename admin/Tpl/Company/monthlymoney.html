@@ -54,6 +54,7 @@
 		     <th width="5"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
 			<th width="60">会员等级</th>
+			<th width="40">包月类型</th>
 			<th width="60">包月数</th>
 			<th width="60">市场价</th>
 			<th width="60">促销价</th>
@@ -67,6 +68,11 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.lname}--!></td>
+			  <eq name="r.type" value="1">
+			  <td style="color:blue">全国包月</td>
+			  <else/>
+			  <td style="color:green">省级包月</td>
+			  </eq>
 			  <td><!--{$r.months}--!></td>
 			  <td><!--{$r.marketprice}--!></td>
 			  <td><!--{$r.promotionprice}--!></td>

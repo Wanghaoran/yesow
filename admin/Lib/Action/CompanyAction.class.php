@@ -3188,7 +3188,7 @@ class CompanyAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,ml.name as lname,mm.months,mm.marketprice,mm.promotionprice,mm.remark') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> order('ml.updatemoney ASC,mm.months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,ml.name as lname,mm.months,mm.marketprice,mm.promotionprice,mm.remark,mm.type') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> order('ml.updatemoney ASC,mm.months ASC,mm.type ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
     $result_level = M('MemberLevel') -> field('id,name') -> order('updatemoney ASC') -> select();
     $this -> assign('result_level', $result_level);
@@ -3242,7 +3242,7 @@ class CompanyAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $level_monthly -> field('lid,months,marketprice,promotionprice,remark') -> find($this -> _get('id', 'intval'));
+    $result = $level_monthly -> field('lid,months,marketprice,promotionprice,remark,type') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $result_level = M('MemberLevel') -> field('id,name') -> order('updatemoney ASC') -> select();
     $this -> assign('result_level', $result_level);

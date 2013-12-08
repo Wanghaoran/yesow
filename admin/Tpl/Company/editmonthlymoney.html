@@ -21,6 +21,16 @@
 		<input type="text" class="required digits" name="months" value="<!--{$result.months}--!>" />
 	      </div>
 	<div class="unit">
+		<label>包月类型：</label>
+		<eq name="result.type" value="1">
+		<input type="radio" name="type" value="1" checked="checked" />全国包月
+		<input type="radio" name="type" value="2" />省级包月
+		<else/>
+		<input type="radio" name="type" value="1" />全国包月
+		<input type="radio" name="type" value="2" checked="checked" />省级包月
+		</eq>
+	      </div>
+	<div class="unit">
 		<label>市场价：</label>
 		<input type="text" class="required" name="marketprice" value="<!--{$result.marketprice}--!>" />
 	      </div>

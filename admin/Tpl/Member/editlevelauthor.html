@@ -8,7 +8,9 @@
 	    <h1><!--{$name}--!></h1>
 	    <div class="divider"></div>
 	    <div class="unit">
-	      <label style="width:95%">包月会员每天查看条数： <input type="text" class="required" size="10" name="monthly_one_num" value="<!--{$result.monthly_one_num}--!>" style="float:none;"/> 条/天</label>
+	      <label style="width:95%"><span style="color:blue">全国包月</span>会员每天查看条数： <input type="text" class="required" size="10" name="monthly_one_num" value="<!--{$result.monthly_one_num}--!>" style="float:none;"/> 条/天</label>
+	      <br /><br />
+		<label style="width:95%"><span style="color:green">省级包月</span>会员每天查看条数： <input type="text" class="required" size="10" name="monthly_one_num_area" value="<!--{$result.monthly_one_num_area}--!>" style="float:none;"/> 条/天</label>
 	      <br /><br />
 	      <label style="width:95%">查看一条速查详细信息，扣款： <input type="text" class="required" size="10" name="rmb_one" value="<!--{$result.rmb_one}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
 	      <br /><br />
@@ -38,7 +40,9 @@
 		    <input type="checkbox" name="author[]" value="author_five" /> 查看网址
 		    </eq>
 		    <div class="divider"></div>
-		    <label style="width:95%">包月会员每天复制条数： <input type="text" class="required" size="10" name="monthly_two_num" value="<!--{$result.monthly_two_num}--!>" style="float:none;"/> 条/天</label>
+		    <label style="width:95%"><span style="color:blue">全国包月</span>会员每天复制条数： <input type="text" class="required" size="10" name="monthly_two_num" value="<!--{$result.monthly_two_num}--!>" style="float:none;"/> 条/天</label>
+		    <br /><br />
+		    <label style="width:95%"><span style="color:green">省级包月</span>会员每天复制条数： <input type="text" class="required" size="10" name="monthly_two_num_area" value="<!--{$result.monthly_two_num_area}--!>" style="float:none;"/> 条/天</label>
 		    <br /><br />
 		    <label style="width:95%">复制速查信息，扣款： <input type="text" class="required" size="10" name="rmb_two" value="<!--{$result.rmb_two}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
 		     <br /><br />
@@ -53,7 +57,9 @@
 		    <input type="checkbox" name="author[]" value="author_ten" /> 批量复制
 		    </eq>
 		    <div class="divider"></div>
-		    <label style="width:95%">包月会员每天下载条数： <input type="text" class="required" size="10" name="monthly_three_num" value="<!--{$result.monthly_three_num}--!>" style="float:none;"/> 条/天</label>
+		    <label style="width:95%"><span style="color:blue">全国包月</span>会员每天下载条数： <input type="text" class="required" size="10" name="monthly_three_num" value="<!--{$result.monthly_three_num}--!>" style="float:none;"/> 条/天</label>
+		    <br /><br />
+		    <label style="width:95%"><span style="color:green">省级包月</span>会员每天下载条数： <input type="text" class="required" size="10" name="monthly_three_num_area" value="<!--{$result.monthly_three_num_area}--!>" style="float:none;"/> 条/天</label>
 		    <br /><br />
 		    <label style="width:95%">下载速查信息，扣款： <input type="text" class="required" size="10" name="rmb_three" value="<!--{$result.rmb_three}--!>" style="float:none;"/> 元/条 (默认0.10元/条)</label>
 		    <br /><br />
