@@ -80,7 +80,7 @@ class MonthlyModel extends CommonModel {
     $where_monthly['starttime'] = array('ELT', time());
     $where_monthly['mid'] = $mid;
     $result = $this -> field('id,type') -> where($where_monthly) -> order('starttime DESC') -> find();
-    if($type == 1){
+    if($result['type'] == 1){
       return true;
     }else{
       return false;
