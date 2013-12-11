@@ -154,12 +154,12 @@ class PublicAction extends Action {
   //ajax确认查看速查资料
   public function ajaxconfirmview(){
     //如果账户余额小于0,并且不是包月会员，则直接退出
-    if($_SESSION['rmb_total'] < 0 && !D('Monthly') -> ismonthly()){
+    if($_SESSION['rmb_total'] < 0 && !D('Monthly') -> ismonthly($_GET['csid'])){
       echo 4;
       return ;
     }
     //如果已经没有免费查看条数,并且帐户余额小于0,也直接退出
-    if(!D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num') && $_SESSION['rmb_total'] < 0){
+    if(!D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num', $_GET['csid']) && $_SESSION['rmb_total'] < 0){
       echo 5;
       return ;
     }
@@ -170,7 +170,7 @@ class PublicAction extends Action {
     $isfree = false;//是否是免费查看
     $ismonthly = false;//是否是包月查看
     //如果是会员包月，且还有条数,需单独处理
-    if(D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num')){
+    if(D('Monthly') -> ismonthlylimit('查看', 'monthly_one_num', $_GET['csid'])){
       //查询此条速查信息，用于记录日志
       $cid = $this -> _get('cid', 'intval');
       $companyname = M('Company') -> getFieldByid($cid, 'name');
@@ -316,7 +316,7 @@ class PublicAction extends Action {
     //查出公司名
     $company = M('Company') -> getFieldByid($this -> _get('cid', 'intval'), 'name');
     //如果是包月会员且有效，则写包月会员日志，并记录条数
-    if($less_num = D('Monthly') -> ismonthlylimit('下载', 'monthly_three_num')){
+    if($less_num = D('Monthly') -> ismonthlylimit('下载', 'monthly_three_num', $_GET['csid'])){
       //写日志
       D('MemberMonthlyDetail') -> writelog('下载', '单条下载名片详细内容[<span style="color:blue">' . msubstr($company, 0, 6) . '</span>]');
       //记录本次查看记录
@@ -707,7 +707,7 @@ class PublicAction extends Action {
     //查出资料
     $result = M('Company') -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,cs.name as csname,csa.name as csaname,cc.name as ccname,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_company_category as cc ON c.ccid = cc.id') -> where(array('c.id' => $this -> _get('cid', 'intval'))) -> find();
     //如果是包月会员且有效，则写包月会员日志，并记录条数
-    if($less_num = D('Monthly') -> ismonthlylimit('复制', 'monthly_two_num')){
+    if($less_num = D('Monthly') -> ismonthlylimit('复制', 'monthly_two_num', $_GET['csid'])){
       //写日志
       D('MemberMonthlyDetail') -> writelog('复制', '单条复制名片详细内容[<span style="color:blue">' . msubstr($result['name'], 0, 6) . '</span>]');
       //记录本次查看记录

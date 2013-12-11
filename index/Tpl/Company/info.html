@@ -46,7 +46,7 @@ url: "__APP__/public/ajaxonecopy/csid/<!--{$result.csid}--!>",
 	  if(confirm(confirmstr)){
 	    //请求内容
 	    $.ajax({
-	      url: "__APP__/public/doajaxonecopy/cid/<!--{$Think.get.id}--!>",
+url: "__APP__/public/doajaxonecopy/cid/<!--{$Think.get.id}--!>/csid/<!--{$result.csid}--!>",
 	      success: function(ress){
 		if(window.clipboardData){
 		  window.clipboardData.setData("text",ress);
@@ -108,9 +108,9 @@ var clicknoview = function(){
 
 var confirmview = function(){
   if($("#noshow").attr("checked")){
-    var urls = '__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>/noshow/true';
+    var urls = '__APP__/public/ajaxconfirmview/csid/<!--{$result.csid}--!>/cid/<!--{$Think.get.id}--!>/noshow/true';
   }else{
-    var urls = '__APP__/public/ajaxconfirmview/cid/<!--{$Think.get.id}--!>';
+    var urls = '__APP__/public/ajaxconfirmview/csid/<!--{$result.csid}--!>/cid/<!--{$Think.get.id}--!>';
   }
     $.ajax({
       url: urls,
@@ -191,9 +191,9 @@ var onedownload = function(){
 	      if(msg.type == 1){
 	        if(confirm('尊敬的包月会员:您今日可免费下载的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次下载需要1条,请确认')){
 		  $.ajax({
-	 	    url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>",
+	 	    url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>/csid/<!--{$result.csid}--!>",
 		    success: function(){
-		      location.href = '__APP__/public/doonedownload_down/cid/<!--{$Think.get.id}--!>';
+		    location.href = '__APP__/public/doonedownload_down/cid/<!--{$Think.get.id}--!>/csid/<!--{$result.csid}--!>';
 		      }
 		  });
 		}
