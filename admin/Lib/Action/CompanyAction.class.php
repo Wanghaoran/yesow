@@ -2206,14 +2206,14 @@ class CompanyAction extends CommonAction {
       $mid = $this -> _post('mid', 'intval');
       $member_rmb -> startTrans();
       if($_POST['oldmoney'] > 0){
-	$member_rmb -> autolessmoney($_POST['oldmoney'], $mid);
+	$member_rmb -> autolessmoney2($_POST['oldmoney'], $mid);
       }else{
 	$member_rmb -> addmoney('rmb_exchange', abs($_POST['oldmoney']), $mid);
       }
       if($_POST['money'] > 0){
 	$member_rmb -> addmoney('rmb_exchange', $_POST['money'], $mid);
       }else{
-	$member_rmb -> autolessmoney($_POST['money'], $mid);
+	$member_rmb -> autolessmoney2($_POST['money'], $mid);
       }
       if(!$member_rmb_detail -> create()){
 	$this -> error($member_rmb_detail -> getError());
@@ -2239,7 +2239,7 @@ class CompanyAction extends CommonAction {
     $del_money_arr = $member_rmb_detail -> field('mid,money') -> where(array('id' => array('in', $_POST['ids']))) -> select();
     foreach($del_money_arr as $value){
       if($value['money'] > 0){
-	$member_rmb -> autolessmoney($value['money'], $value['mid']);
+	$member_rmb -> autolessmoney2($value['money'], $value['mid']);
       }else{
 	$member_rmb -> addmoney('rmb_exchange', abs($value['money']), $value['mid']);
       }
@@ -2336,7 +2336,7 @@ class CompanyAction extends CommonAction {
     $member_monthly = M('MemberMonthly');
     $result_level = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();
     $this -> assign('result_level', $result_level);
-    $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time DESC') -> select();
+    $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time ASC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $this -> display();
   
@@ -2380,7 +2380,7 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_monthly', $result_monthly);
     $result_monthlu_month = $member_monthly -> field('id,months') -> where(array('lid' => $result_monthly['lid'])) -> order('months ASC') -> select();
     $this -> assign('result_monthlu_month', $result_monthlu_month);
-    $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time DESC') -> select();
+    $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time ASC') -> select();
     $this -> assign('result_childsite', $result_childsite);
     $monthly_childsite_temp = M('MonthlyChildsite') -> field('csid') -> where(array('monthlyid' => $result['id'])) -> select();
     $monthly_childsite = array();

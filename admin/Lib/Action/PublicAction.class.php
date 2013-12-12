@@ -193,6 +193,9 @@ class PublicAction extends Action {
     $where = array();
     $where['name'] = array('like', '%' . $username . '%');
     $result = $member -> field('id,name') -> where($where) -> limit(10) -> select();
+    if($frist = $member -> field('id,name') -> where(array('name' => $username)) -> find()){
+      array_unshift($result, $frist);
+    }
     echo json_encode($result);
   }
 
@@ -226,10 +229,14 @@ class PublicAction extends Action {
   public function ajaxgetmonthlytype(){
     $member_monthly = M('MemberMonthly');
     $lid = $this -> _get('id', 'intval');
-    $result_tmp = $member_monthly -> field('id,months') -> where(array('lid' => $lid)) -> order('months ASC') -> select();
+    $result_tmp = $member_monthly -> field('id,months,type') -> where(array('lid' => $lid)) -> order('months ASC') -> select();
     $result = array();
     foreach($result_tmp as $key => $value){
-      $result[] = array($value['id'], $value['months'] . '个月');
+      if($value['type'] == 1){
+	$result[] = array($value['id'], $value['months'] . '个月(全国)');
+      }else{
+	$result[] = array($value['id'], $value['months'] . '个月(包省)');
+      }
     }
     echo json_encode($result);
   }

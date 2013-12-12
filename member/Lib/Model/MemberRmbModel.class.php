@@ -98,6 +98,30 @@ class MemberRmbModel extends Model {
     }
   }
 
+  //先减少 rmb_exchange 字段，不够的再减 rmb_pay 字段 可以为负
+  public function autolessmoney2($money, $mid){
+    $mid = !empty($mid) ? $mid : $_SESSION[C('USER_AUTH_KEY')];
+    $money = abs($money);
+    //查出两种余额
+    $price = $this -> field('rmb_pay,rmb_exchange') -> find($mid);
+    //如果 兑换RMB余额足够扣除
+    if($price['rmb_exchange'] >= $money){
+      $data_rmb = array();
+      $data_rmb['mid'] = $mid;
+      $data_rmb['rmb_exchange'] = $price['rmb_exchange'] - $money;     
+      return $this -> save($data_rmb);
+    }else{
+      //如果兑换RMB不足够支付此次信息，则用充值RMB支付
+      //计算差值
+      $fee = $money - $price['rmb_exchange'];
+      $data_rmb = array();
+      $data_rmb['mid'] = $mid;
+      $data_rmb['rmb_pay'] = $price['rmb_pay'] - $fee;
+      $data_rmb['rmb_exchange'] = 0;
+      return $this -> save($data_rmb);
+    }
+  }
+
   //只从充值金额中减去金额,可以为负
   public function lessonlypay($money, $mid){
     $data_rmb = array();
