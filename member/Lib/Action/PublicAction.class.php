@@ -203,7 +203,22 @@ class PublicAction extends Action {
   //ajax获取包月价格及等级权限
   public function getmonthlymoney(){
     $member_monthly = M('MemberMonthly');
-    $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num,ml.monthly_two_num,ml.monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where(array('mm.lid' => $this -> _get('lid', 'intval'))) -> order('mm.months ASC') -> select();
+    $where = array();
+    $where['mm.type'] = $this -> _get('tid', 'intval');
+    $where['mm.lid'] = $this -> _get('lid', 'intval');
+    if($_GET['tid'] == 1){
+      $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num,ml.monthly_two_num,ml.monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
+    }else{
+      $result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num_area as monthly_one_num,ml.monthly_two_num_area as monthly_two_num,ml.monthly_three_num_area as monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
+    }
+    
+    echo json_encode($result);
+  }
+
+  //ajax获取分站
+  public function ajaxgetcsid(){
+    $ChildSite = M('ChildSite');
+    $result = $ChildSite -> field('id,name') -> order('id ASC') -> select();
     echo json_encode($result);
   }
 

@@ -496,14 +496,25 @@ class PayAction extends Action {
 	//如果更新成功，并且订单状态是从未付款到已付款，则写包月主表
 	if($monthly_order -> where($where) -> save($data) && $now_status == 0){
 	  //获取购买的月份
-	  $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
+	  $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
 	  $data = array();
 	  $data['mid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'mid');
 	  $data['monid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'monid');
+	  $data['starttime'] = $month['type'];
+	  
 	  $data['starttime'] = time();
 	  $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	  //写用户主表
-	  M('Monthly') -> add($data);
+	  $mid = M('Monthly') -> add($data);
+	  if($month['type'] == 2){
+	    $csid_arr = M('MonthlyOrderChildsite') -> field('csid') -> where(array('monthlyordernum' => $out_trade_no)) -> select();
+	    $csid_add = array();
+	    $csid_add['monthlyid'] = $mid;
+	    foreach($csid_arr as $value){
+	      $csid_add['csid'] = $value['csid'];
+	      M('MonthlyChildsite') -> add($csid_add);
+	    }
+	  }
 	  //sendEmail
 	  D('admin://OrderAcceptEmail') -> sendOrderEmail('MonthlyOrder', $out_trade_no);
 	}
@@ -643,14 +654,24 @@ class PayAction extends Action {
 	    $data['paytype'] = '财付通';
 	    if($monthly_order -> where($where) -> save($data)){
 	      //获取购买的月份
-	      $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
+	      $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
 	      $data = array();
 	      $data['mid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'mid');
 	      $data['monid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'monid');
+	      $data['starttime'] = $month['type'];
 	      $data['starttime'] = time();
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
-	      M('Monthly') -> add($data);
+	      $mid = M('Monthly') -> add($data);
+	      if($month['type'] == 2){
+		$csid_arr = M('MonthlyOrderChildsite') -> field('csid') -> where(array('monthlyordernum' => $out_trade_no)) -> select();
+		$csid_add = array();
+		$csid_add['monthlyid'] = $mid;
+		foreach($csid_arr as $value){
+		  $csid_add['csid'] = $value['csid'];
+		  M('MonthlyChildsite') -> add($csid_add);
+		}
+	      }
 	      //sendEmail
 	      D('admin://OrderAcceptEmail') -> sendOrderEmail('MonthlyOrder', $out_trade_no);
 	      ob_end_clean();
@@ -812,14 +833,24 @@ class PayAction extends Action {
 	  //如果更新成功，则写RMB表
 	  if($monthly_order -> where($where) -> save($data)){
 	    //获取购买的月份
-	    $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $orderId)) -> find();
+	    $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $orderId)) -> find();
 	      $data = array();
 	      $data['mid'] = $monthly_order -> getFieldByordernum($orderId, 'mid');
 	      $data['monid'] = $monthly_order -> getFieldByordernum($orderId, 'monid');
+	      $data['type'] = $month['type']
 	      $data['starttime'] = time();
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
-	      M('Monthly') -> add($data);
+	      $mid = M('Monthly') -> add($data);
+	      if($month['type'] == 2){
+		$csid_arr = M('MonthlyOrderChildsite') -> field('csid') -> where(array('monthlyordernum' => $out_trade_no)) -> select();
+		$csid_add = array();
+		$csid_add['monthlyid'] = $mid;
+		foreach($csid_arr as $value){
+		  $csid_add['csid'] = $value['csid'];
+		  M('MonthlyChildsite') -> add($csid_add);
+		}
+	      }
 	      //sendEmail
 	      D('admin://OrderAcceptEmail') -> sendOrderEmail('MonthlyOrder', $orderId);
 	      //重新缓存用户rmb及等级

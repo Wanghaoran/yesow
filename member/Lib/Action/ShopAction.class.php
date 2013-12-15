@@ -133,7 +133,7 @@ class ShopAction extends CommonAction {
   //订单支付页
   public function monthly_pay(){
     //根据所选价格id，查询订单信息
-    $result_monthly = M('MemberMonthly') -> table('yesow_member_monthly as mm') -> field('mm.lid,ml.name as mlname,mm.months,mm.promotionprice') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where(array('mm.id' => $this -> _get('mid', 'intval'))) -> find();
+    $result_monthly = M('MemberMonthly') -> table('yesow_member_monthly as mm') -> field('mm.lid,ml.name as mlname,mm.months,mm.promotionprice,mm.type') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where(array('mm.id' => $this -> _get('mid', 'intval'))) -> find();
     //包月不能同级或降级包，只能升级包，所以这里查询会员当前的包月等级，并作出对比
     $monthly = D('index://Monthly');
     if($monthly -> ismonthly()){
@@ -153,8 +153,16 @@ class ShopAction extends CommonAction {
 
     //生成订单号
     $result_monthly['orderid'] = !empty($_GET['orderid']) ? $_GET['orderid'] : date('YmdHis') . mt_rand(100000,999999);
+
     //总价
-    $result_monthly['count'] = $result_monthly['promotionprice'];
+    if($result_monthly['type'] == 2){
+      $child_area_arr = explode(',', $_GET['area_str']);
+      $num = count($child_area_arr);
+    }else{
+      $num = 1;
+    }
+    $result_monthly['count'] = $num * $result_monthly['promotionprice'];
+
 
     if(empty($_GET['orderid'])){
       //生成订单
@@ -164,10 +172,40 @@ class ShopAction extends CommonAction {
       $data['mid'] = session(C('USER_AUTH_KEY'));
       $data['monid'] = $this -> _get('mid', 'intval');
       $data['price'] = $result_monthly['count'];
+      $data['type'] = $result_monthly['type'];
       $data['addtime'] = time();
       if(!$monthly_order -> add($data)){
 	R('Register/errorjump',array(L('ORDER_ERROR')));
+      }else{
+	//生成分站对应
+	$MonthlyOrderChildsite = M('MonthlyOrderChildsite');
+	$child_area_arr = explode(',', $_GET['area_str']);
+	$data = array();
+	$data['monthlyordernum'] = $result_monthly['orderid'];
+	foreach($child_area_arr as $value){
+	  $data['csid'] = $value;
+	  $MonthlyOrderChildsite -> add($data);
+	}
       }
+    }
+
+    
+    
+
+    //对应分站
+    $result_monthly['child_string'] = '';
+    if($result_monthly['type'] == 2){
+      $MonthlyOrderChildsite = M('MonthlyOrderChildsite');
+      $csid_arr = $MonthlyOrderChildsite -> alias('c') -> field('cs.name as csname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> where(array('c.monthlyordernum' => $result_monthly['orderid'])) -> select();
+      foreach($csid_arr as $value){
+	if(!$result_monthly['child_string']){
+	  $result_monthly['child_string'] .= $value['csname'];
+	}else{
+	  $result_monthly['child_string'] .= ',' . $value['csname'];
+	}
+      }
+    }else{
+      $result_monthly['child_string'] = '全国';
     }
     
     //RMB余额是否足够支付
@@ -193,7 +231,7 @@ class ShopAction extends CommonAction {
       R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/shop/monthly_pay/orderid/' . $_GET['orderid'] . '/mid/' . $_GET['monid']));
     }
     //查询包月价格、月数
-    $monthly_info = M('MemberMonthly') -> field('lid,months,promotionprice') -> find($this -> _get('monid', 'intval'));
+    $monthly_info = M('MemberMonthly') -> field('lid,months,promotionprice,type') -> find($this -> _get('monid', 'intval'));
     //计算总价格
     $const = $monthly_info['promotionprice'];
     //扣费
@@ -217,6 +255,7 @@ class ShopAction extends CommonAction {
     $mon_data = array();
     $mon_data['mid'] = session(C('USER_AUTH_KEY'));
     $mon_data['monid'] = $this -> _get('monid', 'intval');
+    $mon_data['type'] = $monthly_info['type'];
     $mon_data['starttime'] = time();
     $mon_data['endtime'] = $mon_data['starttime'] + ( $monthly_info['months'] * 30 * 24 * 60 * 60);
     if($monthly -> add($mon_data)){

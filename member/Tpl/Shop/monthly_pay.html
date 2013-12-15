@@ -69,14 +69,22 @@ $(function(){
                 <table class="table_zxzf1">
                     <tr>
                         <th>单号</th>
+                        <th>包月类型</th>
                         <th>包月会员等级</th>
+			<th>包月分站</th>
                         <th>包月价格</th>
                         <th>包月数量</th>
                         <th>小计金额</th>
                     </tr>
                     <tr>
 		      <td><!--{$result_monthly.orderid}--!></td>
+		      <eq name="result_monthly.type" value="1">
+			<td>全国包月</td>
+		      <else/>
+			<td>省级包月</td>
+		      </eq>
 		      <td><!--{$result_monthly.mlname}--!></td>
+		      <td><!--{$result_monthly.child_string}--!></td>
 		      <td><!--{$result_monthly.promotionprice}--!>元</td>
 		      <td><!--{$result_monthly.months}--!>月</td>
 		      <td><!--{$result_monthly.count}--!>元</td>

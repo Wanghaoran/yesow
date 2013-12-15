@@ -21,7 +21,7 @@ $.fn.hradio = function(options){
                 $(this).prev()[0].checked = true;
             } 
 	    event.stopPropagation();
-	    radioShow($(this).prev().val());
+	    showtype($(this).prev().val());
 
         })
         .prev().hide();
@@ -40,7 +40,25 @@ $.fn.hradio2 = function(options){
                 $(this).prev()[0].checked = true;
             } 
 	    event.stopPropagation();
+	    showarea();
+        })
+        .prev().hide();
+	}
 
+$.fn.hradio3 = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+	    event.stopPropagation();
+	    radioShow($(this).prev().val(), $('input:radio[name="hydjradio"]:checked').val());
         })
         .prev().hide();
 	}
@@ -49,9 +67,14 @@ $(function(){
 	$('#radiolist').hradio();
 });
 
-function radioShow(lid){
+function showtype(){
+  var type = '<input name="type" id="type1" type="radio" value="1"/><label for="type1" class="byradio">全国包月</label><input name="type" id="type2" type="radio" value="2"/><label for="type2" class="byradio"> 省级包月</label>';
+  $('#b').html('<div id="radiolist3" class="div_hydj"><h1>选择包月类型</h1>'+type+'<div class="clear"></div></div></ul><script>$("#radiolist3").hradio3();<\/script>');
+}
+
+function radioShow(tid, lid){
   $.ajax({
-      url: '__ROOT__/member.php/public/getmonthlymoney/lid/' + lid,
+      url: '__ROOT__/member.php/public/getmonthlymoney/lid/' + lid + '/tid/' + tid,
       success: function(ress){
       var moneystr = '';
       $.each(ress, function(i,json){
@@ -135,12 +158,39 @@ function radioShow(lid){
       dataType:'json'
 });
 }
+
+function showarea(){
+  $.ajax({
+      url: '__ROOT__/member.php/public/ajaxgetcsid',
+      success: function(ress){
+      if($('input:radio[name="type"]:checked').val() == 2){
+      var moneystr = '';
+      $.each(ress, function(i,json){
+	moneystr += '<input name="csidcheck" id="csidcheck'+i+'" type="checkbox" value="'+json.id+'"/><label for="csidcheck'+i+'">' + json.name + '</label>';
+	});
+      $('#d').html('<div id="radiolist5" class="div_hydj"><h1>选择省份</h1>'+moneystr+'<div class="clear"></div></div>');
+      }
+      },
+      dataType:'json'
+});
+}
 </script>
 <script>
   var tosubmit = function(){
     var selectid = $('input[name="bysjradio"]:checked').val();
+    var area_str = '';
+    $("input[name='csidcheck']:checkbox").each(function(){ 
+	if($(this).attr("checked")){
+	if(!area_str){
+	area_str += $(this).val();
+	}else{
+	area_str += ',' + $(this).val();
+	}
+	}
+	});
+    
     if(selectid){
-      location.href = "__URL__/monthly_pay/mid/" + selectid;
+      location.href = "__URL__/monthly_pay/mid/" + selectid + '/area_str/' + area_str;
     }
     
   }
@@ -176,7 +226,13 @@ function radioShow(lid){
 				      
                                     </div>
                                     <div class="clear"></div>
+				    <div id="b">
+                                        
+				    </div>
                                     <div id="c">
+                                        
+				    </div>
+				    <div id="d">
                                         
 				    </div>
 				  </div>
