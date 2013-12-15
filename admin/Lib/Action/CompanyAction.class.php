@@ -4044,7 +4044,7 @@ class CompanyAction extends CommonAction {
   public function dealmemberreview(){
     $MemberReview = M('MemberReview');
     $where = array();
-    $where['r.status'] = 2;
+    $where['tmc2.status'] = 2;
     if($_SESSION[C('USER_AUTH_KEY')] != 1){
       $where['r.aid'] = $_SESSION[C('USER_AUTH_KEY')];
     }
@@ -4063,11 +4063,11 @@ class CompanyAction extends CommonAction {
     }
     if(!empty($_POST['nexttime_starttime'])){
       $addtime = $this -> _post('nexttime_starttime', 'strtotime');
-      $where['r.nexttime'] = array(array('gt', $addtime));
+      $where['tmc2.nexttime'] = array(array('gt', $addtime));
     }
     if(!empty($_POST['nexttime_endtime'])){
       $endtime = $this -> _post('nexttime_endtime', 'strtotime');
-      $where['r.nexttime'][] = array('lt', $endtime);
+      $where['tmc2.nexttime'][] = array('lt', $endtime);
     }
     if(!empty($_POST['addtime_starttime'])){
       $addtime = $this -> _post('addtime_starttime', 'strtotime');
@@ -4078,7 +4078,7 @@ class CompanyAction extends CommonAction {
       $where['r.addtime'][] = array('lt', $endtime);
     }
 
-    $count = $MemberReview -> alias('r') -> where($where) -> count('id');
+    $count = $MemberReview -> alias('r') -> join('LEFT JOIN (SELECT rid,nexttime,status FROM (SELECT * FROM yesow_member_review_record ORDER BY rid ASC, nexttime DESC) as tmc GROUP BY rid) as tmc2 ON r.id = tmc2.rid') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -4089,7 +4089,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.nexttime,r.addtime') -> join('yesow_admin as a ON r.aid = a.id') -> order('r.nexttime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,a.name as aname,r.new_linkman,r.addtime,r.new_mobilephone,tmp.count,tmc2.nexttime as nexttime,m.name as mname') -> join('yesow_admin as a ON r.aid = a.id') -> join('LEFT JOIN (SELECT rid,nexttime,status FROM (SELECT * FROM yesow_member_review_record ORDER BY rid ASC, nexttime DESC) as tmc GROUP BY rid) as tmc2 ON r.id = tmc2.rid') -> join('LEFT JOIN (SELECT rid,COUNT(rid) as count FROM yesow_member_review_record GROUP BY rid) as tmp ON r.id = tmp.rid') -> order('tmc2.nexttime ASC') -> join('yesow_member as m ON r.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
     $this -> assign('result', $result);
 
     $this -> assign('listRows', $listRows);
@@ -4115,15 +4115,25 @@ class CompanyAction extends CommonAction {
       if(!$MemberReview -> create()){
 	$this -> error($MemberReview -> getError());
       }
-      $MemberReview -> aid = $_POST['org7_id'];
+      if($_SESSION[C('USER_AUTH_KEY')] == 1){
+	$MemberReview -> aid = $_POST['org7_id'];
+      }
+      $MemberReview -> mid = $_POST['org98_id'];
       if($MemberReview -> save()){
+	if(!empty($_POST['sendsms'])){
+	  D('MemberReviewSendSmsRecord') -> sendsms($this -> _post('id', 'intval'));
+	}
+	if(!empty($_POST['sendemail'])){
+	  $to_email = $MemberReview -> getFieldByid($this -> _post('id', 'intval'), 'new_email');
+	  D('MassEmailSetting') -> sendEmail('review_phone', $to_email, $this -> _post('id', 'intval'));
+	}
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
     
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,a.name as aname,r.aid,r.mid,m.name as mname,r.unit') -> join('yesow_admin as a ON r.aid = a.id') -> join('yesow_member as m ON r.mid = m.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $effect_arr = array(
       1 => '比较敷衍',
@@ -4141,18 +4151,25 @@ class CompanyAction extends CommonAction {
     $MemberReview = D('MemberReview');
     $MemberReviewRecord = M('MemberReviewRecord');
     if(!empty($_POST['nexttime'])){
-      $data_old = $MemberReview -> field('id as rid,addtime,nexttime,nodeal,status') -> find($this -> _post('id', 'intval'));
-      $MemberReviewRecord -> add($data_old);
-      if(!$MemberReview -> create()){
-	$this -> error($MemberReview -> getError());
+      if(!$MemberReviewRecord -> create()){
+	$this -> error($MemberReviewRecord -> getError());
       }
-      if($MemberReview -> save()){
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      $MemberReviewRecord -> addtime = time();
+      $MemberReviewRecord -> nexttime = $this -> _post('nexttime', 'strtotime');
+      if($MemberReviewRecord -> add()){
+	if(!empty($_POST['sendsms'])){
+	  D('MemberReviewSendSmsRecord') -> sendsms($_POST['rid']);
+	}
+	if(!empty($_POST['sendemail'])){
+	  $to_email = $MemberReview -> getFieldByid($_POST['rid'], 'new_email');
+	  D('MassEmailSetting') -> sendEmail('review_phone', $to_email, $_POST['rid']);
+	}
+	$this -> success(L('DATA_ADD_SUCCESS'));
       }else{
-        $this -> error(L('DATA_UPDATE_ERROR'));
+        $this -> error(L('DATA_ADD_ERROR'));
       }
     }
-    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,r.nexttime,r.status,r.nodeal,a.name as aname,r.aid') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $MemberReview -> alias('r') -> field('r.id,r.name,r.address,r.manproducts,r.companyphone,r.mobilephone,r.linkman,r.email,r.qqcode,r.csname,r.csaname,r.website,r.ccname_one,r.ccname_two,r.new_linkman,r.new_companyphone,r.new_mobilephone,r.new_qqonline,r.new_email,r.effect,r.wanttobuy,r.feedback,r.remark,a.name as aname,r.aid,m.name as mname,r.unit') -> join('yesow_member as m ON r.mid = m.id') -> join('yesow_admin as a ON r.aid = a.id') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $effect_arr = array(
       1 => '比较敷衍',
