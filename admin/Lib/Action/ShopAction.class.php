@@ -442,6 +442,13 @@ class ShopAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $order -> alias('so') -> where($where) -> join('yesow_member as m ON so.mid = m.id') -> sum('so.paytotal'));
+    $this -> assign('endorder', $order -> alias('so') -> where(array_merge(array('so.paystatus' => array('neq', 0)), $where)) -> join('yesow_member as m ON so.mid = m.id') -> count());
+    $this -> assign('endordercount', $order -> alias('so') -> where(array_merge(array('so.paystatus' => array('neq', 0)), $where)) -> join('yesow_member as m ON so.mid = m.id') -> sum('so.paytotal'));
+    $this -> assign('noendorder', $order -> alias('so') -> where(array_merge(array('so.paystatus' => array('eq', 0)), $where)) -> join('yesow_member as m ON so.mid = m.id') -> count());
+    $this -> assign('noendordercount', $order -> alias('so') -> where(array_merge(array('so.paystatus' => array('eq', 0)), $where)) -> join('yesow_member as m ON so.mid = m.id') -> sum('so.paytotal'));
     $this -> display();
   }
 
