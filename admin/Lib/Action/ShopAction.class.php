@@ -515,13 +515,9 @@ class ShopAction extends CommonAction {
     $this -> assign('order_status', $order_status);
     $shop_price = $order_shop -> totalpaybyordernum($ordernum);
     $this -> assign('shop_price', $shop_price);
-    $temp_send_price = $order -> table('yesow_shop_order as so') -> field('st.money') -> join('yesow_send_type as st ON so.sendid = st.id') -> where(array('so.ordernum' => $ordernum)) -> find();
-    $this -> assign('send_price', $temp_send_price['money']);
     $total_price = $order -> getFieldByordernum($ordernum, 'paytotal');
     $this -> assign('total_price', $total_price);
-    $invoice_price = $total_price - $shop_price - $temp_send_price['money'];
-    $this -> assign('invoice_price', $invoice_price);
-    $goods_info = $order -> field('username,address,zipcode,tel,email,remark') -> where(array('ordernum' => $ordernum)) -> find();
+    $goods_info = $order -> field('username,address,zipcode,tel,email,remark,send_price,invoice_price') -> where(array('ordernum' => $ordernum)) -> find();
     $this -> assign('goods_info', $goods_info);
     $this -> display();
   }

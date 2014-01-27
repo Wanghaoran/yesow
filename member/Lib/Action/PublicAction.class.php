@@ -222,6 +222,13 @@ class PublicAction extends Action {
     echo json_encode($result);
   }
 
+  //ajax获取分站-没有主站
+  public function ajaxgetcsid2(){
+    $ChildSite = M('ChildSite');
+    $result = $ChildSite -> field('id,name') -> where('id != 18') -> order('id ASC') -> select();
+    echo json_encode($result);
+  }
+
   //ajax获取分站页面广告位列表 除去已订购的广告位
   public function ajaxgetchildsiteadvert(){
     $result_temp = M('Advertise') -> field('id,name,width,height') -> where(array('pid' => $this -> _get('id', 'intval'), 'isopen' => 1)) -> select();

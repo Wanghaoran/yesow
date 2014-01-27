@@ -68,14 +68,17 @@ $(function(){
 });
 
 function showtype(){
-  var type = '<input name="type" id="type1" type="radio" value="1"/><label for="type1" class="byradio">全国包月</label><input name="type" id="type2" type="radio" value="2"/><label for="type2" class="byradio"> 省级包月</label>';
-  $('#b').html('<div id="radiolist3" class="div_hydj"><h1>选择包月类型</h1>'+type+'<div class="clear"></div></div></ul><script>$("#radiolist3").hradio3();<\/script>');
+  var type = '<input name="type" id="type1" type="radio" value="1"/><label for="type1" style="margin-left:20px;">&nbsp;&nbsp;&nbsp;&nbsp;全国包月&nbsp;&nbsp;&nbsp;&nbsp;</label><input name="type" id="type2" type="radio" value="2"/><label for="type2" style="margin-left:20px;">&nbsp;&nbsp;&nbsp;&nbsp;省级包月&nbsp;&nbsp;&nbsp;&nbsp;</label>';
+  $('#b').html('<div id="radiolist3" class="div_hydj"><h1 style="display:inline;">选择包月类型</h1>'+type+'<div class="clear"></div></div></ul><script>$("#radiolist3").hradio3();<\/script>');
+  $('#c').empty();
+  $('#d').empty();
 }
 
 function radioShow(tid, lid){
   $.ajax({
       url: '__ROOT__/member.php/public/getmonthlymoney/lid/' + lid + '/tid/' + tid,
       success: function(ress){
+      $('#d').empty();
       var moneystr = '';
       $.each(ress, function(i,json){
 	moneystr += '<input name="bysjradio" id="bysjr'+i+'" type="radio" value="'+json.id+'"/><label for="bysjr'+i+'" class="bysjradio">包月数：'+json.months+'个月<br />市场价：'+json.marketprice+'元<br />推广价：'+json.promotionprice+'元</label>';
@@ -161,7 +164,7 @@ function radioShow(tid, lid){
 
 function showarea(){
   $.ajax({
-      url: '__ROOT__/member.php/public/ajaxgetcsid',
+      url: '__ROOT__/member.php/public/ajaxgetcsid2',
       success: function(ress){
       if($('input:radio[name="type"]:checked').val() == 2){
       var moneystr = '';

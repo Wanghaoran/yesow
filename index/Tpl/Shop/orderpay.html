@@ -103,7 +103,7 @@ $(function(){
                 <div class="zxzfbox_con">
                     <table class="table_zxzf2">
                         <tr><td class="tdleft">本次付款的总金额：</td><td class="tdright"><!--{$total_price}--!>元</td></tr>
-			<tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$member_pay_balance}--!>元<a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
+			<tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$member_pay_balance}--!>元(不可用余额: <!--{$member_exchange_balance}--!> 元)<a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
 			<if condition="$member_pay_balance egt $total_price">
                         <tr><td colspan="2" class="wsgw_tishi">您的余额充足，可以使用余额支付方式！</td></tr>
                     </table>

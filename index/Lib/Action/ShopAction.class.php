@@ -140,18 +140,24 @@ class ShopAction extends CommonAction {
     if(empty($_GET['oid'])){
       //查询购物车中的购物总额
       $totalmoney = $shopcart -> totalpaymoney();
-      //加上物流费用
-      $totalmoney += M('SendType') -> getFieldByid($this -> _post('sendid', 'intval'), 'money');   
+      //物流费用
+      $sendgood_price = M('SendType') -> getFieldByid($this -> _post('sendid', 'intval'), 'money'); 
+      $totalmoney += $sendgood_price;
+
       //如果需要发票，则还需要加上发票费用
       if($_POST['isbull'] == 1){
 	$ratio = D('ShopInvoice') -> getradio($totalmoney);
-	//如果低于最低金额，则取最低金额所计算出来的值
 	if(!$ratio){
-	  $totalmoney += D('ShopInvoice') -> getlowest();
+	  $in_price = D('ShopInvoice') -> getlowest();
 	}else{
-	  $totalmoney += $totalmoney * $ratio;
+	  $in_price = $totalmoney * $ratio;
 	}
+      }else{
+	$in_price = 0;
       }
+      
+      $totalmoney += $in_price;
+
       //生成订单    
       if(!$order -> create()){
 	R('Public/errorjump',array($order -> getError()));
@@ -159,6 +165,9 @@ class ShopAction extends CommonAction {
       $order -> ordernum = $orderid;
       $order -> mid = session(C('USER_AUTH_KEY'));
       $order -> paytotal = $totalmoney;
+      $order -> send_price = $sendgood_price;
+      $order -> invoice_price = $in_price;
+      
       if(!$order -> add()){
 	R('Public/errorjump',array(L('SHOP_ORDER_CREATE_ERROR')));
       }
@@ -191,6 +200,9 @@ class ShopAction extends CommonAction {
     //用户充值余额
     $member_pay_balance = M('MemberRmb') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'rmb_pay');
     $this -> assign('member_pay_balance', $member_pay_balance);
+    //用户赠送余额
+    $member_exchange_balance = M('MemberRmb') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'rmb_exchange');
+    $this -> assign('member_exchange_balance', $member_exchange_balance);
     //清空购物车
     D('ShopCart') -> delshop('all');
     $this -> display();

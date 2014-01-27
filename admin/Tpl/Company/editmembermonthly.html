@@ -22,12 +22,21 @@
 		  </select>
 		  <select class="combox" name="monid" id="monid">
 		    <volist name="result_monthlu_month" id="rmm">
-		    <eq name="result_monthly.months" value="$rmm.months">
-		    <option value="<!--{$rmm.id}--!>" selected="selected"><!--{$rmm.months}--!>个月</option>
+		    <eq name="rmm.id" value="$result.monid">
+		    <eq name="rmm.type" value="1">
+		    <option value="<!--{$rmm.id}--!>" selected="selected"><!--{$rmm.months}--!>个月(全国)</option>
 		    <else/>
-		    <option value="<!--{$rmm.id}--!>"><!--{$rmm.months}--!>个月</option>
+		    <option value="<!--{$rmm.id}--!>" selected="selected"><!--{$rmm.months}--!>个月(包省)</option>
+		    </eq>
+		    <else/>
+		    <eq name="rmm.type" value="1">
+		    <option value="<!--{$rmm.id}--!>"><!--{$rmm.months}--!>个月(全国)</option>
+		    <else/>
+		    <option value="<!--{$rmm.id}--!>"><!--{$rmm.months}--!>个月(包省)</option>
+		    </eq>
 		    </eq>
 		    </volist>
+			
 		  </select>
 	</div>
 	<div class="unit">

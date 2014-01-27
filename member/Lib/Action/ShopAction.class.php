@@ -156,8 +156,15 @@ class ShopAction extends CommonAction {
 
     //总价
     if($result_monthly['type'] == 2){
-      $child_area_arr = explode(',', $_GET['area_str']);
-      $num = count($child_area_arr);
+      if(empty($_GET['orderid'])){
+	$child_area_arr = explode(',', $_GET['area_str']);
+	$num = count($child_area_arr);
+      }else{
+	$MonthlyOrderChildsite = M('MonthlyOrderChildsite');
+	$csid_arrs = $MonthlyOrderChildsite -> alias('c') -> field('cs.name as csname') -> join('yesow_child_site as cs ON c.csid = cs.id') -> where(array('c.monthlyordernum' => $result_monthly['orderid'])) -> select();
+	$num = count($csid_arrs);
+      }
+      
     }else{
       $num = 1;
     }
@@ -258,7 +265,16 @@ class ShopAction extends CommonAction {
     $mon_data['type'] = $monthly_info['type'];
     $mon_data['starttime'] = time();
     $mon_data['endtime'] = $mon_data['starttime'] + ( $monthly_info['months'] * 30 * 24 * 60 * 60);
-    if($monthly -> add($mon_data)){
+    if($mid = $monthly -> add($mon_data)){
+      if($monthly_info['type'] == 2){
+	$csid_arr = M('MonthlyOrderChildsite') -> field('csid') -> where(array('monthlyordernum' => $this -> _get('orderid'))) -> select();
+	$csid_add = array();
+	$csid_add['monthlyid'] = $mid;
+	foreach($csid_arr as $value){
+	  $csid_add['csid'] = $value['csid'];
+	  M('MonthlyChildsite') -> add($csid_add);
+	}
+      }
       $info_succ = "您已成功购买 {$memberlevel} 级会员包月 {$monthly_info['months']} 个月";
       //更新会员余额和等级
       if(!$rmb -> rmbtotal()){

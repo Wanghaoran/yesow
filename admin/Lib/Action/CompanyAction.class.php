@@ -1581,6 +1581,41 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+  public function editmanuallyadd(){
+    $member_rmb = D('member://MemberRmb');
+    $rmb_order = M('RmbOrder');
+
+    $info = $rmb_order -> alias('ro') -> field('ro.mid,ro.price,p.name as pname') -> join('yesow_payport as p ON ro.paytype = p.enname') -> where(array('ro.id' => $this -> _get('id', 'intval'))) -> find();
+
+    if($member_rmb -> addmoney('rmb_pay', $info['price'], $info['mid'])){
+
+      $rmb_order -> where(array('id' => $this -> _get('id', 'intval'))) -> save(array('ispay' => 1));
+
+      $detail = D('member://MemberRmbDetail');
+      $detail -> writelog($info['mid'], '恭喜您,您已通过<span style="color:blue;">' . $info['pname'] . '</span>成功在线充值RMB', '充值', $info['price']);
+
+      //计算返送费率
+      $gaving_ratio = M('PayGaving') -> field('ratio') -> where(array('money' => array('ELT', $info['price']))) -> order('money DESC') -> find();
+      $gaving_ratio['ratio'] = floatval($gaving_ratio['ratio']);
+
+      //如果存在返送金额，则增加返送的金
+      if($gaving_pee > 0){
+	//更新用户RMB余额
+	if($member_rmb -> addmoney('rmb_pay', $gaving_pee, $info['mid'])){
+	  //写RMB消费日志
+	  D('MemberRmbDetail') -> writelog($info['mid'], "恭喜您,您已成功在线充值<span style='color:blue;'>{$info['price']}元</span>后易搜返还的RMB", '获取', $gaving_pee);
+	}	      
+      }
+
+      $this -> success(L('DATA_ADD_SUCCESS'));
+
+    }else{
+      $this -> error(L('DATA_ADD_ERROR'));
+    }
+
+    
+  }
+
   public function monthlyorder(){
     $monthlyorder = M('MonthlyOrder');
     $where = array();
@@ -1605,7 +1640,18 @@ class CompanyAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $monthlyorder -> table('yesow_monthly_order as mo') -> field('mo.id,mo.ordernum,m.name as mname,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime,mo.mid') -> join('yesow_member as m ON mo.mid = m.id') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
+    $result = $monthlyorder -> table('yesow_monthly_order as mo') -> field('mo.id,mo.ordernum,m.name as mname,tmpmm.name as mlname,tmpmm.months,mo.price,mo.status,mo.ischeck,mo.paytype,mo.addtime,mo.mid,mo.type') -> join('yesow_member as m ON mo.mid = m.id') -> join('LEFT JOIN (SELECT mm.id,ml.name,mm.months FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmpmm ON mo.monid = tmpmm.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('mo.addtime DESC') -> select();
+
+    $MonthlyOrderChildsite = M('MonthlyOrderChildsite');
+    foreach($result as $key => $value){
+      if($value['type'] == 2){
+	$child_site_arr = $MonthlyOrderChildsite -> alias('mc') -> field('cs.name') -> where(array('mc.monthlyordernum' => $value['ordernum'])) -> join('yesow_child_site as cs ON mc.csid = cs.id') -> select();
+	foreach($child_site_arr as $value2){
+	  $result[$key]['monthlu_childsite'] .= $value2['name'] . ',';
+	}	
+      }
+    }
+
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -2378,7 +2424,7 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_level', $result_level);
     $result_monthly = $member_monthly -> field('lid,months') -> find($result['monid']);
     $this -> assign('result_monthly', $result_monthly);
-    $result_monthlu_month = $member_monthly -> field('id,months') -> where(array('lid' => $result_monthly['lid'])) -> order('months ASC') -> select();
+    $result_monthlu_month = $member_monthly -> field('id,months,type') -> where(array('lid' => $result_monthly['lid'])) -> order('months ASC') -> select();
     $this -> assign('result_monthlu_month', $result_monthlu_month);
     $result_childsite = M('ChildSite') -> field('id,name') -> where('id != 18') -> order('create_time ASC') -> select();
     $this -> assign('result_childsite', $result_childsite);

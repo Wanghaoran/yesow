@@ -87,7 +87,7 @@
 			  <eq name="r.ispay" value="1">
 			  <td style="color:blue">已添加</td>
 			  <else/>
-			  <td style="color:red">未添加</td>
+			  <td><a href="__URL__/editmanuallyadd/id/<!--{$r.id}--!>/navTabId/rmborder" target="ajaxTodo" style="color:red" title="确定要手工添加此订单吗?">未添加</a></td>
 			  </eq>
 			  <eq name="r.ischeck" value="1">
 			  <td style="color:blue">已确认</td>

@@ -1813,9 +1813,9 @@ class ServicesAction extends CommonAction {
 	//退费
 	$MemberRmb -> addmoney('rmb_exchange', $total_back);
 	//退费数量
-	$back_num = $total_back / $send_phone_price;
+	$back_num = intval($total_back / $send_phone_price);
 	//写日志
-	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费(共 ' . back_num . ' )', '退费', '+' . ($total_back));
+	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费(共 ' . $back_num . ' 条)', '退费', '+' . ($total_back));
       }
 
 
@@ -3916,7 +3916,7 @@ class ServicesAction extends CommonAction {
 	$re_data['statuscode'] = 0;
       }
       $MemberSendEmailRecord -> add($re_data);
-      usleep(30000);
+      usleep(100000);
     }
 
     //清空信息

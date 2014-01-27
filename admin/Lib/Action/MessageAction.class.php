@@ -220,7 +220,7 @@ class MessageAction extends CommonAction {
 	  $email_list -> addinfo($send_email, $email_title, $email_content, 0);
 	  $error_num++;
 	}
-	usleep(250000);
+	usleep(100000);
       }
       session('admin_send_email_list', null);
       $this -> success('邮件发送完毕！成功：' . $success_num . ' 条。失败：' . $error_num . ' 条。可到邮件发送列表查看相信信息');

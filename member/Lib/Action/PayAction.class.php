@@ -837,13 +837,13 @@ class PayAction extends Action {
 	      $data = array();
 	      $data['mid'] = $monthly_order -> getFieldByordernum($orderId, 'mid');
 	      $data['monid'] = $monthly_order -> getFieldByordernum($orderId, 'monid');
-	      $data['type'] = $month['type']
+	      $data['type'] = $month['type'];
 	      $data['starttime'] = time();
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
 	      $mid = M('Monthly') -> add($data);
 	      if($month['type'] == 2){
-		$csid_arr = M('MonthlyOrderChildsite') -> field('csid') -> where(array('monthlyordernum' => $out_trade_no)) -> select();
+		$csid_arr = M('MonthlyOrderChildsite') -> field('csid') -> where(array('monthlyordernum' => $orderId)) -> select();
 		$csid_add = array();
 		$csid_add['monthlyid'] = $mid;
 		foreach($csid_arr as $value){
