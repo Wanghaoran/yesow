@@ -9,11 +9,11 @@
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 	<div class="searchBar">
 		<ul class="searchContent">
-			<li style="width:370px;">
+			<li style="width:400px;">
 		  <label>下单时间：</label>
-		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="starttime" />
 		    -  
-		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="endtime" />
 		  </li>
 		<li style="width:270px;">
 		  <label>下单用户：</label>
@@ -109,7 +109,7 @@
 	  
 	  
 		<div class="pages">
-		  <span>共<!--{$count}--!>条</span>
+		  <span>共<b><!--{$count}--!></b>条订单,总金额：<b><!--{$paycount|default=0}--!></b>元，其中已付订单<b><!--{$endorder}--!></b>条，金额<b><!--{$endordercount|default=0}--!></b>元，未付订单<b><!--{$noendorder}--!></b>条，金额<b><!--{$noendordercount|default=0}--!></b>元</span>
 		</div>
 		<div class="pagination" targetType="navTab" totalCount="<!--{$count}--!>" numPerPage="<!--{$listRows}--!>" pageNumShown="10" currentPage="<!--{$currentPage}--!>"></div>
 	</div>

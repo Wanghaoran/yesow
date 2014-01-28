@@ -1538,6 +1538,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $rmb_order -> alias('ro') -> where($where) -> join('yesow_member as m ON ro.mid = m.id') -> sum('ro.price'));
+    $this -> assign('endorder', $rmb_order -> alias('ro') -> where(array_merge(array('ro.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON ro.mid = m.id') -> count());
+    $this -> assign('endordercount', $rmb_order -> alias('ro') -> where(array_merge(array('ro.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON ro.mid = m.id') -> sum('ro.price'));
+    $this -> assign('noendorder', $rmb_order -> alias('ro') -> where(array_merge(array('ro.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON ro.mid = m.id') -> count());
+    $this -> assign('noendordercount', $rmb_order -> alias('ro') -> where(array_merge(array('ro.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON ro.mid = m.id') -> sum('ro.price'));
+
     $this -> display();
   }
 
@@ -1656,6 +1664,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $monthlyorder -> alias('mo') -> where($where) -> join('yesow_member as m ON mo.mid = m.id') -> sum('mo.price'));
+    $this -> assign('endorder', $monthlyorder -> alias('mo') -> where(array_merge(array('mo.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON mo.mid = m.id') -> count());
+    $this -> assign('endordercount', $monthlyorder -> alias('mo') -> where(array_merge(array('mo.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON mo.mid = m.id') -> sum('mo.price'));
+    $this -> assign('noendorder', $monthlyorder -> alias('mo') -> where(array_merge(array('mo.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON mo.mid = m.id') -> count());
+    $this -> assign('noendordercount', $monthlyorder -> alias('mo') -> where(array_merge(array('mo.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON mo.mid = m.id') -> sum('mo.price'));
+
     $this -> display();
   }
 
@@ -1729,6 +1745,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $QqonlineOrder -> alias('qo') -> where($where) -> join('yesow_member as m ON qo.mid = m.id') -> sum('qo.price'));
+    $this -> assign('endorder', $QqonlineOrder -> alias('qo') -> where(array_merge(array('qo.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON qo.mid = m.id') -> count());
+    $this -> assign('endordercount', $QqonlineOrder -> alias('qo') -> where(array_merge(array('qo.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON qo.mid = m.id') -> sum('qo.price'));
+    $this -> assign('noendorder', $QqonlineOrder -> alias('qo') -> where(array_merge(array('qo.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON qo.mid = m.id') -> count());
+    $this -> assign('noendordercount', $QqonlineOrder -> alias('qo') -> where(array_merge(array('qo.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON qo.mid = m.id') -> sum('qo.price'));
+
     $this -> display();
   }
 
@@ -1812,6 +1836,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $CompanypicOrder -> alias('co') -> where($where) -> join('yesow_member as m ON co.mid = m.id') -> sum('co.price'));
+    $this -> assign('endorder', $CompanypicOrder -> alias('co') -> where(array_merge(array('co.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON co.mid = m.id') -> count());
+    $this -> assign('endordercount', $CompanypicOrder -> alias('co') -> where(array_merge(array('co.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON co.mid = m.id') -> sum('co.price'));
+    $this -> assign('noendorder', $CompanypicOrder -> alias('co') -> where(array_merge(array('co.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON co.mid = m.id') -> count());
+    $this -> assign('noendordercount', $CompanypicOrder -> alias('co') -> where(array_merge(array('co.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON co.mid = m.id') -> sum('co.price'));
+
     $this -> display();
   }
 
@@ -1892,6 +1924,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $AdvertOrder -> alias('ao') -> where($where) -> join('yesow_member as m ON ao.mid = m.id') -> sum('ao.price'));
+    $this -> assign('endorder', $AdvertOrder -> alias('ao') -> where(array_merge(array('ao.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON ao.mid = m.id') -> count());
+    $this -> assign('endordercount', $AdvertOrder -> alias('ao') -> where(array_merge(array('ao.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON ao.mid = m.id') -> sum('ao.price'));
+    $this -> assign('noendorder', $AdvertOrder -> alias('ao') -> where(array_merge(array('ao.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON ao.mid = m.id') -> count());
+    $this -> assign('noendordercount', $AdvertOrder -> alias('ao') -> where(array_merge(array('ao.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON ao.mid = m.id') -> sum('ao.price'));
+
     $this -> display();
   }
 
@@ -1972,6 +2012,13 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $SearchRankOrder -> alias('sro') -> where($where) -> join('yesow_member as m ON sro.mid = m.id') -> sum('sro.price'));
+    $this -> assign('endorder', $SearchRankOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> count());
+    $this -> assign('endordercount', $SearchRankOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> sum('sro.price'));
+    $this -> assign('noendorder', $SearchRankOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> count());
+    $this -> assign('noendordercount', $SearchRankOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> sum('sro.price'));
     
     $this -> display();
   }
@@ -2053,6 +2100,13 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $RecommendCompanyOrder -> alias('sro') -> where($where) -> join('yesow_member as m ON sro.mid = m.id') -> sum('sro.price'));
+    $this -> assign('endorder', $RecommendCompanyOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> count());
+    $this -> assign('endordercount', $RecommendCompanyOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> sum('sro.price'));
+    $this -> assign('noendorder', $RecommendCompanyOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> count());
+    $this -> assign('noendordercount', $RecommendCompanyOrder -> alias('sro') -> where(array_merge(array('sro.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON sro.mid = m.id') -> sum('sro.price'));
     
     $this -> display();
   }
@@ -2135,6 +2189,14 @@ class CompanyAction extends CommonAction {
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+
+    //order count
+    $this -> assign('paycount', $MediaShowOrder -> alias('mso') -> where($where) -> join('yesow_member as m ON mso.mid = m.id') -> sum('mso.price'));
+    $this -> assign('endorder', $MediaShowOrder -> alias('mso') -> where(array_merge(array('mso.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON mso.mid = m.id') -> count());
+    $this -> assign('endordercount', $MediaShowOrder -> alias('mso') -> where(array_merge(array('mso.status' => array('neq', 0)), $where)) -> join('yesow_member as m ON mso.mid = m.id') -> sum('mso.price'));
+    $this -> assign('noendorder', $MediaShowOrder -> alias('mso') -> where(array_merge(array('mso.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON mso.mid = m.id') -> count());
+    $this -> assign('noendordercount', $MediaShowOrder -> alias('mso') -> where(array_merge(array('mso.status' => array('eq', 0)), $where)) -> join('yesow_member as m ON mso.mid = m.id') -> sum('mso.price'));
+
     $this -> display();
   }
 
