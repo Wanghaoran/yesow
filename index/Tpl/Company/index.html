@@ -221,11 +221,11 @@ $(function(){
 		    <dl>
 		      <dt>
 		      <a class="hot"><!--{$rc.name}--!></a>&nbsp;
-		      <a><!--{$rc.two.0.name}--!></a> <a><!--{$rc.two.1.name}--!></a>
+		      <a href="__ROOT__/search?keyword=<!--{$rc.two.0.name}--!>"><!--{$rc.two.0.name}--!></a> <a href="__ROOT__/search?keyword=<!--{$rc.two.1.name}--!>"><!--{$rc.two.1.name}--!></a>
 		      </dt>
 		      <dd>
 		      <volist name="rc.two" id="rct" offset="2" length='9'>
-		      <a><!--{$rct.name}--!></a> | 
+		      <a href="__ROOT__/search?keyword=<!--{$rct.name}--!>"><!--{$rct.name}--!></a> | 
 		      </volist>
 		      </dd>
 		    </dl>
