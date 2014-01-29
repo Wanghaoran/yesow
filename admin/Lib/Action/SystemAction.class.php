@@ -1302,6 +1302,81 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
+  public function servicecontent(){
+    $ServiceContent = M('ServiceContent');
+    $where['pid'] = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+    if(!empty($_POST['name'])){
+      $where['name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+    $count = $ServiceContent -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $ServiceContent -> field('id,name,sort,remark,url') -> where($where) -> order('sort ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  public function addservicecontent(){
+    $ServiceContent = M('ServiceContent');
+    if(!empty($_POST['name'])){
+      if(!$ServiceContent -> create()){
+	$this -> error($ServiceContent -> getError());
+      }
+      if($ServiceContent -> add()){
+	S('index_service_content', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $pname = $ServiceContent -> getFieldByid($this -> _get('id', 'intval'), 'name');
+    $this -> assign('pname', $pname);
+    $this -> display();
+  }
+
+  public function delservicecontent(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $ServiceContent = M('ServiceContent');
+    if($ServiceContent -> where($where_del) -> delete()){
+      S('index_service_content', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editservicecontent(){
+    $ServiceContent = M('ServiceContent');
+    if(!empty($_POST['name'])){
+      if(!$ServiceContent -> create()){
+	$this -> error($ServiceContent -> getError());
+      }
+      if($ServiceContent -> save()){
+	S('index_service_content', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $ServiceContent -> field('name,pid,sort,remark,url') -> find($this -> _get('id', 'intval'));
+    $pname = $ServiceContent -> getFieldByid($result['pid'], 'name');
+    $this -> assign('pname', $pname);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   public function advertiseset(){
     if(!empty($_REQUEST['csid'])){
       $advertisepage = M('AdvertisePage');

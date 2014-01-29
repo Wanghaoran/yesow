@@ -17,7 +17,7 @@ class IndexAction extends CommonAction {
     $this -> showcompany();
     //动感传媒
     $this -> mediacompany();
-    //渠道黄页分类
+    //服务内容
     $this -> companytype();
     //SEO信息
     $this -> seo();
@@ -236,17 +236,27 @@ class IndexAction extends CommonAction {
     $this -> assign('media_company', $media_company);
   }
 
-  //渠道黄页分类
+  //服务内容分类
   private function companytype(){
-    $category = M('CompanyCategory');
-    //主营一级类别
-    $category_result = $category -> field('id,name') -> where(array('pid' => 0)) -> limit(15) -> select();
-    //主营一级类别下的二级类别
-    foreach($category_result as $key => $value){
-      $category_result[$key]['child'] = $category -> field('id,name') -> where(array('pid' => $value['id'])) -> limit(2) -> select();
-      $category_result[$key]['childs'] = $category -> field('id,name') -> where(array('pid' => $value['id'])) -> limit('2,30') -> select();
+
+    if(S('index_service_content')){
+      $this -> assign('service_result', S('index_service_content'));
+    }else{
+      $ServiceContent = M('ServiceContent');
+      //one
+      $service_result = $ServiceContent -> field('id,name,remark') -> where(array('pid' => 0)) -> limit(15) -> order('sort ASC') -> select();
+      //two
+      foreach($service_result as $key => $value){
+	$service_result[$key]['two'] = $ServiceContent -> field('id,name') -> where(array('pid' => $value['id'])) -> order('sort ASC') -> select();
+	//three
+	foreach($service_result[$key]['two'] as $key2 => $value2){
+	  $service_result[$key]['two'][$key2]['three'] = $ServiceContent -> field('id,name,url') -> where(array('pid' => $value2['id'])) -> order('sort ASC') -> select();
+	}
+      }
+      $this -> assign('service_result', $service_result);
+      S('index_service_content', $service_result);
     }
-    $this -> assign('category_result', $category_result);
+    
   }
 
   //SEO
