@@ -124,24 +124,21 @@ $(function(){
 				  <else/>
 				  <li>
 				  </eq>
-				  <a class="pop_nav_a"><!--{$sr.name}--!></a><span> <!--{$sr.remark}--!></span>
+				  <a class="pop_nav_a"><!--{$sr.name}--!></a><span style="color:#FF6600;"> <!--{$sr.remark}--!></span>
 				  <div class="pop_div" style="width:500px;">
-				  <p>
 				<volist name="sr.two" id="srt">
-
 				      
-				      <a style="font-weight:bold;height:20px;line-height:20px;width:90px;text-align:center;display:block;float:left;"><!--{$srt.name}--!></a>
+				      <a style="font-weight:bold;height:30px;line-height:30px;width:90px;text-align:center;display:block;float:left;"><!--{$srt.name}--!></a>
 				      
 
-					<div style="float:left;">
+					<div style="float:left;height:30px;">
 					<volist name="srt.three" id="srtt">
-					<a href="<!--{$srtt.url}--!>" style="height:20px;line-height:20px;padding:0 8px;"><!--{$srtt.name}--!></a>
+					<a href="<!--{$srtt.url}--!>" style="height:30px;line-height:30px;padding:0 8px;"><!--{$srtt.name}--!></a>
 					</volist>
 					</div>
+					<div class="clear"></div>
 					
-				<br/>
 				</volist>
-				</p>
 				  </div>
 				  </li>
 				  </volist>

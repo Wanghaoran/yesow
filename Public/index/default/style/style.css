@@ -127,8 +127,8 @@ p#hot_search{padding-top:1px;}
 #main02_lc{ height:503px; background-repeat:repeat-y; background-position:-250px 0;}
 #main02_ld{background-position:0 -5px;}
 
-#main02_ul li{width:240px; padding-left:10px; height:31px; border-top:1px solid #e06422; position:relative;}
-#main02_ul li a.pop_nav_a{ display:inline-block; font-size:14px; font-weight:bold; height:31px; line-height:31px;}
+#main02_ul li{width:240px; padding-left:10px; height:39px; border-top:1px solid #e06422; position:relative;}
+#main02_ul li a.pop_nav_a{ display:inline-block; font-size:14px; font-weight:bold; height:39px; line-height:39px;}
 #main02_ul li span{ height:20px; line-height:20px; display:inline-block;padding-left:10px;}
 #main02_ul li.hover{ background:url(images/main_bg.gif) no-repeat 100% -180px;}
 #main02_ul li.exclude{ height:23px; border:0;}
