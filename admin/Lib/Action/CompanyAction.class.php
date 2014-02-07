@@ -689,7 +689,7 @@ class CompanyAction extends CommonAction {
     }
     $id = !empty($id) ? $id : $this -> _get('id', 'intval');
     $this -> assign('id', $id);
-    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.pic,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname') -> where(array('c.id' => $id)) -> find();
+    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.pic,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname,c.remind_count as remind_count') -> where(array('c.id' => $id)) -> find();
     $this -> assign('result_edit', $result_edit);
     $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();
     $this -> assign('result_childsite_area', $result_childsite_area);
@@ -703,6 +703,13 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_company_category_two', $result_company_category_two);
     $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
     $this -> assign('result_company_category_one', $result_company_category_one);
+    $this -> display();
+  }
+
+  public function editcompanyremindcount(){
+    $CompanyRemindRecord = M('CompanyRemindRecord');
+    $result = $CompanyRemindRecord -> field('send_time,time,email') -> where(array('cid' => $this -> _get('cid', 'intval'))) -> select();
+    $this -> assign('result', $result);
     $this -> display();
   }
 

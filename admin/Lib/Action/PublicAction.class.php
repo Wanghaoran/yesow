@@ -426,6 +426,89 @@ class PublicAction extends Action {
     echo M('BackgroundEmailTemplate') -> getFieldByid($this -> _get('id', 'intval'),'content');
   }
 
+  public function companyremind(){
+    set_time_limit(0);
+
+    $success_num = 0;
+    $error_num = 0;
+
+
+    $CompanyRemindTime = M('CompanyRemindTime');
+    $Company = M('Company');
+    $MassEmailSetting = M('MassEmailSetting');
+
+    $start_time_t = mktime(date('H'), date('i'), 0, date('m'), date('d'), date('Y'));
+    $end_time_t = mktime(date('H'), date('i'), 59, date('m'), date('d'), date('Y'));
+
+    $time_line = $CompanyRemindTime -> field('time') -> order('time ASC') -> select();
+
+    $email_template = $MassEmailSetting -> alias('e') -> field('e.send_address,e.email_smtp,e.send_account,e.send_pwd,t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('type_en' => 'company_remind')) -> find();
+
+    foreach($time_line as $value){
+      $start_time = $start_time_t - ($value['time'] * 24 * 60 *60);
+      $end_time = $end_time_t - ($value['time'] * 24 * 60 *60);
+
+      $company_result = array();
+
+      $company_result = $Company -> alias('c') -> field('c.name,c.address,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,c.mobilephone,c.id,cs.name as csname,csa.name as csaname,cs.domain as domain,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.updatetime' => array(array('egt',$start_time),array('elt', $end_time)), 'c.delaid' => array('exp', 'IS NULL'))) -> select();
+
+
+      foreach($company_result as $value2){
+
+	if (!$value2['email']) continue;
+
+	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephone}', '{company_id}', '{company_csid}', '{company_csaid}', '{company_domain}', '{company_updatetime}', '{companyremind_time}', '{send_time}');
+	$replace = array($value2['name'], $value2['address'], $value2['companyphone'], $value2['linkman'], $value2['website'], $value2['email'], $value2['manproducts'], $value2['qqcode'], $value2['mobilephone'], $value2['id'], $value2['csname'], $value2['csaname'], $value2['domain'], date('Y-m-d H:i:s', $value2['updatetime']), $value['time'], date('Y-m-d H:i:s'));
+	$email_title = str_replace($search, $replace, $email_template['title']);
+	$email_content = str_replace($search, $replace, $email_template['content']);
+
+	//sendEmail
+	C('MAIL_ADDRESS', $email_template['send_address']);
+	C('MAIL_SMTP', $email_template['email_smtp']);
+	C('MAIL_LOGINNAME', $email_template['send_account']);
+	C('MAIL_PASSWORD', $email_template['send_pwd']);
+	import('ORG.Util.Mail');
+
+	if(@SendMail($value2['email'], $email_title, $email_content, 'yesow管理员')){
+	  $record_data = array();
+	  $record_data['cid'] = $value2['id'];
+	  $record_data['accept_email'] = $value2['email'];
+	  $record_data['title'] = $email_title;
+	  $record_data['content'] = $email_content;
+	  $record_data['send_time'] = $start_time_t;
+	  $record_data['status'] = 1;
+	  M('CompanyRemindEmailRecord') -> add($record_data);
+
+	  $Company -> where(array('id' => $value2['id'])) -> setInc('remind_count');
+
+	  $r_data = array();
+	  $r_data['cid'] = $value2['id'];
+	  $r_data['send_time'] = $start_time_t;
+	  $r_data['time'] = $value['time'];
+	  $r_data['email'] = $value2['email'];
+	  M('CompanyRemindRecord') -> add($r_data);
+
+	  $success_num++;
+	}else{
+	  $record_data = array();
+	  $record_data['cid'] = $value2['id'];
+	  $record_data['accept_email'] = $value2['email'];
+	  $record_data['title'] = $email_title;
+	  $record_data['content'] = $email_content;
+	  $record_data['send_time'] = $start_time_t;
+	  $record_data['status'] = 0;
+	  M('CompanyRemindEmailRecord') -> add($record_data);
+	  $error_num++;
+	}
+	usleep(10000);
+      }
+    }
+
+    echo '发送完毕,成功' . $success_num . '条，失败' . $error_num . '条！';
+    //$this -> success('发送完毕,成功' . $success_num . '条，失败' . $error_num . '条！', __ROOT__);
+    return;
+  }
+
   public function setwebsitemap(){
     $time = time();
     $ChildSite = M('ChildSite') -> field('id,domain,name') -> select();

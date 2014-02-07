@@ -2126,5 +2126,50 @@ class MessageAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
+
+  public function companyremindemailrecord(){
+    $CompanyRemindEmailRecord = M('CompanyRemindEmailRecord');
+
+    $where = array();
+    if(!empty($_POST['accept_email'])){
+      $where['accept_email'] = $this -> _post('accept_email');
+    }
+
+    $count = $CompanyRemindEmailRecord -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $CompanyRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_time,r.status,c.name as cname') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
+
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delcompanyremindemailrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $CompanyRemindEmailRecord = M('CompanyRemindEmailRecord');
+    if($CompanyRemindEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editcompanyremindemailrecord(){
+    $content = M('CompanyRemindEmailRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
+    $this -> assign('content', $content);
+    $this -> display();
+  }
   
 }

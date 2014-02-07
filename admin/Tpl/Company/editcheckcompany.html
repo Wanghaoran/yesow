@@ -107,12 +107,10 @@
       <p style="width:90%"><label style="width:70px;">关键词：</label>
       <input type="text" class="textInput" name="keyword" style="width:79%" value="<!--{$result_edit.keyword}--!>">
       </p>
-      <p style="width:90%"><label style="width:70px;">形象照片：</label>
+      <p style="width:45%"><label style="width:70px;">形象照片：</label>
       <input type="file" class="textInput" name="image" />
-      <notempty name="result_edit.pic">
-      <a href="__URL__/editcompanypic/id/<!--{$id}--!>/type/check" target="dialog">点击查看</a>
-      <a href="__URL__/delcompanypic/id/<!--{$id}--!>/type/check" target="ajaxTodo">点击删除</a>
-      </notempty>
+      </p>
+<p style="width:45%"><label style="width:200px;"> 提醒邮件发送次数：<a href="__URL__/editcompanyremindcount/cid/<!--{$id}--!>" height="365" target="dialog" title="提醒邮件发送详情：" rel="editcompanyremindcount"><!--{$result_edit.remind_count}--!></a></label>
       </p>
       <p style="width:90%;height:100%;"><label style="width:73px;">公司简介：<br/><br/><br/><a href="javascript:createabout();" class="button"><span>生成简介</span></a></label>
       <textarea name="content" id="content" style="resize:none;width:79%;height:100px;" ><!--{$result_edit.content}--!></textarea>
