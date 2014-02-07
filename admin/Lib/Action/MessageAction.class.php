@@ -2171,5 +2171,75 @@ class MessageAction extends CommonAction {
     $this -> assign('content', $content);
     $this -> display();
   }
+
+  public function memberremindtime(){
+    $MemberRemindTime = M('MemberRemindTime');
+
+    $where = array();
+    if(!empty($_POST['time'])){
+      $where['time'] = $this -> _post('time');
+    }
+
+    $count = $MemberRemindTime -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberRemindTime -> field('id,time,remark') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('time ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function addmemberremindtime(){
+    if(!empty($_POST['time']) || $_POST['time'] == '0'){
+      $MemberRemindTime = M('MemberRemindTime');
+      if(!$MemberRemindTime -> create()){
+	$this -> error($MemberRemindTime -> getError());
+      }
+      if($MemberRemindTime -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  public function delmemberremindtime(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberRemindTime = M('MemberRemindTime');
+    if($MemberRemindTime -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editmemberremindtime(){
+    $MemberRemindTime = M('MemberRemindTime');
+    if(!empty($_POST['time']) || $_POST['time'] == '0'){
+      if(!$MemberRemindTime -> create()){
+	$this -> error($MemberRemindTime -> getError());
+      }
+      if($MemberRemindTime -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MemberRemindTime -> field('time,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
   
 }
