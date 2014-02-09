@@ -2241,5 +2241,50 @@ class MessageAction extends CommonAction {
     $this -> assign('result', $result);
     $this -> display();
   }
-  
+
+  public function memberremindemailrecord(){
+    $MemberRemindEmailRecord = M('MemberRemindEmailRecord');
+
+    $where = array();
+    if(!empty($_POST['accept_email'])){
+      $where['accept_email'] = $this -> _post('accept_email');
+    }
+
+    $count = $MemberRemindEmailRecord -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_time,r.status,m.name as mname') -> join('yesow_member as m ON r.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
+
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function delmemberremindemailrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberRemindEmailRecord = M('MemberRemindEmailRecord');
+    if($MemberRemindEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  public function editmemberremindemailrecord(){
+    $content = M('MemberRemindEmailRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
+    $this -> assign('content', $content);
+    $this -> display();
+  }
+ 
 }
