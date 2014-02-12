@@ -27,7 +27,7 @@ class MemberAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck,m.isservice,ttt.name as tname,ttt.count as tcount') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON m.id = ttt.mid') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.id DESC') -> where($where) -> select();
+    $result = $member -> table('yesow_member as m') -> field('m.id,m.name,m.nickname,m.sex,m.email,cs.name as csname,csa.name as csaname,m.join_time,m.last_login_time,m.status,m.ischeck,m.isservice,ttt.name as tname,ttt.count as tcount,m.remind_count') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> join('LEFT JOIN (SELECT * FROM (select mr.mid,ml.name,mr.rmb_pay+mr.rmb_exchange as count from yesow_member_rmb as mr LEFT JOIN yesow_member_level as ml ON mr.rmb_pay+mr.rmb_exchange >= ml.updatemoney ORDER BY mr.mid,ml.updatemoney DESC) as tmp GROUP BY mid) as ttt ON m.id = ttt.mid') -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.id DESC') -> where($where) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -211,6 +211,13 @@ class MemberAction extends CommonAction {
       6 => '需要商量',
     );
     $this -> assign('effect_arr', $effect_arr);
+    $this -> display();
+  }
+
+  public function editmemberremindrecord(){
+    $MemberRemindRecord = M('MemberRemindRecord');
+    $result = $MemberRemindRecord -> field('send_time,time,email') -> where(array('mid' => $this -> _get('mid', 'intval'))) -> select();
+    $this -> assign('result', $result);
     $this -> display();
   }
 

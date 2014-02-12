@@ -69,13 +69,14 @@
 			<th width="60">用户名</th>
 			<th width="60">昵称</th>
 			<th width="100">电子邮件</th>
-			<th width="40">性别</th>
+			<th width="30">性别</th>
 			<th width="40">省份</th>
 			<th width="40">地区</th>
 			<th width="60">会员等级</th>
 			<th width="60">RMB余额</th>
-			<th width="60">注册时间</th>
+			<th width="50">注册时间</th>
 			<th width="100">最近登录时间</th>
+			<th width="30">提醒</th>
 			<th width="30">状态</th>
 			<th width="25">验证</th>
 			<th width="25">服务</th>
@@ -101,6 +102,7 @@
 			  <td><a href="__URL__/editmemberrmb/mid/<!--{$r.id}--!>" target="dialog" rel="editmemberrmb" title="出现在会员RMB管理"><!--{$r.tcount}--!></a></td>			  			  
 			  <td><!--{$r.join_time|date="Y-m-d", ###}--!></td>
 			  <td><!--{$r.last_login_time|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><a href="__URL__/editmemberremindrecord/mid/<!--{$r.id}--!>" height="365" target="dialog" title="提醒邮件发送详情：" rel="editmemberremindrecord"><!--{$r.remind_count}--!></a></td>
 			  <eq name="r.status" value="1">
 			  <td style="color:green;">启用</td>
 			  <else/>			  

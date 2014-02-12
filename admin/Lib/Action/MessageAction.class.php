@@ -2261,7 +2261,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_time,r.status,m.name as mname') -> join('yesow_member as m ON r.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
+    $result = $MemberRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_time,r.status,m.name as mname,m.fullname') -> join('yesow_member as m ON r.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
