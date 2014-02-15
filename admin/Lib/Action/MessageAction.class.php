@@ -1472,6 +1472,14 @@ class MessageAction extends CommonAction {
     if(!empty($_POST['accept_email'])){
       $where['e.accept_email'] = $this -> _post('accept_email');
     }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['r.sendtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['r.sendtime'][] = array('lt', $endtime);
+    }
 
     $count = $MassEmailRecord -> alias('r') -> where($where) -> count();
     import('ORG.Util.Page');
@@ -1485,6 +1493,7 @@ class MessageAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $MassEmailRecord -> alias('r') -> field('r.id,r.send_email,r.accept_email,r.title,r.content,r.sendtime,r.status,e.type_zh') -> join('yesow_mass_email_setting as e ON r.eid = e.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.sendtime DESC') -> select();
+
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -1507,6 +1516,27 @@ class MessageAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
+  }
+
+  public function intervaldelmasssendrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['sendtime'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['sendtime'][] = array('lt', $endtime);
+      }
+      $MassEmailRecord = M('MassEmailRecord');
+      if($MassEmailRecord -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
   }
 
   public function orderacceptemail(){
@@ -1588,6 +1618,14 @@ class MessageAction extends CommonAction {
     if(!empty($_POST['accept_email'])){
       $where['accept_email'] = $this -> _post('accept_email');
     }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['send_time'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['send_time'][] = array('lt', $endtime);
+    }
 
     $count = $OrderAcceptRecord -> where($where) -> count();
     import('ORG.Util.Page');
@@ -1619,6 +1657,27 @@ class MessageAction extends CommonAction {
     }
   }
 
+  public function intervaldelorderacceptemailrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['send_time'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['send_time'][] = array('lt', $endtime);
+      }
+      $OrderAcceptRecord = M('OrderAcceptRecord');
+      if($OrderAcceptRecord -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
+  }
+  
   public function editorderacceptemailrecord(){
     $content = M('OrderAcceptRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
     $this -> assign('content', $content);
@@ -1774,6 +1833,14 @@ class MessageAction extends CommonAction {
     if(!empty($_POST['accept_email'])){
       $where['accept_email'] = $this -> _post('accept_email');
     }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['send_time'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['send_time'][] = array('lt', $endtime);
+    }
 
     $count = $EndtimeAlertEmailRecord -> where($where) -> count();
     import('ORG.Util.Page');
@@ -1804,6 +1871,28 @@ class MessageAction extends CommonAction {
       $this -> error(L('DATA_DELETE_ERROR'));
     }
   }
+
+  public function intervaldelendtimeemailrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['send_time'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['send_time'][] = array('lt', $endtime);
+      }
+      $EndtimeAlertEmailRecord = M('EndtimeAlertEmailRecord');
+      if($EndtimeAlertEmailRecord -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
+  }
+
 
   public function editendtimeemailrecord(){
     $content = M('EndtimeAlertEmailRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
@@ -2134,6 +2223,14 @@ class MessageAction extends CommonAction {
     if(!empty($_POST['accept_email'])){
       $where['accept_email'] = $this -> _post('accept_email');
     }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['send_time'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['send_time'][] = array('lt', $endtime);
+    }
 
     $count = $CompanyRemindEmailRecord -> where($where) -> count();
     import('ORG.Util.Page');
@@ -2164,6 +2261,27 @@ class MessageAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
+  }
+
+  public function intervaldelcompanyremindemailrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['send_time'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['send_time'][] = array('lt', $endtime);
+      }
+      $CompanyRemindEmailRecord = M('CompanyRemindEmailRecord');
+      if($CompanyRemindEmailRecord -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
   }
 
   public function editcompanyremindemailrecord(){
@@ -2249,6 +2367,14 @@ class MessageAction extends CommonAction {
     if(!empty($_POST['accept_email'])){
       $where['accept_email'] = $this -> _post('accept_email');
     }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['send_time'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['send_time'][] = array('lt', $endtime);
+    }
 
     $count = $MemberRemindEmailRecord -> where($where) -> count();
     import('ORG.Util.Page');
@@ -2279,6 +2405,27 @@ class MessageAction extends CommonAction {
     }else{
       $this -> error(L('DATA_DELETE_ERROR'));
     }
+  }
+
+  public function intervaldelmemberremindemailrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['send_time'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['send_time'][] = array('lt', $endtime);
+      }
+      $MemberRemindEmailRecord = M('MemberRemindEmailRecord');
+      if($MemberRemindEmailRecord -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
   }
 
   public function editmemberremindemailrecord(){

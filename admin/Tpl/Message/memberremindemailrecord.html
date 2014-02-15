@@ -1,6 +1,8 @@
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
   <input type="hidden" name="accept_email" value="<!--{$Think.request.accept_email}--!>" />
+  <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
+  <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
 </form>
 
 
@@ -12,6 +14,12 @@
 				<label>目标邮箱：</label>
 				<input type="text" name="accept_email" />
 				</li>
+			<li style="width:450px;">
+		  <label>发送时间：</label>
+		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		    -  
+		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  </li>
 		</ul>
 		<div class="subBar">
 			<ul>
@@ -27,9 +35,13 @@
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 	    <li class=""><a class="delete" href="__URL__/delmemberremindemailrecord/navTabId/memberremindemailrecord" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    <li><a class="delete" href="__URL__/intervaldelmemberremindemailrecord" target="dialog" mask="true"><span>区间删除</span></a></li>
 	    <else/>
 	    <if condition="isset($_SESSION['acc_arr']['message']['delmemberremindemailrecord'])">
 	    <li class=""><a class="delete" href="__URL__/delmemberremindemailrecord/navTabId/memberremindemailrecord" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+	    </if>
+	    <if condition="isset($_SESSION['acc_arr']['message']['intervaldelmemberremindemailrecord'])">
+	     <li><a class="delete" href="__URL__/intervaldelmemberremindemailrecord" target="dialog" mask="true"><span>区间删除</span></a></li>
 	    </if>
 	    </if>
 		</ul>
