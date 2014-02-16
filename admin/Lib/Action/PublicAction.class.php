@@ -436,13 +436,18 @@ class PublicAction extends Action {
     $CompanyRemindTime = M('CompanyRemindTime');
     $Company = M('Company');
     $MassEmailSetting = M('MassEmailSetting');
+    $CompanyRemindEmail = M('CompanyRemindEmail');
 
     $start_time_t = mktime(date('H'), date('i'), 0, date('m'), date('d'), date('Y'));
     $end_time_t = mktime(date('H'), date('i'), 59, date('m'), date('d'), date('Y'));
 
     $time_line = $CompanyRemindTime -> field('time') -> order('time ASC') -> select();
 
-    $email_template = $MassEmailSetting -> alias('e') -> field('e.send_address,e.email_smtp,e.send_account,e.send_pwd,t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('type_en' => 'company_remind')) -> find();
+    $email_template = $MassEmailSetting -> alias('e') -> field('t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('type_en' => 'company_remind')) -> find();
+
+    $send_email = $CompanyRemindEmail -> field('id,send_address as send_address, send_smtp as email_smtp, send_email as send_account, email_pwd as send_pwd') -> where('status=1') -> find();
+
+    $email_template = array_merge($email_template, $send_email);
 
     foreach($time_line as $value){
       $start_time = $start_time_t - ($value['time'] * 24 * 60 *60);
@@ -473,6 +478,7 @@ class PublicAction extends Action {
 	  $record_data = array();
 	  $record_data['cid'] = $value2['id'];
 	  $record_data['accept_email'] = $value2['email'];
+	  $record_data['send_email'] = $email_template['send_address'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
 	  $record_data['send_time'] = $start_time_t;
@@ -484,15 +490,19 @@ class PublicAction extends Action {
 	  $r_data = array();
 	  $r_data['cid'] = $value2['id'];
 	  $r_data['send_time'] = $start_time_t;
+	  $r_data['send_email'] = $email_template['send_address'];
 	  $r_data['time'] = $value['time'];
 	  $r_data['email'] = $value2['email'];
 	  M('CompanyRemindRecord') -> add($r_data);
+
+	  $CompanyRemindEmail -> where(array('id' => $email_template['id'])) -> setInc('sum');
 
 	  $success_num++;
 	}else{
 	  $record_data = array();
 	  $record_data['cid'] = $value2['id'];
 	  $record_data['accept_email'] = $value2['email'];
+	  $record_data['send_email'] = $email_template['send_address'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
 	  $record_data['send_time'] = $start_time_t;

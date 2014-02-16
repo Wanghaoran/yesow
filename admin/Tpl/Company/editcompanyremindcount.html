@@ -3,9 +3,10 @@
 <table class="table" width="100%">
 		<thead>
 			<tr>
-				<th width="30">发送序号</th>
-				<th width="100">发送时间</th>
-				<th width="50">提醒天数</th>
+				<th width="30">序号</th>
+				<th width="80">发送时间</th>
+				<th width="40">提醒天数</th>
+				<th width="100">发送邮箱</th>
 				<th width="100">接收邮箱</th>
 			</tr>
 		</thead>
@@ -15,6 +16,7 @@
 		    <td><!--{$i}--!></td>
 		    <td><!--{$r.send_time|date="Y-m-d H:i:s", ###}--!></td>
 		    <td><!--{$r.time}--!> 天</td>
+		    <td><!--{$r.send_email}--!></td>
 		    <td><!--{$r.email}--!></td>
 		  </tr>
 		</volist>

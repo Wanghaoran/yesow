@@ -2146,6 +2146,81 @@ class MessageAction extends CommonAction {
     }
   }
 
+  //速查提醒邮箱
+  public function companyremindemail(){
+    $CompanyRemindEmail = M('CompanyRemindEmail');
+    $where = array();
+    if(!empty($_POST['send_address'])){
+      $where['send_address'] = $_POST['send_address'];
+    }
+    $count = $CompanyRemindEmail -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $CompanyRemindEmail -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //添加速查提醒邮箱
+  public function addcompanyremindemail(){
+    if(!empty($_POST['send_address'])){
+      $CompanyRemindEmail = M('CompanyRemindEmail');
+      if(!$CompanyRemindEmail -> create()){
+	$this -> error($CompanyRemindEmail -> getError());
+      }
+      if($CompanyRemindEmail -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除速查提醒邮箱
+  public function delcompanyremindemail(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $CompanyRemindEmail = M('CompanyRemindEmail');
+    if($CompanyRemindEmail -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑速查提醒邮箱
+  public function editcompanyremindemail(){
+    $CompanyRemindEmail = M('CompanyRemindEmail');
+
+    if(!empty($_POST['send_address'])){
+      if(!$CompanyRemindEmail -> create()){
+	$this -> error($CompanyRemindEmail -> getError());
+      }
+      if($CompanyRemindEmail -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $CompanyRemindEmail -> field('send_address,send_smtp,send_email,email_pwd,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+
+    $this -> display();
+  }
+
   public function companyremindtime(){
     $CompanyRemindTime = M('CompanyRemindTime');
 
@@ -2243,7 +2318,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $CompanyRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_time,r.status,c.name as cname') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
+    $result = $CompanyRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_email,r.send_time,r.status,c.name as cname') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);

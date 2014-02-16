@@ -708,7 +708,7 @@ class CompanyAction extends CommonAction {
 
   public function editcompanyremindcount(){
     $CompanyRemindRecord = M('CompanyRemindRecord');
-    $result = $CompanyRemindRecord -> field('send_time,time,email') -> where(array('cid' => $this -> _get('cid', 'intval'))) -> select();
+    $result = $CompanyRemindRecord -> field('send_email,send_time,time,email') -> where(array('cid' => $this -> _get('cid', 'intval'))) -> select();
     $this -> assign('result', $result);
     $this -> display();
   }
