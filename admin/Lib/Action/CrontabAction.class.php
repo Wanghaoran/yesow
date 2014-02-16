@@ -6,5 +6,7 @@ class CrontabAction extends Action {
 
     /*  ---- 切换 速查提醒邮箱  ----  */
     D('CompanyRemindEmail') -> cutemail();
+    /*  ---- 切换 会员提醒邮箱  ----  */
+    D('MemberRemindEmail') -> cutemail();
   }
 }

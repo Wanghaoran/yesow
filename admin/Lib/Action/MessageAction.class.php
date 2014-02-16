@@ -2365,6 +2365,82 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  //会员提醒邮箱
+  public function memberremindemail(){
+    $MemberRemindEmail = M('MemberRemindEmail');
+    $where = array();
+    if(!empty($_POST['send_address'])){
+      $where['send_address'] = $_POST['send_address'];
+    }
+    $count = $MemberRemindEmail -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $MemberRemindEmail -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sort ASC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  }
+
+  //添加会员提醒邮箱
+  public function addmemberremindemail(){
+    if(!empty($_POST['send_address'])){
+      $MemberRemindEmail = M('MemberRemindEmail');
+      if(!$MemberRemindEmail -> create()){
+	$this -> error($MemberRemindEmail -> getError());
+      }
+      if($MemberRemindEmail -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除会员提醒邮箱
+  public function delmemberremindemail(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberRemindEmail = M('MemberRemindEmail');
+    if($MemberRemindEmail -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑会员提醒邮箱
+  public function editmemberremindemail(){
+    $MemberRemindEmail = M('MemberRemindEmail');
+
+    if(!empty($_POST['send_address'])){
+      if(!$MemberRemindEmail -> create()){
+	$this -> error($MemberRemindEmail -> getError());
+      }
+      if($MemberRemindEmail -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $MemberRemindEmail -> field('send_address,send_smtp,send_email,email_pwd,sort,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+
+    $this -> display();
+  }
+
+
   public function memberremindtime(){
     $MemberRemindTime = M('MemberRemindTime');
 
@@ -2462,7 +2538,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $MemberRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_time,r.status,m.name as mname,m.fullname') -> join('yesow_member as m ON r.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
+    $result = $MemberRemindEmailRecord -> alias('r') -> field('r.id,r.send_email,r.accept_email,r.title,r.send_time,r.status,m.name as mname,m.fullname') -> join('yesow_member as m ON r.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);

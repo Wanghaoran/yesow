@@ -216,7 +216,7 @@ class MemberAction extends CommonAction {
 
   public function editmemberremindrecord(){
     $MemberRemindRecord = M('MemberRemindRecord');
-    $result = $MemberRemindRecord -> field('send_time,time,email') -> where(array('mid' => $this -> _get('mid', 'intval'))) -> select();
+    $result = $MemberRemindRecord -> field('send_email,send_time,time,email') -> where(array('mid' => $this -> _get('mid', 'intval'))) -> select();
     $this -> assign('result', $result);
     $this -> display();
   }
