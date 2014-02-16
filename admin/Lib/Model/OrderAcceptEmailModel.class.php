@@ -107,4 +107,26 @@ class OrderAcceptEmailModel extends Model {
     }
     usleep(100000);
   }
+
+
+  //向所有管理员邮箱发送邮件
+  public function sendemail($title, $content, $log=false){
+    //config
+    $config = M('MassEmailSetting') -> alias('e') -> field('e.id,e.send_address,e.email_smtp,e.send_account,e.send_pwd,t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('e.type_en' => 'member_check')) -> find();
+
+    //sendEmail
+    $email_arr = $this -> field('email_address') -> select();
+
+    C('MAIL_ADDRESS', $config['send_address']);
+    C('MAIL_SMTP', $config['email_smtp']);
+    C('MAIL_LOGINNAME', $config['send_account']);
+    C('MAIL_PASSWORD', $config['send_pwd']);
+    import('ORG.Util.Mail');
+
+    foreach($email_arr as $key => $value){
+      @SendMail($value['email_address'], $title, $content, 'yesow管理员');
+      usleep(10000);
+    }
+
+  }
 }

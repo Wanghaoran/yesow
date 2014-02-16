@@ -514,6 +514,11 @@ class PublicAction extends Action {
       }
     }
 
+    //失败条数超过5条则发送邮件提醒
+    if($error_num >= 5){
+      D('admin://OrderAcceptEmail') -> sendemail('易搜速查定期提醒系统警告邮件', '亲爱的易搜管理员:<br/>易搜速查定期提醒系统在 <b style="color:red">' . date('Y-m-d H:i:s', $start_time_t) . '</b> 邮件发送区间，共发送了 <b style="color:red">' . ($success_num + $error_num) . ' </b> 条数据，其中，成功 <b style="color:red">' . $success_num . ' </b>条，失败 <b style="color:red">' . $error_num . ' </b>条！<br/> 请注意！！');
+    }
+
     echo '发送完毕,成功' . $success_num . '条，失败' . $error_num . '条！';
     //$this -> success('发送完毕,成功' . $success_num . '条，失败' . $error_num . '条！', __ROOT__);
     return;
@@ -611,6 +616,11 @@ class PublicAction extends Action {
 	}
 	usleep(10000);
       }
+    }
+
+    //失败条数超过5条则发送邮件提醒
+    if($error_num >= 5){
+      D('admin://OrderAcceptEmail') -> sendemail('易搜会员定期提醒系统警告邮件', '亲爱的易搜管理员:<br/>易搜会员定期提醒系统在 <b style="color:red">' . date('Y-m-d H:i:s', $start_time_t) . '</b> 邮件发送区间，共发送了 <b style="color:red">' . ($success_num + $error_num) . ' </b> 条数据，其中，成功 <b style="color:red">' . $success_num . ' </b>条，失败 <b style="color:red">' . $error_num . ' </b>条！<br/> 请注意！！');
     }
 
     echo '发送完毕,成功' . $success_num . '条，失败' . $error_num . '条！';
