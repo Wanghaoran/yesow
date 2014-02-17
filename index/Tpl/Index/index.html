@@ -119,11 +119,7 @@ $(function(){
 				<ul id="main02_ul">
 				  <li class="exclude"><a class="pop_nav_a" href="javascript:;">我在这里能做些什么？</a></li>
 				  <volist name="service_result" id="sr">
-				  <eq name="key" value="0">
-				  <li class="hover">
-				  <else/>
 				  <li>
-				  </eq>
 				  <a class="pop_nav_a"><!--{$sr.name}--!></a><span style="color:#FF6600;"> <!--{$sr.remark}--!></span>
 				  <div class="pop_div" style="width:500px;">
 				<volist name="sr.two" id="srt">
