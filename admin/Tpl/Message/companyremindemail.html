@@ -52,6 +52,7 @@
 		  <tr>
 		     <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
+			<th width="20">类别</th>
 			<th width="70">发送邮箱地址</th>
 			<th width="70">发送邮箱SMTP</th>
 			<th width="70">发送邮箱帐号</th>
@@ -68,6 +69,11 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
+			  <eq name="r.type" value="1">
+			  <td style="color:green;">速查</td>
+			  <else/>
+			  <td style="color:blue;">会员</td>
+			  </eq>
 			  <td><!--{$r.send_address}--!></td>
 			  <td><!--{$r.send_smtp}--!></td>
 			  <td><!--{$r.send_email}--!></td>

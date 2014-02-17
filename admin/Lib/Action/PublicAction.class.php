@@ -445,7 +445,7 @@ class PublicAction extends Action {
 
     $email_template = $MassEmailSetting -> alias('e') -> field('t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('type_en' => 'company_remind')) -> find();
 
-    $send_email = $CompanyRemindEmail -> field('id,send_address as send_address, send_smtp as email_smtp, send_email as send_account, email_pwd as send_pwd') -> where('status=1') -> find();
+    $send_email = $CompanyRemindEmail -> field('id,send_address as send_address, send_smtp as email_smtp, send_email as send_account, email_pwd as send_pwd') -> where('status=1 AND type=1') -> find();
 
     $email_template = array_merge($email_template, $send_email);
 
@@ -546,7 +546,7 @@ class PublicAction extends Action {
 
     $email_template = $MassEmailSetting -> alias('e') -> field('t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('type_en' => 'member_remind')) -> find();
 
-    $send_email = $MemberRemindEmail -> field('id,send_address as send_address, send_smtp as email_smtp, send_email as send_account, email_pwd as send_pwd') -> where('status=1') -> find();
+    $send_email = $MemberRemindEmail -> field('id,send_address as send_address, send_smtp as email_smtp, send_email as send_account, email_pwd as send_pwd') -> where('status=1 AND type=2') -> find();
 
     $email_template = array_merge($email_template, $send_email);
 
