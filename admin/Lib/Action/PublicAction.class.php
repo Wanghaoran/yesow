@@ -460,8 +460,6 @@ class PublicAction extends Action {
 
       foreach($company_result as $value2){
 
-	if (!$value2['email']) continue;
-
 	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephone}', '{company_id}', '{company_csid}', '{company_csaid}', '{company_domain}', '{company_updatetime}', '{companyremind_time}', '{send_time}');
 	$replace = array($value2['name'], $value2['address'], $value2['companyphone'], $value2['linkman'], $value2['website'], $value2['email'], $value2['manproducts'], $value2['qqcode'], $value2['mobilephone'], $value2['id'], $value2['csname'], $value2['csaname'], $value2['domain'], date('Y-m-d H:i:s', $value2['updatetime']), $value['time'], date('Y-m-d H:i:s'));
 	$email_title = str_replace($search, $replace, $email_template['title']);
@@ -560,8 +558,6 @@ class PublicAction extends Action {
 
 
       foreach($member_result as $value2){
-
-	if (!$value2['email']) continue;
 
 	$search = array('{member_id}', '{member_csid}', '{member_csaid}', '{member_name}', '{member_nickname}', '{member_fullname}', '{member_idnumber}', '{member_sex}', '{member_tel}', '{member_qqcode}', '{member_msn}', '{member_email}', '{member_address}', '{member_zipcode}', '{member_unit}', '{member_homepage}', '{member_lastlogintime}', '{memberremind_time}', '{send_time}');
 
