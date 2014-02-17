@@ -2318,7 +2318,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $CompanyRemindEmailRecord -> alias('r') -> field('r.id,r.accept_email,r.title,r.send_email,r.send_time,r.status,c.name as cname') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
+    $result = $CompanyRemindEmailRecord -> alias('r') -> field('r.cid,r.id,r.accept_email,r.title,r.send_email,r.send_time,r.status,c.name as cname') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('r.send_time DESC') -> select();
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
@@ -2362,6 +2362,107 @@ class MessageAction extends CommonAction {
   public function editcompanyremindemailrecord(){
     $content = M('CompanyRemindEmailRecord') -> getFieldByid($this -> _get('id', 'intval'), 'content');
     $this -> assign('content', $content);
+    $this -> display();
+  }
+
+  //补发-速查提醒发送记录
+  public function editreplacesendcompanyremindemail(){
+    $CompanyRemindEmailRecord = M('CompanyRemindEmailRecord');
+    $CompanyRemindEmail = M('CompanyRemindEmail');
+    if(!empty($_POST['accept_email'])){
+      //先更新速查数据
+      $record_data = $CompanyRemindEmailRecord -> field('cid,title,content') -> find($this -> _post('id', 'intval'));
+      $data = array();
+      $data['id'] = $record_data['cid'];
+      $data['email'] = $_POST['accept_email'];
+      if($_POST['update'] == 1){
+	$data['updatetime'] = time();
+      }
+      M('Company') -> save($data);
+      //发送邮件
+      $email_template = $CompanyRemindEmail -> field('id,send_address as send_address, send_smtp as email_smtp, send_email as send_account, email_pwd as send_pwd') -> where('status=1 AND type=1') -> find();
+      C('MAIL_ADDRESS', $email_template['send_address']);
+      C('MAIL_SMTP', $email_template['email_smtp']);
+      C('MAIL_LOGINNAME', $email_template['send_account']);
+      C('MAIL_PASSWORD', $email_template['send_pwd']);
+      import('ORG.Util.Mail');
+
+      if(@SendMail($_POST['accept_email'], $record_data['title'], $record_data['content'], 'yesow管理员')){
+	$update_data = array();
+	$update_data['id'] = $this -> _post('id', 'intval');
+	$update_data['send_email'] = $email_template['send_address'];
+	$update_data['accept_email'] = $_POST['accept_email'];
+	$update_data['send_time'] = time();
+	$update_data['status'] = 1;
+
+	$CompanyRemindEmailRecord -> save($update_data);
+	/*
+	//更新速查数据
+	$Company -> where(array('id' => $record_data['cid'])) -> setInc('remind_count');
+	$r_data = array();
+	$r_data['cid'] = $record_data['cid'];
+	$r_data['send_time'] = time();
+	$r_data['send_email'] = $email_template['send_address'];
+	$r_data['time'] = ''; //这里没法计算
+	$r_data['email'] = $_POST['accept_email'];
+	M('CompanyRemindRecord') -> add($r_data);
+	 */
+
+	//更新提醒邮件记录
+	$CompanyRemindEmail -> where(array('id' => $email_template['id'])) -> setInc('sum');
+	$this -> success('邮件补发成功！');
+      }else{
+	$this -> error('邮件补发失败！');
+      }
+
+    }
+    $result = $CompanyRemindEmailRecord -> field('accept_email') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //编辑速查资料
+  public function editcompanyinfo(){
+    $company = D('Company');
+    if(!empty($_POST['name'])){
+      if(!$company -> create()){
+	$this -> error($company -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	if($pics = $this -> upload()){
+	  $company -> pic = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      $company -> updateaid = session('admin_name');
+      $company -> updatetime = time();
+      if($company -> save()){
+	//sendEmail
+	if(!empty($_POST['email'])){
+	  //D('MassEmailSetting') -> sendEmail('company_change', $_POST['email'], $_POST['id']);
+	}	
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $id = !empty($id) ? $id : $this -> _get('id', 'intval');
+    $this -> assign('id', $id);
+    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.pic,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname,c.remind_count as remind_count') -> where(array('c.id' => $id)) -> find();
+    $this -> assign('result_edit', $result_edit);
+    $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();
+    $this -> assign('result_childsite_area', $result_childsite_area);
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $result_company_type = M('CompanyType') -> field('id,name') -> select();
+    $this -> assign('result_company_type', $result_company_type);
+    $result_ccid_one = M('CompanyCategory') -> getFieldByid($result_edit['ccid'], 'pid');
+    $this -> assign('result_ccid_one', $result_ccid_one);
+    $result_company_category_two = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $result_ccid_one)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_two', $result_company_category_two);
+    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_one', $result_company_category_one);
     $this -> display();
   }
 

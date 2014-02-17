@@ -67,7 +67,7 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.cname}--!></td>
+			  <td><a href="__URL__/editcompanyinfo/id/<!--{$r.cid}--!>" target="dialog" mask="true" style="color:blue;" title="编辑速查资料"><!--{$r.cname}--!></a></td>
 			  <td><!--{$r.send_email}--!></td>
 			  <td><!--{$r.accept_email}--!></td>
 			  <td><!--{$r.title}--!></td>
@@ -75,7 +75,7 @@
 			  <eq name="r.status" value="1">
 			  <td style="color:green;">成功</td>
 			  <else/>
-			  <td style="color:red;">失败</td>
+			  <td><a href="__URL__/editreplacesendcompanyremindemail/id/<!--{$r.id}--!>" target="dialog" mask="true" style="color:red;" title="补发失败邮件">失败</a></td>
 			  </eq>
 			  <td><a href="__URL__/editcompanyremindemailrecord/id/<!--{$r.id}--!>" width="800" height="400" target="dialog" title="<!--{$r.title}--!>">查看正文</a></td>
 			</tr>
