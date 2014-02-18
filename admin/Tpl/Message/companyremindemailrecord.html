@@ -3,6 +3,7 @@
   <input type="hidden" name="accept_email" value="<!--{$Think.request.accept_email}--!>" />
 <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
   <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+  <input type="hidden" name="mname" value="<!--{$Think.request.mname}--!>" />
 </form>
 
 
@@ -10,16 +11,31 @@
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 	<div class="searchBar">
 		<ul class="searchContent">
-			<li>
+			<li style="width:250px;">
 				<label>目标邮箱：</label>
 				<input type="text" name="accept_email" />
 				</li>
-		<li style="width:450px;">
+
+<li style="width:250px;">
+				<label>企业名称：</label>
+				<input type="text" name="mname" />
+				</li>
+		<li style="width:270px;">
 		  <label>发送时间：</label>
-		  <input type="text" readonly="true" class="date textInput readonly" name="starttime" />
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="starttime" />
 		    -  
-		  <input type="text" readonly="true" class="date textInput readonly" name="endtime" />
+		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="endtime" />
 		  </li>
+
+		<li style="width:160px;">
+	    <label>发送状态：</label>
+	    <select class="combox" name="status">
+	      <option value="">全部</option>
+	      <option value="1">成功</option>
+	      <option value="0">失败</option>
+	    </select>
+	    </li>
+
 		</ul>
 		<div class="subBar">
 			<ul>

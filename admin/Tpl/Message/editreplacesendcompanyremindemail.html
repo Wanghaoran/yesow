@@ -3,6 +3,16 @@
 	
 	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/companyremindemailrecord" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
 		<div class="pageFormContent" layoutH="58">
+
+	<div class="unit">
+		<label>公司名称:</label>
+		<input type="text" size="30" class="readonly" readonly="true" value="<!--{$result.company_name}--!>" />
+	</div>
+
+	<div class="unit">
+		<label>更新时间:</label>
+		<input type="text" size="30" class="readonly" readonly="true" value="<!--{$result.updatetime|date='Y-m-d H:i:s', ###}--!>" />
+	</div>
 		
 	<div class="unit">
 		<label>接收邮箱:</label>
@@ -11,8 +21,8 @@
 
 	<div class="unit">
 		<label>是否更新日期:</label>
-		<input type="radio" name="update" value="1" checked="checked" />更新
-		<input type="radio" name="update" value="2" />不更新
+		<input type="radio" name="update" value="1"/>更新
+		<input type="radio" name="update" value="2" checked="checked"  />不更新
 	</div>
 
 	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />

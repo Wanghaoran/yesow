@@ -2296,18 +2296,24 @@ class MessageAction extends CommonAction {
 
     $where = array();
     if(!empty($_POST['accept_email'])){
-      $where['accept_email'] = $this -> _post('accept_email');
+      $where['r.accept_email'] = $this -> _post('accept_email');
+    }
+    if(!empty($_POST['mname'])){
+      $where['c.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    if(!empty($_POST['status']) || $_POST['status'] === '0'){
+      $where['r.status'] = $this -> _post('status');
     }
     if(!empty($_POST['starttime'])){
       $addtime = $this -> _post('starttime', 'strtotime');
-      $where['send_time'] = array(array('gt', $addtime));
+      $where['r.send_time'] = array(array('gt', $addtime));
     }
     if(!empty($_POST['endtime'])){
       $endtime = $this -> _post('endtime', 'strtotime');
-      $where['send_time'][] = array('lt', $endtime);
+      $where['r.send_time'][] = array('lt', $endtime);
     }
 
-    $count = $CompanyRemindEmailRecord -> where($where) -> count();
+    $count = $CompanyRemindEmailRecord -> alias('r') -> join('yesow_company as c ON r.cid = c.id') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
@@ -2416,7 +2422,7 @@ class MessageAction extends CommonAction {
       }
 
     }
-    $result = $CompanyRemindEmailRecord -> field('accept_email') -> find($this -> _get('id', 'intval'));
+    $result = $CompanyRemindEmailRecord -> alias('r') -> field('r.accept_email,c.name as company_name,c.updatetime') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> join('yesow_company as c ON r.cid = c.id') -> find();
     $this -> assign('result', $result);
     $this -> display();
   }
@@ -2440,7 +2446,7 @@ class MessageAction extends CommonAction {
       if($company -> save()){
 	//sendEmail
 	if(!empty($_POST['email'])){
-	  //D('MassEmailSetting') -> sendEmail('company_change', $_POST['email'], $_POST['id']);
+	  D('MassEmailSetting') -> sendEmail('company_change', $_POST['email'], $_POST['id']);
 	}	
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
@@ -2542,18 +2548,24 @@ class MessageAction extends CommonAction {
 
     $where = array();
     if(!empty($_POST['accept_email'])){
-      $where['accept_email'] = $this -> _post('accept_email');
+      $where['r.accept_email'] = $this -> _post('accept_email');
     }
     if(!empty($_POST['starttime'])){
       $addtime = $this -> _post('starttime', 'strtotime');
-      $where['send_time'] = array(array('gt', $addtime));
+      $where['r.send_time'] = array(array('gt', $addtime));
     }
     if(!empty($_POST['endtime'])){
       $endtime = $this -> _post('endtime', 'strtotime');
-      $where['send_time'][] = array('lt', $endtime);
+      $where['r.send_time'][] = array('lt', $endtime);
+    }
+    if(!empty($_POST['status']) || $_POST['status'] === '0'){
+      $where['r.status'] = $this -> _post('status');
+    }
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
     }
 
-    $count = $MemberRemindEmailRecord -> where($where) -> count();
+    $count = $MemberRemindEmailRecord -> alias('r') -> where($where) -> count();
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
       $listRows = $_REQUEST ['listRows'];
