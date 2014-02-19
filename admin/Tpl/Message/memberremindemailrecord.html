@@ -3,6 +3,8 @@
   <input type="hidden" name="accept_email" value="<!--{$Think.request.accept_email}--!>" />
   <input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
   <input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+<input type="hidden" name="status" value="<!--{$Think.request.status}--!>" />
+<input type="hidden" name="mname" value="<!--{$Think.request.mname}--!>" />
 </form>
 
 
@@ -10,15 +12,15 @@
 	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 	<div class="searchBar">
 		<ul class="searchContent">
-			<li style="width:250px;">
+			<li style="width:180px;">
 				<label>目标邮箱：</label>
-				<input type="text" name="accept_email" />
+				<input type="text" size="10" name="accept_email" />
 				</li>
-<li style="width:250px;">
+<li style="width:180px;">
 				<label>用户名：</label>
-				<input type="text" name="mname" />
+				<input type="text" size="10" name="mname" />
 				</li>
-			<li style="width:270px;">
+			<li style="width:320px;">
 		  <label>发送时间：</label>
 		  <input type="text" readonly="true" size="10" class="date textInput readonly" name="starttime" />
 		    -  
