@@ -2398,8 +2398,12 @@ class MessageAction extends CommonAction {
 	$update_data['id'] = $this -> _post('id', 'intval');
 	$update_data['send_email'] = $email_template['send_address'];
 	$update_data['accept_email'] = $_POST['accept_email'];
-	$update_data['send_time'] = time();
-	$update_data['status'] = 1;
+	$update_data['send_time'] = time();	
+	if($_POST['check'] == 1){
+	  $update_data['status'] = 2;
+	}else{
+	  $update_data['status'] = 1;
+	}
 
 	$CompanyRemindEmailRecord -> save($update_data);
 	/*
@@ -2447,7 +2451,9 @@ class MessageAction extends CommonAction {
 	//sendEmail
 	if(!empty($_POST['email'])){
 	  D('MassEmailSetting') -> sendEmail('company_change', $_POST['email'], $_POST['id']);
-	}	
+	}
+	//更新订单
+	M('CompanyRemindEmailRecord') -> where(array('id' => $_POST['oid'])) -> save(array('status' => 2));
 	$this -> success(L('DATA_UPDATE_SUCCESS'));
       }else{
         $this -> error(L('DATA_UPDATE_ERROR'));
