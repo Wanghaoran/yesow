@@ -1,10 +1,14 @@
 <?php
 class CrontabAction extends Action {
 
-  //每五分钟执行的任务
-  public function fiveminute(){
+  public function twominute(){
     /*  ---- 切换 提醒邮箱  ----  */
     D('CompanyRemindEmail') -> cutemail();
+  }
+
+  //每五分钟执行的任务
+  public function fiveminute(){
+    
   }
 
   //每天执行的任务
