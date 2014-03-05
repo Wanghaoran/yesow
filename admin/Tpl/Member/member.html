@@ -111,7 +111,7 @@
 			  <eq name="r.ischeck" value="1">
 			  <td style="color:green;">是</td>
 			  <else/>
-			  <td style="color:red;">否</td>
+			  <td style="color:red;"><a href="__URL__/editreplacesendregisteremail/mid/<!--{$r.id}--!>" target="dialog" mask="true" style="color:red;" title="补发验证邮件">否</a></td>
 			  </eq>
 			  <empty name="r.isservice">
 			  <td><a style="color:red;" href="__URL__/editmemberservice/id/<!--{$r.id}--!>" target="dialog">服务</a></td>

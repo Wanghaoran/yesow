@@ -132,6 +132,79 @@ class MemberAction extends CommonAction {
     $this -> display();
   }
 
+  public function editreplacesendregisteremail(){
+    if(!empty($_POST['accept_email'])){
+      //send Email
+      $config = M('MassEmailSetting') -> alias('e') -> field('e.id,e.send_address,e.email_smtp,e.send_account,e.send_pwd,t.title,t.content') -> join('yesow_mass_email_template as t ON t.eid = e.id') -> where(array('e.type_en' => 'member_check')) -> find();
+
+      C('MAIL_ADDRESS', $config['send_address']);
+      C('MAIL_SMTP', $config['email_smtp']);
+      C('MAIL_LOGINNAME', $config['send_account']);
+      C('MAIL_PASSWORD', $config['send_pwd']);
+      import('ORG.Util.Mail');
+
+
+      $mid = $this -> _post('mid', 'intval');
+
+      $info = M('Member') -> alias('m') -> field('m.id,cs.name as csname,csa.name as csaname,m.name,m.nickname,m.fullname,m.idnumber,m.sex,m.tel,m.qqcode,m.msn,m.email,m.address,m.zipcode,m.unit,m.homepage') -> join('yesow_child_site as cs ON m.csid = cs.id') -> join('yesow_child_site_area as csa ON m.csaid = csa.id') -> where(array('m.id' => $mid)) -> find();
+      $info['sex'] = $info['sex'] == 1 ? '男' : '女';
+      $search = array('{member_id}', '{member_csid}', '{member_csaid}', '{member_name}', '{member_nickname}', '{member_fullname}', '{member_idnumber}', '{member_sex}', '{member_tel}', '{member_qqcode}', '{member_msn}', '{member_email}', '{member_address}', '{member_zipcode}', '{member_unit}', '{member_homepage}');
+
+      $info['send_time'] = date('Y-m-d H:i:s');
+      $search[] = '{send_time}';
+
+      //加密邮箱
+      $email = encode_pass($_POST['email'], C('KEY'));
+      $name = encode_pass($_POST['username'], C('KEY'));
+      $url = C('WEBSITE') . 'member.php/register/checkmail/username/' . $name . '/email/' . $email;
+
+      $info['emailcheck_url'] = $url;
+      $search[] = '{emailcheck_url}';
+
+      $email_content = str_replace($search, $info, $config['content']);
+      $email_title = str_replace($search, $info, $config['title']);
+
+      if(@SendMail($_POST['accept_email'], $email_title, $email_content, 'yesow管理员')){
+	$add_data = array();
+	$add_data['eid'] = $config['id'];
+	$add_data['send_email'] = $config['send_address'];
+	$add_data['accept_email'] = $_POST['accept_email'];
+	$add_data['title'] = $email_title;
+	$add_data['content'] = $email_content;
+	$add_data['sendtime'] = time();
+	$add_data['status'] = 1;
+	M('MassEmailRecord') -> add($add_data);
+	//change Email
+	if($_POST['update'] == 1){
+	  M('Member') -> save(array('id' => $mid, 'email' => $_POST['accept_email']));
+	}
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+        
+      }else{
+	$add_data = array();
+	$add_data['eid'] = $config['id'];
+	$add_data['send_email'] = $config['send_address'];
+	$add_data['accept_email'] = $_POST['accept_email'];
+	$add_data['title'] = $email_title;
+	$add_data['content'] = $email_content;
+	$add_data['sendtime'] = time();
+	$add_data['status'] = 0;
+	M('MassEmailRecord') -> add($add_data);
+	$this -> error(L('DATA_UPDATE_ERROR'));
+      }
+
+
+
+
+
+
+    }
+    $Member = M('Member');
+    $result = $Member -> field('name,join_time,email') -> find($this -> _get('mid', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   public function addreviewformmember(){
 
     if(!empty($_POST['org5_name'])){
