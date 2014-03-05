@@ -602,7 +602,7 @@ class PublicAction extends Action {
 	  $r_data['email'] = $value2['email'];
 	  M('MemberRemindRecord') -> add($r_data);
 
-	  $MemberRemindEmail -> where(array('id' => $email_template['id'])) -> setInc('sum');
+	  $CompanyRemindEmail -> where(array('id' => $email_template['id'])) -> setInc('sum');
 
 	  $success_num++;
 	}else{

@@ -2148,6 +2148,12 @@ class ContentAction extends CommonAction {
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
     $result = $RecruitCompany -> table('yesow_recruit_company as rc') -> field('rc.id,cs.name as csname,csa.name as csaname,rc.name,m.name as mname,ci.name as ciname,ce.name as cename,cr.name as crname,cn.name as cnname,rc.linkman,rc.tel,rc.addtime,rc.ischeck') -> join('yesow_child_site as cs ON rc.csid = cs.id') -> join('yesow_child_site_area as csa ON rc.csaid = csa.id') -> join('yesow_member as m ON rc.mid = m.id') -> join('yesow_recruit_company_industry as ci ON rc.ciid = ci.id') -> join('yesow_recruit_company_employnum as ce ON rc.ceid = ce.id') -> join('yesow_recruit_company_registermoney as cr ON rc.crid = cr.id') -> join('yesow_recruit_company_nature as cn ON rc.cnid = cn.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('rc.addtime DESC') -> select();
+
+    foreach($result as $key => $value){
+      $jid = M('RecruitJobs') -> field('id') -> where(array('cid' => $value['id'])) -> find();
+      $result[$key]['jid'] = $jid['id'];
+    }
+
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
