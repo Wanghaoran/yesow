@@ -500,7 +500,7 @@ class PayAction extends Action {
 	  $data = array();
 	  $data['mid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'mid');
 	  $data['monid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'monid');
-	  $data['starttime'] = $month['type'];
+	  $data['type'] = $month['type'];
 	  
 	  $data['starttime'] = time();
 	  $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
@@ -658,7 +658,7 @@ class PayAction extends Action {
 	      $data = array();
 	      $data['mid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'mid');
 	      $data['monid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'monid');
-	      $data['starttime'] = $month['type'];
+	      $data['type'] = $month['type'];
 	      $data['starttime'] = time();
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表

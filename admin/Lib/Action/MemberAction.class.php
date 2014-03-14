@@ -178,7 +178,7 @@ class MemberAction extends CommonAction {
 	if($_POST['update'] == 1){
 	  M('Member') -> save(array('id' => $mid, 'email' => $_POST['accept_email']));
 	}
-	$this -> success(L('DATA_UPDATE_SUCCESS'));
+	$this -> success(L('会员邮件补发成功'));
         
       }else{
 	$add_data = array();
@@ -190,7 +190,7 @@ class MemberAction extends CommonAction {
 	$add_data['sendtime'] = time();
 	$add_data['status'] = 0;
 	M('MassEmailRecord') -> add($add_data);
-	$this -> error(L('DATA_UPDATE_ERROR'));
+	$this -> error(L('会员邮件补发失败'));
       }
 
 
