@@ -156,9 +156,54 @@ class CompanyAction extends CommonAction {
     $where['time'] = array('EGT', $time);
     //如果未查询到数据，则隐藏数据内容
     if(!$member_company -> where($where) -> find()){
-      $result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
-      $result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
-      $result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
+      //mobilephone
+      if(strpos($result['mobilephone'], ' ')){
+	//多个号码递归处理
+	$mobilephone_arr = explode(' ', $result['mobilephone']);
+	$result['mobilephone'] = '';
+	foreach($mobilephone_arr as $key => $value){
+	  if(empty($result['mobilephone'])){
+	    $result['mobilephone'] .= substr_replace($value, '****', 3, 4);
+	  }else{
+	    $result['mobilephone'] .= '&nbsp;' . substr_replace($value, '****', 3, 4);
+	  }
+	}
+      }else{
+	$result['mobilephone'] = substr_replace($result['mobilephone'], '****', 3, 4);
+      }
+
+      //companyphone
+      if(strpos($result['companyphone'], ' ')){
+	//多个号码递归处理
+	$companyphone_arr = explode(' ', $result['companyphone']);
+	$result['companyphone'] = '';
+	foreach($companyphone_arr as $key => $value){
+	  if(empty($result['companyphone'])){
+	    $result['companyphone'] .= substr_replace($value, '****', -6, 4);
+	  }else{
+	    $result['companyphone'] .= '&nbsp;' . substr_replace($value, '****', -6, 4);
+	  }
+	}
+      }else{
+	$result['companyphone'] = substr_replace($result['companyphone'], '****', -6, 4);
+      }
+
+      //qqcode
+      if(strpos($result['qqcode'], ' ')){
+	//多个号码递归处理
+	$qqcode_arr = explode(' ', $result['qqcode']);
+	$result['qqcode'] = '';
+	foreach($qqcode_arr as $key => $value){
+	  if(empty($result['qqcode'])){
+	    $result['qqcode'] .= substr_replace($value, '****', -6, 4);
+	  }else{
+	    $result['qqcode'] .= '&nbsp;' . substr_replace($value, '****', -6, 4);
+	  }
+	}
+      }else{
+	$result['qqcode'] = substr_replace($result['qqcode'], '****', -6, 4);
+      }
+      
       $result['email'] = substr_replace($result['email'], '*****', 0, strpos($result['email'], '@'));
       $result['website'] = preg_replace('/\..*?\./i', '.*****.', $result['website']);
       //是否有查看权
@@ -170,17 +215,56 @@ class CompanyAction extends CommonAction {
       $author = $level -> field('author_one,author_two,author_three,author_four,author_five') -> find(session('member_level_id'));
       //公司电话
       if($author['author_one'] == 0){
-	$result['companyphone'] = substr_replace($result['companyphone'], '********', 8);
+	if(strpos($result['companyphone'], ' ')){
+	  //多个号码递归处理
+	  $companyphone_arr = explode(' ', $result['companyphone']);
+	  $result['companyphone'] = '';
+	  foreach($companyphone_arr as $key => $value){
+	    if(empty($result['companyphone'])){
+	      $result['companyphone'] .= substr_replace($value, '****', -6, 4);
+	    }else{
+	      $result['companyphone'] .= '&nbsp;' . substr_replace($value, '****', -6, 4);
+	    }
+	  }
+	}else{
+	  $result['companyphone'] = substr_replace($result['companyphone'], '****', -6, 4);
+	}
 	$result['companyphone'] .= ' <a href="javascript:noauthor(\'author_one\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //手机
       if($author['author_two'] == 0){
-	$result['mobilephone'] = substr_replace($result['mobilephone'], '********', 3);
+	if(strpos($result['mobilephone'], ' ')){
+	  //多个号码递归处理
+	  $mobilephone_arr = explode(' ', $result['mobilephone']);
+	  $result['mobilephone'] = '';
+	  foreach($mobilephone_arr as $key => $value){
+	    if(empty($result['mobilephone'])){
+	      $result['mobilephone'] .= substr_replace($value, '****', 3, 4);
+	    }else{
+	      $result['mobilephone'] .= '&nbsp;' . substr_replace($value, '****', 3, 4);
+	    }
+	  }
+	}else{
+	  $result['mobilephone'] = substr_replace($result['mobilephone'], '****', 3, 4);
+	}
 	$result['mobilephone'] .= ' <a href="javascript:noauthor(\'author_two\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //QQ
       if($author['author_three'] == 0){
-	$result['qqcode'] = substr_replace($result['qqcode'], '*****', 4);
+	if(strpos($result['qqcode'], ' ')){
+	  //多个号码递归处理
+	  $qqcode_arr = explode(' ', $result['qqcode']);
+	  $result['qqcode'] = '';
+	  foreach($qqcode_arr as $key => $value){
+	    if(empty($result['qqcode'])){
+	      $result['qqcode'] .= substr_replace($value, '****', -6, 4);
+	    }else{
+	      $result['qqcode'] .= '&nbsp;' . substr_replace($value, '****', -6, 4);
+	    }
+	  }
+	}else{
+	  $result['qqcode'] = substr_replace($result['qqcode'], '****', -6, 4);
+	}
 	$result['qqcode'] .= ' <a href="javascript:noauthor(\'author_three\');"><img src="__PUBLIC__/index/default/style/images/dd2.gif" /></a>';
       }
       //邮件

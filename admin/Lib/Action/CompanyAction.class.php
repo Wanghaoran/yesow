@@ -863,9 +863,7 @@ class CompanyAction extends CommonAction {
     if($company -> where(array('id' => $id)) -> save($data)){
       //sendEmail
       $send_email = $company -> getFieldByid($id, 'email');
-      if(!$send_email){
-	D('MassEmailSetting') -> sendEmail('company_restore', $send_email, $id);
-      }
+      D('MassEmailSetting') -> sendEmail('company_restore', $send_email, $id);
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }else{
       $this -> error(L('DATA_UPDATE_ERROR'));
