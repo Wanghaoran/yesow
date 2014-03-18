@@ -30,6 +30,16 @@
 		<input type="radio" name="type" value="2" checked="checked" />省级包月
 		</eq>
 	      </div>
+<div class="unit">
+		<label>包月模式：</label>
+		<eq name="result.mod" value="1">
+		<input type="radio" name="mod" value="1" checked="checked" />日流量包
+		<input type="radio" name="mod" value="2" />月流量包
+		<else/>
+		<input type="radio" name="mod" value="1" />日流量包
+		<input type="radio" name="mod" value="2" checked="checked" />月流量包
+		</eq>
+	      </div>
 	<div class="unit">
 		<label>市场价：</label>
 		<input type="text" class="required" name="marketprice" value="<!--{$result.marketprice}--!>" />

@@ -55,10 +55,11 @@
 			<th width="20">编号</th>
 			<th width="60">会员等级</th>
 			<th width="40">包月类型</th>
+			<th width="50">模式</th>
 			<th width="60">包月数</th>
 			<th width="60">市场价</th>
 			<th width="60">促销价</th>
-			<th width="220">备注</th>
+			<th width="210">备注</th>
 
 		</tr>
 		</thead>
@@ -72,6 +73,11 @@
 			  <td style="color:blue">全国包月</td>
 			  <else/>
 			  <td style="color:green">省级包月</td>
+			  </eq>
+			  <eq name="r.mod" value="1">
+			  <td style="color:red">日流量包</td>
+			  <else/>
+			  <td style="color:#921AFF">月流量包</td>
 			  </eq>
 			  <td><!--{$r.months}--!></td>
 			  <td><!--{$r.marketprice}--!></td>

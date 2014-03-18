@@ -715,16 +715,22 @@ class MemberAction extends CommonAction {
       $data['monthly_one_num'] = $this -> _post('monthly_one_num');
       $data['monthly_two_num'] = $this -> _post('monthly_two_num');
       $data['monthly_three_num'] = $this -> _post('monthly_three_num');
+      $data['monthly_four_num'] = $this -> _post('monthly_four_num');
+      $data['monthly_five_num'] = $this -> _post('monthly_five_num');
+      $data['monthly_six_num'] = $this -> _post('monthly_six_num');
       $data['monthly_one_num_area'] = $this -> _post('monthly_one_num_area');
       $data['monthly_two_num_area'] = $this -> _post('monthly_two_num_area');
       $data['monthly_three_num_area'] = $this -> _post('monthly_three_num_area');
+      $data['monthly_four_num_area'] = $this -> _post('monthly_four_num_area');
+      $data['monthly_five_num_area'] = $this -> _post('monthly_five_num_area');
+      $data['monthly_six_num_area'] = $this -> _post('monthly_six_num_area');
       $level -> save($data);
       $this -> success(L('DATA_UPDATE_SUCCESS'));
 
     }
     $name = $level -> getFieldByid($this -> _get('id', 'intval'), 'name');
     $this -> assign('name', $name);
-    $result = $level -> field('rmb_one,rmb_two,rmb_three,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten,monthly_one_num,monthly_two_num,monthly_three_num,monthly_one_num_area,monthly_two_num_area,monthly_three_num_area') -> find($this -> _get('id', 'intval'));
+    $result = $level -> field('rmb_one,rmb_two,rmb_three,author_one,author_two,author_three,author_four,author_five,author_six,author_seven,author_eight,author_nine,author_ten,monthly_one_num,monthly_two_num,monthly_three_num,monthly_four_num,monthly_five_num,monthly_six_num,monthly_one_num_area,monthly_two_num_area,monthly_three_num_area,monthly_four_num_area,monthly_five_num_area,monthly_six_num_area') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
