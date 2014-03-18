@@ -43,15 +43,50 @@ class MonthlyModel extends CommonModel {
     }
     //分别判断 全国包月 和 分省包月
     if($this -> isallmonthly()){
-      //查询每天查看的数量
-      $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname);
-      //查询今日已经查看了的数量
-      $use_num = D('index://MonthlyLimitDetail') -> gettypenum($type);
+      //再判断包月模式
+      if($this -> ismonthlymod()){
+	//查询每天查看的数量
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname);
+	//查询今日已经查看了的数量
+	$use_num = D('index://MonthlyLimitDetail') -> gettypenum(1, $type);
+      }else{
+	if($authorname == 'monthly_one_num'){
+	  $authorname = 'monthly_four_num';
+	}
+	if($authorname == 'monthly_two_num'){
+	  $authorname = 'monthly_five_num';
+	}
+	if($authorname == 'monthly_three_num'){
+	  $authorname = 'monthly_six_num';
+	}
+	//查询每月查看的数量
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname);
+	//查询本月已经查看了的数量
+	$use_num = D('index://MonthlyLimitDetail') -> gettypenum(2, $type);
+      } 
     }else{
-      //查询每天查看的数量
-      $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname . '_area');
-      //查询今日已经查看了的数量
-      $use_num = D('index://MonthlyLimitDetail') -> gettypenum($type);
+      //再判断包月模式
+      if($this -> ismonthlymod()){
+	//查询每天查看的数量
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname . '_area');
+	//查询今日已经查看了的数量
+	$use_num = D('index://MonthlyLimitDetail') -> gettypenum(1, $type);
+      }else{
+	if($authorname == 'monthly_one_num'){
+	  $authorname = 'monthly_four_num';
+	}
+	if($authorname == 'monthly_two_num'){
+	  $authorname = 'monthly_five_num';
+	}
+	if($authorname == 'monthly_three_num'){
+	  $authorname = 'monthly_six_num';
+	}
+	//查询每月查看的数量
+	$see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), $authorname . '_area');
+	//查询本月已经查看了的数量
+	$use_num = D('index://MonthlyLimitDetail') -> gettypenum(2, $type);
+      }
+      
     }
     
     //剩余条数
@@ -68,7 +103,7 @@ class MonthlyModel extends CommonModel {
     $where_monthly = array();
     $where_monthly['m.endtime'] = array('EGT', time());
     $where_monthly['m.mid'] = $mid;
-    $result = $this -> table('yesow_monthly as m') -> field('tmp.name,tmp.mid,m.type') -> join('LEFT JOIN (SELECT mm.id,ml.name,ml.id as mid FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> where($where_monthly) -> order('m.starttime DESC') -> find();
+    $result = $this -> table('yesow_monthly as m') -> field('tmp.name,tmp.mid,m.type,m.mod') -> join('LEFT JOIN (SELECT mm.id,ml.name,ml.id as mid FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> where($where_monthly) -> order('m.starttime DESC') -> find();
     return $result ? $result : false;
   }
 
@@ -80,6 +115,23 @@ class MonthlyModel extends CommonModel {
     $where_monthly['starttime'] = array('ELT', time());
     $where_monthly['mid'] = $mid;
     $result = $this -> field('id,type') -> where($where_monthly) -> order('starttime DESC') -> find();
+    if($result['type'] == 1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  //判断是日流量包，还是月流量包
+  //true 为 日流量包
+  //false 为 月流量包
+  public function ismonthlymod($mid){
+    $mid = !empty($mid) ? $mid : session(C('USER_AUTH_KEY'));
+    $where_monthly = array();
+    $where_monthly['endtime'] = array('EGT', time());
+    $where_monthly['starttime'] = array('ELT', time());
+    $where_monthly['mid'] = $mid;
+    $result = $this -> field('id,mod') -> where($where_monthly) -> order('starttime DESC') -> find();
     if($result['type'] == 1){
       return true;
     }else{

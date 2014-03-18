@@ -2409,7 +2409,7 @@ class CompanyAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,tmp.name as tname,tmpt.name as tmpname,tmpt.csname as csname,m.starttime,m.endtime,tmpt.nickname,m.ischeck,m.type') -> join('LEFT JOIN (SELECT ml.name,mm.id FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,m.nickname FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id) as tmpt ON m.mid = tmpt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.starttime DESC') -> select();
+    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,tmp.name as tname,tmpt.name as tmpname,tmpt.csname as csname,m.starttime,m.endtime,tmpt.nickname,m.ischeck,m.type,m.mod') -> join('LEFT JOIN (SELECT ml.name,mm.id FROM yesow_member_monthly as mm LEFT JOIN yesow_member_level as ml ON mm.lid = ml.id) as tmp ON m.monid = tmp.id') -> join('LEFT JOIN (SELECT m.id,m.name,cs.name as csname,m.nickname FROM yesow_member as m LEFT JOIN yesow_child_site as cs ON m.csid = cs.id) as tmpt ON m.mid = tmpt.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('m.starttime DESC') -> select();
 
     $MonthlyChildsite = M('MonthlyChildsite');
     foreach($result as $key => $value){
@@ -2484,7 +2484,7 @@ class CompanyAction extends CommonAction {
       }
       $this -> success(L('DATA_UPDATE_SUCCESS'));
     }
-    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,m.monid,m.starttime,m.endtime,mr.name as mname,m.type') -> join('yesow_member as mr ON m.mid = mr.id') -> where(array('m.id' => $this -> _get('id', 'intval'))) -> find();
+    $result = $monthly -> table('yesow_monthly as m') -> field('m.id,m.monid,m.starttime,m.endtime,mr.name as mname,m.type,m.mod') -> join('yesow_member as mr ON m.mid = mr.id') -> where(array('m.id' => $this -> _get('id', 'intval'))) -> find();
     $this -> assign('result', $result);
     $member_monthly = M('MemberMonthly');
     $result_level = $member_monthly -> table('yesow_member_monthly as mm') -> field('ml.id,ml.name') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> group('mm.lid') -> order('ml.updatemoney ASC') -> select();

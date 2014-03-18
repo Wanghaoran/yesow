@@ -496,11 +496,12 @@ class PayAction extends Action {
 	//如果更新成功，并且订单状态是从未付款到已付款，则写包月主表
 	if($monthly_order -> where($where) -> save($data) && $now_status == 0){
 	  //获取购买的月份
-	  $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
+	  $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type,mm.mod') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
 	  $data = array();
 	  $data['mid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'mid');
 	  $data['monid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'monid');
 	  $data['type'] = $month['type'];
+	  $data['mod'] = $month['mod'];
 	  
 	  $data['starttime'] = time();
 	  $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
@@ -654,11 +655,12 @@ class PayAction extends Action {
 	    $data['paytype'] = '财付通';
 	    if($monthly_order -> where($where) -> save($data)){
 	      //获取购买的月份
-	      $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
+	      $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type,mm.mod') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $out_trade_no)) -> find();
 	      $data = array();
 	      $data['mid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'mid');
 	      $data['monid'] = $monthly_order -> getFieldByordernum($out_trade_no, 'monid');
 	      $data['type'] = $month['type'];
+	      $data['mod'] = $month['mod'];
 	      $data['starttime'] = time();
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表
@@ -833,11 +835,12 @@ class PayAction extends Action {
 	  //如果更新成功，则写RMB表
 	  if($monthly_order -> where($where) -> save($data)){
 	    //获取购买的月份
-	    $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $orderId)) -> find();
+	    $month = $monthly_order -> table('yesow_monthly_order as mo') -> field('mm.months,mm.type,mm.mod') -> join('yesow_member_monthly as mm ON mo.monid = mm.id') -> where(array('mo.ordernum' => $orderId)) -> find();
 	      $data = array();
 	      $data['mid'] = $monthly_order -> getFieldByordernum($orderId, 'mid');
 	      $data['monid'] = $monthly_order -> getFieldByordernum($orderId, 'monid');
 	      $data['type'] = $month['type'];
+	      $data['mod'] = $month['mod'];
 	      $data['starttime'] = time();
 	      $data['endtime'] = $data['starttime'] + ($month['months'] * 30 * 24 * 60 *60);
 	      //写包月主表

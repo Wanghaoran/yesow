@@ -26,6 +26,11 @@
 		<input type="radio" name="type" value="1" checked="checked" onclick="$('#area').hide();" />全国包月
 		<input type="radio" name="type" value="2" onclick="$('#area').show();" />省级包月
 	      </div>
+		<div class="unit">
+		<label>包月模式：</label>
+		<input type="radio" name="mod" value="1" checked="checked" />日流量包
+		<input type="radio" name="mod" value="2" />月流量包
+	      </div>
 	<div class="unit" id="area" style="display:none;">
 	<div style="margin-left:120px;margin-right:30px;">
 	<volist name="result_childsite" id="rc">

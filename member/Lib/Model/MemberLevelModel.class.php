@@ -10,7 +10,8 @@ class MemberLevelModel extends Model {
     if($level_monthly = D('index://Monthly') -> monthlylevel()){
       session('member_level_id', $level_monthly['mid']);
       $prefix_name = $level_monthly['type'] == 1 ? '全国' : '省级';
-      session('member_level_name', $prefix_name . '包月' . $level_monthly['name']);
+      $mod_name = $level_monthly['mod'] == 1 ? '日' : '月';
+      session('member_level_name', $prefix_name . '包月' . $level_monthly['name'] . '-' . $mod_name);
     }
   }
 

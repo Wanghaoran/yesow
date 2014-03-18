@@ -133,7 +133,7 @@ class ShopAction extends CommonAction {
   //订单支付页
   public function monthly_pay(){
     //根据所选价格id，查询订单信息
-    $result_monthly = M('MemberMonthly') -> table('yesow_member_monthly as mm') -> field('mm.lid,ml.name as mlname,mm.months,mm.promotionprice,mm.type') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where(array('mm.id' => $this -> _get('mid', 'intval'))) -> find();
+    $result_monthly = M('MemberMonthly') -> table('yesow_member_monthly as mm') -> field('mm.lid,ml.name as mlname,mm.months,mm.promotionprice,mm.type,mm.mod') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where(array('mm.id' => $this -> _get('mid', 'intval'))) -> find();
     //包月不能同级或降级包，只能升级包，所以这里查询会员当前的包月等级，并作出对比
     $monthly = D('index://Monthly');
     if($monthly -> ismonthly()){
@@ -180,6 +180,7 @@ class ShopAction extends CommonAction {
       $data['monid'] = $this -> _get('mid', 'intval');
       $data['price'] = $result_monthly['count'];
       $data['type'] = $result_monthly['type'];
+      $data['mod'] = $result_monthly['mod'];
       $data['addtime'] = time();
       if(!$monthly_order -> add($data)){
 	R('Register/errorjump',array(L('ORDER_ERROR')));
@@ -238,7 +239,7 @@ class ShopAction extends CommonAction {
       R('Register/errorjump',array(L('TRADERSPASSWORD_ERROR'), '__ROOT__/member.php/shop/monthly_pay/orderid/' . $_GET['orderid'] . '/mid/' . $_GET['monid']));
     }
     //查询包月价格、月数
-    $monthly_info = M('MemberMonthly') -> field('lid,months,promotionprice,type') -> find($this -> _get('monid', 'intval'));
+    $monthly_info = M('MemberMonthly') -> field('lid,months,promotionprice,type,mod') -> find($this -> _get('monid', 'intval'));
     //计算总价格
     $const = $monthly_info['promotionprice'];
     //扣费
@@ -263,6 +264,7 @@ class ShopAction extends CommonAction {
     $mon_data['mid'] = session(C('USER_AUTH_KEY'));
     $mon_data['monid'] = $this -> _get('monid', 'intval');
     $mon_data['type'] = $monthly_info['type'];
+    $mon_data['mod'] = $monthly_info['mod'];
     $mon_data['starttime'] = time();
     $mon_data['endtime'] = $mon_data['starttime'] + ( $monthly_info['months'] * 30 * 24 * 60 * 60);
     if($mid = $monthly -> add($mon_data)){

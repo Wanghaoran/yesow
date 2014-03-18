@@ -58,9 +58,29 @@ $.fn.hradio3 = function(options){
                 $(this).prev()[0].checked = true;
             } 
 	    event.stopPropagation();
-	    radioShow($(this).prev().val(), $('input:radio[name="hydjradio"]:checked').val());
+	    //radioShow($(this).prev().val(), $('input:radio[name="hydjradio"]:checked').val());
+	    showmod();
         })
         .prev().hide();
+	
+	}
+
+$.fn.hradio4 = function(options){
+        var self = this;
+        return $(':radio+label',this).each(function(){
+            $(this).addClass('byhyRadio');
+            if($(this).prev().is("checked"))
+                $(this).addClass('byhyRadio_Checked');
+        }).click(function(event){
+            $(this).siblings().removeClass("byhyRadio_Checked");
+            if(!$(this).prev().is(':checked')){
+				$(this).addClass("byhyRadio_Checked");
+                $(this).prev()[0].checked = true;
+            } 
+	    event.stopPropagation();
+	    radioShow($(this).prev().val(), $('input:radio[name="type"]:checked').val(), $('input:radio[name="hydjradio"]:checked').val());
+        })
+        .prev().hide();	
 	}
 
 $(function(){
@@ -72,11 +92,17 @@ function showtype(){
   $('#b').html('<div id="radiolist3" class="div_hydj"><h1 style="display:inline;">选择包月类型</h1>'+type+'<div class="clear"></div></div></ul><script>$("#radiolist3").hradio3();<\/script>');
   $('#c').empty();
   $('#d').empty();
+  $('#b2').empty();
 }
 
-function radioShow(tid, lid){
+function showmod(){
+  var mod = '<input name="mod" id="mod1" type="radio" value="1"/><label for="mod1" style="margin-left:20px;">&nbsp;&nbsp;&nbsp;&nbsp;日流量包&nbsp;&nbsp;&nbsp;&nbsp;</label><input name="mod" id="mod2" type="radio" value="2"/><label for="mod2" style="margin-left:20px;">&nbsp;&nbsp;&nbsp;&nbsp;月流量包&nbsp;&nbsp;&nbsp;&nbsp;</label>';
+  $('#b2').html('<div id="radiolist4" class="div_hydj"><h1 style="display:inline;">选择包月模式</h1>'+mod+'<div class="clear"></div></div></ul><script>$("#radiolist4").hradio4();<\/script>');
+}
+
+function radioShow(mid, tid, lid){
   $.ajax({
-      url: '__ROOT__/member.php/public/getmonthlymoney/lid/' + lid + '/tid/' + tid,
+      url: '__ROOT__/member.php/public/getmonthlymoney/lid/' + lid + '/tid/' + tid + '/mid/' + mid,
       success: function(ress){
       $('#d').empty();
       var moneystr = '';
@@ -230,6 +256,9 @@ function showarea(){
                                     </div>
                                     <div class="clear"></div>
 				    <div id="b">
+                                        
+				    </div>
+				    <div id="b2">
                                         
 				    </div>
                                     <div id="c">

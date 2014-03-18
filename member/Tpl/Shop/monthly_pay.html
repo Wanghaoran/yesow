@@ -70,6 +70,7 @@ $(function(){
                     <tr>
                         <th>单号</th>
                         <th>包月类型</th>
+                        <th>包月模式</th>
                         <th>包月会员等级</th>
 			<th>包月分站</th>
                         <th>包月价格</th>
@@ -82,6 +83,11 @@ $(function(){
 			<td>全国包月</td>
 		      <else/>
 			<td>省级包月</td>
+		      </eq>
+		      <eq name="result_monthly.mod" value="1">
+			<td>日流量包</td>
+		      <else/>
+			<td>月流量包</td>
 		      </eq>
 		      <td><!--{$result_monthly.mlname}--!></td>
 		      <td><!--{$result_monthly.child_string}--!></td>
