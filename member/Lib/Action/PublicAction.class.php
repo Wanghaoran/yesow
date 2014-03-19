@@ -210,17 +210,17 @@ class PublicAction extends Action {
     if($_GET['tid'] == 1){
       //日流量包
       if($_GET['mid'] == 1){
-	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num,ml.monthly_two_num,ml.monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
+	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num,ml.monthly_two_num,ml.monthly_three_num,mm.mod') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
       }else{
 	//月流量包
-	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_four_num as monthly_one_num,ml.monthly_five_num as monthly_two_num,ml.monthly_six_num as monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();	
+	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_four_num as monthly_one_num,ml.monthly_five_num as monthly_two_num,ml.monthly_six_num as monthly_three_num,mm.mod') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();	
       }
     }else{
       //日流量包
       if($_GET['mid'] == 1){
-	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num_area as monthly_one_num,ml.monthly_two_num_area as monthly_two_num,ml.monthly_three_num_area as monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
+	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_one_num_area as monthly_one_num,ml.monthly_two_num_area as monthly_two_num,ml.monthly_three_num_area as monthly_three_num,mm.mod') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
       }else{
-	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_four_num_area as monthly_one_num,ml.monthly_five_num_area as monthly_two_num,ml.monthly_six_num_area as monthly_three_num') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
+	$result = $member_monthly -> table('yesow_member_monthly as mm') -> field('mm.id,mm.months,mm.marketprice,mm.promotionprice,ml.author_one,ml.author_two,ml.author_three,ml.author_four,ml.author_five,ml.author_six,ml.author_seven,ml.author_eight,ml.author_nine,ml.author_ten,ml.monthly_four_num_area as monthly_one_num,ml.monthly_five_num_area as monthly_two_num,ml.monthly_six_num_area as monthly_three_num,mm.mod') -> join('yesow_member_level as ml ON mm.lid = ml.id') -> where($where) -> order('mm.months ASC') -> select();
       }
       
     }
