@@ -119,19 +119,23 @@ class PublicAction extends Action {
 	//判断包月模式
 	if(D('Monthly') -> ismonthlymod()){
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_one_num');
+	  echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
 	}else{
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_four_num');
+	  echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，本月可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
 	}
       }else{
 	//判断包月模式
 	if(D('Monthly') -> ismonthlymod()){
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_one_num_area');
+	  echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
 	}else{
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_four_num_area');
+	  echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，本月可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
 	}
       }
       
-      echo "尊敬的包月会员您好，您的会员等级为[{$_SESSION['member_level_name']}]，今天可免费查看 {$see_num} 条信息。目前剩余 {$less_num} 条，此页面将消耗您 1 条，信息有效期为{$viewtime}小时。请确认。<br /><a onclick='quitview();'>【取消】</a><a onclick='confirmview();'>【确认查看】</a>";
+      
       return;
     }
 
@@ -707,15 +711,19 @@ class PublicAction extends Action {
 	//判断包月模式
 	if(D('Monthly') -> ismonthlymod()){
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_two_num');
+	  $result['mod'] = 1;
 	}else{
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_five_num');
+	  $result['mod'] = 2;
 	}
       }else{
 	//判断包月模式
 	if(D('Monthly') -> ismonthlymod()){
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_two_num_area');
+	  $result['mod'] = 1;
 	}else{
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_five_num_area');
+	  $result['mod'] = 2;
 	}
       }
       

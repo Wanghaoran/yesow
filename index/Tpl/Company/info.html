@@ -38,7 +38,11 @@ url: "__APP__/public/ajaxonecopy/csid/<!--{$result.csid}--!>",
 	  location.href="__APP__/public/authorprompt/authname/author_six";
 	}else{
 	  if(msg.type == 1){
+	    if(msg.mod == 1){
 	    var confirmstr = '尊敬的包月会员:您今日可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要1条,请确认';
+	    }else{
+	    var confirmstr = '尊敬的包月会员:您本月可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要1条,请确认';	    }
+	    
 	  }else{
 	  var confirmstr = '易搜友情提示:您本次下载所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认';
 	}
