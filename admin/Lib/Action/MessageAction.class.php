@@ -2628,5 +2628,343 @@ class MessageAction extends CommonAction {
     $this -> assign('content', $content);
     $this -> display();
   }
+
+  /*  ----------    定时邮件群发  --------------    */
+
+
+  //定时邮件搜索
+  public function timingsearchemail(){
+    if(!empty($_POST['issearch'])){
+      $result = array();
+      $where = array();
+      $company = M('Company');
+      $where['email'] = array('neq', '');
+      if(!empty($_POST['bgsearch_email_keyword'])){
+	$where['_string'] = "( name LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( address LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( manproducts LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( mobilephone LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( email LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( linkman LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( companyphone LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( qqcode LIKE '%{$_POST['bgsearch_email_keyword']}%' ) OR ( website LIKE '%{$_POST['bgsearch_email_keyword']}%' )";
+      }
+      if(!empty($_POST['bgsearch_email_csid'])){
+	$where['csid'] = $this -> _post('bgsearch_email_csid', 'intval');
+      }
+      if(!empty($_POST['bgsearch_email_csaid'])){
+	$where['csaid'] = $this -> _post('bgsearch_email_csaid', 'intval');
+      }
+
+      $count_sql = $company -> field('id,email') -> where($where) -> group('email') -> buildSql();
+      $count = $company -> table($count_sql . ' T') -> count();
+      import('ORG.Util.Page');
+      if(! empty ( $_REQUEST ['listRows'] )){
+	$listRows = $_REQUEST ['listRows'];
+      } else {
+	$listRows = 10;
+      }
+      $page = new Page($count, $listRows);
+      $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+      $page -> firstRow = ($pageNum - 1) * $listRows;
+      $result['listRows'] = $listRows;
+      $result['currentPage'] = $pageNum;
+      $result['count'] = $count;
+
+      G('start');
+      $result['result'] = $company -> field('id,name,email,addtime,updatetime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> group('email') -> select();
+      $result['time'] = G('start', 'end');
+      $this -> assign('result', $result);
+    }
+
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  public function addtimingsendlist($send_arrs){
+    set_time_limit(0);
+    $send_arr = array();
+    $company = M('Company');
+    if(empty($send_arrs)){
+      if(!empty($_REQUEST['issearch'])){
+	$where = array();
+	$where['email'] = array('neq', '');
+	if($_REQUEST['s_csid'] != 'null'){
+	  $where['csid'] = $this -> _request('s_csid', 'intval');
+	}
+	if($_REQUEST['s_csaid'] != 'null'){
+	  $where['csaid'] = $this -> _request('s_csaid', 'intval');
+	}
+	if($_REQUEST['s_keyword'] != 'null'){
+	  $where['_string'] = "( name LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( address LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( manproducts LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( mobilephone LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( email LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( linkman LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( companyphone LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( qqcode LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( website LIKE '%{$_REQUEST['s_keyword']}%' )";
+	}
+	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
+
+	foreach($result_temp as $value){
+	  $value['email'] = preg_replace('/\s{2,}|　/U',' ',$value['email']);
+	  $temp_arr = explode(' ', $value['email']);
+	  foreach($temp_arr as $values){
+	    if(!empty($values)){
+	      $send_arr[$value['id']] = $values;
+	    }	    
+	  }
+	}
+      }else{
+	$result_temp = explode(',', $_POST['ids']);
+	foreach($result_temp as $key => $value){
+	  $temp_string = $company -> getFieldByid($value, 'email');
+	  
+	  $temp_string = preg_replace('/\s{2,}|　/U',' ',$temp_string);
+	  $temp_arr = explode(' ', $temp_string);
+	  foreach($temp_arr as $values){
+	    if(!empty($values)){
+	      $send_arr[$value] = $values;
+	    }	    
+	  }
+	}
+      }
+    }else{
+      $send_arr = $send_arrs;
+    }
+
+    //发送模板
+    $BackgroundEmailTemplate = D('BackgroundEmailTemplate');
+    $result_template = $BackgroundEmailTemplate -> field('id,name') -> select();
+    $this -> assign('result_template', $result_template);
+
+
+    if($_REQUEST['issearch'] == 2){
+      $success_num = 0;
+      $error_num = 0;
+      $TimingEmail = M('TimingEmail');
+      foreach($send_arr as $key => $value){
+	$data_add = array();
+	$data_add['aid'] = session(C('USER_AUTH_KEY'));
+	$data_add['cid'] = $key;
+	$data_add['tid'] = $_POST['tid'];
+	$data_add['send_email'] = $value;
+	$data_add['send_time'] = strtotime($_POST['send_date_1']  . ' ' . $_POST['send_date_2'] . ':' . $_POST['send_date_3'] . ':' . '00');
+	if($TimingEmail -> add($data_add)){
+	  $success_num ++;
+	}else{
+	  $error_num ++;
+	}
+      }
+      $this -> success('添加完毕!成功:' . $success_num . '条，失败:' . $error_num . '条');
+    }
+    
+    $this -> assign('num', count($send_arr));
+
+    $this -> display();
+  }
+
+  //定时发送列表
+  public function timingsendlist(){
+    $TimingEmail = M('TimingEmail');
+
+    $where = array();
+    if($_SESSION[C('USER_AUTH_KEY')] != 1){
+      $where['te.aid'] = session(C('USER_AUTH_KEY'));
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['te.send_time'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['te.send_time'][] = array('lt', $endtime);
+    }
+
+    $count = $TimingEmail -> alias('te') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $TimingEmail -> alias('te') -> field('te.id,a.name as aname,c.name as cname,te.send_email,te.send_time') -> join('yesow_admin as a ON te.aid = a.id') -> join('yesow_company as c ON te.cid = c.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('te.send_time DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //删除定时发送列表
+  public function deltimingsendlist(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $TimingEmail = M('TimingEmail');
+    if($TimingEmail -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //定时发送邮箱
+  public function timingsendemail(){
+    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+    $where = array();
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+    if($_SESSION[C('USER_AUTH_KEY')] != 1){
+      $where['s.aid'] = session(C('USER_AUTH_KEY'));
+    }
+    $count = $TimingSendEmailSetting -> alias('s') -> join('yesow_admin as m ON s.aid = m.id') -> where($where) -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $TimingSendEmailSetting -> alias('s') -> field('s.id,s.email_address,s.email_SMTP,s.email_account,s.min_limit,s.sendnum,m.name as mname,s.addtime,s.min_limit2') -> join('yesow_admin as m ON s.aid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('s.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加定时发送邮箱
+  public function addtimingsendemail(){
+    if(!empty($_POST['email_address'])){
+      $TimingSendEmailSetting = M('TimingSendEmailSetting');
+      if(!$TimingSendEmailSetting -> create()){
+	$this -> error($TimingSendEmailSetting -> getError());
+      }
+      $TimingSendEmailSetting -> aid = session(C('USER_AUTH_KEY'));
+      $TimingSendEmailSetting -> addtime = time();
+      if($TimingSendEmailSetting -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除定时发送邮箱
+  public function deltimingsendemail(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+    if($TimingSendEmailSetting -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑定时发送邮箱
+  public function edittimingsendemail(){
+    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+
+    if(!empty($_POST['email_address'])){
+      if(!$TimingSendEmailSetting -> create()){
+	$this -> error($TimingSendEmailSetting -> getError());
+      }
+      if($TimingSendEmailSetting -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $TimingSendEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd,min_limit') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //定时发送记录
+  public function timingsendrecord(){
+    $email_list = M('TimingSendEmail');
+    $where = array();
+    if(!empty($_POST['email'])){
+      $where['bse.email'] = $this -> _post('email');
+    }
+
+    $year = date("Y");
+    $month = date("m");
+    $day = date("d");
+    $dayBegin = mktime(0,0,0,$month,$day,$year);
+    $dayEnd = mktime(23,59,59,$month,$day,$year);
+
+    $today_count = $email_list -> where(array('sendtime' => array(array('egt', $dayBegin),array('elt', $dayEnd)))) -> count('id');
+    $this -> assign('today_count', $today_count);
+
+    $count = $email_list -> alias('bse') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $email_list -> alias('bse') -> field('bse.id,a.name as aname,bse.email,bse.title,bse.sendtime,bse.status') -> join('yesow_admin as a ON bse.aid = a.id') -> where($where) -> order('sendtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+
+    $this -> display();
+  
+  }
+
+  //删除定时发送记录
+  public function deltimingsendrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $email_list = M('TimingSendEmail');
+    if($email_list -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //全部删除定时发送记录
+  public function alldeltimingsendrecord(){
+    $email_list = M('TimingSendEmail');
+    if($email_list -> where(1) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //区间删除定时发送记录
+  public function intervaldeltimingsendrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['sendtime'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['sendtime'][] = array('lt', $endtime);
+      }
+      $email_list = M('TimingSendEmail');
+      if($email_list -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
+  }
+
+  //查看发送正文
+  public function edittimingsendrecordinfo(){
+    $content = M('TimingSendEmail') -> getFieldByid($this -> _get('id', 'intval'), 'content');
+    $this -> assign('content', $content);
+    $this -> display();
+  }
  
 }
