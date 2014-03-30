@@ -458,7 +458,6 @@ class PublicAction extends Action {
 
       $company_result = $Company -> alias('c') -> field('c.name,c.address,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,c.mobilephone,c.id,cs.name as csname,csa.name as csaname,cs.domain as domain,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.updatetime' => array(array('egt',$start_time),array('elt', $end_time)), 'c.delaid' => array('exp', 'IS NULL'))) -> select();
 
-
       foreach($company_result as $value2){
 
 	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephone}', '{company_id}', '{company_csid}', '{company_csaid}', '{company_domain}', '{company_updatetime}', '{companyremind_time}', '{send_time}');
@@ -514,6 +513,7 @@ class PublicAction extends Action {
 	  }
 	  
 	}
+	 
 	usleep(10000);
       }
     }
@@ -652,7 +652,8 @@ class PublicAction extends Action {
     //遍历待发送列表
     foreach($send_email_list as $value){
       //查询此条待发邮件的发送邮箱
-      $email_arr = $TimingSendEmailSetting -> where(array('aid' => $value['aid'])) -> select();
+      $email_arr = $TimingSendEmailSetting -> where(array('aid' => $value['aid'])) -> order('id DESC') -> select();
+      
       //遍历发送邮箱
       foreach($email_arr as $value2){
 	//如果当前发送周期已发送满，则跳转至下一邮箱
@@ -701,6 +702,8 @@ class PublicAction extends Action {
 	}
 	usleep(100000);
       }
+
+       
     
     }
   }
