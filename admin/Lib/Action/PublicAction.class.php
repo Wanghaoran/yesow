@@ -640,71 +640,75 @@ class PublicAction extends Action {
   //定时邮件发送
   public function timingsendemail(){
     set_time_limit(0);
-    $TimingEmail = M('TimingEmail');
-    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+    $TimingSendGroupList = M('TimingSendGroupList');
     $TimingSendEmail = M('TimingSendEmail');
     //$start_time = mktime(date('H'), date('i'), 0, date('m'), date('d'), date('Y'));
     $end_time = mktime(date('H'), date('i'), 59, date('m'), date('d'), date('Y'));
 
-    //查询待发列表
-    $send_email_list = $TimingEmail -> alias('e') -> field('e.id,e.aid,e.cid,e.send_email,bet.name,bet.content') -> where(array('e.send_time' => array('elt', $end_time))) -> order('e.send_time ASC') -> join('yesow_background_email_template as bet ON e.tid = bet.id') -> select();
+    //查询可发送邮箱
+    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+    $result = $TimingSendEmailSetting -> field('id,email_address,email_SMTP,email_account,email_pwd,min_limit') -> where('status=1') -> select();
 
-    //遍历待发送列表
-    foreach($send_email_list as $value){
-      //查询此条待发邮件的发送邮箱
-      $email_arr = $TimingSendEmailSetting -> where(array('aid' => $value['aid'])) -> order('id DESC') -> select();
-      
-      //遍历发送邮箱
-      foreach($email_arr as $value2){
-	//如果当前发送周期已发送满，则跳转至下一邮箱
-	if($value2['min_limit2'] == $value2['min_limit']){
-	  continue;
+
+    //循环发送邮箱
+    foreach($result as $value){
+      //每个邮箱发送固定的次数
+      for($i=1; $i<=$value['min_limit']; $i++){
+	//查询待发送列表
+	$send_email = $TimingSendGroupList -> alias('l') -> field('l.id,l.cid,l.email,g.aid,t.name,t.content') -> where(array('l.status' => 0, 'g.sendtime' => array('ELT', $end_time))) -> join('yesow_timing_send_group as g ON l.gid = g.id') -> join('yesow_background_email_template as t ON g.tid = t.id') -> order('l.id ASC') -> find();
+	if(!$send_email){
+	  return ;
 	}
-	//发送邮件
-	C('MAIL_ADDRESS', $value2['email_address']);
-	C('MAIL_SMTP', $value2['email_SMTP']);
-	C('MAIL_LOGINNAME', $value2['email_account']);
-	C('MAIL_PASSWORD', $value2['email_pwd']);
+
+	//执行发送
+	C('MAIL_ADDRESS', $value['email_address']);
+	C('MAIL_SMTP', $value['email_SMTP']);
+	C('MAIL_LOGINNAME', $value['email_account']);
+	C('MAIL_PASSWORD', $value['email_pwd']);
 	import('ORG.Util.Mail');
-	$company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $value['cid'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	$company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $send_email['cid'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
 	
 	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
-	$email_content = str_replace($search, $company_info, $value['content']);
-	$email_title = str_replace($search, $company_info, $value['name']);
+	$email_content = str_replace($search, $company_info, $send_email['content']);
+	$email_title = str_replace($search, $company_info, $send_email['name']);
 
-	if(@SendMail($value['send_email'], $email_title, $email_content, 'yesow管理员')){
-	  //发送成功，首先在待发列表中删除此信息
-	  $TimingEmail -> where(array('id' => $value['id'])) -> delete();
+
+	if(@SendMail($send_email['email'], $email_title, $email_content, 'yesow管理员')){
+	  //标记此条信息为已发送
+	  $TimingSendGroupList -> where(array('id' => $send_email['id'])) -> save(array('status' => 1));
 	  //记录发送日志
 	  $record_data = array();
 	  $record_data['aid'] = session(C('USER_AUTH_KEY'));
-	  $record_data['email'] = $value['send_email'];
+	  $record_data['email'] = $send_email['email'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
 	  $record_data['sendtime'] = time();
 	  $record_data['status'] = 1;
 	  $TimingSendEmail -> add($record_data);
+
 	  //发送数量加1
-	  $TimingSendEmailSetting -> where(array('id' => $value2['id'])) -> setInc('sendnum');
-	  $TimingSendEmailSetting -> where(array('id' => $value2['id'])) -> setInc('min_limit2');
-	  //跳过其他邮箱
-	  break;
+	  $TimingSendEmailSetting -> where(array('id' => $value['id'])) -> setInc('sendnum');
+	
 	}else{
+
 	  //记录发送日志
 	  $record_data = array();
 	  $record_data['aid'] = session(C('USER_AUTH_KEY'));
-	  $record_data['email'] = $value['send_email'];
+	  $record_data['email'] = $send_email['email'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
 	  $record_data['sendtime'] = time();
 	  $record_data['status'] = 0;
 	  $TimingSendEmail -> add($record_data);
+	
+	
 	}
+	
 	usleep(100000);
+      
       }
+      
 
-       
-    
     }
   }
 

@@ -42,9 +42,11 @@
 		     <th width="3"><div title="" class="gridCol"><input type="checkbox" class="checkboxCtrl" group="ids"></div></th>
 			<th width="20">编号</th>
 			<th width="160">通讯录名称</th>
+			<th width="40">发送模板</th>
 			<th width="40">数量</th>
 			<th width="60">添加时间</th>
-			<th width="90">操作</th>
+			<th width="60">发送时间</th>
+			<th width="30">操作</th>
 			
 
 		</tr>
@@ -55,9 +57,11 @@
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
 			  <td><!--{$r.name}--!></td>
+			  <td><!--{$r.tname}--!></td>
 			  <td><!--{$r.count}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
-			  <td><a href="__URL__/edittimingemailgrouplist/gid/<!--{$r.id}--!>" rel="edittimingemailgrouplist" target="navTab">查看</a> / <a href="__URL__/groupaddtimingsendlist/id/<!--{$r.id}--!>" style="color:green;" target="dialog">添加到待发送列表</a></td>	  
+			  <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <td><a href="__URL__/edittimingemailgrouplist/gid/<!--{$r.id}--!>" rel="edittimingemailgrouplist" target="navTab">查看</a></td>	  
 			  
 			</tr>
 		</volist>

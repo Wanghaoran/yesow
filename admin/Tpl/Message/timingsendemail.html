@@ -52,8 +52,8 @@
 			<th width="160">发送邮箱地址</th>
 			<th width="160">发送邮箱SMTP</th>
 			<th width="160">发送邮箱帐号</th>
+			<th width="40">状态</th>
 			<th width="90">每分钟最大发送数</th>
-			<th width="90">区间发送数</th>
 			<th width="90">本日发送数</th>
 			<th width="100">添加时间</th>
 
@@ -68,8 +68,12 @@
 			  <td><!--{$r.email_address}--!></td>
 			  <td><!--{$r.email_SMTP}--!></td>
 			  <td><!--{$r.email_account}--!></td>
+			  <eq name="r.status" value="1">
+			  <td><a target="ajaxTodo" href="__URL__/edittimingsendemailstatus/id/<!--{$r.id}--!>/status/0/navTabId/timingsendemail" style="color:green;">启用</a></td>
+			  <else/>
+			  <td><a target="ajaxTodo" href="__URL__/edittimingsendemailstatus/id/<!--{$r.id}--!>/status/1/navTabId/timingsendemail" style="color:red;">禁用</a></td>
+			  </eq>
 			  <td><!--{$r.min_limit}--!></td>
-			  <td><!--{$r.min_limit2}--!></td>
 			  <td><!--{$r.sendnum}--!></td>
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>		  
 			  

@@ -6,12 +6,13 @@ class CrontabAction extends Action {
     M('TimingSendEmailSetting') -> where(1) -> save(array('min_limit2' => 0));
     //执行后台定时邮件发送
     R('Public/timingsendemail');
+    /*  ---- 切换 提醒邮箱  ----  */
+    D('CompanyRemindEmail') -> cutemail();
   
   }
 
   public function twominute(){
-    /*  ---- 切换 提醒邮箱  ----  */
-    D('CompanyRemindEmail') -> cutemail();
+    
   }
 
   //每五分钟执行的任务

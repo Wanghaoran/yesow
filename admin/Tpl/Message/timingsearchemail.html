@@ -65,12 +65,8 @@
       <div class="panelBar">
 	  <ul class="toolBar">
 	    <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
-	    <li class=""><a class="add" href="__URL__/addtimingsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/s_keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>/issearch/1" target="dialog"><span>全选到定时发送列表</span></a></li>
 	    <li class=""><a class="add" href="__URL__/addtimingsendgroup/s_csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/s_keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>/issearch/1" target="dialog"><span>全选到定时发送通讯录</span></a></li>
 	    <else/>
-	    <if condition="isset($_SESSION['acc_arr']['message']['addtimingsendlist'])">
-	    <li class=""><a class="add" href="__URL__/addtimingsendlist/s_csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/s_keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>/issearch/1" target="dialog"><span>全选到定时发送列表</span></a></li>
-	    </if>
 	    <if condition="isset($_SESSION['acc_arr']['message']['addtimingsendgroup'])">
 	    <li class=""><a class="add" href="__URL__/addtimingsendgroup/s_csid/<!--{$Think.request.bgsearch_email_csid|default='null'}--!>/s_csaid/<!--{$Think.request.bgsearch_email_csaid|default='null'}--!>/s_keyword/<!--{$Think.request.bgsearch_email_keyword|default='null'}--!>/issearch/1" target="dialog"><span>全选到定时发送通讯录</span></a></li>
 	    </if>
