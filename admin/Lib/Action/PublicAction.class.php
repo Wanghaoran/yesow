@@ -667,8 +667,9 @@ class PublicAction extends Action {
 	C('MAIL_PASSWORD', $value['email_pwd']);
 	import('ORG.Util.Mail');
 	$company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $send_email['cid'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	$company_info['send_time'] = date('Y-m-d H:i:s');
 	
-	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
+	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}', '{send_time}');
 	$email_content = str_replace($search, $company_info, $send_email['content']);
 	$email_title = str_replace($search, $company_info, $send_email['name']);
 
