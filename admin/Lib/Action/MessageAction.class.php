@@ -2175,6 +2175,7 @@ class MessageAction extends CommonAction {
 	  $where['csaid'] = $this -> _request('s_csaid', 'intval');
 	}
 	if($_REQUEST['s_keyword'] != 'null'){
+	  $_REQUEST['s_keyword'] = safeEncoding($_REQUEST['s_keyword']);
 	  $where['_string'] = "( name LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( address LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( manproducts LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( mobilephone LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( email LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( linkman LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( companyphone LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( qqcode LIKE '%{$_REQUEST['s_keyword']}%' ) OR ( website LIKE '%{$_REQUEST['s_keyword']}%' )";
 	}
 	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
@@ -2360,7 +2361,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $email_list -> alias('bse') -> field('bse.id,a.name as aname,bse.email,bse.title,bse.sendtime,bse.status') -> join('yesow_admin as a ON bse.aid = a.id') -> where($where) -> order('sendtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $email_list -> alias('bse') -> field('bse.id,bse.email,bse.title,bse.sendtime,bse.status') -> where($where) -> order('sendtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -2476,8 +2477,12 @@ class MessageAction extends CommonAction {
       }
     }
 
-    $result = $TimingSendGroup -> field('name') -> find($this -> _get('id', 'intval'));
+    $result = $TimingSendGroup -> field('name,tid') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
+    //发送模板
+    $BackgroundEmailTemplate = D('BackgroundEmailTemplate');
+    $result_template = $BackgroundEmailTemplate -> field('id,name') -> select();
+    $this -> assign('result_template', $result_template);
     $this -> display();
   }
 

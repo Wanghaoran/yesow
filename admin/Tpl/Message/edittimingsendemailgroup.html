@@ -9,6 +9,19 @@
 		<input type="text" class="required" name="name" value="<!--{$result.name}--!>" />
 	      </div>
 
+	<div class="unit">
+		<label>发送模板：</label>
+		<select class="combox" name="tid">
+	      <volist name="result_template" id="rt">
+		<eq name="result.tid" value="$rt.id">
+	      <option value="<!--{$rt.id}--!>" selected="selected"><!--{$rt.name}--!></option>
+		<else/>
+		<option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+		</eq>
+	      </volist>
+	    </select>
+	</div>
+
 	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
 </div>
 		<div class="formBar">

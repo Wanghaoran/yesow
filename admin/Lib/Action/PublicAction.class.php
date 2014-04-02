@@ -678,7 +678,6 @@ class PublicAction extends Action {
 	  $TimingSendGroupList -> where(array('id' => $send_email['id'])) -> save(array('status' => 1));
 	  //记录发送日志
 	  $record_data = array();
-	  $record_data['aid'] = session(C('USER_AUTH_KEY'));
 	  $record_data['email'] = $send_email['email'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
@@ -693,7 +692,6 @@ class PublicAction extends Action {
 
 	  //记录发送日志
 	  $record_data = array();
-	  $record_data['aid'] = session(C('USER_AUTH_KEY'));
 	  $record_data['email'] = $send_email['email'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
