@@ -71,7 +71,7 @@ class MessageAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $template -> field('name,content') -> find($this -> _get('id', 'intval'));
+    $result = $template -> field('name,content,title') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $this -> display();
   }
@@ -2361,7 +2361,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $email_list -> alias('bse') -> field('bse.id,bse.email,bse.title,bse.sendtime,bse.status') -> where($where) -> order('sendtime DESC') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $email_list -> alias('bse') -> field('bse.id,bse.email,bse.title,bse.sendtime,bse.status,bse.send_email,c.name as cname') -> where($where) -> order('sendtime DESC') -> join('yesow_company as c ON bse.cid = c.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

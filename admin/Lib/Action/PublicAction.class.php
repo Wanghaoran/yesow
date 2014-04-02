@@ -655,7 +655,7 @@ class PublicAction extends Action {
       //每个邮箱发送固定的次数
       for($i=1; $i<=$value['min_limit']; $i++){
 	//查询待发送列表
-	$send_email = $TimingSendGroupList -> alias('l') -> field('l.id,l.cid,l.email,g.aid,t.name,t.content') -> where(array('l.status' => 0, 'g.sendtime' => array('ELT', $end_time))) -> join('yesow_timing_send_group as g ON l.gid = g.id') -> join('yesow_background_email_template as t ON g.tid = t.id') -> order('l.id ASC') -> find();
+	$send_email = $TimingSendGroupList -> alias('l') -> field('l.id,l.cid,l.email,g.aid,t.title,t.content') -> where(array('l.status' => 0, 'g.sendtime' => array('ELT', $end_time))) -> join('yesow_timing_send_group as g ON l.gid = g.id') -> join('yesow_background_email_template as t ON g.tid = t.id') -> order('l.id ASC') -> find();
 	if(!$send_email){
 	  return ;
 	}
@@ -671,7 +671,7 @@ class PublicAction extends Action {
 	
 	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}', '{send_time}');
 	$email_content = str_replace($search, $company_info, $send_email['content']);
-	$email_title = str_replace($search, $company_info, $send_email['name']);
+	$email_title = str_replace($search, $company_info, $send_email['title']);
 
 
 	if(@SendMail($send_email['email'], $email_title, $email_content, 'yesow管理员')){
@@ -680,6 +680,8 @@ class PublicAction extends Action {
 	  //记录发送日志
 	  $record_data = array();
 	  $record_data['email'] = $send_email['email'];
+	  $record_data['cid'] = $send_email['cid'];
+	  $record_data['send_email'] = $value['email_address'];
 	  $record_data['title'] = $email_title;
 	  $record_data['content'] = $email_content;
 	  $record_data['sendtime'] = time();
@@ -695,6 +697,8 @@ class PublicAction extends Action {
 	  $record_data = array();
 	  $record_data['email'] = $send_email['email'];
 	  $record_data['title'] = $email_title;
+	  $record_data['cid'] = $send_email['cid'];
+	  $record_data['send_email'] = $value['email_address'];
 	  $record_data['content'] = $email_content;
 	  $record_data['sendtime'] = time();
 	  $record_data['status'] = 0;
