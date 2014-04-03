@@ -693,6 +693,9 @@ class PublicAction extends Action {
 	
 	}else{
 
+	  //标记此条信息为发送失败
+	  $TimingSendGroupList -> where(array('id' => $send_email['id'])) -> save(array('status' => 2));
+
 	  //记录发送日志
 	  $record_data = array();
 	  $record_data['email'] = $send_email['email'];
