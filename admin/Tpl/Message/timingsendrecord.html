@@ -64,16 +64,22 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
-			  <td><!--{$r.cname}--!></td>
+			  <td><a href="__URL__/edittimingsendrecordcompanyinfo/id/<!--{$r.cid}--!>/oid/<!--{$r.id}--!>" target="dialog" mask="true" style="color:blue;" title="编辑速查资料"><!--{$r.cname}--!></a></td>
 			  <td><!--{$r.send_email}--!></td>
 			  <td><!--{$r.email}--!></td>
 			  <td><!--{$r.title}--!></td>
 			  <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
-			  <eq name="r.status" value="1">
+			  <switch name="r.status">
+			  <case value="1">
 			  <td style="color:green;">成功</td>
-			  <else/>
-			  <td style="color:red;">失败</td>
-			  </eq>
+			  </case>
+			  <case value="2">
+			  <td style="color:blue;">已处理</td> 
+			  </case>
+			  <case value="0">
+			  <td style="color:red;"><a href="__URL__/editreplacetimingsendcompanyremindemail/id/<!--{$r.id}--!>" target="dialog" mask="true" style="color:red;" title="补发失败邮件">失败</a></td> 
+			  </case>
+			  </switch>
 			  <td><a href="__URL__/edittimingsendrecordinfo/id/<!--{$r.id}--!>" target="dialog">查看正文</a></td>
 			</tr>
 		</volist>

@@ -2361,7 +2361,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $email_list -> alias('bse') -> field('bse.id,bse.email,bse.title,bse.sendtime,bse.status,bse.send_email,c.name as cname') -> where($where) -> order('sendtime DESC') -> join('yesow_company as c ON bse.cid = c.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $email_list -> alias('bse') -> field('bse.cid,bse.id,bse.email,bse.title,bse.sendtime,bse.status,bse.send_email,c.name as cname') -> where($where) -> order('sendtime DESC') -> join('yesow_company as c ON bse.cid = c.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
@@ -2420,6 +2420,116 @@ class MessageAction extends CommonAction {
     $content = M('TimingSendEmail') -> getFieldByid($this -> _get('id', 'intval'), 'content');
     $this -> assign('content', $content);
     $this -> display();
+  }
+
+  //编辑速查信息
+  public function edittimingsendrecordcompanyinfo(){
+    $company = D('Company');
+    if(!empty($_POST['name'])){
+      if(!$company -> create()){
+	$this -> error($company -> getError());
+      }
+      if(!empty($_FILES['image']['name'])){
+	if($pics = $this -> upload()){
+	  $company -> pic = $pics;
+	}else{
+	  $this -> error(L('DATA_UPLOAD_ERROR'));
+	}
+      }
+      $company -> updateaid = session('admin_name');
+      $company -> updatetime = time();
+      if($company -> save()){
+	//sendEmail
+	if(!empty($_POST['email'])){
+	  D('MassEmailSetting') -> sendEmail('company_change', $_POST['email'], $_POST['id']);
+	}
+	//更新订单
+	M('TimingSendEmail') -> where(array('id' => $_POST['oid'])) -> save(array('status' => 2));
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $id = !empty($id) ? $id : $this -> _get('id', 'intval');
+    $this -> assign('id', $id);
+    $result_edit = $company -> table('yesow_company as c') -> field('c.name,c.address,c.manproducts,c.companyphone,c.mobilephone,c.linkman,c.email,c.qqcode,c.csid,c.csaid,c.typeid,c.ccid,c.website,c.pic,c.keyword,c.content,c.clickcount,c.addtime,c.updatetime,c.auditaid as auditname,c.updateaid as updatename,c.delaid as delname,c.remind_count as remind_count') -> where(array('c.id' => $id)) -> find();
+    $this -> assign('result_edit', $result_edit);
+    $result_childsite_area = M('ChildSiteArea') -> field('id,name') -> where(array('csid' => $result_edit['csid'])) -> select();
+    $this -> assign('result_childsite_area', $result_childsite_area);
+    $result_childsite = M('ChildSite') -> field('id,name') -> order('create_time DESC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $result_company_type = M('CompanyType') -> field('id,name') -> select();
+    $this -> assign('result_company_type', $result_company_type);
+    $result_ccid_one = M('CompanyCategory') -> getFieldByid($result_edit['ccid'], 'pid');
+    $this -> assign('result_ccid_one', $result_ccid_one);
+    $result_company_category_two = M('CompanyCategory') -> field('id,name') -> where(array('pid' => $result_ccid_one)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_two', $result_company_category_two);
+    $result_company_category_one = M('CompanyCategory') -> field('id,name') -> where(array('pid' => 0)) -> order('sort ASC') -> select();
+    $this -> assign('result_company_category_one', $result_company_category_one);
+    $this -> display();
+  }
+
+  //定时邮件失败处理
+  public function editreplacetimingsendcompanyremindemail(){
+
+    $TimingSendEmail = M('TimingSendEmail');
+    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+
+    if(!empty($_POST['accept_email'])){
+      //先更新速查数据
+      $record_data = $TimingSendEmail -> field('cid,title,content') -> find($this -> _post('id', 'intval'));
+      $data = array();
+      $data['id'] = $record_data['cid'];
+      $data['email'] = $_POST['accept_email'];
+      if($_POST['update'] == 1){
+	$data['updatetime'] = time();
+      }
+      M('Company') -> save($data);
+      //发送邮件
+      $email_template = $TimingSendEmailSetting -> field('id,email_address as send_address, email_SMTP as email_smtp, email_account as send_account, email_pwd as send_pwd') -> where(array('aid' => session(C('USER_AUTH_KEY')), 'status' => 1)) -> order('sendnum ASC') -> find();
+      C('MAIL_ADDRESS', $email_template['send_address']);
+      C('MAIL_SMTP', $email_template['email_smtp']);
+      C('MAIL_LOGINNAME', $email_template['send_account']);
+      C('MAIL_PASSWORD', $email_template['send_pwd']);
+      import('ORG.Util.Mail');
+
+      if(@SendMail($_POST['accept_email'], $record_data['title'], $record_data['content'], 'yesow管理员')){
+	$update_data = array();
+	$update_data['id'] = $this -> _post('id', 'intval');
+	$update_data['send_email'] = $email_template['send_address'];
+	$update_data['email'] = $_POST['accept_email'];
+	$update_data['sendtime'] = time();	
+	if($_POST['check'] == 1){
+	  $update_data['status'] = 2;
+	}else{
+	  $update_data['status'] = 1;
+	}
+
+	$TimingSendEmail -> save($update_data);
+	/*
+	//更新速查数据
+	$Company -> where(array('id' => $record_data['cid'])) -> setInc('remind_count');
+	$r_data = array();
+	$r_data['cid'] = $record_data['cid'];
+	$r_data['send_time'] = time();
+	$r_data['send_email'] = $email_template['send_address'];
+	$r_data['time'] = ''; //这里没法计算
+	$r_data['email'] = $_POST['accept_email'];
+	M('CompanyRemindRecord') -> add($r_data);
+	 */
+
+	//更新提醒邮件记录
+	$TimingSendEmailSetting -> where(array('id' => $email_template['id'])) -> setInc('sendnum');
+	$this -> success('邮件补发成功！');
+      }else{
+	$this -> error('邮件补发失败！');
+      }
+
+    }
+    $result = $TimingSendEmail -> alias('r') -> field('r.email as accept_email,c.name as company_name,c.updatetime') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> join('yesow_company as c ON r.cid = c.id') -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+
   }
 
   //定时发送通讯录
