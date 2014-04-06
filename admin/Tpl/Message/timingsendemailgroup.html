@@ -56,10 +56,16 @@
 		<tr target="sid_role" rel="<!--{$r.id}--!>">
 		  <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 			  <td><!--{$r.id}--!></td>
+			  
 			  <td><!--{$r.name}--!></td>
 			  <td><!--{$r.tname}--!></td>
 			  <td><!--{$r.count}--!></td>
-			  <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+<elt name="r.sendtime" value="$now">
+ <td style="color:green;"><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+			  <else/>
+ <td style="color:red;"><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+			  </elt>
+			 
 			  <td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
 			  <td><a href="__URL__/edittimingemailgrouplist/gid/<!--{$r.id}--!>" rel="edittimingemailgrouplist" target="navTab">查看</a></td>	  
 			  

@@ -2340,6 +2340,20 @@ class MessageAction extends CommonAction {
     if(!empty($_POST['email'])){
       $where['bse.email'] = $this -> _post('email');
     }
+    if(!empty($_POST['mname'])){
+      $where['c.name'] = array('LIKE', '%' . $this -> _post('mname') . '%');
+    }
+    if(!empty($_POST['status']) || $_POST['status'] === '0'){
+      $where['bse.status'] = $this -> _post('status');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['bse.sendtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['bse.sendtime'][] = array('lt', $endtime);
+    }
 
     $year = date("Y");
     $month = date("m");
@@ -2552,11 +2566,12 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $TimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,tt.name as tname,g.sendtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> join('yesow_background_email_template as tt ON g.tid = tt.id') -> order('g.id DESC') -> select();
+    $result = $TimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,tt.name as tname,g.sendtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> join('yesow_background_email_template as tt ON g.tid = tt.id') -> order('g.sendtime ASC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
+    $this -> assign('now', time());
     $this -> display();
   }
 
