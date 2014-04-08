@@ -76,6 +76,41 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  public function memberemailsendrecord(){
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    $where = array();
+    if(!empty($_POST['username'])){
+      $mid = M('Member') -> getFieldByname($_POST['username'], 'id');
+      $where['mssr.mid'] = $mid;
+    }
+    $count = $MemberSendEmailRecord -> alias('mssr') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $MemberSendEmailRecord -> alias('mssr') -> field('mssr.id,m.name as mname,mssr.sendtime,mssr.content,mssr.sendemail,mssr.statuscode,mssr.title,mssr.tosendemail') -> join('yesow_member as m ON mssr.mid = m.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+  
+  public function delmemberemailsendrecord(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    if($MemberSendEmailRecord -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
 
   public function memberemailsearchrecord(){
     $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
@@ -2181,19 +2216,24 @@ class MessageAction extends CommonAction {
 	$result_temp = $company -> field('id,email') -> where($where) -> group('email') -> select();
 
 	foreach($result_temp as $value){
+	  $send_arr[$value['id']] = $value['email'];
+	  /*
 	  $value['email'] = preg_replace('/\s{2,}|　/U',' ',$value['email']);
+	  $send_arr[$value['id']] = $values;
 	  $temp_arr = explode(' ', $value['email']);
 	  foreach($temp_arr as $values){
 	    if(!empty($values)){
 	      $send_arr[$value['id']] = $values;
 	    }	    
 	  }
+	   */
 	}
       }else{
 	$result_temp = explode(',', $_POST['ids']);
 	foreach($result_temp as $key => $value){
 	  $temp_string = $company -> getFieldByid($value, 'email');
-	  
+	  $send_arr[$value] = $temp_string;
+	  /*
 	  $temp_string = preg_replace('/\s{2,}|　/U',' ',$temp_string);
 	  $temp_arr = explode(' ', $temp_string);
 	  foreach($temp_arr as $values){
@@ -2201,6 +2241,7 @@ class MessageAction extends CommonAction {
 	      $send_arr[$value] = $values;
 	    }	    
 	  }
+	   */
 	}
       }
     }else{
@@ -2566,7 +2607,7 @@ class MessageAction extends CommonAction {
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
 
-    $result = $TimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,tt.name as tname,g.sendtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> join('yesow_background_email_template as tt ON g.tid = tt.id') -> order('g.sendtime ASC') -> select();
+    $result = $TimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,tt.name as tname,g.sendtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> join('yesow_background_email_template as tt ON g.tid = tt.id') -> order('g.sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
