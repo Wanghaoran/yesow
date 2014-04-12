@@ -995,9 +995,17 @@ class PublicAction extends Action {
     );
 
     if($_GET['mod'] == 'nomoney'){
-      $content = "<p>您已经无任何操作权限，请立即到会员中心充值！</p>
+
+      $MemberLevel = M('MemberLevel');
+
+      $updatemoney = $MemberLevel -> getFieldByid($_SESSION['member_level_id'], 'updatemoney');
+
+      //next level
+      $next_level_info = $MemberLevel -> field('id,name,updatemoney,rmb_one') -> where(array('updatemoney' => array('GT', $updatemoney))) -> order('updatemoney ASC') -> find();
+
+      $content = "<p>亲爱的<span style='color:red;'>{$_SESSION['name']}</span>：<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您您目前的会员等级是<span style='color:red;'>{$_SESSION['member_level_name']}</span>，且目前你的账户余额为<span style='color:red;'>{$_SESSION['rmb_total']}</span>元，低于我们查看客户的标准，您已经无任何操作权限！请充值自动升级您想要的会员等级就可以查看！(上一级会员是<span style='color:red;'>{$next_level_info['name']}</span>会员，仅需要<span style='color:red;'>{$next_level_info['updatemoney']}</span>元以上即可，查看资料<span style='color:red;'>{$next_level_info['rmb_one']}</span>元/条)</p>
 	<div class=\"clear\"></div>
-	<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"history.go(-1);\" value=\"返回前页\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge'\" value=\"我要充值\"/>";
+	<input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"history.go(-1);\" value=\"返回前页\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/money/rmbrecharge'\" value=\"我要充值\"/><input type=\"button\" class=\"wxts_btn btn_margin1\" onclick=\"location.href='" . __ROOT__ . "/member.php/index/userupdeta'\" value=\"会员权限\"/>";
       $this -> assign('content', $content);
       $this -> display();
       return ;

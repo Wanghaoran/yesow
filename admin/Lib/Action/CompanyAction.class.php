@@ -4432,4 +4432,92 @@ class CompanyAction extends CommonAction {
     $this -> display();
   }
 
+
+
+  /******** 速查促销管理 ************/
+
+  //在线QQ促销
+  public function qqonlinesale(){
+    $QqonlineSale = M('QqonlineSale');
+    $where = array();
+
+    $count = $QqonlineSale -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $QqonlineSale -> order('months ASC') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> select();
+    $this -> assign('result', $result);
+
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  //添加在线QQ促销
+  public function addqqonlinesale(){
+    if(!empty($_POST['months'])){
+      $QqonlineSale = M('QqonlineSale');
+      if(!$QqonlineSale -> create()){
+	$this -> error($QqonlineSale -> getError());
+      }
+      $QqonlineSale -> starttime = strtotime($_POST['starttime_d'] . ' ' . $_POST['starttime_h'] . ":" . $_POST['starttime_m'] . ":" . "00");
+      $QqonlineSale -> endtime = strtotime($_POST['endtime_d'] . ' ' . $_POST['endtime_h'] . ":" . $_POST['endtime_m'] . ":" . "00");
+      $QqonlineSale -> lostnum = $_POST['promotionnum'];
+      if($QqonlineSale -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $this -> display();
+  }
+
+  //删除在线QQ促销
+  public function delqqonlinesale(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $QqonlineSale = M('QqonlineSale');
+    if($QqonlineSale -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑在线QQ促销
+  public function editqqonlinesale(){
+    $QqonlineSale = M('QqonlineSale');
+    if(!empty($_POST['months'])){
+      if(!$QqonlineSale -> create()){
+	$this -> error($QqonlineSale -> getError());
+      }
+      $QqonlineSale -> starttime = strtotime($_POST['starttime_d'] . ' ' . $_POST['starttime_h'] . ":" . $_POST['starttime_m'] . ":" . "00");
+      $QqonlineSale -> endtime = strtotime($_POST['endtime_d'] . ' ' . $_POST['endtime_h'] . ":" . $_POST['endtime_m'] . ":" . "00");
+      if($_POST['old_promotionnum'] != $_POST['promotionnum']){
+	$QqonlineSale -> lostnum = $_POST['promotionnum'];
+      }
+      
+      if($QqonlineSale -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+
+    $result = $QqonlineSale -> field('months,promotionprice,promotionnum,starttime,endtime,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+
+  /******** 速查促销管理 ************/
+
 }
