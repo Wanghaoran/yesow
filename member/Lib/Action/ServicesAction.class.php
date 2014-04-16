@@ -3881,7 +3881,9 @@ class ServicesAction extends CommonAction {
       }
     }
 
-    /*  ----  执行发送  ----- */
+    //dump($to_send);
+
+    /*  
     //读取发送配置
     $MemberEmailSetting = M('MemberEmailSetting');
     $send_setting = $MemberEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd') -> find($this -> _post('sendtype', 'intval'));
@@ -3919,15 +3921,19 @@ class ServicesAction extends CommonAction {
       usleep(100000);
     }
 
+    */
     //清空信息
     $_SESSION['member_search_email_send_list'] = array();
     $_SESSION['member_upload_email_send_list'] = array();
     echo "<script>location.href='" . __URL__ ."/sendemailendjump';</script>";
+    
   }
+
+     
 
   //发送完毕跳转
   public function sendemailendjump(){
-    R('Register/successjump',array('发送完毕,现在跳转到发送记录', U('Services/emailsendrecord')));
+    R('Register/successjump',array('已添加至待发目录,现在跳转到发送记录', U('Services/emailsendrecord')));
   }
 
   public function searchemail(){
