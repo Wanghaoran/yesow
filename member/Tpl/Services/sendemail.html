@@ -60,20 +60,10 @@
                                 <div class="clear"></div>
 				<table class="table_sjdxfs">
 				  <form action="__URL__/tosendemail" id="tosendemail" method="post" enctype="multipart/form-data">
-                                    <tr>
-                                        <td class="tdleft">发送类型：</td>
-					<td class="tdright">
-					  <select name="sendtype">
-					    <volist name="result_sendtype" id="rs">
-					    <option value="<!--{$rs.id}--!>"><!--{$rs.email_address}--!></option>
-					    </volist>
-					</select>
-					<input type="button" value="设置" onclick="location.href='__URL__/setsmtp'" />
-					</td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td class="tdleft">邮件方式：</td>
-                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked" onclick="radioShow();"/>邮件地址列表发送<input type="radio" name="phonetype" value="group" onclick="radioShow();" />邮件群发簿发送</td>
+                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked" onclick="radioShow();"/>邮件地址列表发送</td>
                                     </tr>
                                     <tr id="sendnumber">
                                         <td class="tdleft">发送地址：</td>
@@ -110,22 +100,7 @@
 					  <P class="p_bottom">注：请勿发送反动，暴力，色情等违反中国法律法规，国家政策和社会道德规范的内容，否则对您造成的一切后果，易搜将不承担任何责任</P>
                                         </td>
                                     </tr>
-                                    <tr id="groupname">
-                                        <td class="tdleft">号码簿名：</td>
-                                        <td class="tdright">
-                                        <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="<!--{:date('Ymd')}--!>群发号码" />
-                                        </td>
-				      </tr>
-				      <tr style="display:none;" id="phonegroup">
-                                        <td class="tdleft">号码簿名：</td>
-					<td class="tdright">
-					  <select name="phonegroup">
-					    <volist name="sms_group" id="sg">
-					    <option value="<!--{$sg.id}--!>"><!--{$sg.name}--!></option>
-					    </volist>
-					  </select>
-					</td>
-                                    </tr>
+                                    
 				    <tr>
 				      <notempty name="issearch">
 				      <input type="hidden" name="issearch" value="<!--{$issearch}--!>" />

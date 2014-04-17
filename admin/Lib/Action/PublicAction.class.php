@@ -719,6 +719,67 @@ class PublicAction extends Action {
   }
 
 
+  //会员定时邮件发送
+  public function membertimingsendemail(){
+    set_time_limit(0);
+    $MemberTimingSendList = M('MemberTimingSendList');
+    $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    //获取会员列表
+    $result = $MemberTimingSendList -> field('mid') -> group('mid') -> select();
+    //循环每个待发送会员列表
+    do{
+      if(!$result){
+	break;
+      }
+      //读取该会员发送邮箱与发送限制
+      $MemberEmailSetting = M('MemberEmailSetting');
+      $result_list = $MemberEmailSetting -> field('id,email_address,email_SMTP,email_account,email_pwd,group_limit') -> where(array('mid' => $result[0]['mid'])) -> select();
+
+      //循环每个发送邮箱
+      foreach($result_list as $value){
+	//每个邮箱发送固定的次数
+	for($i=1; $i<=$value['group_limit']; $i++){
+	  //查询待发送列表
+	  $send_email = $MemberTimingSendList -> field('id,title,content,accept_email') -> where(array('mid' => $result[0]['mid'])) -> find();
+	  if(!$send_email){
+	    return ;
+	  }
+
+	  //执行发送
+	  C('MAIL_ADDRESS', $value['email_address']);
+	  C('MAIL_SMTP', $value['email_SMTP']);
+	  C('MAIL_LOGINNAME', $value['email_account']);
+	  C('MAIL_PASSWORD', $value['email_pwd']);
+
+	  import('ORG.Util.Mail');
+
+	  $re_data = array();
+	  $re_data['mid'] = $result[0]['mid'];
+	  $re_data['sendtime'] = time();
+	  $re_data['title'] = $send_email['title'];
+	  $re_data['content'] = $send_email['content'];
+	  $re_data['sendemail'] = $send_email['accept_email'];
+	  $re_data['tosendemail'] = $value['email_address'];
+
+	  if(@SendMail($send_email['accept_email'], $send_email['title'], $send_email['content'], 'yesow管理员')){
+	    $re_data['statuscode'] = 1;
+	  }else{
+	    $re_data['statuscode'] = 0;
+	  }
+
+	  $MemberTimingSendList -> where(array('id' => $send_email['id'])) -> delete();
+
+	  $MemberSendEmailRecord -> add($re_data);
+
+	  usleep(100000);
+
+	  
+	}
+      }
+    }while(array_shift($result));
+  }
+
+
   public function setwebsitemap(){
     $time = time();
     $ChildSite = M('ChildSite') -> field('id,domain,name') -> select();

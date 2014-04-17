@@ -3881,6 +3881,26 @@ class ServicesAction extends CommonAction {
       }
     }
 
+    $MemberTimingSendList = M('MemberTimingSendList');
+    $re_data = array();
+
+    foreach($to_send as $value){
+
+      if($value['id']){
+	  $company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $value['id'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	  $search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
+	  $re_data['content'] = str_replace($search, $company_info, $_POST['content']);
+	  $re_data['title'] = str_replace($search, $company_info, $_POST['title']);
+	}else{
+	  $re_data['content'] = $_POST['content'];
+	  $re_data['title'] = $_POST['title'];
+	}
+      $re_data['accept_email'] = $value['email'];
+      $re_data['mid'] = session(C('USER_AUTH_KEY'));
+
+      $MemberTimingSendList -> add($re_data);
+    }
+
     //dump($to_send);
 
     /*  

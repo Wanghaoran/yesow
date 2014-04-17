@@ -8,6 +8,8 @@ class CrontabAction extends Action {
     R('Public/timingsendemail');
     /*  ---- 切换 提醒邮箱  ----  */
     D('CompanyRemindEmail') -> cutemail();
+    //会员定时邮件发送
+    R('Public/membertimingsendemail');
   
   }
 
