@@ -63,7 +63,7 @@
                                     
                                     <tr>
                                         <td class="tdleft">邮件方式：</td>
-                                        <td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked" onclick="radioShow();"/>邮件地址列表发送</td>
+					<td class="tdright"><input type="radio" name="phonetype" value="list" checked="checked" onclick="radioShow();"/>邮件地址列表发送<input type="radio" name="phonetype" value="group" onclick="radioShow();" />邮件群发簿发送</td>
                                     </tr>
                                     <tr id="sendnumber">
                                         <td class="tdleft">发送地址：</td>
@@ -101,6 +101,29 @@
                                         </td>
                                     </tr>
                                     
+
+<tr id="groupname">
+
+                                       <td class="tdleft">号码簿名：</td>
+
+                                  <td class="tdright">
+
+                                     <input type="checkbox" name="savegroup" value="true" />存入群发簿以便下次群发，并取名<input type="text" name="savegroupname" value="<!--{:date('Ymd')}--!>群发号码" />
+
+
+				      </tr>
+
+				      <tr style="display:none;" id="phonegroup">
+                                      <td class="tdleft">号码簿名：</td>
+					<td class="tdright">
+					  <select name="phonegroup">
+					    <volist name="sms_group" id="sg">
+					    <option value="<!--{$sg.id}--!>"><!--{$sg.name}--!></option>
+					    </volist>
+					  </select>
+					</td>
+                                   </tr>
+
 				    <tr>
 				      <notempty name="issearch">
 				      <input type="hidden" name="issearch" value="<!--{$issearch}--!>" />

@@ -1909,7 +1909,7 @@ class ServicesAction extends CommonAction {
 
   //搜索号码
   public function searchcompanyphone(){
-    if(!empty($_GET['keyword'])){
+    if(!empty($_GET['submits'])){
       $keyword = $_GET['keyword'];
       $company = M('Company');
       $map['_string'] = "LENGTH(mobilephone) >= 11";
@@ -3957,7 +3957,7 @@ class ServicesAction extends CommonAction {
   }
 
   public function searchemail(){
-    if(!empty($_GET['keyword'])){
+    if(!empty($_GET['submits'])){
       $keyword = $this -> _get('keyword');
       $company = M('Company');
       $map['_string'] = "email is not NULL";

@@ -17,6 +17,11 @@ var text_smtp = $td.eq(1).find("input").val();
 var text_email = $td.eq(2).find("input").val();
 var text_pwd = $td.eq(3).find("input").val();
 var group_limit = $td.eq(4).find("input").val();
+if(group_limit > 3){
+  alert('邮箱每分钟发送数不能大于3!');
+  return false;
+}
+
 var text_id = thisObjID;
 $.ajax({
   url: '__ROOT__/member.php/public/ajaxchangeemailsetting',
@@ -134,10 +139,12 @@ $.ajax({
                                 </table>
                             </div>
                             <div class="clear"></div>
-				<div style="height:130px;text-align:left;padding-left:20px;color:red;">注意：<br>
+				<div style="height:150px;text-align:left;padding-left:20px;color:red;">注意：<br>
 				1、各大邮件运营商都有自己的发送邮件SMTP，请以邮件提供商为准；<br>
 				如：QQ邮箱：<span style="color:black;">smtp.qq.com</span>  163邮箱：<span style="color:black;">smtp.163.com</span> 126邮箱：<span style="color:black;">smtp.126.com</span> 等<br>
-				2、各大邮件运营商都有自己的每天发送邮件数量限制，请以提供商为准；
+				2、各大邮件运营商都有自己的每天发送邮件数量限制，请以提供商为准（如：163的免费邮箱每天只能发200个邮件，超过则发不出去）；<br>
+				3、由于本群发是根据您设置的邮箱同时在每分钟发送，故您每分钟的发送数最好不要超过3封邮件，以免被封；<br>
+				4、发送时最好采用不限数量的企业邮箱，如果没有可以来电易搜客户咨询提供:0571-81352817；
 				
 			      </div>
                             <div style="margin:10px auto; text-align:center"><input type="button" onclick="history.go(-1);" value="返回" /></div>
