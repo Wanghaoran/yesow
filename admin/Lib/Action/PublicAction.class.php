@@ -733,7 +733,7 @@ class PublicAction extends Action {
       }
       //读取该会员发送邮箱与发送限制
       $MemberEmailSetting = M('MemberEmailSetting');
-      $result_list = $MemberEmailSetting -> field('id,email_address,email_SMTP,email_account,email_pwd,group_limit') -> where(array('mid' => $result[0]['mid'])) -> select();
+      $result_list = $MemberEmailSetting -> field('id,email_address,email_SMTP,email_account,email_pwd,group_limit') -> where(array('mid' => $result[0]['mid'], 'status' => 1)) -> select();
 
       //循环每个发送邮箱
       foreach($result_list as $value){

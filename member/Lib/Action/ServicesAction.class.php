@@ -3678,10 +3678,22 @@ class ServicesAction extends CommonAction {
 
   public function setsmtp(){
     $MemberEmailSetting = M('MemberEmailSetting');
-    $result = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd,group_limit') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
+    $result = $MemberEmailSetting -> field('id,mid,email_address,email_SMTP,email_account,email_pwd,group_limit,status') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('addtime ASC') -> select();
     $this -> assign('result', $result);
     $this -> assign('limitnum', M('MemberEmailGroupLimit') -> getFieldBymid(session(C('USER_AUTH_KEY')), 'limitnum'));
     $this -> display();
+  }
+
+  public function ajaxgetsmtpstauts(){
+    $MemberEmailSetting = M('MemberEmailSetting');
+    $data = array();
+    $data['id'] = $this -> _post('id');
+    $data['status'] = $this -> _post('statuss');
+    if($MemberEmailSetting -> save($data)){
+      echo 1;
+    }else{
+      echo 2;
+    }
   }
 
   public function sendemail(){

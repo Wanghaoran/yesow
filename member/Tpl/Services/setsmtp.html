@@ -85,6 +85,25 @@ $.ajax({
       dataType:'json'
     });
 }
+
+var changeStatus = function(id, statuss){
+
+  $.ajax({
+  url: '__URL__/ajaxgetsmtpstauts',
+  type: 'POST',
+  data: '&id=' + id + '&statuss=' + statuss,
+      success: function(ress){
+        if(ress == 1){
+	  alert('更新成功！');
+	  location.reload();
+	}else{
+          alert('更新失败！');
+          return;	  
+	}
+      }
+    });
+
+}
 </script>
 </head>
 <body id="body_user">
@@ -115,7 +134,8 @@ $.ajax({
                                           <th>发送邮箱SMTP</th>
                                           <th>发送邮箱帐号</th>
                                           <th>发送邮箱密码</th>
-                                          <th>每分钟发送数量</th>
+                                          <th>发送量/分</th>
+					  <th>状态</th>
                                           <th>操作</th>
                                     </tr>
 				    <volist name="result" id="r">
@@ -125,6 +145,11 @@ $.ajax({
 					  <td><input type="text" value="<!--{$r.email_account}--!>" style="width:120px;"></td>
 					  <td><input type="password" value="<!--{$r.email_pwd}--!>" style="width:80px;"></td>
 					  <td><input type="text" value="<!--{$r.group_limit}--!>" style="width:80px;"></td>
+					  <eq name="r.status" value="1">
+					  <td><a onclick="changeStatus('<!--{$r.id}--!>', 2);" style="color:green;">启用</a></td>
+					  <else/>
+					  <td><a onclick="changeStatus('<!--{$r.id}--!>', 1);" style="color:red;">停用</a></td>
+					  </eq>
 					  <td><a id="<!--{$r.id}--!>" href="javascript:;" onclick="Bind(this,this.id);">修改</a>|<a id="<!--{$r.id}--!>"  href="javascript:;" onclick="Delete(this.id,this);">删除</a></td>
                                      </tr>
 				     </volist>
@@ -134,6 +159,7 @@ $.ajax({
                                           <td><input type="text" value="" style="width:120px;"></td>
                                           <td><input type="password" value="" style="width:80px;"></td>
                                           <td><input type="text" value="" style="width:80px;"></td>
+					  <td style="color:green;">启用</td>
                                           <td><a onclick="addemail(this)">添加</a></td>
                                       </tr>
                                 </table>
@@ -142,9 +168,10 @@ $.ajax({
 				<div style="height:150px;text-align:left;padding-left:20px;color:red;">注意：<br>
 				1、各大邮件运营商都有自己的发送邮件SMTP，请以邮件提供商为准；<br>
 				如：QQ邮箱：<span style="color:black;">smtp.qq.com</span>  163邮箱：<span style="color:black;">smtp.163.com</span> 126邮箱：<span style="color:black;">smtp.126.com</span> 等<br>
-				2、各大邮件运营商都有自己的每天发送邮件数量限制，请以提供商为准（如：163的免费邮箱每天只能发200个邮件，超过则发不出去）；<br>
+				2、免费邮箱每天发送邮件数量都有限制，超过则发不出去（如：163的免费邮箱每天只能发100-200个邮件）<br>
 				3、由于本群发是根据您设置的邮箱同时在每分钟发送，故您每分钟的发送数最好不要超过3封邮件，以免被封；<br>
-				4、发送时最好采用不限数量的企业邮箱，如果没有可以来电易搜客户咨询提供:0571-81352817；
+				4、发送时最好采用不限数量的企业邮箱，如果没有可以来电易搜客户咨询提供:0571-81352817；<br>
+				5、如需要企业邮局，请到易搜商城可以订购：企业常规邮和企业营销邮，了解企业邮局请点<a href="http://www.yesow.com/shoplist/5" target="_blank">这里</a>进去，全国市场价最低；
 				
 			      </div>
                             <div style="margin:10px auto; text-align:center"><input type="button" onclick="history.go(-1);" value="返回" /></div>
