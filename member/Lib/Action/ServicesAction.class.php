@@ -3810,7 +3810,6 @@ class ServicesAction extends CommonAction {
 	  }
 	}
 
-	$group_limit = M('MemberEmailSetting') -> getFieldByid($_POST['sendtype'], 'group_limit');
 
 	$save_group_list = array();
 	if(!empty($_POST['issearch'])){
@@ -3820,6 +3819,33 @@ class ServicesAction extends CommonAction {
 	}else{
 	  $save_group_list = $temp_sendnumber_arr;
 	}
+
+	$MemberEmailGroup = D('MemberEmailGroup');
+	$MemberEmailGroupList = M('MemberEmailGroupList');
+
+	$data = array();
+	$data['mid'] = session(C('USER_AUTH_KEY'));
+	$data['name'] = $_POST['savegroupname'];
+
+	$data['addtime'] = time();
+	if(!$MemberEmailGroup -> create($data)){
+	  R('Register/errorjump', array('添加通讯录失败'));
+	}
+
+	if($gid = $MemberEmailGroup -> add()){
+	  $list_data = array();
+	  $list_data['gid'] = $gid;
+	  foreach($save_group_list as $valuetwo){
+	    $list_data['cid'] = $valuetwo['id'];
+	    $list_data['realnumber'] = $valuetwo['email'];
+	    $list_data['hidenumber'] = substr($valuetwo['email'], 0 ,3) . '****' . strstr($valuetwo['email'], '@');
+	    $MemberEmailGroupList -> add($list_data);
+	  }
+	
+	}
+
+	/*
+	
 
 	$group_num = (int)ceil(count($save_group_list) / $group_limit);
 	$group_num = $group_num ? $group_num : 1000;
@@ -3853,9 +3879,10 @@ class ServicesAction extends CommonAction {
 	    }
 	  }
 	}
+	 */
       }
-      /* -- 保存通讯录 End -- */
 
+	 
       //组合发送号码
       //搜索号码
       if(!empty($_POST['issearch'])){
