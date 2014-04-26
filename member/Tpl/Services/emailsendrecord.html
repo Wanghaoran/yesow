@@ -50,7 +50,7 @@
 					<td><a class="div_email" href="#" title="<!--{$r.tosendemail}--!>" style="width:115px;"><!--{$r.tosendemail}--!></a></td>
 					<td><!--{$r.sendemail}--!></td>
 					<td><a class="div_email" href="#" title="<!--{$r.title}--!>" style="width:115px;"><!--{$r.title}--!></a></td>
-					<td><a class="div_email" href="#" title="<!--{$r.content}--!>" style="width:115px;"><!--{$r.content}--!></a></td>
+					<td><a class="div_email" href="#" title="<!--{$r.content|strip_tags}--!>" style="width:115px;"><!--{$r.content|strip_tags}--!></a></td>
 					<switch name="r.statuscode">
 					<case value="1" break="1">
 					<td style="color:green;">发送成功</td>

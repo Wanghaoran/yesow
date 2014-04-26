@@ -65,14 +65,14 @@ function isSelectAlls(){
   var check = document.getElementById("selectAlls");
   if(check.checked){
     $.ajax({
-url:'__URL__/ajaxsmssearchresultallcheck/type/1/keyword/<!--{$Think.get.keyword}--!>/searchscope/<!--{$Think.get.searchscope}--!>/csid/<!--{$Think.get.csid}--!>/csaid/<!--{$Think.get.csaid}--!>',
+url:'__URL__/ajaxsmssearchresultallcheck/type/1/keyword/<!--{$Think.get.keyword|default="null"}--!>/searchscope/<!--{$Think.get.searchscope|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
       success: function(ress){
         location.href="__SELF__&type=1";
       }
       });
   }else{
     $.ajax({
-      url:'__URL__/ajaxsmssearchresultallcheck/type/0/keyword/<!--{$Think.get.keyword}--!>/searchscope/<!--{$Think.get.searchscope}--!>/csid/<!--{$Think.get.csid}--!>/csaid/<!--{$Think.get.csaid}--!>',
+      url:'__URL__/ajaxsmssearchresultallcheck/type/0/keyword/<!--{$Think.get.keyword|default="null"}--!>/searchscope/<!--{$Think.get.searchscope|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>',
       success: function(ress){
         location.href="__SELF__&type=0";
       }

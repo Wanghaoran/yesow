@@ -1964,12 +1964,17 @@ class ServicesAction extends CommonAction {
 
   //ajax全选
   public function ajaxsmssearchresultallcheck(){
-    $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
+    $where = array();
+    if($_GET['keyword'] != 'null'){
+      $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
+      $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+    }
+    ;
     $company = M('Company');
     $map['_string'] = "LENGTH(mobilephone) >= 11";
-    $where = array();
+    
     $where['delaid']  = array('exp', 'is NULL');
-    $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+    
     if($_GET['searchscope'] == 'city'){
       $where['csid'] = $this -> _get('csid', 'intval');
       if(!empty($_GET['csaid'])){
@@ -4050,12 +4055,15 @@ class ServicesAction extends CommonAction {
 
   //ajax全选
   public function ajaxemailsearchresultallcheck(){
-    $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
+    $where = array();
+    if($_GET['keyword'] != 'null'){
+      $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
+      $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+    }
+
     $company = M('Company');
     $map['_string'] = "email is not NULL";
-    $where = array();
     $where['delaid']  = array('exp', 'is NULL');
-    $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
     if($_GET['searchscope'] == 'city'){
       $where['csid'] = $this -> _get('csid', 'intval');
       if(!empty($_GET['csaid'])){
