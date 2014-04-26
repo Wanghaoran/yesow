@@ -5,10 +5,14 @@
 		<div class="pageFormContent" layoutH="58">
 	<div class="unit">
 		<label>包月数：</label>
-		<input type="text" class="required digits" name="months" />
+		<select name="months" class="combox">
+		<volist name="months" id="m">
+		<option value="<!--{$m.months}--!>"><!--{$m.months}--!>个月(市场价:<!--{$m.marketprice}--!>元)(促销价:<!--{$m.promotionprice}--!>元)</option>
+		</volist>
+	      </select>
 	      </div>
 	<div class="unit">
-		<label>促销价：</label>
+		<label>抢购价：</label>
 		<input type="text" class="required" name="promotionprice" />
 	</div>	
 	<div class="unit">

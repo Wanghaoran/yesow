@@ -4477,6 +4477,8 @@ class CompanyAction extends CommonAction {
 	$this -> error(L('DATA_ADD_ERROR'));
       }
     }
+    $months = M('QqonlineMoney') -> field('months,marketprice,promotionprice') -> select();
+    $this -> assign('months', $months);
     $this -> display();
   }
 
@@ -4513,7 +4515,10 @@ class CompanyAction extends CommonAction {
     }
 
     $result = $QqonlineSale -> field('months,promotionprice,promotionnum,starttime,endtime,remark') -> find($this -> _get('id', 'intval'));
+    
     $this -> assign('result', $result);
+    $months = M('QqonlineMoney') -> field('months,marketprice,promotionprice') -> select();
+    $this -> assign('months', $months);
     $this -> display();
   }
 
