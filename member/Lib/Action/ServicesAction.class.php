@@ -4178,5 +4178,24 @@ class ServicesAction extends CommonAction {
     $this -> display();
   }
 
+  public function timingsendlist(){
+    $MemberTimingSendList = D('MemberTimingSendList');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberTimingSendList -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $MemberTimingSendList -> field('id,title,content,accept_email') -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id ASC') -> select();
+
+    foreach($result as $key => $value){
+      $result[$key]['accept_email'] = substr($value['accept_email'], 0 ,3) . '****' . strstr($value['accept_email'], '@');
+    }
+
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> display();
+  }
+
 
 }
