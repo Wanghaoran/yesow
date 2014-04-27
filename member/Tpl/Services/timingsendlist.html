@@ -22,10 +22,11 @@
                             <!--nav start-->
                             <dt>
 			    <h2 class="balances h2_yue2">余额: <!--{$Think.session.rmb_total}--!> 元</h2>
-                                <a href="#" class="on">待发列表</a>
+                                <a href="#" class="on">发送任务列表</a>
 				<a class="textlink" href="__APP__/services/sendemail" style="margin:0;width:60px;">邮件群发</a>
 				<a class="textlink" href="__APP__/services/sendemailgroup" style="margin:0;width:60px;">邮件号薄</a>
-				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">群发设置</a>
+	<a class="textlink" href="__APP__/services/emailsendrecord" style="margin:0;width:60px;">群发记录</a>
+				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">邮箱设置</a>
 				<input type="button" onclick="location.href='__URL__/sendemail'" value="继续发送" />
 				
 				<div class="clear"></div>
@@ -41,6 +42,8 @@
                                         <th>接收邮箱</th>
                                         <th>标题</th>
                                         <th>内容</th>
+                                        <th>状态</th>
+                                        <th>发送时间</th>
 				      </tr>
 				      <volist name="result" id="r">
 				      <tr>
@@ -48,6 +51,16 @@
 					<td><!--{$r.accept_email}--!></td>
 					<td><a class="div_email" href="#" title="<!--{$r.title}--!>" style="width:115px;"><!--{$r.title}--!></a></td>
 					<td><a class="div_email" href="#" title="<!--{$r.content|strip_tags}--!>" style="width:115px;"><!--{$r.content|strip_tags}--!></a></td>
+					<eq name="r.status" value="1">
+					<td style="color:red;">未发送</td>
+					<else/>
+					<td style="color:blue;">已发送</td>
+					</eq>
+					<notempty name="r.sendtime">
+					<td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
+					<else/>
+					<td></td>
+					</notempty>
 				      </tr>
 				      </volist>
                                 </table>

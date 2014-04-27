@@ -56,7 +56,7 @@
 <td><!--{$r.tosendemail}--!></td>
 <td><!--{$r.sendemail}--!></td>
 <td><!--{$r.title}--!></td>
-<td><!--{$r.content}--!></td>
+<td><!--{$r.content|strip_tags}--!></td>
 <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>			 
 <switch name="r.statuscode">
 <case value="1" break="1">

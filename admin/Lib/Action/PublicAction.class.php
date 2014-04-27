@@ -725,7 +725,7 @@ class PublicAction extends Action {
     $MemberTimingSendList = M('MemberTimingSendList');
     $MemberSendEmailRecord = M('MemberSendEmailRecord');
     //获取会员列表
-    $result = $MemberTimingSendList -> field('mid') -> group('mid') -> select();
+    $result = $MemberTimingSendList -> field('mid') -> where('status=1') -> group('mid') -> select();
     //循环每个待发送会员列表
     do{
       if(!$result){
@@ -740,7 +740,7 @@ class PublicAction extends Action {
 	//每个邮箱发送固定的次数
 	for($i=1; $i<=$value['group_limit']; $i++){
 	  //查询待发送列表
-	  $send_email = $MemberTimingSendList -> field('id,title,content,accept_email') -> where(array('mid' => $result[0]['mid'])) -> find();
+	  $send_email = $MemberTimingSendList -> field('id,title,content,accept_email') -> where(array('mid' => $result[0]['mid'], 'status' => 1)) -> find();
 	  if(!$send_email){
 	    return ;
 	  }
@@ -757,17 +757,21 @@ class PublicAction extends Action {
 	  $re_data['mid'] = $result[0]['mid'];
 	  $re_data['sendtime'] = time();
 	  $re_data['title'] = $send_email['title'];
-	  $re_data['content'] = $send_email['content'];
+	  $re_data['content'] = stripslashes($send_email['content']);
 	  $re_data['sendemail'] = $send_email['accept_email'];
 	  $re_data['tosendemail'] = $value['email_address'];
 
-	  if(@SendMail($send_email['accept_email'], $send_email['title'], $send_email['content'], 'yesow管理员')){
+	  if(@SendMail($send_email['accept_email'], $send_email['title'], $re_data['content'], 'yesow管理员')){
 	    $re_data['statuscode'] = 1;
 	  }else{
 	    $re_data['statuscode'] = 0;
 	  }
 
-	  $MemberTimingSendList -> where(array('id' => $send_email['id'])) -> delete();
+	  $save_data = array();
+	  $save_data['status'] = 2;
+	  $save_data['sendtime'] = time();
+
+	  $MemberTimingSendList -> where(array('id' => $send_email['id'])) -> save($save_data);
 
 	  $MemberSendEmailRecord -> add($re_data);
 

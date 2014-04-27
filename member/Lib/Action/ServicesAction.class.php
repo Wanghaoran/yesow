@@ -1977,7 +1977,7 @@ class ServicesAction extends CommonAction {
     
     if($_GET['searchscope'] == 'city'){
       $where['csid'] = $this -> _get('csid', 'intval');
-      if(!empty($_GET['csaid'])){
+      if($_GET['csaid'] != 'null'){
 	$where['csaid'] = $this -> _get('csaid', 'intval');
       }
     }
@@ -4066,7 +4066,7 @@ class ServicesAction extends CommonAction {
     $where['delaid']  = array('exp', 'is NULL');
     if($_GET['searchscope'] == 'city'){
       $where['csid'] = $this -> _get('csid', 'intval');
-      if(!empty($_GET['csaid'])){
+      if($_GET['csaid'] != 'null'){
 	$where['csaid'] = $this -> _get('csaid', 'intval');
       }
     }
@@ -4140,7 +4140,9 @@ class ServicesAction extends CommonAction {
     $result = $MemberSendEmailRecord -> field('title,sendtime,content,sendemail,statuscode,tosendemail') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('sendtime DESC') -> select();
     foreach($result as $key => $value){
       $result[$key]['sendemail'] = substr($value['sendemail'], 0 ,3) . '****' . strstr($value['sendemail'], '@');
+      $result[$key]['content'] = strip_tags($value['content']);
     }
+
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
@@ -4186,7 +4188,7 @@ class ServicesAction extends CommonAction {
     $page = new Page($count, 10);
     $show = $page -> show();
 
-    $result = $MemberTimingSendList -> field('id,title,content,accept_email') -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id ASC') -> select();
+    $result = $MemberTimingSendList -> field('id,title,content,accept_email,status,sendtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id DESC') -> select();
 
     foreach($result as $key => $value){
       $result[$key]['accept_email'] = substr($value['accept_email'], 0 ,3) . '****' . strstr($value['accept_email'], '@');

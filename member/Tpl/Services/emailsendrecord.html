@@ -25,8 +25,8 @@
                                 <a href="#" class="on">我的发送记录</a>
 				<a class="textlink" href="__APP__/services/sendemail" style="margin:0;width:60px;">邮件群发</a>
 				<a class="textlink" href="__APP__/services/sendemailgroup" style="margin:0;width:60px;">邮件号薄</a>
-				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">群发设置</a>
-	<a class="textlink" href="__APP__/services/timingsendlist" style="margin:0;width:60px;">待发列表</a>
+				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">邮箱设置</a>
+	<a class="textlink" href="__APP__/services/timingsendlist" style="margin:0;width:60px;">发送任务</a>
 				<input type="button" onclick="location.href='__URL__/sendemail'" value="继续发送" />
 				
 				<div class="clear"></div>
@@ -51,7 +51,7 @@
 					<td><a class="div_email" href="#" title="<!--{$r.tosendemail}--!>" style="width:115px;"><!--{$r.tosendemail}--!></a></td>
 					<td><!--{$r.sendemail}--!></td>
 					<td><a class="div_email" href="#" title="<!--{$r.title}--!>" style="width:115px;"><!--{$r.title}--!></a></td>
-					<td><a class="div_email" href="#" title="<!--{$r.content|strip_tags}--!>" style="width:115px;"><!--{$r.content|strip_tags}--!></a></td>
+					<td><a class="div_email" href="#" title="<!--{$r.content}--!>" style="width:115px;"><!--{$r.content}--!></a></td>
 					<switch name="r.statuscode">
 					<case value="1" break="1">
 					<td style="color:green;">发送成功</td>
