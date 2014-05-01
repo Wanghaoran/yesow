@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新增邮件模板-业务服务-易搜会员中心</title>
+<link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
+<link rel="stylesheet" href="__PUBLIC__/member/user.css" />
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/kindeditor/zh_CN.js"></script>
+<script>
+        var editor;
+        KindEditor.ready(function(K) {
+	  editor = K.create('#editor_id', {
+	    uploadJson : '__APP__/public/uploadfile',
+	    fileManagerJson : './kindeditor/php/file_manager_json.php'
+	  });
+        });
+</script>
+</head>
+<body id="body_user">
+  <include file="Index:header" />
+	<div id="user_m">
+    	<div class="warp_900">
+        	<div id="main">
+		  <include file="sidebar" />
+                <div id="main_rlong">
+                	<div class="main_rlong_tit"><input type="button" value="返回" onclick="history.go(-1);" style="float:right;margin-right:5px;font-size:12px;" />新增邮件模板</div>
+                   <div class="clear30"></div>
+                    <div class="main">
+                        <dl class="switchBox">
+                            <!--nav start-->
+                            <dt>
+                                <a href="#" class="on">新增邮件模板</a>
+				<a class="textlink" href="__APP__/services/sendemail" style="margin:0;width:60px;">邮件群发</a>
+				<a class="textlink" href="__APP__/services/emailsendrecord" style="margin:0;width:60px;">群发记录</a>
+				<a class="textlink" href="__APP__/services/sendemailgroup" style="margin:0;width:60px;">邮件号薄</a>
+				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">邮箱设置</a>
+				<a class="textlink" href="__APP__/services/timingsendlist" style="margin:0;width:60px;">发送任务</a>
+				<a class="textlink" href="__APP__/services/emailtemplate" style="margin:0;width:60px;">邮件模板</a>
+                            </dt>                    
+                        </dl>
+                        <div class="main_sjdxfs">
+                                <div class="clear"></div>
+				<table class="table_sjdxfs">
+				  <form action="__ACTION__" onsubmit="editor.sync();return true;" method="post" enctype="multipart/form-data">
+				    <tr>
+                                        <td class="tdleft">模板名称：</td>
+                                        <td class="tdright">
+					<input type="text" name="name" class="txtfile2" style="width:355px;" />
+                                        </td>
+                                    </tr>
+				    <tr>
+                                        <td class="tdleft">邮件标题：</td>
+                                        <td class="tdright">
+					<input type="text" name="title" class="txtfile2" style="width:555px;" />
+                                        </td>
+                                    </tr>
+				    <tr>
+                                        <td class="tdleft">发送模板：</td>
+                                        <td class="tdright">
+						<span style="line-height:15px;margin-top:20px;">公司名：&nbsp;&nbsp;&nbsp;{company_name} | &nbsp;&nbsp;地址：&nbsp;&nbsp;&nbsp;{company_address} <br/> 电话：&nbsp;&nbsp;&nbsp;{company_companyphone} | &nbsp;&nbsp;手机：&nbsp;&nbsp;&nbsp;{company_mobilephone} <br/> 网址：&nbsp;&nbsp;&nbsp;{company_website} |  &nbsp;&nbsp;主营：&nbsp;&nbsp;&nbsp;{company_manproducts}<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮件：&nbsp;&nbsp;&nbsp;{company_email} | &nbsp;&nbsp;QQ：&nbsp;&nbsp;&nbsp;{company_qqcode} | &nbsp;&nbsp;联系人：&nbsp;&nbsp;&nbsp;{company_linkman}</span><div class="clear" style="margin-top:20px;"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdleft">发送内容：</td>
+					<td class="tdright">					  
+					  <textarea name="content" id="editor_id" style="width:98%;height:400px;visibility:hidden;"></textarea>
+                                        </td>
+                                    </tr>
+				    <tr>
+                                        <td colspan="2"><input type="submit" value="提交" style="margin-right:20px" class="rmb_fanhui"/><input type="reset" value="重置" class="rmb_fanhui"/></td>
+				      </tr>
+				      </form>
+                                </table>
+                            </div>
+                            <div class="clear30"></div>  
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <include file="Index:footer" />
+  </body>
+</html>

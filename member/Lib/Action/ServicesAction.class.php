@@ -3740,12 +3740,18 @@ class ServicesAction extends CommonAction {
     $sms_group = $MemberEmailGroup -> field('id,name') -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> select();
     $this -> assign('sms_group', $sms_group);
 
+    //群发模板
+    $MemberEmailTemplate = M('MemberEmailTemplate');
+    $result_template = $MemberEmailTemplate -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id DESC') -> select();
+    $this -> assign('result_template', $result_template);
 
     $this -> display();
   }
 
   public function tosendemail(){
     set_time_limit(0);
+    //dump($_POST);
+    //exit();
     //文本上传
     if(!empty($_POST['textfield'])){
       import('ORG.Net.UploadFile');
@@ -3925,7 +3931,30 @@ class ServicesAction extends CommonAction {
       }
     }
 
-    $MemberTimingSendList = M('MemberTimingSendList');
+
+    if($_POST['contenttype'] == 'list'){
+      $sendEmailTitle = $_POST['title'];
+      $sendEmailContent = $_POST['content'];
+    }else{
+      $MemberEmailTemplate = M('MemberEmailTemplate');
+      $template_result = $MemberEmailTemplate -> field('title,content') -> find($_POST['templatelist']);
+      $sendEmailTitle = $template_result['title'];
+      $sendEmailContent = $template_result['content'];
+    }
+
+
+
+    //先添加通讯录
+    $MemberTimingSendGroup = M('MemberTimingSendGroup');
+    $group_data = array();
+    $group_data['mid'] = session(C('USER_AUTH_KEY'));
+    $group_data['name'] = date('YmdHis') . rand(10000, 99999);
+    $group_data['addtime'] = time();
+    $group_data['sendtime'] = strtotime($_POST['data1']  . ' ' . $_POST['data2'] . ':' . $_POST['data3'] . ':' . '00');
+    $gid = $MemberTimingSendGroup -> add($group_data);
+
+    //再添加通讯录详情
+    $MemberTimingSendGroupList = M('MemberTimingSendGroupList');
     $re_data = array();
 
     foreach($to_send as $value){
@@ -3933,16 +3962,16 @@ class ServicesAction extends CommonAction {
       if($value['id']){
 	  $company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $value['id'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
 	  $search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}');
-	  $re_data['content'] = str_replace($search, $company_info, $_POST['content']);
-	  $re_data['title'] = str_replace($search, $company_info, $_POST['title']);
+	  $re_data['content'] = str_replace($search, $company_info, $sendEmailContent);
+	  $re_data['title'] = str_replace($search, $company_info, $sendEmailTitle);
 	}else{
-	  $re_data['content'] = $_POST['content'];
-	  $re_data['title'] = $_POST['title'];
+	  $re_data['content'] = $sendEmailContent;
+	  $re_data['title'] = $sendEmailTitle;
 	}
       $re_data['accept_email'] = $value['email'];
-      $re_data['mid'] = session(C('USER_AUTH_KEY'));
+      $re_data['gid'] = $gid;
 
-      $MemberTimingSendList -> add($re_data);
+      $MemberTimingSendGroupList -> add($re_data);
     }
 
     //dump($to_send);
@@ -4181,22 +4210,78 @@ class ServicesAction extends CommonAction {
   }
 
   public function timingsendlist(){
-    $MemberTimingSendList = D('MemberTimingSendList');
+    $MemberTimingSendGroup = D('MemberTimingSendGroup');
 
     import("ORG.Util.Page");// 导入分页类
-    $count = $MemberTimingSendList -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $count = $MemberTimingSendGroup -> alias('g') -> where(array('g.mid' => session(C('USER_AUTH_KEY')))) -> count();
     $page = new Page($count, 10);
     $show = $page -> show();
 
-    $result = $MemberTimingSendList -> field('id,title,content,accept_email,status,sendtime') -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id DESC') -> select();
+    $result = $MemberTimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,g.sendtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.sendtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('show', $show);
+    $this -> assign('now', time());
+    $this -> display();
+  }
 
-    foreach($result as $key => $value){
-      $result[$key]['accept_email'] = substr($value['accept_email'], 0 ,3) . '****' . strstr($value['accept_email'], '@');
-    }
+  public function emailtemplate(){
+    $MemberEmailTemplate = D('MemberEmailTemplate');
+
+    import("ORG.Util.Page");// 导入分页类
+    $count = $MemberEmailTemplate -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> count();
+    $page = new Page($count, 10);
+    $show = $page -> show();
+
+    $result = $MemberEmailTemplate -> limit($page -> firstRow . ',' . $page -> listRows) -> where(array('mid' => session(C('USER_AUTH_KEY')))) -> order('id DESC') -> select();
 
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> display();
+  }
+
+  public function addemailtemplate(){
+    if(!empty($_POST['name'])){
+      $MemberEmailTemplate = M('MemberEmailTemplate');
+      $data = array();
+      $data['mid'] = session(C('USER_AUTH_KEY'));
+      $data['name'] = $this -> _post('name');
+      $data['title'] = $_POST['title'];
+      $data['content'] = $_POST['content'];
+      $data['addtime'] = time();
+
+      if($MemberEmailTemplate -> add($data)){
+	R('Register/successjump',array('添加群发邮件模板成功', U('Services/emailtemplate')));
+      }else{
+	R('Register/errorjump', array('添加群发邮件模板失败', U('Services/emailtemplate')));
+      }
+    }
+    $this -> display();
+  }
+
+  public function editemailtemplate(){
+    $MemberEmailTemplate = M('MemberEmailTemplate');
+    if(!empty($_POST['name'])){
+      if(!$MemberEmailTemplate -> create()){
+	R('Register/errorjump', array('编辑群发邮件模板失败', U('Services/emailtemplate')));
+      }
+      if($MemberEmailTemplate -> save()){
+	R('Register/successjump',array('编辑群发邮件模板成功', U('Services/emailtemplate')));
+      }else{
+	R('Register/errorjump', array('编辑群发邮件模板失败', U('Services/emailtemplate')));
+      }
+    
+    }
+    $result = $MemberEmailTemplate -> field('id,name,title,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function delemailtemplate(){
+    if(M('MemberEmailTemplate') -> delete($this -> _post('id', 'intval'))){
+      echo 1;
+    }else{
+      echo 2;
+    }
   }
 
 

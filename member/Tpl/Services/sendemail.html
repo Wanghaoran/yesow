@@ -42,8 +42,22 @@ $(function(){
       $("#phonegroup").show();
       $("#groupname").hide();
     }
+  } 
+</script>
+<script>
+
+function aaaaa(){
+  var myradio=document.getElementsByName("contenttype");
+  if(myradio[0].checked){
+    $("#inputtitle").show();
+    $("#inputcontent").show();
+    $('#templatelist').hide();
+  }else{
+    $("#inputtitle").hide();
+    $("#inputcontent").hide();
+    $('#templatelist').show();
   }
-  
+}
 </script>
 </head>
 <body id="body_user">
@@ -64,6 +78,7 @@ $(function(){
 				<a class="textlink" href="__APP__/services/sendemailgroup" style="margin:0;width:60px;">邮件号薄</a>
 				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">邮箱设置</a>
 				<a class="textlink" href="__APP__/services/timingsendlist" style="margin:0;width:60px;">发送任务</a>
+				<a class="textlink" href="__APP__/services/emailtemplate" style="margin:0;width:60px;">邮件模板</a>
                             </dt>                    
                         </dl>
                         <div class="main_sjdxfs">
@@ -103,13 +118,30 @@ $(function(){
 <div class="left"><a onclick="$('#tosendemail').submit();" class="rmb_fanhui" style="display:block;"/>导入</a></div>
                                         </td>
                                     </tr>
-				    <tr id="inputtxt">
+					
+				    <tr>
+                                        <td class="tdleft">邮件内容类型：</td>
+					<td class="tdright"><input type="radio" name="contenttype" value="list" checked="checked" onclick="aaaaa();"/>自行填写<input type="radio" name="contenttype" value="group" onclick="aaaaa();" />群发模板</td>
+                                    </tr>
+
+				<tr style="display:none;" id="templatelist">
+                                      <td class="tdleft">群发模板名：</td>
+					<td class="tdright">
+					  <select name="templatelist">
+					    <volist name="result_template" id="rt">
+					    <option value="<!--{$rt.id}--!>"><!--{$rt.name}--!></option>
+					    </volist>
+					  </select>
+					</td>
+                                   </tr>	
+
+				    <tr id="inputtitle">
                                         <td class="tdleft">邮件标题：</td>
                                         <td class="tdright">
 					<input type="text" name="title" class="txtfile2" style="width:555px;" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr id="inputcontent">
                                         <td class="tdleft">发送内容：</td>
 					<td class="tdright">
 					  <div style="float:left;">发送模板：</div>

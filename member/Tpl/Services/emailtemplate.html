@@ -2,11 +2,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>邮件群发记录-业务服务-易搜会员中心</title>
+<title>邮件群发模板-业务服务-易搜会员中心</title>
 <link rel="stylesheet" href="__PUBLIC__/index/default/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/member/user.css" />
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/index/default/javascript/user.js"></script>
+<script>
+var deltemplate = function(id){
+  $.ajax({
+  url: '__URL__/delemailtemplate',
+  type: 'POST',
+  data: '&id=' + id,
+      success: function(ress){
+        if(ress == 1){
+	  alert('删除成功！');
+	  location.reload();
+	}else{
+          alert('删除失败！');
+          return;	  
+	}
+      }
+    });
+}
+</script>
 </head>
 <body id="body_user">
   <include file="Index:header" />
@@ -15,52 +33,41 @@
         	<div id="main">
 		  <include file="sidebar" />
                 <div id="main_rlong">
-                	<div class="main_rlong_tit"><input type="button" value="返回" onclick="history.go(-1);" style="float:right;margin-right:5px;font-size:12px;" />邮件群发业务</div>
+                	<div class="main_rlong_tit"><input type="button" value="返回" onclick="history.go(-1);" style="float:right;margin-right:5px;font-size:12px;" />邮件群发模板</div>
                    <div class="clear30"></div>
                     <div class="main">
                         <dl class="switchBox" id="switchBox2">
                             <!--nav start-->
                             <dt>
 			    <h2 class="balances h2_yue2">余额: <!--{$Think.session.rmb_total}--!> 元</h2>
-                                <a href="#" class="on">我的发送记录</a>
+                                <a href="#" class="on">邮件群发模板</a>
 				<a class="textlink" href="__APP__/services/sendemail" style="margin:0;width:60px;">邮件群发</a>
+				<a class="textlink" href="__APP__/services/emailsendrecord" style="margin:0;width:60px;">群发记录</a>
 				<a class="textlink" href="__APP__/services/sendemailgroup" style="margin:0;width:60px;">邮件号薄</a>
 				<a class="textlink" href="__APP__/services/setsmtp" style="margin:0;width:60px;">邮箱设置</a>
 	<a class="textlink" href="__APP__/services/timingsendlist" style="margin:0;width:60px;">发送任务</a>
-				<a class="textlink" href="__APP__/services/emailtemplate" style="margin:0;width:60px;">邮件模板</a>
-				<input type="button" onclick="location.href='__URL__/sendemail'" value="继续发送" />
+				
 				
 				<div class="clear"></div>
                             </dt>          
                         </dl>
 			
                         <div class="main_sjdxfs">
-                            
+                            <input type="button" style="margin-bottom:10px;" onclick="location.href='__URL__/addemailtemplate'" value="新增模板" />
                             <div style="min-height:250px;">
                                 <table class="table_wdfsjl" style="margin-top:0;">
                                     <tr>
-                                        <th>时间</th>
-                                        <th>发送邮箱</th>
-                                        <th>接收邮件</th>
-                                        <th>标题</th>
-                                        <th>内容</th>
-                                        <th>状态</th>
+                                        <th>编号</th>
+                                        <th>名称</th>
+                                        <th>添加时间</th>
+                                        <th>操作</th>
 				      </tr>
 				      <volist name="result" id="r">
 				      <tr>
-					<td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>
-					<td><a class="div_email" href="#" title="<!--{$r.tosendemail}--!>" style="width:115px;"><!--{$r.tosendemail}--!></a></td>
-					<td><!--{$r.sendemail}--!></td>
-					<td><a class="div_email" href="#" title="<!--{$r.title}--!>" style="width:115px;"><!--{$r.title}--!></a></td>
-					<td><a class="div_email" href="#" title="<!--{$r.content}--!>" style="width:115px;"><!--{$r.content}--!></a></td>
-					<switch name="r.statuscode">
-					<case value="1" break="1">
-					<td style="color:green;">发送成功</td>
-					</case>
-					<default/>
-					<td style="color:red;">发送失败</td>
-					</switch>
-					
+					<td><!--{$r.id}--!></td>
+					<td><!--{$r.name}--!></td>
+					<td><!--{$r.addtime|date="Y-m-d H:i:s", ###}--!></td>
+					<td><a href="__URL__/editemailtemplate/id/<!--{$r.id}--!>" style="color:blue;">编辑</a> / <a onclick="deltemplate(<!--{$r.id}--!>);" style="color:red;">删除</a></td>
 				      </tr>
 				      </volist>
                                 </table>
@@ -69,9 +76,7 @@
                             <div class="page">
 			      <!--{$show}--!>
                             </div>
-			    <div class="rmb_btn">
-				<input type="button" class="BtnA" value="返回" onclick="history.go(-1);"/>    
-			      </div>
+
                             <div class="clear"></div>
                         </div>
                         <div class="clear30"></div>     

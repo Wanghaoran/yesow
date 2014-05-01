@@ -722,10 +722,15 @@ class PublicAction extends Action {
   //会员定时邮件发送
   public function membertimingsendemail(){
     set_time_limit(0);
-    $MemberTimingSendList = M('MemberTimingSendList');
+
+    $MemberTimingSendGroup = M('MemberTimingSendGroup');
+    $MemberTimingSendGroupList = M('MemberTimingSendGroupList');
     $MemberSendEmailRecord = M('MemberSendEmailRecord');
+    $end_time = mktime(date('H'), date('i'), 59, date('m'), date('d'), date('Y'));
+
     //获取会员列表
-    $result = $MemberTimingSendList -> field('mid') -> where('status=1') -> group('mid') -> select();
+    $result = $MemberTimingSendGroup -> field('mid') -> where(array('sendtime' => array('ELT', $end_time))) -> group('mid') -> select();
+
     //循环每个待发送会员列表
     do{
       if(!$result){
@@ -739,8 +744,12 @@ class PublicAction extends Action {
       foreach($result_list as $value){
 	//每个邮箱发送固定的次数
 	for($i=1; $i<=$value['group_limit']; $i++){
+
+
+
 	  //查询待发送列表
-	  $send_email = $MemberTimingSendList -> field('id,title,content,accept_email') -> where(array('mid' => $result[0]['mid'], 'status' => 1)) -> find();
+	  $send_email = $MemberTimingSendGroupList -> alias('l') -> field('l.id,l.gid,l.title,l.content,l.accept_email') -> where(array('g.mid' => $result[0]['mid'], 'l.status' => 0, 'g.sendtime' => array('ELT', $end_time))) -> join('yesow_member_timing_send_group as g ON l.gid = g.id') -> find();
+
 	  if(!$send_email){
 	    return ;
 	  }
@@ -768,10 +777,9 @@ class PublicAction extends Action {
 	  }
 
 	  $save_data = array();
-	  $save_data['status'] = 2;
-	  $save_data['sendtime'] = time();
+	  $save_data['status'] = 1;
 
-	  $MemberTimingSendList -> where(array('id' => $send_email['id'])) -> save($save_data);
+	  $MemberTimingSendGroupList -> where(array('id' => $send_email['id'])) -> save($save_data);
 
 	  $MemberSendEmailRecord -> add($re_data);
 
@@ -780,6 +788,7 @@ class PublicAction extends Action {
 	  
 	}
       }
+    
     }while(array_shift($result));
   }
 
