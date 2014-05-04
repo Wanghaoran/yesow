@@ -195,6 +195,24 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  public function editsmemberemailgroup(){
+    $MemberEmailGroup = M('MemberEmailGroup');
+    if(!empty($_POST['name'])){
+      if(!$MemberEmailGroup -> create()){
+	$this -> error($MemberEmailGroup -> getError());
+      }
+      $MemberEmailGroup -> mid = $_POST['org4_id'];
+      if($MemberEmailGroup -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MemberEmailGroup -> alias('g') -> field('g.id,g.mid,g.name,m.name as mname') -> join('yesow_member as m ON g.mid = m.id') -> where(array('g.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
   public function delmemberemailgroup(){
     $where_del = array();
     $where_del['id'] = array('in', $_POST['ids']);

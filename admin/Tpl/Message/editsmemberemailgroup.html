@@ -1,0 +1,28 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/memberemailgroup" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+	  <label>号簿名称：</label>
+	  <input  value="<!--{$result.name}--!>" type="text required" size="40" name="name" />
+	</div>
+	<div class="unit">
+	  <label>所属会员：</label>
+	  <input name="org4.id" value="<!--{$result.mid}--!>" type="hidden">
+	  <input name="org4.name" type="text" suggestFields="name" suggestUrl="__APP__/public/ajaxgetmemberinfo" lookupGroup="org4" value="<!--{$result.mname}--!>"/>
+	</div>
+	      <input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>
