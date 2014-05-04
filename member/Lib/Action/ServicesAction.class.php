@@ -4217,7 +4217,7 @@ class ServicesAction extends CommonAction {
     $page = new Page($count, 10);
     $show = $page -> show();
 
-    $result = $MemberTimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,g.sendtime') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.sendtime DESC') -> select();
+    $result = $MemberTimingSendGroup -> alias('g') -> field('g.id,g.name,g.addtime,tmp.count,g.sendtime') -> where(array('g.mid' => session(C('USER_AUTH_KEY')))) -> limit($page -> firstRow . ',' . $page -> listRows) -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_timing_send_group_list GROUP BY gid) as tmp ON tmp.gid = g.id') -> order('g.sendtime DESC') -> select();
     $this -> assign('result', $result);
     $this -> assign('show', $show);
     $this -> assign('now', time());
