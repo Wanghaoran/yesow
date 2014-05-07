@@ -91,6 +91,34 @@ function checkSelect(cid){
 }
 </script>
 
+<script>
+
+var addsendgroup = function(){
+  var groupname = $('#groupname').val();
+  if(!groupname){
+    alert('请先填写号簿名称！');
+    return false;
+  }
+  $.ajax({
+	url:'__URL__/ajaxaddsendgroup/keyword/<!--{$Think.get.keyword|default="null"}--!>/searchscope/<!--{$Think.get.searchscope|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>/groupname/' + groupname,
+	success: function(ress){
+	  if(ress == 3){
+	    alert('人民币余额不足！请充值后再试！');
+	    return;
+	  }
+	  if(ress == 4){
+	    alert('添加通讯录失败！');
+	    return;
+	  }
+	  if(ress == 1){
+	    alert('添加通讯录成功！');
+	    return;
+	  }
+	}
+  });
+}
+</script>
+
 </head>
 <body id="body_user">
   <include file="Index:header" />
@@ -160,7 +188,7 @@ function checkSelect(cid){
 			      </volist>
 			    </ul>
                             <div class="clear"></div>
-                            <div class="ssfw_foot">
+                            <div class="ssfw_foot" style="height:85px;">
 			      <div id="page_navigation"><!--{$show}--!></div> 
                             	<div class="left"><input name="checkbox" type="checkbox" value="" onClick="isSelectAll()" id="selectAll"/>本页全选&nbsp;&nbsp;
 				<eq name="Think.get.type" value="1">
@@ -168,7 +196,10 @@ function checkSelect(cid){
 				<else/>
 				<input name="checkbox" type="checkbox" value="" onClick="isSelectAlls()" id="selectAlls"/>结果全选
 				</eq>
-&nbsp;&nbsp;<input type="button" onclick="tosend();" value="马上去发送" /></div>
+&nbsp;&nbsp;<input type="button" onclick="tosend();" value="马上去发送" /><br/>
+号簿名称：<input type="text" id="groupname" />&nbsp;&nbsp;<input type="button" onclick="addsendgroup();" value="全部提取至群发号簿" />
+
+</div>
                             </div>  
                             <div class="clear10"></div>
                         </div>

@@ -1,0 +1,41 @@
+<div class="page">
+	<div class="pageContent">
+	
+	<form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/childsitephone" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		
+	<div class="unit">
+		<label>所属分站：</label>
+		<select class="combox" name="cid">
+		  <volist name="result_childsite" id="rc">
+		  <eq name="result.cid" value="$rc.id">
+		    <option value="<!--{$rc.id}--!>" selected><!--{$rc.name}--!></option>
+		  <else/>
+		    <option value="<!--{$rc.id}--!>"><!--{$rc.name}--!></option>
+		  </eq>
+		  </volist>
+		</select>
+	</div>
+	
+	<div class="unit">
+		<label>电话：</label>
+		<input type="text" class="required" name="tel" value="<!--{$result.tel}--!>" />
+	</div>
+	<div class="unit">
+		<label>备注：</label>
+		<textarea name="remark"  rows="5" cols="57" ><!--{$result.remark}--!></textarea><label>(255个字符以内)</label>
+	</div>
+
+	<input type="hidden" name="id" value="<!--{$result.id}--!>" />
+
+</div>
+		<div class="formBar">
+		  <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+	</div>
+</div>

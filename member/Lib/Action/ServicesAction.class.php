@@ -4036,6 +4036,7 @@ class ServicesAction extends CommonAction {
       $map['_string'] = "email is not NULL";
       $where = array();
       $where['delaid']  = array('exp', 'is NULL');
+      $where['email']  = array('neq', '');
       $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
       if($_GET['searchscope'] == 'city'){
 	$where['csid'] = $this -> _get('csid', 'intval');
@@ -4093,6 +4094,7 @@ class ServicesAction extends CommonAction {
     $company = M('Company');
     $map['_string'] = "email is not NULL";
     $where['delaid']  = array('exp', 'is NULL');
+    $where['email']  = array('neq', '');
     if($_GET['searchscope'] == 'city'){
       $where['csid'] = $this -> _get('csid', 'intval');
       if($_GET['csaid'] != 'null'){
@@ -4114,6 +4116,74 @@ class ServicesAction extends CommonAction {
 	}
       }
     }
+  }
+
+
+
+  //提取至群发号簿
+  public function ajaxaddsendgroup(){
+    $where = array();
+    if($_GET['keyword'] != 'null'){
+      $keyword = iconv('GBK', 'UTF-8',  $_GET['keyword']);
+      $where['_string'] = "( name LIKE '%{$keyword}%' ) OR ( address LIKE '%{$keyword}%' ) OR ( manproducts LIKE '%{$keyword}%' ) OR ( mobilephone LIKE '%{$keyword}%' ) OR ( email LIKE '%{$keyword}%' ) OR ( linkman LIKE '%{$keyword}%' ) OR ( companyphone LIKE '%{$keyword}%' ) OR ( qqcode LIKE '%{$keyword}%' ) OR ( website LIKE '%{$keyword}%' )";
+    }
+    $company = M('Company');
+    $map['_string'] = "email is not NULL";
+    $where['delaid']  = array('exp', 'is NULL');
+    $where['email']  = array('neq', '');
+    if($_GET['searchscope'] == 'city'){
+      $where['csid'] = $this -> _get('csid', 'intval');
+      if($_GET['csaid'] != 'null'){
+	$where['csaid'] = $this -> _get('csaid', 'intval');
+      }
+    }
+    $where['_complex'] = $map;
+    $result = $company -> field('id,email') -> where($where) -> order('id DESC') -> select();
+    //扣费
+    //搜索价格
+    $setting = M('BackgroundEmailSetting');
+    $search_phone_price = $setting -> getFieldByname('search_money', 'value');
+    //消费金额
+    $cost = count($result) * $search_phone_price;
+    //扣费
+    $MemberRmb = D('member://MemberRmb');
+    if(!$MemberRmb -> autolessmoney($cost)){
+      echo 3;
+      return;
+    }
+    //写消费日志
+    $MemberRmbDetail = D('member://MemberRmbDetail');
+    $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心搜索邮箱地址', '消费', '-' . $cost);
+    //更新缓存
+    $MemberRmb -> rmbtotal();
+    //添加通讯录
+
+    $MemberEmailGroup = D('MemberEmailGroup');
+    $MemberEmailGroupList = M('MemberEmailGroupList');
+
+    $groupname = iconv('GBK', 'UTF-8',  $_GET['groupname']);
+
+    $data = array();
+    $data['mid'] = session(C('USER_AUTH_KEY'));
+    $data['name'] = $groupname;
+    $data['addtime'] = time();
+    if(!$MemberEmailGroup -> create($data)){
+      echo 4;
+      return;
+    }
+
+    if($gid = $MemberEmailGroup -> add()){
+      $list_data = array();
+      $list_data['gid'] = $gid;
+      foreach($result as $valuetwo){
+	$list_data['cid'] = $valuetwo['id'];
+	$list_data['realnumber'] = $valuetwo['email'];
+	$list_data['hidenumber'] = substr($valuetwo['email'], 0 ,3) . '****' . strstr($valuetwo['email'], '@');
+	$MemberEmailGroupList -> add($list_data);
+      }
+    }
+
+    echo 1;
   }
 
 

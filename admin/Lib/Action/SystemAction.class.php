@@ -1767,4 +1767,84 @@ class SystemAction extends CommonAction {
     $this -> display();
   }
 
+  //分站电话管理
+  public function childsitephone(){
+    $ChildSitePhone = M('ChildSitePhone');
+    $where = array();
+    if(!empty($_REQUEST['tel'])){
+      $where['p.tel'] = array('LIKE', '%' .  $_REQUEST['tel'] . '%');
+    }
+    $count = $ChildSitePhone -> alias('p') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+    $result = $ChildSitePhone -> alias('p') -> field('p.id,p.tel,p.addtime,cs.name as csname,p.remark') -> join('yesow_child_site as cs ON p.cid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  //添加分站电话
+  public function addchildsitephone(){
+    if(isset($_POST['tel'])){
+      $ChildSitePhone = D('ChildSitePhone');
+      if(!$ChildSitePhone -> create()){
+	$this -> error($ChildSitePhone -> getError());
+      }
+      $ChildSitePhone -> addtime = time();
+      if($ChildSitePhone -> add()){
+	$this -> success(L('DATA_ADD_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_ADD_ERROR'));
+      }
+    }
+    $ChildSite = M('ChildSite');
+    $result_childsite = $ChildSite -> field('id,name') -> order('id ASC') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
+  //删除分站电话
+  public function delchildsitephone(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $ChildSitePhone = M('ChildSitePhone');
+    if($ChildSitePhone -> where($where_del) -> delete()){
+      S('index_friend_link', NULL, NULL, '', NULL, 'index');
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //编辑分站电话
+  public function editchildsitephone(){
+    $ChildSitePhone = M('ChildSitePhone');
+    if(!empty($_POST['tel'])){
+      if(!$ChildSitePhone -> create()){
+	$this -> error($ChildSitePhone -> getError());
+      }
+      if($ChildSitePhone -> save()){
+	S('index_friend_link', NULL, NULL, '', NULL, 'index');
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $ChildSitePhone -> field('id,cid,tel,remark') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $childsite = M('ChildSite');
+    $result_childsite = $childsite -> field('id,name') -> select();
+    $this -> assign('result_childsite', $result_childsite);
+    $this -> display();
+  }
+
 }
