@@ -1,0 +1,41 @@
+
+<div class="panel">
+  <h1>编辑用户模板</h1>
+  <div class="pageFormContent" layoutH="56">
+    <form method="post" action="__ACTION__/callbackType/closeCurrent/navTabId/membersendemailtemplate" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+      <div class="unit" style="height:100px;">
+		<label>填写规则(速查):</label>
+
+		<p style="line-height:20px;width:90%;">公司名：<b>{company_name}</b> | 地址：<b>{company_address}</b> | 电话：<b>{company_companyphone}</b> | 联系人：<b>{company_linkman}</b>
+		<br />
+		网址：<b>{company_website}</b> | 邮件：<b>{company_email}</b> | 主营：<b>{company_manproducts}</b> | QQ：<b>{company_qqcode}</b>
+		<br/>
+		手机：<b>{company_mobilephone}</b>
+		</p>
+	      </div>
+      <div class="divider"></div>
+      <p style="width:90%;">
+      <label>模板名称:</label>
+      <input type="text" name="name" size="40" value="<!--{$result.name}--!>" />
+      </p>
+<p style="width:90%;">
+      <label>模板标题:</label>
+      <input type="text" name="title" size="80" value="<!--{$result.title}--!>" />
+      </p>
+      <p style="width:90%;height:300px;">
+      <textarea class="editor" name="content" style="width:96%;" rows="15"><!--{$result.content|stripslashes}--!></textarea>
+
+	</p>
+	<input type="hidden" name="id" value="<!--{$Think.get.id}--!>" />
+      
+      
+      <div class="formBar">
+	<ul>
+	  <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+	  <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+      </div>
+    </form>
+
+  </div>
+</div>

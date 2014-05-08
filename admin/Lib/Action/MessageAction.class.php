@@ -2749,17 +2749,63 @@ class MessageAction extends CommonAction {
 
   //用户模板管理
   public function membersendemailtemplate(){
+    $MemberEmailTemplate = M('MemberEmailTemplate');
+    $where = array();
+    if(!empty($_POST['name'])){
+      $where['t.name'] = array('LIKE', '%' . $this -> _post('name') . '%');
+    }
+
+    if(!empty($_POST['mname'])){
+      $where['m.name'] = $this -> _post('mname');
+    }
+
+    $count = $MemberEmailTemplate -> alias('t') -> where($where) -> join('yesow_member as m ON t.mid = m.id') -> count();
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberEmailTemplate -> alias('t') -> field('t.id,t.name,t.addtime,m.name as mname') -> join('yesow_member as m ON t.mid = m.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('t.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
     $this -> display();
   }
 
   //编辑用户模板
   public function editmembersendemailtemplate(){
-  
+    $MemberEmailTemplate = M('MemberEmailTemplate');
+    if(!empty($_POST['name'])){
+      if(!$MemberEmailTemplate -> create()){
+	$this -> error($MemberEmailTemplate -> getError());
+      }
+      if($MemberEmailTemplate -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MemberEmailTemplate -> field('id,name,title,content') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
   }
 
   //删除用户模板
   public function delmembersendemailtemplate(){
-  
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberEmailTemplate = M('MemberEmailTemplate');
+    if($MemberEmailTemplate -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
   }
 
 
