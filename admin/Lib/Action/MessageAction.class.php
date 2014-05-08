@@ -2747,5 +2747,90 @@ class MessageAction extends CommonAction {
     $this -> display();
   }
 
+  //用户模板管理
+  public function membersendemailtemplate(){
+    $this -> display();
+  }
+
+  //编辑用户模板
+  public function editmembersendemailtemplate(){
+  
+  }
+
+  //删除用户模板
+  public function delmembersendemailtemplate(){
+  
+  }
+
+
+  /*
+
+
+    public function memberemailgroup(){
+    $MemberEmailGroup = M('MemberEmailGroup');
+    $where = array();
+    if(!empty($_POST['keyword'])){
+      $where['msg.name'] = array('LIKE', '%' . $this -> _post('keyword') . '%');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['msg.addtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['msg.addtime'][] = array('lt', $endtime);
+    }
+
+    $count = $MemberEmailGroup -> alias('msg') -> where($where) -> count('id');
+    import('ORG.Util.Page');
+    if(! empty ( $_REQUEST ['listRows'] )){
+      $listRows = $_REQUEST ['listRows'];
+    } else {
+      $listRows = 15;
+    }
+    $page = new Page($count, $listRows);
+    $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
+    $page -> firstRow = ($pageNum - 1) * $listRows;
+
+    $result = $MemberEmailGroup -> alias('msg') -> field('msg.id,msg.name,msg.addtime,tmp.count,m.name as mname') -> join('yesow_member as m ON msg.mid = m.id') -> join('LEFT JOIN (SELECT gid,COUNT(id) as count FROM yesow_member_email_group_list GROUP BY gid) as tmp ON tmp.gid = msg.id') -> limit($page -> firstRow . ',' . $page -> listRows) -> where($where) -> order('msg.addtime DESC') -> select();
+    $this -> assign('result', $result);
+    $this -> assign('listRows', $listRows);
+    $this -> assign('currentPage', $pageNum);
+    $this -> assign('count', $count);
+    $this -> display();
+  }
+
+  public function editsmemberemailgroup(){
+    $MemberEmailGroup = M('MemberEmailGroup');
+    if(!empty($_POST['name'])){
+      if(!$MemberEmailGroup -> create()){
+	$this -> error($MemberEmailGroup -> getError());
+      }
+      $MemberEmailGroup -> mid = $_POST['org4_id'];
+      if($MemberEmailGroup -> save()){
+	$this -> success(L('DATA_UPDATE_SUCCESS'));
+      }else{
+        $this -> error(L('DATA_UPDATE_ERROR'));
+      }
+    }
+    $result = $MemberEmailGroup -> alias('g') -> field('g.id,g.mid,g.name,m.name as mname') -> join('yesow_member as m ON g.mid = m.id') -> where(array('g.id' => $this -> _get('id', 'intval'))) -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  public function delmemberemailgroup(){
+    $where_del = array();
+    $where_del['id'] = array('in', $_POST['ids']);
+    $MemberEmailGroup = M('MemberEmailGroup');
+    if($MemberEmailGroup -> where($where_del) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+
+
+   */
  
 }

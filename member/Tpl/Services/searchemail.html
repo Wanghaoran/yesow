@@ -99,6 +99,9 @@ var addsendgroup = function(){
     alert('请先填写号簿名称！');
     return false;
   }
+  if(!confirm('您本次提取的邮件总共有' + <!--{$count}--!> + '条，总计费用为：' + parseFloat(<!--{$count}--!> * <!--{$search_phone_price}--!>).toFixed(2) + '元，请确认？如果搜索结果较多，则提取速度稍慢，请耐心等待！' )){
+    return false;
+  }
   $.ajax({
 	url:'__URL__/ajaxaddsendgroup/keyword/<!--{$Think.get.keyword|default="null"}--!>/searchscope/<!--{$Think.get.searchscope|default="null"}--!>/csid/<!--{$Think.get.csid|default="null"}--!>/csaid/<!--{$Think.get.csaid|default="null"}--!>/groupname/' + groupname,
 	success: function(ress){
@@ -160,7 +163,7 @@ var addsendgroup = function(){
 				</form>
                             </table>
 			    <notempty name="result">
-			    <div class="div_ssjg">你搜索了“<span><!--{$Think.get.keyword}--!></span>”关键词，搜到<span id="ffsw_num1"><!--{$count}--!></span>条数据。您本次选中了<span id="ffsw_num2"><!--{$Think.session.member_search_email_list|count}--!></span>个邮箱地址，本次提取号码使用费为<span id="ffsw_num3">0</span>元。若在发送时存为您的“号码薄”，则今后无须此费用！您的余额为：<span><!--{$Think.session.rmb_total}--!></span>元。[&nbsp;<a href="__APP__/money/rmbrecharge" target="_blank" style="color:blue;">我要充值</a>&nbsp;]</div>
+			    <div class="div_ssjg">你搜索了“<span><!--{$Think.get.keyword}--!></span>”关键词，搜到<span id="ffsw_num1"><!--{$count}--!></span>条数据。您本次选中了<span id="ffsw_num2"><!--{$Think.session.member_search_email_list|count}--!></span>个邮箱地址，本次提取号码使用费为<span id="ffsw_num3">0</span>元。若在发送时存为您的“号码薄”，则今后无须此费用！您的余额为：<span><!--{$Think.session.rmb_total}--!></span>元。[&nbsp;<a href="__APP__/money/rmbrecharge" target="_blank" style="color:blue;">我要充值</a>&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结果存为号薄名称：<input type="text" id="groupname" size="10" />&nbsp;&nbsp;<input type="button" onclick="addsendgroup();" value="结果全部提取到群发薄" /></div>
 
 			    <else/>
 			    <div class="div_ssjg">请输入检索条件进行搜索</div>
@@ -188,7 +191,7 @@ var addsendgroup = function(){
 			      </volist>
 			    </ul>
                             <div class="clear"></div>
-                            <div class="ssfw_foot" style="height:85px;">
+                            <div class="ssfw_foot">
 			      <div id="page_navigation"><!--{$show}--!></div> 
                             	<div class="left"><input name="checkbox" type="checkbox" value="" onClick="isSelectAll()" id="selectAll"/>本页全选&nbsp;&nbsp;
 				<eq name="Think.get.type" value="1">
@@ -197,7 +200,7 @@ var addsendgroup = function(){
 				<input name="checkbox" type="checkbox" value="" onClick="isSelectAlls()" id="selectAlls"/>结果全选
 				</eq>
 &nbsp;&nbsp;<input type="button" onclick="tosend();" value="马上去发送" /><br/>
-号簿名称：<input type="text" id="groupname" />&nbsp;&nbsp;<input type="button" onclick="addsendgroup();" value="全部提取至群发号簿" />
+
 
 </div>
                             </div>  
