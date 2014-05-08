@@ -1784,7 +1784,7 @@ class SystemAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $ChildSitePhone -> alias('p') -> field('p.id,p.tel,p.addtime,cs.name as csname,p.remark') -> join('yesow_child_site as cs ON p.cid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
+    $result = $ChildSitePhone -> alias('p') -> field('p.id,p.tel,p.addtime,cs.name as csname,p.remark,p.telphone,p.email') -> join('yesow_child_site as cs ON p.cid = cs.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> order('addtime DESC') -> select();
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);
     $this -> assign('count', $count);
@@ -1839,7 +1839,7 @@ class SystemAction extends CommonAction {
         $this -> error(L('DATA_UPDATE_ERROR'));
       }
     }
-    $result = $ChildSitePhone -> field('id,cid,tel,remark') -> find($this -> _get('id', 'intval'));
+    $result = $ChildSitePhone -> field('id,cid,tel,remark,telphone,email') -> find($this -> _get('id', 'intval'));
     $this -> assign('result', $result);
     $childsite = M('ChildSite');
     $result_childsite = $childsite -> field('id,name') -> select();
