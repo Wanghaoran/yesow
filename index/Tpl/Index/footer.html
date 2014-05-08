@@ -1,3 +1,12 @@
+<style>
+.bottomphone {
+  float : left;
+  display : block;
+  width : 175px;
+  margin-right : 10px;
+}
+</style>
+
 <div id="footer">
 <div id="footer_nav">
   <p>
@@ -91,8 +100,19 @@
 		      <div id="copyright">
 			<div class="copy_l"></div>
 			<div class="copy_r">
-			  <p>服务热线 <b>0571-88396114</b>(浙江) <b>025-85302700</b>(江苏) <b>0551-63665082</b>(安徽) <b>0791-85810730</b>(江西)</p>
-				<p>Copyright&copy;2010-2014 www.yesow.com Inc. All right reserved. 杭州百联信息技术有限公司 版权所有</p>
+			  <p><b style="float:left;">服务热线:</b> 
+			<span style="display:block;margin-left:60px;">
+			<volist name="bottom_phone" id="bp">
+			<if condition="is_array($bp)">
+			<span class="bottomphone"><b><!--{$bp.tel}--!></b>(<!--{$bp.csname}--!>)</span>
+			<else/>
+			<b><!--{$bp}--!></b>(<!--{$key}--!>)&nbsp;
+			</if>
+			</volist>
+			</span>
+			</p>
+			
+				<p style="clear:both;">Copyright&copy;2010-2014 www.yesow.com Inc. All right reserved. 杭州百联信息技术有限公司 版权所有</p>
 				<ul>
 					<li><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/copy/01.gif" alt="易搜-浙江ICP证" /></a></li>
 					<li><a href=""><img src="__PUBLIC__/index/<!--{$templatename}--!>/style/images/copy/02.gif" alt="易搜-经营性网站备案信息" /></a></li>

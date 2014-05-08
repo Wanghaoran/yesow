@@ -101,5 +101,8 @@ class CommonAction extends Action {
     //查询分站名
     $childsite_name = D('admin://ChildSite') -> getname();
     $this -> assign('childsite_name', $childsite_name);
+    //页面底部联系电话
+    $bottom_phone = D('index://ChildSitePhone') -> getphone();
+    $this -> assign('bottom_phone', $bottom_phone);
   }
 }
