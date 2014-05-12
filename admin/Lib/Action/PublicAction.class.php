@@ -456,12 +456,12 @@ class PublicAction extends Action {
 
       $company_result = array();
 
-      $company_result = $Company -> alias('c') -> field('c.name,c.address,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,c.mobilephone,c.id,cs.name as csname,csa.name as csaname,cs.domain as domain,c.updatetime') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> where(array('c.updatetime' => array(array('egt',$start_time),array('elt', $end_time)), 'c.delaid' => array('exp', 'IS NULL'))) -> select();
+      $company_result = $Company -> alias('c') -> field('c.name,c.address,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,c.mobilephone,c.id,cs.name as csname,csa.name as csaname,cs.domain as domain,c.updatetime,csp.tel as csptel,csp.telphone as csptelphone') -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> join('yesow_child_site_phone as csp ON c.csid = csp.cid') -> where(array('c.updatetime' => array(array('egt',$start_time),array('elt', $end_time)), 'c.delaid' => array('exp', 'IS NULL'))) -> select();
 
       foreach($company_result as $value2){
 
-	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephone}', '{company_id}', '{company_csid}', '{company_csaid}', '{company_domain}', '{company_updatetime}', '{companyremind_time}', '{send_time}');
-	$replace = array($value2['name'], $value2['address'], $value2['companyphone'], $value2['linkman'], $value2['website'], $value2['email'], $value2['manproducts'], $value2['qqcode'], $value2['mobilephone'], $value2['id'], $value2['csname'], $value2['csaname'], $value2['domain'], date('Y-m-d H:i:s', $value2['updatetime']), $value['time'], date('Y-m-d H:i:s'));
+	$search = array('{company_name}', '{company_address}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_mobilephone}', '{company_id}', '{company_csid}', '{company_csaid}', '{company_domain}', '{company_updatetime}', '{companyremind_time}', '{send_time}', '{chlid_site_tel}', '{chlid_site_telphone}');
+	$replace = array($value2['name'], $value2['address'], $value2['companyphone'], $value2['linkman'], $value2['website'], $value2['email'], $value2['manproducts'], $value2['qqcode'], $value2['mobilephone'], $value2['id'], $value2['csname'], $value2['csaname'], $value2['domain'], date('Y-m-d H:i:s', $value2['updatetime']), $value['time'], date('Y-m-d H:i:s'), $value2['csptel'], $value2['csptelphone']);
 	$email_title = str_replace($search, $replace, $email_template['title']);
 	$email_content = str_replace($search, $replace, $email_template['content']);
 
@@ -666,10 +666,13 @@ class PublicAction extends Action {
 	C('MAIL_LOGINNAME', $value['email_account']);
 	C('MAIL_PASSWORD', $value['email_pwd']);
 	import('ORG.Util.Mail');
-	$company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain') -> where(array('c.id' => $send_email['cid'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	$company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain,c.updatetime,csp.tel as csptel,csp.telphone as csptelphone') -> where(array('c.id' => $send_email['cid'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_phone as csp ON csp.cid = c.csid') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
+	$company_info['updatetime'] = date('Y-m-d H:i:s', $company_info['updatetime']);
+	$company_info['companyremind_time'] = round((time() - $company_info['updatetime'])/3600/24);
 	$company_info['send_time'] = date('Y-m-d H:i:s');
 	
-	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}', '{send_time}');
+	
+	$search = array('{company_id}', '{company_csid}', '{company_csaid}', '{company_name}', '{company_address}', '{company_mobilephone}', '{company_companyphone}', '{company_linkman}', '{company_website}', '{company_email}', '{company_manproducts}', '{company_qqcode}', '{company_domain}', '{company_updatetime}', '{chlid_site_tel}', '{chlid_site_telphone}', '{companyremind_time}', '{send_time}');
 	$email_content = str_replace($search, $company_info, $send_email['content']);
 	$email_title = str_replace($search, $company_info, $send_email['title']);
 
@@ -719,7 +722,6 @@ class PublicAction extends Action {
   }
 
 
-  //会员定时邮件发送
   public function membertimingsendemail(){
     set_time_limit(0);
 
@@ -745,13 +747,11 @@ class PublicAction extends Action {
 	//每个邮箱发送固定的次数
 	for($i=1; $i<=$value['group_limit']; $i++){
 
-
-
 	  //查询待发送列表
 	  $send_email = $MemberTimingSendGroupList -> alias('l') -> field('l.id,l.gid,l.title,l.content,l.accept_email') -> where(array('g.mid' => $result[0]['mid'], 'l.status' => 0, 'g.sendtime' => array('ELT', $end_time))) -> join('yesow_member_timing_send_group as g ON l.gid = g.id') -> find();
 
 	  if(!$send_email){
-	    return ;
+	    continue 3;
 	  }
 
 	  //执行发送

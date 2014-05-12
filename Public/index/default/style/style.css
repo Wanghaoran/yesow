@@ -228,8 +228,8 @@ p#hot_search{padding-top:1px;}
 .footer_list ul li.tit{font-weight:bold; height:25px; line-height:25px; font-size:14px;}
 
 #copyright{border-top:1px dashed #F60;border-bottom:1px dashed #F60; margin-top:5px;}
-.copy_l{ width:290px; height:100px; background:url(images/footer_logo.gif) no-repeat center center; float:left;}
-.copy_r{width:660px; float:left; padding-top:10px; padding-bottom : 10px;}
+.copy_l{ width:240px; height:100px; background:url(images/footer_logo.gif) no-repeat center center; float:left;}
+.copy_r{width:710px; float:left; padding-top:10px; padding-bottom : 10px;}
 .copy_r ul{ height:36px; float:left; padding-top:5px;}
 .copy_r ul li{ width:100px; float:left; overflow:hidden;}
 .copy_r ul li a{ display:block; width:92px; height:36px; float:left;}
