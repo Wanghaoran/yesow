@@ -139,4 +139,9 @@ class MonthlyModel extends CommonModel {
     }
   }
 
+  //获取包月开始
+  public function getmonthlytime(){
+  
+  }
+
 }

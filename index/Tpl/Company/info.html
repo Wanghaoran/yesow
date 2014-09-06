@@ -39,12 +39,16 @@ url: "__APP__/public/ajaxonecopy/csid/<!--{$result.csid}--!>",
 	}else{
 	  if(msg.type == 1){
 	    if(msg.mod == 1){
-	    var confirmstr = '尊敬的包月会员:您今日可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要1条,请确认';
+	    var confirmstr = '尊敬的包月会员:您今日可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要扣除1条,请确认';
 	    }else{
-	    var confirmstr = '尊敬的包月会员:您本月可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要1条,请确认';	    }
+	    var confirmstr = '尊敬的包月会员:您本月可免费复制的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次复制需要扣除1条,请确认';	    }
 	    
 	  }else{
-	  var confirmstr = '易搜友情提示:您本次下载所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认';
+	  if(msg.money < msg.rmb_two){
+		  alert('您的余额不足,请充值后再下载！');
+		  return;
+		}
+	  var confirmstr = '易搜友情提示:您本次复制所需要的费用为'+msg.rmb_two+'元,您帐户余额为'+msg.money+'请确认';
 	}
 	  //确认
 	  if(confirm(confirmstr)){
@@ -193,7 +197,13 @@ var onedownload = function(){
 	    location.href = "__APP__/public/authorprompt/authname/author_seven";
 	    }else{
 	      if(msg.type == 1){
-	        if(confirm('尊敬的包月会员:您今日可免费下载的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次下载需要1条,请确认')){
+
+	      if(msg.mod == 1){
+	    var confirmstr = '尊敬的包月会员:您今日可免费下载的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次下载需要扣除1条,请确认';
+	    }else{
+	    var confirmstr = '尊敬的包月会员:您本月可免费下载的条数为' + msg.see_num + '条，您还有剩余' + msg.less_num + '条,您本次下载需要扣除1条,请确认';	    
+	    }
+	        if(confirm(confirmstr)){
 		  $.ajax({
 	 	    url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>/csid/<!--{$result.csid}--!>",
 		    success: function(){
@@ -202,6 +212,11 @@ var onedownload = function(){
 		  });
 		}
 	      }else{
+
+		if(msg.money < msg.rmb_three){
+		  alert('您的余额不足,请充值后再下载！');
+		  return;
+		}
 	      if(confirm('易搜友情提示:您本次下载所需要的费用为'+msg.rmb_three+'元,您帐户余额为'+msg.money+'请确认')){
 	      $.ajax({
 		url: "__APP__/public/doonedownload_log/cid/<!--{$Think.get.id}--!>",

@@ -937,7 +937,7 @@ class MemberAction extends CommonAction {
     $page = new Page($count, $listRows);
     $pageNum = !empty($_REQUEST['pageNum']) ? $_REQUEST['pageNum'] : 1;
     $page -> firstRow = ($pageNum - 1) * $listRows;
-    $result = $Resume -> alias('r') -> field('r.id,r.realname,r.addtime,p.title,r.sex,r.mobilephone,r.jobstatus,r.monthlysalary,r.jbotype') -> join('yesow_resume_potion as p ON r.pid = p.id') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
+    $result = $Resume -> alias('r') -> field('r.id,r.realname,r.addtime,p.title,r.sex,r.mobilephone,r.jobstatus,r.monthlysalary,r.jbotype') -> join('yesow_resume_potion as p ON r.pid = p.id') -> order('r.addtime DESC') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);
     $this -> assign('currentPage', $pageNum);

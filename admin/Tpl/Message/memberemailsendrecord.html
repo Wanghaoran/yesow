@@ -1,15 +1,39 @@
 <form id="pagerForm" action="__ACTION__" method="post">
   <input type="hidden" name="pageNum" value="<!--{$currentPage}--!>"/>
-<input type="hidden" name="username" value="<!--{$Think.request.username}--!>" />
+<input type="hidden" name="mname" value="<!--{$Think.request.mname}--!>" />
+<input type="hidden" name="email" value="<!--{$Think.request.email}--!>" />
+<input type="hidden" name="starttime" value="<!--{$Think.request.starttime}--!>" />
+<input type="hidden" name="endtime" value="<!--{$Think.request.endtime}--!>" />
+<input type="hidden" name="status" value="<!--{$Think.request.status}--!>" />
 </form>
 <div class="pageHeader">
 <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__ACTION__" method="post">
 <div class="searchBar">
 <ul class="searchContent">
-<li>
-<label>用户名</label>
-<input type="text" name="username" />
-</li>
+<li style="width:170px;">
+				<label>目标邮箱：</label>
+				<input type="text" size="7" name="email" />
+				</li>
+<li style="width:170px;">
+				<label>会员名称：</label>
+				<input type="text" size="7"  name="mname" />
+				</li>
+		<li style="width:250px;">
+		  <label>发送时间：</label>
+		  <input type="text" readonly="true" size="7" class="date textInput readonly" name="starttime" />
+		    -  
+		  <input type="text" readonly="true" size="7" class="date textInput readonly" name="endtime" />
+		  </li>
+
+		<li style="width:160px;">
+	    <label>发送状态：</label>
+	    <select class="combox" name="status">
+	      <option value="">全部</option>
+	      <option value="1">成功</option>
+	      <option value="0">失败</option>
+	      <option value="2">已处理</option>
+	    </select>
+	    </li>
 </ul>
 <div class="subBar">
 <ul>
@@ -25,10 +49,18 @@
 <ul class="toolBar">
 <if condition="isset($_SESSION[C('ADMIN_AUTH_KEY')])">
 <li class=""><a class="delete" href="__URL__/delmemberemailsendrecord/navTabId/memberemailsendrecord" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
+<li class=""><a class="delete" href="__URL__/alldelmemberemailsendrecord/navTabId/memberemailsendrecord" target="ajaxTodo" title="确实要删除这些记录吗?"><span>全部删除</span></a></li>
+<li><a class="delete" href="__URL__/intervaldelmemberemailsendrecord" target="dialog" mask="true"><span>区间删除</span></a></li>
 <else/>
 <if condition="isset($_SESSION['acc_arr']['message']['delmemberemailsendrecord'])">
 <li class=""><a class="delete" href="__URL__/delmemberemailsendrecord/navTabId/memberemailsendrecord" posttype="string" rel="ids" target="selectedTodo" title="确实要删除这些记录吗?" warn="请选择记录"><span>删除</span></a></li>
 </if>
+<if condition="isset($_SESSION['acc_arr']['message']['alldelmemberemailsendrecord'])">
+	     <li class=""><a class="delete" href="__URL__/alldelmemberemailsendrecord/navTabId/memberemailsendrecord" target="ajaxTodo" title="确实要删除这些记录吗?"><span>全部删除</span></a></li>
+	     </if>
+	     <if condition="isset($_SESSION['acc_arr']['message']['intervaldelmemberemailsendrecord'])">
+	     <li><a class="delete" href="__URL__/intervaldelmemberemailsendrecord" target="dialog" mask="true"><span>区间删除</span></a></li>
+	    </if>
 </if>
 </ul>
 </div>
@@ -52,9 +84,9 @@
 <tr target="sid_role" rel="<!--{$r.id}--!>">
 <td><input type="checkbox" value="<!--{$r.id}--!>" name="ids"></td>
 <td><!--{$r.id}--!></td>
-<td><!--{$r.mname}--!></td>			 
+<td><!--{$r.mname}--!></td>
+<td><!--{$r.sendemail}--!></td>			 
 <td><!--{$r.tosendemail}--!></td>
-<td><!--{$r.sendemail}--!></td>
 <td><!--{$r.title}--!></td>
 <td><!--{$r.content|strip_tags}--!></td>
 <td><!--{$r.sendtime|date="Y-m-d H:i:s", ###}--!></td>			 
@@ -62,8 +94,11 @@
 <case value="1" break="1">
 <td style="color:green;">成功</td>
 </case>
+<case value="2">
+<td style="color:blue;">已处理</td> 
+</case>
 <default/>
-<td style="color:red;">失败</td>
+<td><a href="__URL__/editreplacemembersendemail/id/<!--{$r.id}--!>" target="dialog" mask="true" style="color:red;" title="补发失败邮件">失败</a></td>
 </switch>
 </tr>
 </volist>

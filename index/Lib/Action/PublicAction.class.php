@@ -310,15 +310,19 @@ class PublicAction extends Action {
 	//判断包月模式
 	if(D('Monthly') -> ismonthlymod()){
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_three_num');
+	  $result['mod'] = 1;
 	}else{
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_six_num');
+	  $result['mod'] = 2;
 	}
       }else{
 	//判断包月模式
 	if(D('Monthly') -> ismonthlymod()){
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_three_num_area');
+	  $result['mod'] = 1;
 	}else{
 	  $see_num = M('MemberLevel') -> getFieldByid(session('member_level_id'), 'monthly_six_num_area');
+	  $result['mod'] = 2;
 	}
       }
       //type =1 代表是包月会员
@@ -802,7 +806,8 @@ class PublicAction extends Action {
   public function batch(){
     $keyword = safeEncoding($_GET['keyword']);
     //不需要分页查询所有数据
-    $result = R('Company/search_company', array($keyword, false, true));
+    //$result = R('Company/search_company', array($keyword, false, true));
+    $result = R('Company/search_company', array($keyword));
     $this -> assign('result_batch', $result['result']);
     //搜索关键词
     $this -> assign('keyword', $result['keyword']);

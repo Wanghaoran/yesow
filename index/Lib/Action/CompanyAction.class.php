@@ -538,6 +538,7 @@ class CompanyAction extends CommonAction {
     $this -> assign('result_childsite', $result_childsite);
     $_GET['keyword'] = safeEncoding($_GET['keyword']);
 
+
     //右侧固定排名 和 右侧热点排名 读取数据更新消息
     $fixed_result = M('TiteNotice') -> table('yesow_title_notice as tn') -> field('tn.title,tnt.name') -> join('yesow_title_notice_type as tnt ON tn.tid = tnt.id') -> order('tn.addtime DESC') -> limit(30) -> select();
     $this -> assign('fixed_result', $fixed_result);
@@ -625,6 +626,14 @@ class CompanyAction extends CommonAction {
     }
 
     $this -> display();
+  }
+
+  //没有分页的搜索
+  public function search_company($keyword){
+    $company = D('admin://Company');
+    $keyword = safeEncoding($keyword);
+    $result =  $company -> search2($keyword);
+    return $result;
   }
 
   //点击排名

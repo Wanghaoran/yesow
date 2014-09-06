@@ -49,6 +49,11 @@ $(function(){
     }
   }
 </script>
+<style>
+table.table_zxzf2 td {
+  width:auto;
+}
+</style>
 </head>
 <body id="body_index">
 <div id="warp_body">
@@ -101,9 +106,9 @@ $(function(){
                     <h2>支付方式一：余额支付</h2>
                 </div>
                 <div class="zxzfbox_con">
-                    <table class="table_zxzf2">
+                    <table class="table_zxzf2" style="width:700px;">
                         <tr><td class="tdleft">本次付款的总金额：</td><td class="tdright"><!--{$total_price}--!>元</td></tr>
-			<tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$member_pay_balance}--!>元(不可用余额: <!--{$member_exchange_balance}--!> 元)<a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
+			<tr><td class="tdleft">易搜RMB账户余额：</td><td class="tdright"><!--{$member_pay_balance}--!>元(不可用余额: <!--{$member_exchange_balance}--!> )元<a href="http://www.yesow.com/member.php/help/9#info110" target="_blank">为什么不可用？</a><a href="__ROOT__/member.php/money/rmbrecharge">[我要充值]</a></td></tr>
 			<if condition="$member_pay_balance egt $total_price">
                         <tr><td colspan="2" class="wsgw_tishi">您的余额充足，可以使用余额支付方式！</td></tr>
                     </table>

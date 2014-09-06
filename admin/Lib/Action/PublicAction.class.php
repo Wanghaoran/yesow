@@ -642,6 +642,7 @@ class PublicAction extends Action {
     set_time_limit(0);
     $TimingSendGroupList = M('TimingSendGroupList');
     $TimingSendEmail = M('TimingSendEmail');
+    $time = time();
     //$start_time = mktime(date('H'), date('i'), 0, date('m'), date('d'), date('Y'));
     $end_time = mktime(date('H'), date('i'), 59, date('m'), date('d'), date('Y'));
 
@@ -660,6 +661,9 @@ class PublicAction extends Action {
 	  return ;
 	}
 
+	//标记此条信息为已发送
+	$TimingSendGroupList -> where(array('id' => $send_email['id'])) -> save(array('status' => 4));
+
 	//执行发送
 	C('MAIL_ADDRESS', $value['email_address']);
 	C('MAIL_SMTP', $value['email_SMTP']);
@@ -668,7 +672,7 @@ class PublicAction extends Action {
 	import('ORG.Util.Mail');
 	$company_info = M('Company') -> table('yesow_company as c') -> field('c.id,cs.name as csname,csa.name as csaname,c.name,c.address,c.mobilephone,c.companyphone,c.linkman,c.website,c.email,c.manproducts,c.qqcode,cs.domain,c.updatetime,csp.tel as csptel,csp.telphone as csptelphone') -> where(array('c.id' => $send_email['cid'])) -> join('yesow_child_site as cs ON c.csid = cs.id') -> join('yesow_child_site_phone as csp ON csp.cid = c.csid') -> join('yesow_child_site_area as csa ON c.csaid = csa.id') -> find();
 	$company_info['updatetime'] = date('Y-m-d H:i:s', $company_info['updatetime']);
-	$company_info['companyremind_time'] = round((time() - $company_info['updatetime'])/3600/24);
+	$company_info['companyremind_time'] = round(($time-strtotime($company_info['updatetime']))/3600/24);
 	$company_info['send_time'] = date('Y-m-d H:i:s');
 	
 	
@@ -712,8 +716,6 @@ class PublicAction extends Action {
 	
 	
 	}
-	
-	usleep(100000);
       
       }
       

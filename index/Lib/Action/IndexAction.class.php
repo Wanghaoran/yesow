@@ -149,13 +149,17 @@ class IndexAction extends CommonAction {
 
   private function recommendcompany(){
     $website_type_name = D('admin://ChildSite') -> getid() ? '分站' : '主站';
+    $csid = D('admin://ChildSite') -> getid();
     $fid = M('RecommendCompanyWebsiteType') -> getFieldByname($website_type_name, 'id');
     $this -> assign('fid', $fid);
     $RecommendCompany = M('RecommendCompany');
     $where_recommendcompany = array();
-    $where_recommendcompany['fid'] = $fid;
-    $where_recommendcompany['starttime'] = array('ELT', time());
-    $where_recommendcompany['endtime'] = array('EGT', time());
+    $where_recommendcompany['rc.fid'] = $fid;
+    if($csid){
+      $where_recommendcompany['c.csid'] = $csid;
+    }
+    $where_recommendcompany['rc.starttime'] = array('ELT', time());
+    $where_recommendcompany['rc.endtime'] = array('EGT', time());
     $result_recommendcompany = $RecommendCompany -> alias('rc') -> field('rc.cid,rc.rank,c.name as cname,c.manproducts,c.mobilephone,c.linkman') -> join('yesow_company as c ON rc.cid = c.id') -> where($where_recommendcompany) -> order('rc.rank ASC') -> select();
     $recommend_company = array();
     for($i=1; $i<=32; $i++){

@@ -744,6 +744,7 @@ class HireAction extends CommonAction {
 	$up_data = $this -> resume_pic_upload();
 	$Resume -> pic = $up_data[0]['savename'];
       }
+      $Resume -> addtime = time();
       if($id = $Resume -> add()){
 	redirect(PHP_FILE . '/hire/resume_two/id/' . $id);
       }else{

@@ -79,10 +79,27 @@ class MessageAction extends CommonAction {
   public function memberemailsendrecord(){
     $MemberSendEmailRecord = M('MemberSendEmailRecord');
     $where = array();
-    if(!empty($_POST['username'])){
-      $mid = M('Member') -> getFieldByname($_POST['username'], 'id');
+    if(!empty($_POST['mname'])){
+      $mid = M('Member') -> getFieldByname($_POST['mname'], 'id');
       $where['mssr.mid'] = $mid;
     }
+    if(!empty($_POST['email'])){
+      $where['mssr.sendemail'] = $this -> _post('email');
+    }
+
+    if(!empty($_POST['status']) || $_POST['status'] === '0'){
+      $where['mssr.statuscode'] = $this -> _post('status');
+    }
+    if(!empty($_POST['starttime'])){
+      $addtime = $this -> _post('starttime', 'strtotime');
+      $where['mssr.sendtime'] = array(array('gt', $addtime));
+    }
+    if(!empty($_POST['endtime'])){
+      $endtime = $this -> _post('endtime', 'strtotime');
+      $where['mssr.sendtime'][] = array('lt', $endtime);
+    }
+
+
     $count = $MemberSendEmailRecord -> alias('mssr') -> where($where) -> count('id');
     import('ORG.Util.Page');
     if(! empty ( $_REQUEST ['listRows'] )){
@@ -111,6 +128,139 @@ class MessageAction extends CommonAction {
       $this -> error(L('DATA_DELETE_ERROR'));
     }
   }
+
+  
+  //全部删除发送记录
+  public function alldelmemberemailsendrecord(){
+    $email_list = M('MemberSendEmailRecord');
+    if($email_list -> where(1) -> delete()){
+      $this -> success(L('DATA_DELETE_SUCCESS'));
+    }else{
+      $this -> error(L('DATA_DELETE_ERROR'));
+    }
+  }
+
+  //区间删除发送记录
+  public function intervaldelmemberemailsendrecord(){
+    if(!empty($_POST['isdel'])){
+      $where_del = array();
+      if(!empty($_POST['starttime'])){
+	$addtime = $this -> _post('starttime', 'strtotime');
+	$where['sendtime'] = array(array('gt', $addtime));
+      }
+      if(!empty($_POST['endtime'])){
+	$endtime = $this -> _post('endtime', 'strtotime');
+	$where['sendtime'][] = array('lt', $endtime);
+      }
+      $email_list = M('MemberSendEmailRecord');
+      if($email_list -> where($where) -> delete()){
+	$this -> success(L('DATA_DELETE_SUCCESS'));
+      }else{
+	$this -> error(L('DATA_DELETE_ERROR'));
+      }
+    } 
+    $this -> display();
+  }
+
+  //邮件补发
+  public function editreplacemembersendemail(){
+    $email_list = M('MemberSendEmailRecord');
+    if(!empty($_POST['accept_email'])){
+      $result_record = $email_list -> field('mid,title,content') -> find($this -> _post('id', 'intval'));
+      //读取该用户的第一个启用的邮箱配置
+      $MemberEmailSetting = M('MemberEmailSetting');
+      $result_member = $MemberEmailSetting -> field('email_address,email_SMTP,email_account,email_pwd') -> where(array('mid' => $result_record['mid'], 'status' => 1)) -> order('id ASC') -> find();
+      //发送邮件
+      C('MAIL_ADDRESS', $result_member['email_address']);
+      C('MAIL_SMTP', $result_member['email_SMTP']);
+      C('MAIL_LOGINNAME', $result_member['email_account']);
+      C('MAIL_PASSWORD', $result_member['email_pwd']);
+
+      import('ORG.Util.Mail');
+
+      if(@SendMail($_POST['accept_email'], $result_record['title'], $result_record['content'], 'yesow管理员')){
+	$update_data = array();
+	$update_data['id'] = $this -> _post('id', 'intval');
+	$update_data['tosendemail'] = $result_member['email_address'];
+	$update_data['sendemail'] = $_POST['accept_email'];
+	$update_data['sendtime'] = time();	
+	if($_POST['check'] == 1){
+	  $update_data['statuscode'] = 2;
+	}else{
+	  $update_data['statuscode'] = 1;
+	}
+
+	$email_list -> save($update_data);
+
+	$this -> success('邮件补发成功！');
+      }else{
+	$this -> error('邮件补发失败！');
+      }
+    
+    }
+    $result = $email_list -> field('sendemail') -> find($this -> _get('id', 'intval'));
+    $this -> assign('result', $result);
+    $this -> display();
+  }
+
+  /*
+   *public function editreplacetimingsendcompanyremindemail(){
+
+    $TimingSendEmail = M('TimingSendEmail');
+    $TimingSendEmailSetting = M('TimingSendEmailSetting');
+
+    if(!empty($_POST['accept_email'])){
+      //先更新速查数据
+      $record_data = $TimingSendEmail -> field('cid,title,content') -> find($this -> _post('id', 'intval'));
+      $data = array();
+      $data['id'] = $record_data['cid'];
+      $data['email'] = $_POST['accept_email'];
+      if($_POST['update'] == 1){
+	$data['updatetime'] = time();
+      }
+      M('Company') -> save($data);
+      //发送邮件
+      $email_template = $TimingSendEmailSetting -> field('id,email_address as send_address, email_SMTP as email_smtp, email_account as send_account, email_pwd as send_pwd') -> where(array('aid' => session(C('USER_AUTH_KEY')), 'status' => 1)) -> order('sendnum ASC') -> find();
+      C('MAIL_ADDRESS', $email_template['send_address']);
+      C('MAIL_SMTP', $email_template['email_smtp']);
+      C('MAIL_LOGINNAME', $email_template['send_account']);
+      C('MAIL_PASSWORD', $email_template['send_pwd']);
+      import('ORG.Util.Mail');
+
+      if(@SendMail($_POST['accept_email'], $record_data['title'], $record_data['content'], 'yesow管理员')){
+	$update_data = array();
+	$update_data['id'] = $this -> _post('id', 'intval');
+	$update_data['send_email'] = $email_template['send_address'];
+	$update_data['email'] = $_POST['accept_email'];
+	$update_data['sendtime'] = time();	
+	if($_POST['check'] == 1){
+	  $update_data['status'] = 2;
+	}else{
+	  $update_data['status'] = 1;
+	}
+
+	$TimingSendEmail -> save($update_data);
+
+	//更新提醒邮件记录
+	$TimingSendEmailSetting -> where(array('id' => $email_template['id'])) -> setInc('sendnum');
+	$this -> success('邮件补发成功！');
+      }else{
+	$this -> error('邮件补发失败！');
+      }
+
+    }
+    $result = $TimingSendEmail -> alias('r') -> field('r.email as accept_email,c.name as company_name,c.updatetime') -> where(array('r.id' => $this -> _get('id', 'intval'))) -> join('yesow_company as c ON r.cid = c.id') -> find();
+    $this -> assign('result', $result);
+    $this -> display();
+
+  }
+
+
+
+
+   *
+   *
+   */
 
   public function memberemailsearchrecord(){
     $MemberSearchEmailRecord = M('MemberSearchEmailRecord');
