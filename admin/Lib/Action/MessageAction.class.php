@@ -482,9 +482,39 @@ class MessageAction extends CommonAction {
 	$result[1]['balance'] = $balance_arr[1][2];
 	$result[2]['balance'] = $balance_arr[1][3];
       }
-      if($value['aid'] != 5){
+      if($value['aid'] != 5 && $value['aid'] != 7){
 	$result[$key]['balance'] = file_get_contents($value['account']);
       }
+
+        if($value['aid'] == 7){
+
+
+            //河南奇葩接口
+
+            $uri = "http://www.send10086.com/sms.aspx";
+            // 参数数组
+            $data = array (
+                'userid' => '10849',
+                'account' => 'yesow',
+                'password' => 'yesow123',
+                'action' => 'overage',
+            );
+
+            $ch = curl_init ();
+            curl_setopt ( $ch, CURLOPT_URL, $uri );
+            curl_setopt ( $ch, CURLOPT_POST, 1 );
+            curl_setopt ( $ch, CURLOPT_HEADER, 0 );
+            curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+            curl_setopt ( $ch, CURLOPT_POSTFIELDS, $data );
+            $return = curl_exec ( $ch );
+            curl_close ( $ch );
+
+            $xmlObj = simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $overage = strval($xmlObj -> overage);
+
+            $result[$key]['balance'] = $overage;
+
+        }
     
     }
 
@@ -1593,26 +1623,54 @@ class MessageAction extends CommonAction {
 
     $result = $SmsApi -> field('id,name,enable,addtime,remark,account') -> where($where) -> limit($page -> firstRow . ',' . $page -> listRows) -> select();
 
-    foreach($result as $key => $value){
-      if($value['id'] != 5){
-	$result[$key]['accounts'] = file_get_contents($value['account']);
-      }else{
-	$balance = file_get_contents($value['account']);
-	preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
-	foreach($balance_arr[1] as $key2 => $value2){
-	  if($key2 != 0){
-	    if(empty($result[$key]['accounts'])){
-	      $result[$key]['accounts'] .= $value2;
-	    }else{
-	      $result[$key]['accounts'] .= ' / ' . $value2;
-	    }
-	    
-	  }
-	  
-	}
+
+      foreach($result as $key => $value){
+          if($value['id'] != 5 && $value['id'] != 7){
+              $result[$key]['accounts'] = file_get_contents($value['account']);
+          }else if($value['id'] == 7){
+
+              //河南奇葩接口
+
+              $uri = "http://www.send10086.com/sms.aspx";
+              // 参数数组
+              $data = array (
+                  'userid' => '10849',
+                  'account' => 'yesow',
+                  'password' => 'yesow123',
+                  'action' => 'overage',
+              );
+
+              $ch = curl_init ();
+              curl_setopt ( $ch, CURLOPT_URL, $uri );
+              curl_setopt ( $ch, CURLOPT_POST, 1 );
+              curl_setopt ( $ch, CURLOPT_HEADER, 0 );
+              curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+              curl_setopt ( $ch, CURLOPT_POSTFIELDS, $data );
+              $return = curl_exec ( $ch );
+              curl_close ( $ch );
+
+              $xmlObj = simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA);
+              $overage = strval($xmlObj -> overage);
+
+              $result[$key]['accounts'] = $overage;
+
+          }else{
+              $balance = file_get_contents($value['account']);
+              preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+              foreach($balance_arr[1] as $key2 => $value2){
+                  if($key2 != 0){
+                      if(empty($result[$key]['accounts'])){
+                          $result[$key]['accounts'] .= $value2;
+                      }else{
+                          $result[$key]['accounts'] .= ' / ' . $value2;
+                      }
+
+                  }
+
+              }
+          }
+
       }
-      
-    }
 
     $this -> assign('result', $result);
     $this -> assign('listRows', $listRows);

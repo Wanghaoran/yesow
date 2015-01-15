@@ -1504,15 +1504,42 @@ class ServicesAction extends CommonAction {
     $sendtype = M('SmsSendType');
     $result_sendtype = $sendtype -> alias('t') -> field('t.apicode,t.name,t.remark,t.aid,a.account') -> join('yesow_sms_api as a ON t.aid = a.id') -> where('a.enable=1') -> select();
 
-    if($result_sendtype[0]['aid'] == 5){
-      $balance = file_get_contents($result_sendtype[0]['account']);
-      preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
-      foreach($result_sendtype as $key => $value){
-	 $result_sendtype[$key]['balance'] = $balance_arr[1][$value['apicode']];
+      if($result_sendtype[0]['aid'] == 5){
+          $balance = file_get_contents($result_sendtype[0]['account']);
+          preg_match_all('/[^a-z]([0-9]+)/', $balance, $balance_arr);
+          foreach($result_sendtype as $key => $value){
+              $result_sendtype[$key]['balance'] = $balance_arr[1][$value['apicode']];
+          }
+      }else if($result_sendtype[0]['aid'] == 7){
+
+          //河南奇葩接口
+
+          $uri = "http://www.send10086.com/sms.aspx";
+          // 参数数组
+          $data = array (
+              'userid' => '10849',
+              'account' => 'yesow',
+              'password' => 'yesow123',
+              'action' => 'overage',
+          );
+
+          $ch = curl_init ();
+          curl_setopt ( $ch, CURLOPT_URL, $uri );
+          curl_setopt ( $ch, CURLOPT_POST, 1 );
+          curl_setopt ( $ch, CURLOPT_HEADER, 0 );
+          curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+          curl_setopt ( $ch, CURLOPT_POSTFIELDS, $data );
+          $return = curl_exec ( $ch );
+          curl_close ( $ch );
+
+          $xmlObj = simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA);
+          $overage = strval($xmlObj -> overage);
+
+          $result_sendtype[0]['balance'] = $overage;
+
+      }else{
+          $result_sendtype[0]['balance'] = file_get_contents($result_sendtype[0]['account']);
       }
-    }else{
-      $result_sendtype[0]['balance'] = file_get_contents($result_sendtype[0]['account']);
-    }
     
     $this -> assign('result_sendtype', $result_sendtype);
     //发送价格
@@ -1750,153 +1777,125 @@ class ServicesAction extends CommonAction {
       $sms_parameter = $SmsApiParameters -> field('key,value,callback') -> where(array('aid' => $sms_url['id'])) -> select();
 
 
-      //执行发送
-      foreach($to_send as $value){
-	if($value['id']){
-	  $company_info = M('Company') -> table('yesow_company as c') -> field('LEFT(c.name,15) as name,LEFT(c.linkman,3) as linkman') -> where(array('c.id' => $value['id'])) -> find();
-	  $search = array('{company_names}', '{l}');
-	  $content = str_replace($search, $company_info, $_POST['content']);
-	}else{
-	  $content = $_POST['content'];
-	}
-	$content = str_replace(' ', ',', $content);
-	$content = str_replace($illegal_word, $replace_word, $content);
 
-	//制作参数替换数组
-	$parament_key_arr = array();
-	$parament_value_arr = array();
-	foreach($sms_parameter as $value33){
-	  $parament_key_arr[$value33['key']] = '{' . $value33['key'] . '}';
-	  $parament_value_arr[$value33['key']] = $value33['value'];
-	}
-
-	if($sms_url['id'] == 3 || $sms_url['id'] == 4){
-	  $parament_value_arr['MOBILE'] = $value['tel'];
-	  $parament_value_arr['CONTENT'] = urlencode($content);
-	}else if($sms_url['id'] == 5){
-	  $parament_value_arr['Mobi'] = $value['tel'];
-	  $parament_value_arr['Content'] = urlencode($content .'【易搜】');
-	  $parament_value_arr['SendType'] = $_POST['sendtype'];
-	}
-
-
-	//生成请求URL
-	$sms_send_url = str_replace($parament_key_arr, $parament_value_arr, $sms_url['url']);
-
-	$fp = fopen($sms_send_url, 'rb');
-	$ret= fgetss($fp,255);
-	$ret = intval($ret);
-	fclose($fp);
-
-	//读取返回参数
-	$SmsApiCallback = M('SmsApiCallback');
-	$call_back = $SmsApiCallback -> field('value,status') -> where(array('key' => $ret, 'aid' => $sms_url['id'])) -> find();
-
-	//记录发送信息
-	$data_rec = array();
-	$data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
-	$data_rec['sendtime'] = time();
-	$data_rec['content'] = $content;
-	$data_rec['sendphone'] = $value['tel'];
-	$data_rec['sendtype'] = $sms_url['name'];
-	$data_rec['price'] = $send_phone_price * $sms_num;
-
-	//发送失败退费
-	if($call_back['status'] == 0){
-	  $total_back += $send_phone_price * $sms_num;
-	}
-	$data_rec['statuscode'] = $call_back['value'];
-	$MemberSendSmsRecord -> add($data_rec);
-	usleep(25000);
-      }
-      if($total_back != 0){
-	//退费
-	$MemberRmb -> addmoney('rmb_exchange', $total_back);
-	//退费数量
-	$back_num = intval($total_back / $send_phone_price);
-	//写日志
-	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费(共 ' . $back_num . ' 条)', '退费', '+' . ($total_back));
-      }
-
-
-
-
-      /*
-      //读取发送配置
-      $setting = M('SmsSetting');
-      $sms_username = $setting -> getFieldByname('sms_username', 'value');
-      $sms_password = $setting -> getFieldByname('sms_password', 'value');
-
-      $MemberSendSmsRecord = M('MemberSendSmsRecord');
-
-      //过滤敏感词
-      $SendSmsIllegalWord = M('SendSmsIllegalWord');
-      //需要过滤的词的数组
-      $illegal_word_temp = $SendSmsIllegalWord -> field('name') -> order('id') -> select();
-      //需要替换的词的数组
-      $replace_word_temp = $SendSmsIllegalWord -> field('replace') -> order('id') -> select();
-      //整理这两个数组
-      $illegal_word = array();
-      $replace_word = array();
-      foreach($illegal_word_temp as $key => $value){
-	$illegal_word[] = $value['name'];
-      }
-      foreach($replace_word_temp as $key => $value){
-	$replace_word[] = $value['replace'];
-      }
-
-      //退费总额
-      $total_back = 0;
 
       //执行发送
-      foreach($to_send as $value){
-	if($value['id']){
-	  $company_info = M('Company') -> table('yesow_company as c') -> field('LEFT(c.name,15) as name,LEFT(c.linkman,3) as linkman') -> where(array('c.id' => $value['id'])) -> find();
-	  $search = array('{company_names}', '{l}');
-	  $content = str_replace($search, $company_info, $_POST['content']);
-	}else{
-	  $content = $_POST['content'];
-	}
-	$content = str_replace(' ', ',', $content);
-	$content = str_replace($illegal_word, $replace_word, $content);
 
-	$url = "http://www.vip.86aaa.com/api.aspx?SendType={$_POST['sendtype']}&Code=utf-8&UserName={$sms_username}&Pwd={$sms_password}&Mobi={$value['tel']}&Content={$content}【易搜】";
-	$url = iconv('UTF-8', 'GB2312', $url);
-	$fp = fopen($url, 'rb');
-	$ret= fgetss($fp,255);
-	fclose($fp);
-	//记录发送信息
-	$data_rec = array();
-	$data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
-	$data_rec['sendtime'] = time();
-	$data_rec['content'] = $content;
-	$data_rec['sendphone'] = $value['tel'];
-	$data_rec['sendtype'] = $_POST['sendtype'];
-	$data_rec['price'] = $send_phone_price * $sms_num;
-	if($ret === false){
-	  $ret = 5;
-	}
-	//发送失败退费
-	if($ret != 0){
-	  $total_back += $send_phone_price * $sms_num;
-	}
-	$data_rec['statuscode'] = $ret;
-	$MemberSendSmsRecord -> add($data_rec);
-	usleep(25000);
+      foreach($to_send as $value){
+          if($value['id']){
+              $company_info = M('Company') -> table('yesow_company as c') -> field('LEFT(c.name,15) as name,LEFT(c.linkman,3) as linkman') -> where(array('c.id' => $value['id'])) -> find();
+              $search = array('{company_names}', '{l}');
+              $content = str_replace($search, $company_info, $_POST['content']);
+          }else{
+              $content = $_POST['content'];
+          }
+          $content = str_replace(' ', ',', $content);
+          $content = str_replace($illegal_word, $replace_word, $content);
+
+
+          if($sms_url['id'] != 7){
+              //制作参数替换数组
+              $parament_key_arr = array();
+              $parament_value_arr = array();
+              foreach($sms_parameter as $value33){
+                  $parament_key_arr[$value33['key']] = '{' . $value33['key'] . '}';
+                  $parament_value_arr[$value33['key']] = $value33['value'];
+              }
+
+              if($sms_url['id'] == 3 || $sms_url['id'] == 4){
+                  $parament_value_arr['MOBILE'] = $value['tel'];
+                  $parament_value_arr['CONTENT'] = urlencode($content);
+              }else if($sms_url['id'] == 5){
+                  $parament_value_arr['Mobi'] = $value['tel'];
+                  $parament_value_arr['Content'] = urlencode($content .'【易搜】');
+                  $parament_value_arr['SendType'] = $_POST['sendtype'];
+              }
+
+              //生成请求URL
+              $sms_send_url = str_replace($parament_key_arr, $parament_value_arr, $sms_url['url']);
+
+              $fp = fopen($sms_send_url, 'rb');
+              $ret= fgetss($fp,255);
+              $ret = intval($ret);
+              fclose($fp);
+
+              //读取返回参数
+              $SmsApiCallback = M('SmsApiCallback');
+              $call_back = $SmsApiCallback -> field('value,status') -> where(array('key' => $ret, 'aid' => $sms_url['id'])) -> find();
+
+              //记录发送信息
+              $data_rec = array();
+              $data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
+              $data_rec['sendtime'] = time();
+              $data_rec['content'] = $content;
+              $data_rec['sendphone'] = $value['tel'];
+              $data_rec['sendtype'] = $sms_url['name'];
+              $data_rec['price'] = $send_phone_price * $sms_num;
+              if($call_back['status'] == 0){
+                  $total_back += $send_phone_price * $sms_num;
+              }
+              $data_rec['statuscode'] = $call_back['value'];
+              $MemberSendSmsRecord -> add($data_rec);
+              usleep(25000);
+          }else{
+              //河南奇葩接口
+
+              $uri = "http://www.send10086.com/sms.aspx";
+              // 参数数组
+              $data = array (
+                  'userid' => $sms_parameter[0]['value'],
+                  'account' => $sms_parameter[1]['value'],
+                  'password' => $sms_parameter[2]['value'],
+                  'mobile' => $value['tel'],
+                  'content' => $content,
+                  'sendTime' => '',
+                  'action' => $sms_parameter[6]['value'],
+                  'extno' => $sms_parameter[7]['value'],
+              );
+
+              $ch = curl_init ();
+              curl_setopt ( $ch, CURLOPT_URL, $uri );
+              curl_setopt ( $ch, CURLOPT_POST, 1 );
+              curl_setopt ( $ch, CURLOPT_HEADER, 0 );
+              curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+              curl_setopt ( $ch, CURLOPT_POSTFIELDS, $data );
+              $return = curl_exec ( $ch );
+              curl_close ( $ch );
+
+              //记录发送信息
+              $data_rec = array();
+              $data_rec['mid'] = $_SESSION[C('USER_AUTH_KEY')];
+              $data_rec['sendtime'] = time();
+              $data_rec['content'] = $content;
+              $data_rec['sendphone'] = $value['tel'];
+              $data_rec['sendtype'] = '合肥网关';
+              $data_rec['price'] = $send_phone_price * $sms_num;
+
+              $data_rec['statuscode'] = '发送成功';
+              $MemberSendSmsRecord -> add($data_rec);
+              usleep(25000);
+          }
       }
-      if($total_back != 0){
-	//退费
-	$MemberRmb -> addmoney('rmb_exchange', $total_back);
-	//写日志
-	$MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费', '退费', '+' . ($total_back));
-      }
-       */
+
+
+      //发送失败退费
+        if($total_back != 0){
+            //退费
+            $MemberRmb -> addmoney('rmb_exchange', $total_back);
+            //退费数量
+            $back_num = intval($total_back / $send_phone_price);
+            //写日志
+            $MemberRmbDetail -> writelog($_SESSION[C('USER_AUTH_KEY')], '您在易搜用户中心发送手机短信失败的退费(共 ' . $back_num . ' 条)', '退费', '+' . ($total_back));
+        }
+
       //重新缓存用户余额
       $MemberRmb -> rmbtotal();
       //清空信息
       $_SESSION['member_search_send_list'] = array();
       $_SESSION['member_upload_send_list'] = array();
-      echo "<script>location.href='" . __URL__ ."/sendendjump';</script>";    
+      echo "<script>location.href='" . __URL__ ."/sendendjump';</script>";
+
+
     }else{
       R('Register/errorjump', array('用户余额不足，请充值', U('Services/sendsms')));
     }
