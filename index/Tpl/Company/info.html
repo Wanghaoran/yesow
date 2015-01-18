@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><!--{$result.name}--!>_<!--{$result.csaname}--!>IT_易搜-<!--{$result.csname}--!>IT商家详情页</title>
-<meta name="Keywords" content="易搜,<!--{$result.keyword|str_replace=' ', ',', ###}--!>,IT渠道,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT,IT黄页"/>
-<meta name="description" content="<!--{$result.name}--!>主要经营<!--{$result.manproducts}--!>，期待结识更多的商家合作并共同发展"/>
+<title><!--{$result.manproducts|str_replace='、', '_', ###}--!>_<!--{$result.name}--!>_<!--{$result.csaname}--!>IT_易搜-<!--{$result.csname}--!>IT商家详情页</title>
+<meta name="Keywords" content="<!--{$result.manproducts|str_replace='、', ',', ###}--!>,易搜,<!--{$result.csname}--!>IT渠道,<!--{$result.csname}--!>IT,<!--{$result.csaname}--!>IT"/>
+<meta name="description" content="<!--{$result.name}--!>主要经营<!--{$result.manproducts}--!>等，欢迎有需要<!--{$result.manproducts}--!>及相关产品的客户前来咨询和回顾，期待结识更多的商家合作并共同发展"/>
 
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/reset.css" />
 <link rel="stylesheet" href="__PUBLIC__/index/<!--{$templatename}--!>/style/style.css" />

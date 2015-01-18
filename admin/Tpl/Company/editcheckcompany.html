@@ -15,7 +15,7 @@
     var typeid = $('#typeid3 option:selected').text();
     var website = $('#website3')[0].value;
     content += '    ' + name + '欢迎您访问本公司网页！首先感谢您的轻轻一点，才有缘来到' + name + '这里在此我们全体成员祝你网上浏览愉快！祝愿一切美好的事情都会发生在你和你的家人身上！\r\n    我公司地处在中国' + csid + csaid + '地区,公司地址在' + address + '，公司主要经营' + manproducts + '，欢迎来人来电咨询和联系我们，公司联系人是' + linkman + '，我们真诚的期待结识更多的IT商家合作并共同加盟和发展！\r\n    ' + name + '将会为你提供优质的售前、售中和售后服务，我们作为' + typeid + '的IT企业商家，我们将一如既往的为IT行业贡献一点自己的微薄之力！为' + csid + '地区IT行业争光！为' + csaid + '的经济发展争光！！欢迎访问我公司网站：' + website + '也许会给你带来意外的收获！';
-    $('#content')[0].value = content;
+      _KE.instances[_KE.instances.length-1].html(content);
   }
 </script>
 
@@ -113,7 +113,8 @@
 <p style="width:45%"><label style="width:200px;"> 提醒邮件发送次数：<a href="__URL__/editcompanyremindcount/cid/<!--{$id}--!>" height="365" target="dialog" title="提醒邮件发送详情：" rel="editcompanyremindcount"><!--{$result_edit.remind_count}--!></a></label>
       </p>
       <p style="width:90%;height:100%;"><label style="width:73px;">公司简介：<br/><br/><br/><a href="javascript:createabout();" class="button"><span>生成简介</span></a></label>
-      <textarea name="content" id="content" style="resize:none;width:79%;height:100px;" ><!--{$result_edit.content}--!></textarea>
+
+      <textarea name="content" class="editor" id="content" style="resize:none;width:79%;height:100px;" ><!--{$result_edit.content}--!></textarea>
       </p>
       <div class="divider"></div>
       <p style="width:95%;height:100%;">

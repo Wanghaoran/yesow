@@ -144,7 +144,6 @@ var opensearch = function(key_word){
 		    <else/>
 		    <li><a href="__ROOT__/company">渠道黄页</a></li>
 		    </if>
-		    <li><a href="#">企业会员</a></li>
 		    <if condition="MODULE_NAME eq 'Hire'">
 		    <li class="hover"><a href="__ROOT__/hire">出租招聘</a></li>
 		    <else/>
@@ -166,7 +165,9 @@ var opensearch = function(key_word){
 			<else/>
 			<li><a href="__ROOT__/shop">易搜商城</a></li>
 			</if>
-                </ul>
+              <li><a href="http://wx.yesow.com" target="_blank">微站设计</a></li>
+
+          </ul>
 	      </div>
 	      
         	<div id="nav01_r"></div>
@@ -185,26 +186,25 @@ var opensearch = function(key_word){
 	    <li class="none li_weizhi2"><a target="_blank" href="__ROOT__/company/companylist" >商家名录</a><a href="__ROOT__/company/companyshow" target="_blank" >商家风采</a><a href="__ROOT__/company/keywordrank" target="_blank" >关键排名</a><a href="__ROOT__/clickrank" target="_blank" >点击排名</a><a href="__ROOT__/company/companyonline" target="_blank" >商家在线</a><a href="__ROOT__/scorerank" target="_blank" >正负排名</a></li>
 	    </if>
 
-	    <li class="none li_weizhi3"><a href="" >第三个01</a><a href="" >第三个02</a><a href="" >第三个03</a><a href="" >第三个04</a></li>
 	    <if condition="MODULE_NAME eq 'Hire'">
-	    <li class="li_weizhi4"><a href="__ROOT__/recruit" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/sellused" target="_blank" >二手买卖</a></li>
+	    <li class="li_weizhi3"><a href="__ROOT__/recruit" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/sellused" target="_blank" >二手买卖</a></li>
 	    <else/>
-	    <li class="none li_weizhi4"><a href="__ROOT__/recruit" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/sellused" target="_blank" >二手买卖</a></li>
+	    <li class="none li_weizhi3"><a href="__ROOT__/recruit" >商家招聘</a><a href="__ROOT__/storerent" target="_blank" >旺铺租转</a><a href="__ROOT__/sellused" target="_blank" >二手买卖</a></li>
 	    </if>
 				<if condition="MODULE_NAME eq 'Info'">
-				<li class="li_weizhi5"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
+				<li class="li_weizhi4"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
 				<else/>
-				<li class="none li_weizhi5"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
+				<li class="none li_weizhi4"><volist name="index_article_nav" id="ian"><a href="__ROOT__/infolist/<!--{$ian.id}--!>" ><!--{$ian.name}--!></a></volist></li>
 				</if>
 				
-				<li class="none li_weizhi6"><volist name="index_investment_nav" id="iin"><a href="" ><!--{$iin.name}--!></a></volist></li>
+				<li class="none li_weizhi5"><volist name="index_investment_nav" id="iin"><a href="" ><!--{$iin.name}--!></a></volist></li>
 				<if condition="MODULE_NAME eq 'Agent'">
-				<li class="li_weizhi7"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist><a href="__ROOT__/agent/add">加盟申请</a></li>
+				<li class="li_weizhi6"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist><a href="__ROOT__/agent/add">加盟申请</a></li>
 				<else/>
-				<li class="none li_weizhi7"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist><a href="__ROOT__/agent/add">加盟申请</a></li>
+				<li class="none li_weizhi6"><volist name="index_agent_join" id="iaj"><a href="__ROOT__/agent/<!--{$iaj.id}--!>" ><!--{$iaj.title}--!></a></volist><a href="__ROOT__/agent/add">加盟申请</a></li>
 				</if>
 				<if condition="MODULE_NAME eq 'Shop'">
-				<li class="li_weizhi8">
+				<li class="li_weizhi7">
 				<volist name="index_shop_nav" id="isn">
 				<a href="__ROOT__/shoplist/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
 				</volist>
@@ -215,7 +215,8 @@ var opensearch = function(key_word){
 				<a href="__ROOT__/shoplist/<!--{$isn.id}--!>"><!--{$isn.name}--!></a>
 				</volist>
 				</li>
-				</if>				
+				</if>
+
 			</ul>	
 		      </div>
 
